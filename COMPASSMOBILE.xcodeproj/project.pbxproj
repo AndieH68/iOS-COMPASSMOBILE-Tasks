@@ -7,13 +7,27 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A4034A801C4FF41700615D95 /* Operative.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4034A7F1C4FF41700615D95 /* Operative.swift */; };
+		A4034A841C51040300615D95 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4034A831C51040300615D95 /* Session.swift */; };
+		A4034A861C5132EE00615D95 /* COMPASSDB.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = A4034A851C5132EE00615D95 /* COMPASSDB.sqlite */; };
+		A407DA801C44105700251228 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A407DA7F1C44105700251228 /* LoginViewController.swift */; };
+		A40BB54B1C4FDFC0005C2AE6 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = A40BB54A1C4FDFC0005C2AE6 /* Reachability.swift */; };
+		A40BB5581C4FE958005C2AE6 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = A40BB54E1C4FE958005C2AE6 /* FMDatabase.m */; };
+		A40BB5591C4FE958005C2AE6 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = A40BB5501C4FE958005C2AE6 /* FMDatabaseAdditions.m */; };
+		A40BB55A1C4FE958005C2AE6 /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = A40BB5521C4FE958005C2AE6 /* FMDatabasePool.m */; };
+		A40BB55B1C4FE958005C2AE6 /* FMDatabaseQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = A40BB5541C4FE958005C2AE6 /* FMDatabaseQueue.m */; };
+		A40BB55C1C4FE958005C2AE6 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = A40BB5571C4FE958005C2AE6 /* FMResultSet.m */; };
+		A40BB55E1C4FE9D7005C2AE6 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A40BB55D1C4FE9D7005C2AE6 /* libsqlite3.0.tbd */; };
+		A40BB5611C4FED9E005C2AE6 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A40BB5601C4FED9E005C2AE6 /* Utility.swift */; };
+		A40BB5651C4FF0A7005C2AE6 /* ModelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A40BB5641C4FF0A7005C2AE6 /* ModelManager.swift */; };
 		A4A522F01C43F4A500D16A9A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A522EF1C43F4A500D16A9A /* AppDelegate.swift */; };
 		A4A522F21C43F4A500D16A9A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A522F11C43F4A500D16A9A /* ViewController.swift */; };
 		A4A522F51C43F4A500D16A9A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4A522F31C43F4A500D16A9A /* Main.storyboard */; };
 		A4A522F81C43F4A500D16A9A /* COMPASSMOBILE.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A4A522F61C43F4A500D16A9A /* COMPASSMOBILE.xcdatamodeld */; };
 		A4A522FA1C43F4A500D16A9A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A4A522F91C43F4A500D16A9A /* Assets.xcassets */; };
 		A4A522FD1C43F4A500D16A9A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4A522FB1C43F4A500D16A9A /* LaunchScreen.storyboard */; };
-		A4A523081C43F4A500D16A9A /* COMPASSMOBILETests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A523071C43F4A500D16A9A /* COMPASSMOBILETests.swift */; };
+		A4EDA3931C4E98C900667987 /* AEXML.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4EDA3921C4E98C900667987 /* AEXML.swift */; };
+		A4EDA3961C4EA55500667987 /* ReferenceData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4EDA3951C4EA55500667987 /* ReferenceData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -27,6 +41,26 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A4034A7F1C4FF41700615D95 /* Operative.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operative.swift; sourceTree = "<group>"; };
+		A4034A831C51040300615D95 /* Session.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
+		A4034A851C5132EE00615D95 /* COMPASSDB.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = COMPASSDB.sqlite; sourceTree = "<group>"; };
+		A407DA7F1C44105700251228 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginViewController.swift; path = ../LoginViewController.swift; sourceTree = "<group>"; };
+		A40BB54A1C4FDFC0005C2AE6 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
+		A40BB54C1C4FE958005C2AE6 /* COMPASSMOBILE-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "COMPASSMOBILE-Bridging-Header.h"; sourceTree = "<group>"; };
+		A40BB54D1C4FE958005C2AE6 /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabase.h; sourceTree = "<group>"; };
+		A40BB54E1C4FE958005C2AE6 /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabase.m; sourceTree = "<group>"; };
+		A40BB54F1C4FE958005C2AE6 /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseAdditions.h; sourceTree = "<group>"; };
+		A40BB5501C4FE958005C2AE6 /* FMDatabaseAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseAdditions.m; sourceTree = "<group>"; };
+		A40BB5511C4FE958005C2AE6 /* FMDatabasePool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabasePool.h; sourceTree = "<group>"; };
+		A40BB5521C4FE958005C2AE6 /* FMDatabasePool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabasePool.m; sourceTree = "<group>"; };
+		A40BB5531C4FE958005C2AE6 /* FMDatabaseQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseQueue.h; sourceTree = "<group>"; };
+		A40BB5541C4FE958005C2AE6 /* FMDatabaseQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseQueue.m; sourceTree = "<group>"; };
+		A40BB5551C4FE958005C2AE6 /* FMDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDB.h; sourceTree = "<group>"; };
+		A40BB5561C4FE958005C2AE6 /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMResultSet.h; sourceTree = "<group>"; };
+		A40BB5571C4FE958005C2AE6 /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMResultSet.m; sourceTree = "<group>"; };
+		A40BB55D1C4FE9D7005C2AE6 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
+		A40BB5601C4FED9E005C2AE6 /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
+		A40BB5641C4FF0A7005C2AE6 /* ModelManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelManager.swift; sourceTree = "<group>"; };
 		A4A522EC1C43F4A500D16A9A /* COMPASSMOBILE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = COMPASSMOBILE.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4A522EF1C43F4A500D16A9A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A4A522F11C43F4A500D16A9A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -36,8 +70,8 @@
 		A4A522FC1C43F4A500D16A9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A4A522FE1C43F4A500D16A9A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A4A523031C43F4A500D16A9A /* COMPASSMOBILETests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = COMPASSMOBILETests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		A4A523071C43F4A500D16A9A /* COMPASSMOBILETests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = COMPASSMOBILETests.swift; sourceTree = "<group>"; };
-		A4A523091C43F4A500D16A9A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A4EDA3921C4E98C900667987 /* AEXML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AEXML.swift; path = ../AEXML.swift; sourceTree = "<group>"; };
+		A4EDA3951C4EA55500667987 /* ReferenceData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferenceData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +79,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A40BB55E1C4FE9D7005C2AE6 /* libsqlite3.0.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -58,11 +93,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A40BB55F1C4FED18005C2AE6 /* FMDB */ = {
+			isa = PBXGroup;
+			children = (
+				A40BB54D1C4FE958005C2AE6 /* FMDatabase.h */,
+				A40BB54E1C4FE958005C2AE6 /* FMDatabase.m */,
+				A40BB54F1C4FE958005C2AE6 /* FMDatabaseAdditions.h */,
+				A40BB5501C4FE958005C2AE6 /* FMDatabaseAdditions.m */,
+				A40BB5511C4FE958005C2AE6 /* FMDatabasePool.h */,
+				A40BB5521C4FE958005C2AE6 /* FMDatabasePool.m */,
+				A40BB5531C4FE958005C2AE6 /* FMDatabaseQueue.h */,
+				A40BB5541C4FE958005C2AE6 /* FMDatabaseQueue.m */,
+				A40BB5551C4FE958005C2AE6 /* FMDB.h */,
+				A40BB5561C4FE958005C2AE6 /* FMResultSet.h */,
+				A40BB5571C4FE958005C2AE6 /* FMResultSet.m */,
+			);
+			name = FMDB;
+			sourceTree = "<group>";
+		};
 		A4A522E31C43F4A500D16A9A = {
 			isa = PBXGroup;
 			children = (
+				A40BB55D1C4FE9D7005C2AE6 /* libsqlite3.0.tbd */,
 				A4A522EE1C43F4A500D16A9A /* COMPASSMOBILE */,
-				A4A523061C43F4A500D16A9A /* COMPASSMOBILETests */,
 				A4A522ED1C43F4A500D16A9A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -79,24 +132,34 @@
 		A4A522EE1C43F4A500D16A9A /* COMPASSMOBILE */ = {
 			isa = PBXGroup;
 			children = (
+				A4EDA3921C4E98C900667987 /* AEXML.swift */,
 				A4A522EF1C43F4A500D16A9A /* AppDelegate.swift */,
-				A4A522F11C43F4A500D16A9A /* ViewController.swift */,
-				A4A522F31C43F4A500D16A9A /* Main.storyboard */,
 				A4A522F91C43F4A500D16A9A /* Assets.xcassets */,
-				A4A522FB1C43F4A500D16A9A /* LaunchScreen.storyboard */,
-				A4A522FE1C43F4A500D16A9A /* Info.plist */,
+				A4034A851C5132EE00615D95 /* COMPASSDB.sqlite */,
+				A40BB54C1C4FE958005C2AE6 /* COMPASSMOBILE-Bridging-Header.h */,
 				A4A522F61C43F4A500D16A9A /* COMPASSMOBILE.xcdatamodeld */,
+				A40BB55F1C4FED18005C2AE6 /* FMDB */,
+				A4A522FE1C43F4A500D16A9A /* Info.plist */,
+				A4A522FB1C43F4A500D16A9A /* LaunchScreen.storyboard */,
+				A407DA7F1C44105700251228 /* LoginViewController.swift */,
+				A4A522F31C43F4A500D16A9A /* Main.storyboard */,
+				A4EDA3941C4EA53100667987 /* models */,
+				A40BB54A1C4FDFC0005C2AE6 /* Reachability.swift */,
+				A4034A831C51040300615D95 /* Session.swift */,
+				A40BB5601C4FED9E005C2AE6 /* Utility.swift */,
+				A4A522F11C43F4A500D16A9A /* ViewController.swift */,
 			);
 			path = COMPASSMOBILE;
 			sourceTree = "<group>";
 		};
-		A4A523061C43F4A500D16A9A /* COMPASSMOBILETests */ = {
+		A4EDA3941C4EA53100667987 /* models */ = {
 			isa = PBXGroup;
 			children = (
-				A4A523071C43F4A500D16A9A /* COMPASSMOBILETests.swift */,
-				A4A523091C43F4A500D16A9A /* Info.plist */,
+				A4EDA3951C4EA55500667987 /* ReferenceData.swift */,
+				A40BB5641C4FF0A7005C2AE6 /* ModelManager.swift */,
+				A4034A7F1C4FF41700615D95 /* Operative.swift */,
 			);
-			path = COMPASSMOBILETests;
+			name = models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -180,6 +243,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A4034A861C5132EE00615D95 /* COMPASSDB.sqlite in Resources */,
 				A4A522FD1C43F4A500D16A9A /* LaunchScreen.storyboard in Resources */,
 				A4A522FA1C43F4A500D16A9A /* Assets.xcassets in Resources */,
 				A4A522F51C43F4A500D16A9A /* Main.storyboard in Resources */,
@@ -200,9 +264,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A40BB54B1C4FDFC0005C2AE6 /* Reachability.swift in Sources */,
+				A4EDA3931C4E98C900667987 /* AEXML.swift in Sources */,
+				A4EDA3961C4EA55500667987 /* ReferenceData.swift in Sources */,
+				A40BB5651C4FF0A7005C2AE6 /* ModelManager.swift in Sources */,
+				A407DA801C44105700251228 /* LoginViewController.swift in Sources */,
+				A4034A801C4FF41700615D95 /* Operative.swift in Sources */,
 				A4A522F21C43F4A500D16A9A /* ViewController.swift in Sources */,
+				A40BB5591C4FE958005C2AE6 /* FMDatabaseAdditions.m in Sources */,
+				A40BB55C1C4FE958005C2AE6 /* FMResultSet.m in Sources */,
+				A40BB5611C4FED9E005C2AE6 /* Utility.swift in Sources */,
 				A4A522F81C43F4A500D16A9A /* COMPASSMOBILE.xcdatamodeld in Sources */,
+				A40BB55A1C4FE958005C2AE6 /* FMDatabasePool.m in Sources */,
+				A4034A841C51040300615D95 /* Session.swift in Sources */,
+				A40BB55B1C4FE958005C2AE6 /* FMDatabaseQueue.m in Sources */,
 				A4A522F01C43F4A500D16A9A /* AppDelegate.swift in Sources */,
+				A40BB5581C4FE958005C2AE6 /* FMDatabase.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -210,7 +287,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A4A523081C43F4A500D16A9A /* COMPASSMOBILETests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -331,10 +407,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = COMPASSMOBILE/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = COM.HYDROP.COMPASSMOBILE;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "COMPASSMOBILE/COMPASSMOBILE-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -342,10 +421,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = COMPASSMOBILE/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = COM.HYDROP.COMPASSMOBILE;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "COMPASSMOBILE/COMPASSMOBILE-Bridging-Header.h";
 			};
 			name = Release;
 		};
@@ -392,6 +473,7 @@
 				A4A5230E1C43F4A500D16A9A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A4A5230F1C43F4A500D16A9A /* Build configuration list for PBXNativeTarget "COMPASSMOBILETests" */ = {
 			isa = XCConfigurationList;
@@ -400,6 +482,7 @@
 				A4A523111C43F4A500D16A9A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
