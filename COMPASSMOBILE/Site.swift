@@ -1,15 +1,15 @@
 //
-//  Operative.swift
+//  Site.swift
 //  COMPASSMOBILE
 //
-//  Created by Andrew Harper on 20/01/2016.
+//  Created by Andrew Harper on 26/01/2016.
 //  Copyright © 2016 HYDOP E.C.S. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
-class Operative: NSObject {
-
+class Site: NSObject {
+    
     // MARK: - Properties
     
     var RowId: String = String()
@@ -19,13 +19,13 @@ class Operative: NSObject {
     var LastUpdatedOn: NSDate? = nil
     var Deleted: NSDate? = nil
     var OrganisationId: String = String()
-    var Username: String = String()
-    var Password: String = String()
+    var Name: String = String()
+    var Type: String? = nil
     
     // MARK: - Contructors
-        
+    
     convenience
-    init(rowId:String, createdBy: String, createdOn: NSDate, lastUpdatedBy: String?, lastUpdatedOn: NSDate?, deleted: NSDate?, organisationId: String, username:String, password:String) {
+    init(rowId:String, createdBy: String, createdOn: NSDate, lastUpdatedBy: String?, lastUpdatedOn: NSDate?, deleted: NSDate?, organisationId: String, name: String, type: String?) {
         self.init()
         self.RowId = rowId
         self.CreatedBy = createdBy
@@ -34,8 +34,8 @@ class Operative: NSObject {
         self.LastUpdatedOn = lastUpdatedOn
         self.Deleted = deleted
         self.OrganisationId = organisationId
-        self.Username = username
-        self.Password = password
+        self.Name = name
+        self.Type = type
     }
     
     convenience
@@ -63,7 +63,12 @@ class Operative: NSObject {
             }
         }
         self.OrganisationId = XMLElement.attributes["OrganisationId"]!
-        self.Username = XMLElement.attributes["Username"]!
-        self.Password = XMLElement.attributes["Password"]!
+        self.Name = XMLElement.attributes["Name"]!
+        if XMLElement.attributes.keys.contains("Type") {
+            if XMLElement.attributes["Type"] != ""
+            {
+                self.LastUpdatedBy = XMLElement.attributes["Type"]!
+            }
+        }
     }
 }

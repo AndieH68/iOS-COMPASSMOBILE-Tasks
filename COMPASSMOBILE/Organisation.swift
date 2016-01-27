@@ -1,15 +1,13 @@
 //
-//  Operative.swift
+//  Organisation.swift
 //  COMPASSMOBILE
 //
-//  Created by Andrew Harper on 20/01/2016.
+//  Created by Andrew Harper on 26/01/2016.
 //  Copyright © 2016 HYDOP E.C.S. All rights reserved.
 //
 
-import UIKit
-
-class Operative: NSObject {
-
+class Organisation: NSObject {
+ 
     // MARK: - Properties
     
     var RowId: String = String()
@@ -18,14 +16,13 @@ class Operative: NSObject {
     var LastUpdatedBy: String? = nil
     var LastUpdatedOn: NSDate? = nil
     var Deleted: NSDate? = nil
-    var OrganisationId: String = String()
-    var Username: String = String()
-    var Password: String = String()
-    
+    var ParentOrganisationId: String = String()
+    var Name: String = String()
+
     // MARK: - Contructors
-        
+    
     convenience
-    init(rowId:String, createdBy: String, createdOn: NSDate, lastUpdatedBy: String?, lastUpdatedOn: NSDate?, deleted: NSDate?, organisationId: String, username:String, password:String) {
+    init(rowId:String, createdBy: String, createdOn: NSDate, lastUpdatedBy: String?, lastUpdatedOn: NSDate?, deleted: NSDate?, parentOrganisationId: String, name: String) {
         self.init()
         self.RowId = rowId
         self.CreatedBy = createdBy
@@ -33,9 +30,8 @@ class Operative: NSObject {
         self.LastUpdatedBy = lastUpdatedBy
         self.LastUpdatedOn = lastUpdatedOn
         self.Deleted = deleted
-        self.OrganisationId = organisationId
-        self.Username = username
-        self.Password = password
+        self.ParentOrganisationId = parentOrganisationId
+        self.Name = name
     }
     
     convenience
@@ -62,8 +58,7 @@ class Operative: NSObject {
                 self.Deleted = NSDate(dateString: XMLElement.attributes["Deleted"]!)
             }
         }
-        self.OrganisationId = XMLElement.attributes["OrganisationId"]!
-        self.Username = XMLElement.attributes["Username"]!
-        self.Password = XMLElement.attributes["Password"]!
+        self.ParentOrganisationId = XMLElement.attributes["ParentOrganisationId"]!
+        self.Name = XMLElement.attributes["Name"]!
     }
 }

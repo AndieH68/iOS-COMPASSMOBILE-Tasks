@@ -81,75 +81,25 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         isRemoteAvailable = Reachability().connectedToNetwork()
  
-        let urlString = "http://compass2.hydrop.com/services/servicepdautility2.asmx"
-        let url = NSURL(string: urlString)
-
-        var soapAction: String = ""
-        var soapMessage: String = ""
-        var soapBody: String = ""
-        let theSession = NSURLSession.sharedSession()
-        let theRequest = NSMutableURLRequest(URL: url!)
-
-        let soapHeader: String = "<?xml version=\"1.0\" encoding=\"utf-8\"?><soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">"
-        let soapFooter: String = "</soap:Envelope>"
-
-        
+       
         if isRemoteAvailable {
-            soapAction = "http://compass.hydrop.com/services/ValidateOperative"
-            soapBody = "<soap:Body><ValidateOperative xmlns=\"http://compass.hydrop.com/services/\"><Username>\"" + username! + "\"</Username><Password>\"" + password! + "\"</Password></ValidateOperative></soap:Body>"
-        
-            soapMessage = soapHeader + soapBody + soapFooter
-        
-            theRequest.HTTPMethod = "POST"
-            theRequest.addValue("compass2.hydrop.com", forHTTPHeaderField: "Host")
-            theRequest.addValue("text/xml; charset=utf-8", forHTTPHeaderField: "Content-Type")
-            theRequest.addValue(String(soapMessage.characters.count), forHTTPHeaderField: "Content-Length")
-            theRequest.addValue(soapAction, forHTTPHeaderField: "SOAPAction")
-            theRequest.HTTPBody = soapMessage.dataUsingEncoding(NSUTF8StringEncoding)
-        
-            var data: NSData? = nil
-            let semaphore = dispatch_semaphore_create(0)
-        
-            theSession.dataTaskWithRequest(theRequest) { (responseData: NSData? , _, _) -> Void in
-                data = responseData
-                dispatch_semaphore_signal(semaphore)
-            }.resume()
-        
-            dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
-        
+            let data: NSData? = WebService.validateOperative(username!, password: password!)
+            
             if data == nil{
                 MessageLabel.text = ""
                 ValidationLabel.hidden = false
                 ValidationLabel.text = "error with web service"
                 return
             }
+           
+            let response: AEXMLElement = Utility.openSoapEnvelope(data)!
         
-            //let reply = NSString(data: data!, encoding: NSUTF8StringEncoding)
-            //print("Body: \(reply)")
-       
-
-            var result: AEXMLDocument?
-            do {
-                result = try AEXMLDocument(xmlData: data!)
-            }
-            catch {
-                result = nil
-            }
-        
-            if result == nil
-            {
-                MessageLabel.text = ""
-                ValidationLabel.hidden = false
-                return
-            }
-            let response: AEXMLElement = result!["soap:Envelope"]["soap:Body"]
-        
-            if response.children[0].name == "soap:Fault"
+            if response.name == "soap:Fault"
             {
                 //fault code here
             }
         
-            let operativeId = response["ValidateOperativeResponse"]["ValidateOperativeResult"].value
+            let operativeId = response["ValidateOperativeResult"].value
         
             if operativeId == nil || operativeId!.containsString("not found")
             {
@@ -165,7 +115,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         
         MessageLabel.text = "Connecting to Client...."
-        
+                
         //initialise local database connection
         
         var newOperative: Bool = false
@@ -180,16 +130,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         {
             let operative: Operative = operatives[0] as! Operative
             Session.OperativeId = operative.RowId
-            Session.OrganistionId = operative.OrganisationId
+            Session.OrganisationId = operative.OrganisationId
             
             if !isRemoteAvailable
             {
-                /*let alert: UIAlertView = UIAlertView()
-                alert.message = "Local login only"
-                alert.title = "No remote"
-                alert.delegate = delegate
-                alert.addButtonWithTitle("Ok")
-                alert.show()*/
+                Utility.invokeAlertMethod("No remote", strBody: "Logged in locally", delegate: nil)
             }
         }
         else
@@ -208,16 +153,16 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         //Session.SendTasks()
         
         //if the newOperative flag is set, the operative is present on COMPASS but not in the local database
-        //therefore we must bring down the operative synchinisation package to ensure operatives are updated
+        //therefore we must bring down the operative synchronisation package to ensure operatives are updated
         if newOperative {
-            let synchronisationDate: NSDate = NSDate(dateString: "2000-Jan-01 00:00:00")
-            let lastRowId: String = "00000000-0000-0000-0000-000000000000"
-            let stage: String = "9"
+            let synchronisationDate: NSDate = BaseDate
+            var lastRowId: String = EmptyGuid
+            let stage: Int32 = 9
             var count: Int32 = 0
         
-            while (lastRowId != "00000000-0000-0000-0000-000000000000" || count == 0) {
+            while (lastRowId != EmptyGuid || count == 0) {
                 count += 1
-                let data: NSData? = Utility.getSynchronisationPackage(Session.OperativeId!, synchronisationDate: synchronisationDate, lastRowId: lastRowId, stage: stage)
+                let data: NSData? = WebService.getSynchronisationPackage(Session.OperativeId!, synchronisationDate: synchronisationDate, lastRowId: lastRowId, stage: stage)
 
                 if data == nil{
                     MessageLabel.text = ""
@@ -225,17 +170,51 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                     ValidationLabel.text = "error with web service"
                     return
                 }
+                
+                let response: AEXMLElement = Utility.openSoapEnvelope(data)!
+                
+                if response.name == "soap:Fault"
+                {
+                    //fault code here
+                }
+                
+                let SynchronisationPackageData: NSData = (response["GetSynchronisationPackageResult"].value! as NSString).dataUsingEncoding(NSUTF8StringEncoding)!
+                
+                var SynchronisationPackageDocument: AEXMLDocument?
+                do {
+                    SynchronisationPackageDocument = try AEXMLDocument(xmlData: SynchronisationPackageData)
+                }
+                catch {
+                    SynchronisationPackageDocument = nil
+                }
+                
+                //check for empty pacakage
+                
+                lastRowId = Utility.importData(SynchronisationPackageDocument!.children[0], entityType: .Operative)
             }
+        
+            let operative: Operative? = ModelManager.getInstance().getOperative(Session.OperativeId!)
+            
+            if Session.OperativeId == nil
+            {
+                MessageLabel.text = ""
+                ValidationLabel.hidden = false
+                return
+            }
+        
+            Session.OrganisationId = operative?.OrganisationId
+        
         }
         
-        
-        
         //Synchronous call, but this may be skipped is we are fetching data in the back ground
-        //Session.SynchroniseData()
+        let synchronisationDate: NSDate = BaseDate
+        Utility.synchroniseData(synchronisationDate)
         
         //Code to dismiss the login screen and go to the main taks screen
+        Utility.invokeAlertMethod("Logged in", strBody: "User details found", delegate: nil)
         
-    }
+        self.dismissViewControllerAnimated(true, completion: nil)
+     }
 
     
 }

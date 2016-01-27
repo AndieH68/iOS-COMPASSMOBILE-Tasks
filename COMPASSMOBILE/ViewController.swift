@@ -21,7 +21,15 @@ class ViewController: UIViewController {
     }
 
     override func viewDidAppear(animated: Bool) {
-        self.performSegueWithIdentifier("loginView", sender: self)
+        if Session.OperativeId == nil
+        {
+            self.performSegueWithIdentifier("loginView", sender: self)
+        }
+        else
+        {
+            /*confirm user details*/
+        }
+        
     }
 
 }

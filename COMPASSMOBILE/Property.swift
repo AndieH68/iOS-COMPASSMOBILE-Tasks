@@ -1,15 +1,15 @@
 //
-//  Operative.swift
+//  Property.swift
 //  COMPASSMOBILE
 //
-//  Created by Andrew Harper on 20/01/2016.
+//  Created by Andrew Harper on 26/01/2016.
 //  Copyright © 2016 HYDOP E.C.S. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
-class Operative: NSObject {
-
+class Property: NSObject {
+    
     // MARK: - Properties
     
     var RowId: String = String()
@@ -18,14 +18,14 @@ class Operative: NSObject {
     var LastUpdatedBy: String? = nil
     var LastUpdatedOn: NSDate? = nil
     var Deleted: NSDate? = nil
-    var OrganisationId: String = String()
-    var Username: String = String()
-    var Password: String = String()
+    var SiteId: String = String()
+    var Name: String = String()
+    var Healthcare: Bool = Bool()
     
     // MARK: - Contructors
-        
+    
     convenience
-    init(rowId:String, createdBy: String, createdOn: NSDate, lastUpdatedBy: String?, lastUpdatedOn: NSDate?, deleted: NSDate?, organisationId: String, username:String, password:String) {
+    init(rowId:String, createdBy: String, createdOn: NSDate, lastUpdatedBy: String?, lastUpdatedOn: NSDate?, deleted: NSDate?, siteId: String, name: String, healthcare: Bool) {
         self.init()
         self.RowId = rowId
         self.CreatedBy = createdBy
@@ -33,9 +33,9 @@ class Operative: NSObject {
         self.LastUpdatedBy = lastUpdatedBy
         self.LastUpdatedOn = lastUpdatedOn
         self.Deleted = deleted
-        self.OrganisationId = organisationId
-        self.Username = username
-        self.Password = password
+        self.SiteId = siteId
+        self.Name = name
+        self.Healthcare = healthcare
     }
     
     convenience
@@ -62,8 +62,8 @@ class Operative: NSObject {
                 self.Deleted = NSDate(dateString: XMLElement.attributes["Deleted"]!)
             }
         }
-        self.OrganisationId = XMLElement.attributes["OrganisationId"]!
-        self.Username = XMLElement.attributes["Username"]!
-        self.Password = XMLElement.attributes["Password"]!
+        self.SiteId = XMLElement.attributes["SiteId"]!
+        self.Name = XMLElement.attributes["Name"]!
+        self.Healthcare = (XMLElement.attributes["Healthcare"]! == "1") //should test to make sure boolean
     }
 }

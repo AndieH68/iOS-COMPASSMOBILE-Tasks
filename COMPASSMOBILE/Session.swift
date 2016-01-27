@@ -11,6 +11,6 @@ import UIKit
 class Session : NSObject
 {
     static var OperativeId: String? = String?()
-    static var OrganistionId: String? = String?()
+    static var OrganisationId: String? = String?()
     
 }
