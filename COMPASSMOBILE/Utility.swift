@@ -32,17 +32,14 @@ class Utility: NSObject {
             } catch let error1 as NSError {
                 error = error1
             }
-            let alert: UIAlertView = UIAlertView()
             if (error != nil) {
+                let alert: UIAlertView = UIAlertView()
                 alert.title = "Error Occured"
                 alert.message = error?.localizedDescription
-            } else {
-                alert.title = "Successfully Copy"
-                alert.message = "Your database copy successfully"
+                alert.delegate = nil
+                alert.addButtonWithTitle("Ok")
+                alert.show()
             }
-            alert.delegate = nil
-            alert.addButtonWithTitle("Ok")
-            alert.show()
         }
     }
     
@@ -540,15 +537,15 @@ class Utility: NSObject {
                 }
             }
 
-        default:
-            //esponse = nil
-            print ("invalid EntityType")
+        //default:
+            //response = nil
+            //print ("invalid EntityType")
         }
         
         return lastRowId
     }
     
-    class func synchroniseData(synchronisationDate: NSDate) -> Bool {
+    class func SynchroniseData(synchronisationDate: NSDate) -> Bool {
         var SQLStatement: String
         var SQLParameterValues: [NSObject]
         var synchronisationDateToUse: NSDate
@@ -594,8 +591,7 @@ class Utility: NSObject {
 
         return true
     }
-    
-    
+  
     class func refactoredGetAndImport(synchronisationDate: NSDate, stage: Int32, entityType: EntityType) ->Bool {
             
         var lastRowId: String = EmptyGuid
@@ -671,6 +667,13 @@ extension NSDate
     func toString() -> String {
         let dateStringFormatter = NSDateFormatter()
         dateStringFormatter.dateFormat = DateFormat
+        dateStringFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
+        return dateStringFormatter.stringFromDate(self)
+    }
+    
+    func toStringForView() -> String {
+        let dateStringFormatter = NSDateFormatter()
+        dateStringFormatter.dateFormat = "dd/MM/yyyy"
         dateStringFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
         return dateStringFormatter.stringFromDate(self)
     }

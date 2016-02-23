@@ -8,7 +8,7 @@
 
 import UIKit
 
-let sharedInstance = ModelManager()
+let sharedModelManager = ModelManager()
 
 class ModelManager: NSObject {
     
@@ -18,53 +18,53 @@ class ModelManager: NSObject {
     
     class func getInstance() -> ModelManager
     {
-        if(sharedInstance.database == nil)
+        if(sharedModelManager.database == nil)
         {
-            sharedInstance.database = FMDatabase(path: Utility.getPath("COMPASSDB.sqlite"))
+            sharedModelManager.database = FMDatabase(path: Utility.getPath("COMPASSDB.sqlite"))
         }
-        return sharedInstance
+        return sharedModelManager
     }
     
     func executeDirect(SQLStatement: String, SQLParameterValues: [NSObject]?) -> Bool{
-        sharedInstance.database!.open()
-        let isExecuted = sharedInstance.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
-        sharedInstance.database!.close()
+        sharedModelManager.database!.open()
+        let isExecuted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        sharedModelManager.database!.close()
         return isExecuted
     }
-
+    
     func executeSingleValueReader(SQLStatement: String, SQLParameterValues: [NSObject]?) -> NSObject?{
         var returnValue: NSObject = NSObject()
-        sharedInstance.database!.open()
-        let resultSet = sharedInstance.database!.executeQuery(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        sharedModelManager.database!.open()
+        let resultSet = sharedModelManager.database!.executeQuery(SQLStatement, withArgumentsInArray: SQLParameterValues)
         if (resultSet != nil) {
             while resultSet.next() {
                 returnValue = resultSet.objectForColumnIndex(0) as! NSObject
             }
         }
-        sharedInstance.database!.close()
+        sharedModelManager.database!.close()
         return returnValue
     }
- 
+    
     func executeSingleDateReader(SQLStatement: String, SQLParameterValues: [NSObject]?) -> NSDate?{
-        sharedInstance.database!.open()
-        let resultSet = sharedInstance.database!.executeQuery(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        sharedModelManager.database!.open()
+        let resultSet = sharedModelManager.database!.executeQuery(SQLStatement, withArgumentsInArray: SQLParameterValues)
         if (resultSet != nil) {
             while resultSet.next() {
                 return resultSet.dateForColumnIndex(0)
             }
         }
-        sharedInstance.database!.close()
+        sharedModelManager.database!.close()
         return nil
     }
     
-    func buildWhereClause(criteria: NSDictionary) -> (whereClause: String, whereValues: [AnyObject]) {
+    func buildWhereClause(criteria: Dictionary<String, AnyObject>) -> (whereClause: String, whereValues: [AnyObject]) {
         var whereClause: String = String()
         var loopCount: Int32 = 0
         var whereValues: [AnyObject] = [AnyObject]()
         for (itemKey, itemValue) in criteria
         {
             whereClause += (loopCount > 0 ? " AND " : " ")
-            whereClause += (itemKey as! String) + "=?"
+            whereClause += (itemKey) + "=?"
             
             whereValues.append(itemValue)
             
@@ -143,9 +143,9 @@ class ModelManager: NSObject {
         
         SQLStatement = "INSERT INTO [Asset] (" + SQLParameterNames + ") VALUES (" + SQLParameterPlaceholders + ")"
         
-        sharedInstance.database!.open()
-        let isInserted = sharedInstance.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
-        sharedInstance.database!.close()
+        sharedModelManager.database!.open()
+        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        sharedModelManager.database!.close()
         return isInserted
     }
     
@@ -205,24 +205,24 @@ class ModelManager: NSObject {
         
         SQLStatement = "UPDATE [Asset] SET " + SQLParameterNames + "WHERE [RowId]=?"
         
-        sharedInstance.database!.open()
-        let isUpdated = sharedInstance.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
-        sharedInstance.database!.close()
+        sharedModelManager.database!.open()
+        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        sharedModelManager.database!.close()
         return isUpdated
     }
     
     func deleteAsset(asset: Asset) -> Bool {
-        sharedInstance.database!.open()
-        let isDeleted = sharedInstance.database!.executeUpdate("DELETE FROM [Asset] WHERE [RowId]=?", withArgumentsInArray: [asset.RowId])
-        sharedInstance.database!.close()
+        sharedModelManager.database!.open()
+        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [Asset] WHERE [RowId]=?", withArgumentsInArray: [asset.RowId])
+        sharedModelManager.database!.close()
         return isDeleted
     }
     
     func getAsset(assetId: String) -> Asset? {
-        sharedInstance.database!.open()
+        sharedModelManager.database!.open()
         var asset: Asset? = nil
         
-        let resultSet = sharedInstance.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [AssetType], [PropertyId], [LocationId], [HydropName], [ClientName], [ScanCode], [HotType], [ColdType] FROM [Asset] WHERE [RowId]=?", withArgumentsInArray: [assetId])
+        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [AssetType], [PropertyId], [LocationId], [HydropName], [ClientName], [ScanCode], [HotType], [ColdType] FROM [Asset] WHERE [RowId]=?", withArgumentsInArray: [assetId])
         if (resultSet != nil) {
             while resultSet.next() {
                 var resultAsset: Asset = Asset()
@@ -264,14 +264,14 @@ class ModelManager: NSObject {
                 asset = resultAsset
             }
         }
-        sharedInstance.database!.close()
+        sharedModelManager.database!.close()
         return asset
     }
     
-    func getAllAsset() -> NSMutableArray {
-        sharedInstance.database!.open()
-        let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [AssetType], [PropertyId], [LocationId], [HydropName], [ClientName], [ScanCode], [HotType], [ColdType] FROM [Asset]", withArgumentsInArray: nil)
-        let assets : NSMutableArray = NSMutableArray()
+    func getAllAsset() -> [Asset] {
+        sharedModelManager.database!.open()
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [AssetType], [PropertyId], [LocationId], [HydropName], [ClientName], [ScanCode], [HotType], [ColdType] FROM [Asset]", withArgumentsInArray: nil)
+        var assetList: [Asset] = [Asset]()
         if (resultSet != nil) {
             while resultSet.next() {
                 let asset : Asset = Asset()
@@ -309,67 +309,95 @@ class ModelManager: NSObject {
                     asset.ColdType = resultSet.stringForColumn("ColdType")
                 }
                 
-                assets.addObject(asset)
+                assetList.append(asset)
             }
         }
-        sharedInstance.database!.close()
-        return assets
+        sharedModelManager.database!.close()
+        return assetList
     }
     
-    func findAssets(criteria: NSDictionary) -> NSMutableArray {
+    func findAssetList(criteria: Dictionary<String, AnyObject>) -> [Asset] {
+        var list: [Asset] = [Asset]()
+        var count: Int32 = 0
+        (list, count) = findAssetList(criteria, pageSize: nil, pageNumber: nil)
+        return list
+    }
+
+    func findAssetList(criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [Asset], Count: Int32) {
+        
+        //return variables
+        var count: Int32 = 0
+        var assetList: [Asset] = [Asset]()
+        
+        //build the where clause
         var whereClause: String = String()
         var whereValues: [AnyObject] = [AnyObject]()
         
         (whereClause, whereValues) = buildWhereClause(criteria)
         
-        sharedInstance.database!.open()
-        let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [AssetType], [PropertyId], [LocationId], [HydropName], [ClientName], [ScanCode], [HotType], [ColdType] FROM [Asset] WHERE " + whereClause, withArgumentsInArray: whereValues)
-        let assets : NSMutableArray = NSMutableArray()
-        if (resultSet != nil) {
-            while resultSet.next() {
-                let asset : Asset = Asset()
-                asset.RowId = resultSet.stringForColumn("RowId")
-                asset.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                asset.CreatedOn = resultSet.dateForColumn("CreatedOn")
-                if !resultSet.columnIsNull("LastUpdatedBy")
-                {
-                    asset.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
-                }
-                if !resultSet.columnIsNull("LastUpdatedOn")
-                {
-                    asset.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
-                }
-                if !resultSet.columnIsNull("Deleted")
-                {
-                    asset.Deleted = resultSet.dateForColumn("Deleted")
-                }
-                asset.AssetType = resultSet.stringForColumn("AssetType")
-                asset.PropertyId = resultSet.stringForColumn("PropertyId")
-                asset.LocationId = resultSet.stringForColumn("LocationId")
-                if !resultSet.columnIsNull("HydropName") {
-                    asset.HydropName = resultSet.stringForColumn("HydropName")
-                }
-                if !resultSet.columnIsNull("ClientName") {
-                    asset.ClientName = resultSet.stringForColumn("ClientName")
-                }
-                if !resultSet.columnIsNull("ScanCode") {
-                    asset.ScanCode = resultSet.stringForColumn("ScanCode")
-                }
-                if !resultSet.columnIsNull("HotType") {
-                    asset.HotType = resultSet.stringForColumn("HotType")
-                }
-                if !resultSet.columnIsNull("ColdType") {
-                    asset.ColdType = resultSet.stringForColumn("ColdType")
-                }
-                
-                assets.addObject(asset)
+        sharedModelManager.database!.open()
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [Asset] WHERE " + whereClause, withArgumentsInArray: whereValues)
+        if (countSet != nil) {
+            while countSet.next() {
+                count = countSet.intForColumnIndex(0)
             }
         }
         
-        sharedInstance.database!.close()
-        return assets
+        if (count > 0)
+        {
+            var pageClause: String = String()
+            if (pageSize != nil && pageNumber != nil)
+            {
+                pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
+            }
+            
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [AssetType], [PropertyId], [LocationId], [HydropName], [ClientName], [ScanCode], [HotType], [ColdType] FROM [Asset] WHERE " + whereClause + pageClause, withArgumentsInArray: whereValues)
+            if (resultSet != nil) {
+                while resultSet.next() {
+                    let asset : Asset = Asset()
+                    asset.RowId = resultSet.stringForColumn("RowId")
+                    asset.CreatedBy = resultSet.stringForColumn("CreatedBy")
+                    asset.CreatedOn = resultSet.dateForColumn("CreatedOn")
+                    if !resultSet.columnIsNull("LastUpdatedBy")
+                    {
+                        asset.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                    }
+                    if !resultSet.columnIsNull("LastUpdatedOn")
+                    {
+                        asset.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                    }
+                    if !resultSet.columnIsNull("Deleted")
+                    {
+                        asset.Deleted = resultSet.dateForColumn("Deleted")
+                    }
+                    asset.AssetType = resultSet.stringForColumn("AssetType")
+                    asset.PropertyId = resultSet.stringForColumn("PropertyId")
+                    asset.LocationId = resultSet.stringForColumn("LocationId")
+                    if !resultSet.columnIsNull("HydropName") {
+                        asset.HydropName = resultSet.stringForColumn("HydropName")
+                    }
+                    if !resultSet.columnIsNull("ClientName") {
+                        asset.ClientName = resultSet.stringForColumn("ClientName")
+                    }
+                    if !resultSet.columnIsNull("ScanCode") {
+                        asset.ScanCode = resultSet.stringForColumn("ScanCode")
+                    }
+                    if !resultSet.columnIsNull("HotType") {
+                        asset.HotType = resultSet.stringForColumn("HotType")
+                    }
+                    if !resultSet.columnIsNull("ColdType") {
+                        asset.ColdType = resultSet.stringForColumn("ColdType")
+                    }
+                    
+                    assetList.append(asset)
+                }
+            }
+        }
+        
+        sharedModelManager.database!.close()
+        
+        return (assetList, count)
     }
-    
     
     // MARK: - Location
     
@@ -444,9 +472,9 @@ class ModelManager: NSObject {
         
         SQLStatement = "INSERT INTO [Location] (" + SQLParameterNames + ") VALUES (" + SQLParameterPlaceholders + ")"
         
-        sharedInstance.database!.open()
-        let isInserted = sharedInstance.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
-        sharedInstance.database!.close()
+        sharedModelManager.database!.open()
+        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        sharedModelManager.database!.close()
         return isInserted
     }
     
@@ -509,24 +537,24 @@ class ModelManager: NSObject {
         
         SQLStatement = "UPDATE [Location] SET " + SQLParameterNames + "WHERE [RowId]=?"
         
-        sharedInstance.database!.open()
-        let isUpdated = sharedInstance.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
-        sharedInstance.database!.close()
+        sharedModelManager.database!.open()
+        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        sharedModelManager.database!.close()
         return isUpdated
     }
     
     func deleteLocation(location: Location) -> Bool {
-        sharedInstance.database!.open()
-        let isDeleted = sharedInstance.database!.executeUpdate("DELETE FROM [Location] WHERE [RowId]=?", withArgumentsInArray: [location.RowId])
-        sharedInstance.database!.close()
+        sharedModelManager.database!.open()
+        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [Location] WHERE [RowId]=?", withArgumentsInArray: [location.RowId])
+        sharedModelManager.database!.close()
         return isDeleted
     }
     
     func getLocation(locationId: String) -> Location? {
-        sharedInstance.database!.open()
+        sharedModelManager.database!.open()
         var location: Location? = nil
         
-        let resultSet = sharedInstance.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [PropertyId], [Name], [Description], [Level], [Number], [SubNumber], [Use], [ClientLocationName] FROM [Location] WHERE [RowId]=?", withArgumentsInArray: [locationId])
+        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [PropertyId], [Name], [Description], [Level], [Number], [SubNumber], [Use], [ClientLocationName] FROM [Location] WHERE [RowId]=?", withArgumentsInArray: [locationId])
         if (resultSet != nil) {
             while resultSet.next() {
                 var resultLocation: Location = Location()
@@ -570,14 +598,14 @@ class ModelManager: NSObject {
                 location = resultLocation
             }
         }
-        sharedInstance.database!.close()
+        sharedModelManager.database!.close()
         return location
     }
     
-    func getAllLocation() -> NSMutableArray {
-        sharedInstance.database!.open()
-        let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [PropertyId], [Name], [Description], [Level], [Number], [SubNumber], [Use], [ClientLocationName] FROM [Location]", withArgumentsInArray: nil)
-        let locations : NSMutableArray = NSMutableArray()
+    func getAllLocation() -> [Location] {
+        sharedModelManager.database!.open()
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [PropertyId], [Name], [Description], [Level], [Number], [SubNumber], [Use], [ClientLocationName] FROM [Location]", withArgumentsInArray: nil)
+        var locationList : [Location] = [Location]()
         if (resultSet != nil) {
             while resultSet.next() {
                 let location : Location = Location()
@@ -617,67 +645,94 @@ class ModelManager: NSObject {
                     location.ClientLocationName = resultSet.stringForColumn("ClientLocationName")
                 }
                 
-                locations.addObject(location)
+                locationList.append(location)
             }
         }
-        sharedInstance.database!.close()
-        return locations
+        sharedModelManager.database!.close()
+        return locationList
     }
     
-    func findLocations(criteria: NSDictionary) -> NSMutableArray {
+    func findLocationList(criteria: Dictionary<String, AnyObject>) -> [Location] {
+        var list: [Location] = [Location]()
+        var count: Int32 = 0
+        (list, count) = findLocationList(criteria, pageSize: nil, pageNumber: nil)
+        return list
+    }
+
+    func findLocationList(criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [Location], Count: Int32) {
+        //return variables
+        var count: Int32 = 0
+        var locationList: [Location] = [Location]()
+        
+        //build the where clause
         var whereClause: String = String()
         var whereValues: [AnyObject] = [AnyObject]()
         
         (whereClause, whereValues) = buildWhereClause(criteria)
         
-        sharedInstance.database!.open()
-        let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [PropertyId], [Name], [Description], [Level], [Number], [SubNumber], [Use], [ClientLocationName] FROM [Location] WHERE " + whereClause, withArgumentsInArray: whereValues)
-        /*let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT * FROM [Location]", withArgumentsInArray: nil)*/
-        let locations : NSMutableArray = NSMutableArray()
-        if (resultSet != nil) {
-            while resultSet.next() {
-                let location : Location = Location()
-                location.RowId = resultSet.stringForColumn("RowId")
-                location.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                location.CreatedOn = resultSet.dateForColumn("CreatedOn")
-                if !resultSet.columnIsNull("LastUpdatedBy") {
-                    location.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
-                }
-                if !resultSet.columnIsNull("LastUpdatedOn")
-                {
-                    location.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
-                }
-                if !resultSet.columnIsNull("Deleted")
-                {
-                    location.Deleted = resultSet.dateForColumn("Deleted")
-                }
-                location.PropertyId = resultSet.stringForColumn("PropertyId")
-                location.Name = resultSet.stringForColumn("Name")
-                if !resultSet.columnIsNull("Description") {
-                    location.Description = resultSet.stringForColumn("Description")
-                }
-                if !resultSet.columnIsNull("Level") {
-                    location.Level = resultSet.stringForColumn("Level")
-                }
-                if !resultSet.columnIsNull("Number") {
-                    location.Number = resultSet.stringForColumn("Number")
-                }
-                if !resultSet.columnIsNull("SubNumber") {
-                    location.SubNumber = resultSet.stringForColumn("SubNumber")
-                }
-                if !resultSet.columnIsNull("Use") {
-                    location.Use = resultSet.stringForColumn("Use")
-                }
-                if !resultSet.columnIsNull("ClientLocationName") {
-                    location.ClientLocationName = resultSet.stringForColumn("ClientLocationName")
-                }
-                
-                locations.addObject(location)
+        sharedModelManager.database!.open()
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [Location] WHERE " + whereClause, withArgumentsInArray: whereValues)
+        if (countSet != nil) {
+            while countSet.next() {
+                count = countSet.intForColumnIndex(0)
             }
         }
         
-        sharedInstance.database!.close()
-        return locations
+        if (count > 0)
+        {
+            var pageClause: String = String()
+            if (pageSize != nil && pageNumber != nil)
+            {
+                pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
+            }
+            
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [PropertyId], [Name], [Description], [Level], [Number], [SubNumber], [Use], [ClientLocationName] FROM [Location] WHERE " + whereClause + pageClause, withArgumentsInArray: whereValues)
+            
+            if (resultSet != nil) {
+                while resultSet.next() {
+                    let location : Location = Location()
+                    location.RowId = resultSet.stringForColumn("RowId")
+                    location.CreatedBy = resultSet.stringForColumn("CreatedBy")
+                    location.CreatedOn = resultSet.dateForColumn("CreatedOn")
+                    if !resultSet.columnIsNull("LastUpdatedBy") {
+                        location.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                    }
+                    if !resultSet.columnIsNull("LastUpdatedOn")
+                    {
+                        location.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                    }
+                    if !resultSet.columnIsNull("Deleted")
+                    {
+                        location.Deleted = resultSet.dateForColumn("Deleted")
+                    }
+                    location.PropertyId = resultSet.stringForColumn("PropertyId")
+                    location.Name = resultSet.stringForColumn("Name")
+                    if !resultSet.columnIsNull("Description") {
+                        location.Description = resultSet.stringForColumn("Description")
+                    }
+                    if !resultSet.columnIsNull("Level") {
+                        location.Level = resultSet.stringForColumn("Level")
+                    }
+                    if !resultSet.columnIsNull("Number") {
+                        location.Number = resultSet.stringForColumn("Number")
+                    }
+                    if !resultSet.columnIsNull("SubNumber") {
+                        location.SubNumber = resultSet.stringForColumn("SubNumber")
+                    }
+                    if !resultSet.columnIsNull("Use") {
+                        location.Use = resultSet.stringForColumn("Use")
+                    }
+                    if !resultSet.columnIsNull("ClientLocationName") {
+                        location.ClientLocationName = resultSet.stringForColumn("ClientLocationName")
+                    }
+                    
+                    locationList.append(location)
+                }
+            }
+        }
+        
+        sharedModelManager.database!.close()
+        return (locationList, count)
     }
     
     // MARK: - LocationGroup
@@ -738,9 +793,9 @@ class ModelManager: NSObject {
         
         SQLStatement = "INSERT INTO [LocationGroup] (" + SQLParameterNames + ") VALUES (" + SQLParameterPlaceholders + ")"
         
-        sharedInstance.database!.open()
-        let isInserted = sharedInstance.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
-        sharedInstance.database!.close()
+        sharedModelManager.database!.open()
+        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        sharedModelManager.database!.close()
         return isInserted
     }
     
@@ -792,24 +847,24 @@ class ModelManager: NSObject {
         
         SQLStatement = "UPDATE [LocationGroup] SET " + SQLParameterNames + "WHERE [RowId]=?"
         
-        sharedInstance.database!.open()
-        let isUpdated = sharedInstance.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
-        sharedInstance.database!.close()
+        sharedModelManager.database!.open()
+        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        sharedModelManager.database!.close()
         return isUpdated
     }
     
     func deleteLocationGroup(locationGroup: LocationGroup) -> Bool {
-        sharedInstance.database!.open()
-        let isDeleted = sharedInstance.database!.executeUpdate("DELETE FROM [LocationGroup] WHERE [RowId]=?", withArgumentsInArray: [locationGroup.RowId])
-        sharedInstance.database!.close()
+        sharedModelManager.database!.open()
+        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [LocationGroup] WHERE [RowId]=?", withArgumentsInArray: [locationGroup.RowId])
+        sharedModelManager.database!.close()
         return isDeleted
     }
     
     func getLocationGroup(locationGroupId: String) -> LocationGroup? {
-        sharedInstance.database!.open()
+        sharedModelManager.database!.open()
         var locationGroup: LocationGroup? = nil
         
-        let resultSet = sharedInstance.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [PropertyId], [Type], [Name], [Description], [OccupantRiskFactor] FROM [LocationGroup] WHERE [RowId]=?", withArgumentsInArray: [locationGroupId])
+        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [PropertyId], [Type], [Name], [Description], [OccupantRiskFactor] FROM [LocationGroup] WHERE [RowId]=?", withArgumentsInArray: [locationGroupId])
         if (resultSet != nil) {
             while resultSet.next() {
                 var resultLocationGroup: LocationGroup = LocationGroup()
@@ -847,14 +902,14 @@ class ModelManager: NSObject {
                 locationGroup = resultLocationGroup
             }
         }
-        sharedInstance.database!.close()
+        sharedModelManager.database!.close()
         return locationGroup
     }
     
-    func getAllLocationGroup() -> NSMutableArray {
-        sharedInstance.database!.open()
-        let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [PropertyId], [Type], [Name], [Description], [OccupantRiskFactor] FROM [LocationGroup]", withArgumentsInArray: nil)
-        let locationGroups : NSMutableArray = NSMutableArray()
+    func getAllLocationGroup() -> [LocationGroup] {
+        sharedModelManager.database!.open()
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [PropertyId], [Type], [Name], [Description], [OccupantRiskFactor] FROM [LocationGroup]", withArgumentsInArray: nil)
+        var locationGroupList : [LocationGroup] = [LocationGroup]()
         if (resultSet != nil) {
             while resultSet.next() {
                 let locationGroup : LocationGroup = LocationGroup()
@@ -888,61 +943,88 @@ class ModelManager: NSObject {
                 }
                 
                 
-                locationGroups.addObject(locationGroup)
+                locationGroupList.append(locationGroup)
             }
         }
-        sharedInstance.database!.close()
-        return locationGroups
+        sharedModelManager.database!.close()
+        return locationGroupList
     }
     
-    func findLocationGroups(criteria: NSDictionary) -> NSMutableArray {
+    func findLocationGroupList(criteria: Dictionary<String, AnyObject>) -> [LocationGroup] {
+        var list: [LocationGroup] = [LocationGroup]()
+        var count: Int32 = 0
+        (list, count) = findLocationGroupList(criteria, pageSize: nil, pageNumber: nil)
+        return list
+    }
+
+    func findLocationGroupList(criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [LocationGroup], Count: Int32) {
+        //return variables
+        var count: Int32 = 0
+        var locationGroupList: [LocationGroup] = [LocationGroup]()
+        
+        //build the where clause
         var whereClause: String = String()
         var whereValues: [AnyObject] = [AnyObject]()
         
         (whereClause, whereValues) = buildWhereClause(criteria)
         
-        sharedInstance.database!.open()
-        let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [PropertyId], [Type], [Name], [Description], [OccupantRiskFactor] FROM [LocationGroup] WHERE " + whereClause, withArgumentsInArray: whereValues)
-        let locationGroups : NSMutableArray = NSMutableArray()
-        if (resultSet != nil) {
-            while resultSet.next() {
-                let locationGroup : LocationGroup = LocationGroup()
-                locationGroup.RowId = resultSet.stringForColumn("RowId")
-                locationGroup.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                locationGroup.CreatedOn = resultSet.dateForColumn("CreatedOn")
-                if !resultSet.columnIsNull("LastUpdatedBy")
-                {
-                    locationGroup.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
-                }
-                if !resultSet.columnIsNull("LastUpdatedOn")
-                {
-                    locationGroup.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
-                }
-                if !resultSet.columnIsNull("Deleted")
-                {
-                    locationGroup.Deleted = resultSet.dateForColumn("Deleted")
-                }
-                locationGroup.PropertyId = resultSet.stringForColumn("PropertyId")
-                if !resultSet.columnIsNull("Type") {
-                    locationGroup.Type = resultSet.stringForColumn("Type")
-                }
-                if !resultSet.columnIsNull("Name") {
-                    locationGroup.Name = resultSet.stringForColumn("Name")
-                }
-                if !resultSet.columnIsNull("Description") {
-                    locationGroup.Description = resultSet.stringForColumn("Description")
-                }
-                if !resultSet.columnIsNull("OccupantRiskFactor") {
-                    locationGroup.OccupantRiskFactor = resultSet.stringForColumn("OccupantRiskFactor")
-                }
-                
-                
-                locationGroups.addObject(locationGroup)
+        sharedModelManager.database!.open()
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [LocationGroup] WHERE " + whereClause, withArgumentsInArray: whereValues)
+        if (countSet != nil) {
+            while countSet.next() {
+                count = countSet.intForColumnIndex(0)
             }
         }
         
-        sharedInstance.database!.close()
-        return locationGroups
+        if (count > 0)
+        {
+            var pageClause: String = String()
+            if (pageSize != nil && pageNumber != nil)
+            {
+                pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
+            }
+            
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [PropertyId], [Type], [Name], [Description], [OccupantRiskFactor] FROM [LocationGroup] WHERE " + whereClause + pageClause, withArgumentsInArray: whereValues)
+            if (resultSet != nil) {
+                while resultSet.next() {
+                    let locationGroup : LocationGroup = LocationGroup()
+                    locationGroup.RowId = resultSet.stringForColumn("RowId")
+                    locationGroup.CreatedBy = resultSet.stringForColumn("CreatedBy")
+                    locationGroup.CreatedOn = resultSet.dateForColumn("CreatedOn")
+                    if !resultSet.columnIsNull("LastUpdatedBy")
+                    {
+                        locationGroup.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                    }
+                    if !resultSet.columnIsNull("LastUpdatedOn")
+                    {
+                        locationGroup.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                    }
+                    if !resultSet.columnIsNull("Deleted")
+                    {
+                        locationGroup.Deleted = resultSet.dateForColumn("Deleted")
+                    }
+                    locationGroup.PropertyId = resultSet.stringForColumn("PropertyId")
+                    if !resultSet.columnIsNull("Type") {
+                        locationGroup.Type = resultSet.stringForColumn("Type")
+                    }
+                    if !resultSet.columnIsNull("Name") {
+                        locationGroup.Name = resultSet.stringForColumn("Name")
+                    }
+                    if !resultSet.columnIsNull("Description") {
+                        locationGroup.Description = resultSet.stringForColumn("Description")
+                    }
+                    if !resultSet.columnIsNull("OccupantRiskFactor") {
+                        locationGroup.OccupantRiskFactor = resultSet.stringForColumn("OccupantRiskFactor")
+                    }
+                    
+                    
+                    locationGroupList.append(locationGroup)
+                }
+            }
+        }
+        
+        sharedModelManager.database!.close()
+        return (locationGroupList, count)
     }
     
     // MARK: - LocationGroupMembership
@@ -986,9 +1068,9 @@ class ModelManager: NSObject {
         
         SQLStatement = "INSERT INTO [LocationGroupMembership] (" + SQLParameterNames + ") VALUES (" + SQLParameterPlaceholders + ")"
         
-        sharedInstance.database!.open()
-        let isInserted = sharedInstance.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
-        sharedInstance.database!.close()
+        sharedModelManager.database!.open()
+        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        sharedModelManager.database!.close()
         return isInserted
     }
     
@@ -1025,24 +1107,24 @@ class ModelManager: NSObject {
         
         SQLStatement = "UPDATE [LocationGroupMembership] SET " + SQLParameterNames + "WHERE [RowId]=?"
         
-        sharedInstance.database!.open()
-        let isUpdated = sharedInstance.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
-        sharedInstance.database!.close()
+        sharedModelManager.database!.open()
+        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        sharedModelManager.database!.close()
         return isUpdated
     }
     
     func deleteLocationGroupMembership(locationGroupMembership: LocationGroupMembership) -> Bool {
-        sharedInstance.database!.open()
-        let isDeleted = sharedInstance.database!.executeUpdate("DELETE FROM [LocationGroupMembership] WHERE [RowId]=?", withArgumentsInArray: [locationGroupMembership.RowId])
-        sharedInstance.database!.close()
+        sharedModelManager.database!.open()
+        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [LocationGroupMembership] WHERE [RowId]=?", withArgumentsInArray: [locationGroupMembership.RowId])
+        sharedModelManager.database!.close()
         return isDeleted
     }
     
     func getLocationGroupMembership(locationGroupMembershipId: String) -> LocationGroupMembership? {
-        sharedInstance.database!.open()
+        sharedModelManager.database!.open()
         var locationGroupMembership: LocationGroupMembership? = nil
         
-        let resultSet = sharedInstance.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [LocationGroupId], [LocationId] FROM [LocationGroupMembership] WHERE [RowId]=?", withArgumentsInArray: [locationGroupMembershipId])
+        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [LocationGroupId], [LocationId] FROM [LocationGroupMembership] WHERE [RowId]=?", withArgumentsInArray: [locationGroupMembershipId])
         if (resultSet != nil) {
             while resultSet.next() {
                 var resultLocationGroupMembership: LocationGroupMembership = LocationGroupMembership()
@@ -1068,14 +1150,14 @@ class ModelManager: NSObject {
                 locationGroupMembership = resultLocationGroupMembership
             }
         }
-        sharedInstance.database!.close()
+        sharedModelManager.database!.close()
         return locationGroupMembership
     }
     
-    func getAllLocationGroupMembership() -> NSMutableArray {
-        sharedInstance.database!.open()
-        let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [LocationGroupId], [LocationId] FROM [LocationGroupMembership]", withArgumentsInArray: nil)
-        let locationGroupMemberships : NSMutableArray = NSMutableArray()
+    func getAllLocationGroupMembership() -> [LocationGroupMembership] {
+        sharedModelManager.database!.open()
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [LocationGroupId], [LocationId] FROM [LocationGroupMembership]", withArgumentsInArray: nil)
+        var locationGroupMembershipList : [LocationGroupMembership] = [LocationGroupMembership]()
         if (resultSet != nil) {
             while resultSet.next() {
                 let locationGroupMembership : LocationGroupMembership = LocationGroupMembership()
@@ -1097,50 +1179,75 @@ class ModelManager: NSObject {
                 locationGroupMembership.LocationGroupId = resultSet.stringForColumn("LocationGroupId")
                 locationGroupMembership.LocationId = resultSet.stringForColumn("LocationId")
                 
-                locationGroupMemberships.addObject(locationGroupMembership)
+                locationGroupMembershipList.append(locationGroupMembership)
             }
         }
-        sharedInstance.database!.close()
-        return locationGroupMemberships
+        sharedModelManager.database!.close()
+        return locationGroupMembershipList
     }
     
-    func findLocationGroupMemberships(criteria: NSDictionary) -> NSMutableArray {
+    func findLocationGroupMembershipList(criteria: Dictionary<String, AnyObject>) -> [LocationGroupMembership] {
+        var list: [LocationGroupMembership] = [LocationGroupMembership]()
+        var count: Int32 = 0
+        (list, count) = findLocationGroupMembershipList(criteria, pageSize: nil, pageNumber: nil)
+        return list
+    }
+
+    func findLocationGroupMembershipList(criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [LocationGroupMembership], Count: Int32) {
+        //return variables
+        var count: Int32 = 0
+        var locationGroupMembershipList: [LocationGroupMembership] = [LocationGroupMembership]()
+        
+        //build the where clause
         var whereClause: String = String()
         var whereValues: [AnyObject] = [AnyObject]()
         
         (whereClause, whereValues) = buildWhereClause(criteria)
         
-        sharedInstance.database!.open()
-        let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [LocationGroupId], [LocationId] FROM [LocationGroupMembership] WHERE " + whereClause, withArgumentsInArray: whereValues)
-        /*let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT * FROM [LocationGroupMembership]", withArgumentsInArray: nil)*/
-        let locationGroupMemberships : NSMutableArray = NSMutableArray()
-        if (resultSet != nil) {
-            while resultSet.next() {
-                let locationGroupMembership : LocationGroupMembership = LocationGroupMembership()
-                locationGroupMembership.RowId = resultSet.stringForColumn("RowId")
-                locationGroupMembership.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                locationGroupMembership.CreatedOn = resultSet.dateForColumn("CreatedOn")
-                if !resultSet.columnIsNull("LastUpdatedBy")
-                {
-                    locationGroupMembership.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
-                }
-                if !resultSet.columnIsNull("LastUpdatedOn")
-                {
-                    locationGroupMembership.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
-                }
-                if !resultSet.columnIsNull("Deleted")
-                {
-                    locationGroupMembership.Deleted = resultSet.dateForColumn("Deleted")
-                }
-                locationGroupMembership.LocationGroupId = resultSet.stringForColumn("LocationGroupId")
-                locationGroupMembership.LocationId = resultSet.stringForColumn("LocationId")
-                
-                locationGroupMemberships.addObject(locationGroupMembership)
+        sharedModelManager.database!.open()
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [LocationGroupMembership] WHERE " + whereClause, withArgumentsInArray: whereValues)
+        if (countSet != nil) {
+            while countSet.next() {
+                count = countSet.intForColumnIndex(0)
             }
         }
         
-        sharedInstance.database!.close()
-        return locationGroupMemberships
+        if (count > 0)
+        {
+            var pageClause: String = String()
+            if (pageSize != nil && pageNumber != nil)
+            {
+                pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
+            }
+            
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [LocationGroupId], [LocationId] FROM [LocationGroupMembership] WHERE " + whereClause + pageClause, withArgumentsInArray: whereValues)
+            if (resultSet != nil) {
+                while resultSet.next() {
+                    let locationGroupMembership : LocationGroupMembership = LocationGroupMembership()
+                    locationGroupMembership.RowId = resultSet.stringForColumn("RowId")
+                    locationGroupMembership.CreatedBy = resultSet.stringForColumn("CreatedBy")
+                    locationGroupMembership.CreatedOn = resultSet.dateForColumn("CreatedOn")
+                    if !resultSet.columnIsNull("LastUpdatedBy")
+                    {
+                        locationGroupMembership.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                    }
+                    if !resultSet.columnIsNull("LastUpdatedOn")
+                    {
+                        locationGroupMembership.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                    }
+                    if !resultSet.columnIsNull("Deleted")
+                    {
+                        locationGroupMembership.Deleted = resultSet.dateForColumn("Deleted")
+                    }
+                    locationGroupMembership.LocationGroupId = resultSet.stringForColumn("LocationGroupId")
+                    locationGroupMembership.LocationId = resultSet.stringForColumn("LocationId")
+                    
+                    locationGroupMembershipList.append(locationGroupMembership)
+                }
+            }
+        }
+        sharedModelManager.database!.close()
+        return (locationGroupMembershipList, count)
     }
     
     // MARK: - Operative
@@ -1184,9 +1291,9 @@ class ModelManager: NSObject {
         
         SQLStatement = "INSERT INTO [OPERATIVE] (" + SQLParameterNames + ") VALUES (" + SQLParameterPlaceholders + ")"
         
-        sharedInstance.database!.open()
-        let isInserted = sharedInstance.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
-        sharedInstance.database!.close()
+        sharedModelManager.database!.open()
+        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        sharedModelManager.database!.close()
         return isInserted
     }
     
@@ -1224,24 +1331,24 @@ class ModelManager: NSObject {
         
         SQLStatement = "UPDATE [OPERATIVE] SET " + SQLParameterNames + "WHERE [RowId]=?"
         
-        sharedInstance.database!.open()
-        let isUpdated = sharedInstance.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
-        sharedInstance.database!.close()
+        sharedModelManager.database!.open()
+        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        sharedModelManager.database!.close()
         return isUpdated
     }
     
     func deleteOperative(operative: Operative) -> Bool {
-        sharedInstance.database!.open()
-        let isDeleted = sharedInstance.database!.executeUpdate("DELETE FROM [OPERATIVE] WHERE [RowId]=?", withArgumentsInArray: [operative.RowId])
-        sharedInstance.database!.close()
+        sharedModelManager.database!.open()
+        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [OPERATIVE] WHERE [RowId]=?", withArgumentsInArray: [operative.RowId])
+        sharedModelManager.database!.close()
         return isDeleted
     }
     
     func getOperative(operativeId: String) -> Operative? {
-        sharedInstance.database!.open()
+        sharedModelManager.database!.open()
         var operative: Operative? = nil
         
-        let resultSet = sharedInstance.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [Username], [Password] FROM [Operative] WHERE [RowId]=?", withArgumentsInArray: [operativeId])
+        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [Username], [Password] FROM [Operative] WHERE [RowId]=?", withArgumentsInArray: [operativeId])
         if (resultSet != nil) {
             while resultSet.next() {
                 var resultOperative: Operative = Operative()
@@ -1268,14 +1375,14 @@ class ModelManager: NSObject {
                 operative = resultOperative
             }
         }
-        sharedInstance.database!.close()
+        sharedModelManager.database!.close()
         return operative
     }
     
-    func getAllOperative() -> NSMutableArray {
-        sharedInstance.database!.open()
-        let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [Username], [Password] FROM [Operative]", withArgumentsInArray: nil)
-        let operatives : NSMutableArray = NSMutableArray()
+    func getAllOperative() -> [Operative] {
+        sharedModelManager.database!.open()
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [Username], [Password] FROM [Operative]", withArgumentsInArray: nil)
+        var operativeList: [Operative] = [Operative]()
         if (resultSet != nil) {
             while resultSet.next() {
                 let operative : Operative = Operative()
@@ -1298,53 +1405,81 @@ class ModelManager: NSObject {
                 operative.Username = resultSet.stringForColumn("Username")
                 operative.Password = resultSet.stringForColumn("Password")
                 
-                operatives.addObject(operative)
+                operativeList.append(operative)
             }
         }
-        sharedInstance.database!.close()
-        return operatives
+        sharedModelManager.database!.close()
+        return operativeList
     }
     
-    func findOperatives(criteria: NSDictionary) -> NSMutableArray {
+    func findOperativeList(criteria: Dictionary<String, AnyObject>) -> [Operative] {
+        var list: [Operative] = [Operative]()
+        var count: Int32 = 0
+        (list, count) = findOperativeList(criteria, pageSize: nil, pageNumber: nil)
+        return list
+    }
+
+    func findOperativeList(criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [Operative], Count: Int32) {
+        //return variables
+        var count: Int32 = 0
+        var operativeList: [Operative] = [Operative]()
+        
+        //build the where clause
         var whereClause: String = String()
         var whereValues: [AnyObject] = [AnyObject]()
         
         (whereClause, whereValues) = buildWhereClause(criteria)
         
-        sharedInstance.database!.open()
-        let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [Username], [Password] FROM [Operative] WHERE " + whereClause, withArgumentsInArray: whereValues)
-        let operatives : NSMutableArray = NSMutableArray()
-        if (resultSet != nil) {
-            while resultSet.next() {
-                let operative : Operative = Operative()
-                operative.RowId = resultSet.stringForColumn("RowId")
-                operative.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                operative.CreatedOn = resultSet.dateForColumn("CreatedOn")
-                if !resultSet.columnIsNull("LastUpdatedBy")
-                {
-                    operative.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
-                }
-                if !resultSet.columnIsNull("LastUpdatedOn")
-                {
-                    operative.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
-                }
-                if !resultSet.columnIsNull("Deleted")
-                {
-                    operative.Deleted = resultSet.dateForColumn("Deleted")
-                }
-                operative.OrganisationId = resultSet.stringForColumn("OrganisationId")
-                operative.Username = resultSet.stringForColumn("Username")
-                operative.Password = resultSet.stringForColumn("Password")
-                
-                operatives.addObject(operative)
+        sharedModelManager.database!.open()
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [Operative] WHERE " + whereClause, withArgumentsInArray: whereValues)
+        if (countSet != nil) {
+            while countSet.next() {
+                count = countSet.intForColumnIndex(0)
             }
         }
         
-        sharedInstance.database!.close()
-        return operatives
+        if (count > 0)
+        {
+            var pageClause: String = String()
+            if (pageSize != nil && pageNumber != nil)
+            {
+                pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
+            }
+            
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [Username], [Password] FROM [Operative] WHERE " + whereClause + pageClause, withArgumentsInArray: whereValues)
+            if (resultSet != nil) {
+                while resultSet.next() {
+                    let operative : Operative = Operative()
+                    operative.RowId = resultSet.stringForColumn("RowId")
+                    operative.CreatedBy = resultSet.stringForColumn("CreatedBy")
+                    operative.CreatedOn = resultSet.dateForColumn("CreatedOn")
+                    if !resultSet.columnIsNull("LastUpdatedBy")
+                    {
+                        operative.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                    }
+                    if !resultSet.columnIsNull("LastUpdatedOn")
+                    {
+                        operative.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                    }
+                    if !resultSet.columnIsNull("Deleted")
+                    {
+                        operative.Deleted = resultSet.dateForColumn("Deleted")
+                    }
+                    operative.OrganisationId = resultSet.stringForColumn("OrganisationId")
+                    operative.Username = resultSet.stringForColumn("Username")
+                    operative.Password = resultSet.stringForColumn("Password")
+                    
+                    operativeList.append(operative)
+                }
+            }
+        }
+        
+        sharedModelManager.database!.close()
+        return (operativeList, count)
     }
     
     // MARK: - Organisation
+    
     
     func addOrganisation(organisation: Organisation) -> Bool {
         //build the sql statemnt
@@ -1386,9 +1521,9 @@ class ModelManager: NSObject {
         
         SQLStatement = "INSERT INTO [Organisation] (" + SQLParameterNames + ") VALUES (" + SQLParameterPlaceholders + ")"
         
-        sharedInstance.database!.open()
-        let isInserted = sharedInstance.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
-        sharedInstance.database!.close()
+        sharedModelManager.database!.open()
+        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        sharedModelManager.database!.close()
         return isInserted
     }
     
@@ -1426,24 +1561,24 @@ class ModelManager: NSObject {
         
         SQLStatement = "UPDATE [Organisation] SET " + SQLParameterNames + "WHERE [RowId]=?"
         
-        sharedInstance.database!.open()
-        let isUpdated = sharedInstance.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
-        sharedInstance.database!.close()
+        sharedModelManager.database!.open()
+        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        sharedModelManager.database!.close()
         return isUpdated
     }
     
     func deleteOrganisation(organisation: Organisation) -> Bool {
-        sharedInstance.database!.open()
-        let isDeleted = sharedInstance.database!.executeUpdate("DELETE FROM [Organisation] WHERE [RowId]=?", withArgumentsInArray: [organisation.RowId])
-        sharedInstance.database!.close()
+        sharedModelManager.database!.open()
+        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [Organisation] WHERE [RowId]=?", withArgumentsInArray: [organisation.RowId])
+        sharedModelManager.database!.close()
         return isDeleted
     }
     
     func getOrganisation(organisationId: String) -> Organisation? {
-        sharedInstance.database!.open()
+        sharedModelManager.database!.open()
         var organisation: Organisation? = nil
         
-        let resultSet = sharedInstance.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [ParentOrganisationId], [Name] FROM [Organisation] WHERE [RowId]=?", withArgumentsInArray: [organisationId])
+        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [ParentOrganisationId], [Name] FROM [Organisation] WHERE [RowId]=?", withArgumentsInArray: [organisationId])
         if (resultSet != nil) {
             while resultSet.next() {
                 var resultOrganisation: Organisation = Organisation()
@@ -1469,14 +1604,14 @@ class ModelManager: NSObject {
                 organisation = resultOrganisation
             }
         }
-        sharedInstance.database!.close()
+        sharedModelManager.database!.close()
         return organisation
     }
     
-    func getAllOrganisation() -> NSMutableArray {
-        sharedInstance.database!.open()
-        let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [ParentOrganisationId], [Name] FROM [Organisation]", withArgumentsInArray: nil)
-        let organisations : NSMutableArray = NSMutableArray()
+    func getAllOrganisation() -> [Organisation] {
+        sharedModelManager.database!.open()
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [ParentOrganisationId], [Name] FROM [Organisation]", withArgumentsInArray: nil)
+        var organisationList: [Organisation] = [Organisation]()
         if (resultSet != nil) {
             while resultSet.next() {
                 let organisation : Organisation = Organisation()
@@ -1498,49 +1633,76 @@ class ModelManager: NSObject {
                 organisation.ParentOrganisationId = resultSet.stringForColumn("ParentOrganisationId")
                 organisation.Name = resultSet.stringForColumn("Name")
                 
-                organisations.addObject(organisation)
+                organisationList.append(organisation)
             }
         }
-        sharedInstance.database!.close()
-        return organisations
+        sharedModelManager.database!.close()
+        return organisationList
     }
     
-    func findOrganisations(criteria: NSDictionary) -> NSMutableArray {
+    func findOrganisationList(criteria: Dictionary<String, AnyObject>) -> [Organisation] {
+        var list: [Organisation] = [Organisation]()
+        var count: Int32 = 0
+        (list, count) = findOrganisationList(criteria, pageSize: nil, pageNumber: nil)
+        return list
+    }
+
+    func findOrganisationList(criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [Organisation], Count: Int32) {
+        //return variables
+        var count: Int32 = 0
+        var organisationList: [Organisation] = [Organisation]()
+        
+        //build the where clause
         var whereClause: String = String()
         var whereValues: [AnyObject] = [AnyObject]()
         
         (whereClause, whereValues) = buildWhereClause(criteria)
         
-        sharedInstance.database!.open()
-        let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [ParentOrganisationId], [Name] FROM [Organisation] WHERE " + whereClause, withArgumentsInArray: whereValues)
-        let organisations : NSMutableArray = NSMutableArray()
-        if (resultSet != nil) {
-            while resultSet.next() {
-                let organisation : Organisation = Organisation()
-                organisation.RowId = resultSet.stringForColumn("RowId")
-                organisation.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                organisation.CreatedOn = resultSet.dateForColumn("CreatedOn")
-                if !resultSet.columnIsNull("LastUpdatedBy")
-                {
-                    organisation.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
-                }
-                if !resultSet.columnIsNull("LastUpdatedOn")
-                {
-                    organisation.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
-                }
-                if !resultSet.columnIsNull("Deleted")
-                {
-                    organisation.Deleted = resultSet.dateForColumn("Deleted")
-                }
-                organisation.ParentOrganisationId = resultSet.stringForColumn("ParentOrganisationId")
-                organisation.Name = resultSet.stringForColumn("Name")
-                
-                organisations.addObject(organisation)
+        sharedModelManager.database!.open()
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [Organisation] WHERE " + whereClause, withArgumentsInArray: whereValues)
+        if (countSet != nil) {
+            while countSet.next() {
+                count = countSet.intForColumnIndex(0)
             }
         }
         
-        sharedInstance.database!.close()
-        return organisations
+        if (count > 0)
+        {
+            var pageClause: String = String()
+            if (pageSize != nil && pageNumber != nil)
+            {
+                pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
+            }
+            
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [ParentOrganisationId], [Name] FROM [Organisation] WHERE " + whereClause + pageClause, withArgumentsInArray: whereValues)
+            if (resultSet != nil) {
+                while resultSet.next() {
+                    let organisation : Organisation = Organisation()
+                    organisation.RowId = resultSet.stringForColumn("RowId")
+                    organisation.CreatedBy = resultSet.stringForColumn("CreatedBy")
+                    organisation.CreatedOn = resultSet.dateForColumn("CreatedOn")
+                    if !resultSet.columnIsNull("LastUpdatedBy")
+                    {
+                        organisation.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                    }
+                    if !resultSet.columnIsNull("LastUpdatedOn")
+                    {
+                        organisation.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                    }
+                    if !resultSet.columnIsNull("Deleted")
+                    {
+                        organisation.Deleted = resultSet.dateForColumn("Deleted")
+                    }
+                    organisation.ParentOrganisationId = resultSet.stringForColumn("ParentOrganisationId")
+                    organisation.Name = resultSet.stringForColumn("Name")
+                    
+                    organisationList.append(organisation)
+                }
+            }
+        }
+        
+        sharedModelManager.database!.close()
+        return (organisationList, count)
     }
     
     // MARK: - Property
@@ -1587,9 +1749,9 @@ class ModelManager: NSObject {
         
         SQLStatement = "INSERT INTO [Property] (" + SQLParameterNames + ") VALUES (" + SQLParameterPlaceholders + ")"
         
-        sharedInstance.database!.open()
-        let isInserted = sharedInstance.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
-        sharedInstance.database!.close()
+        sharedModelManager.database!.open()
+        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        sharedModelManager.database!.close()
         return isInserted
     }
     
@@ -1628,24 +1790,24 @@ class ModelManager: NSObject {
         
         SQLStatement = "UPDATE [Property] SET " + SQLParameterNames + "WHERE [RowId]=?"
         
-        sharedInstance.database!.open()
-        let isUpdated = sharedInstance.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
-        sharedInstance.database!.close()
+        sharedModelManager.database!.open()
+        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        sharedModelManager.database!.close()
         return isUpdated
     }
     
     func deleteProperty(property: Property) -> Bool {
-        sharedInstance.database!.open()
-        let isDeleted = sharedInstance.database!.executeUpdate("DELETE FROM [Property] WHERE [RowId]=?", withArgumentsInArray: [property.RowId])
-        sharedInstance.database!.close()
+        sharedModelManager.database!.open()
+        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [Property] WHERE [RowId]=?", withArgumentsInArray: [property.RowId])
+        sharedModelManager.database!.close()
         return isDeleted
     }
     
     func getProperty(propertyId: String) -> Property? {
-        sharedInstance.database!.open()
+        sharedModelManager.database!.open()
         var property: Property? = nil
         
-        let resultSet = sharedInstance.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [SiteId], [Name], [Healthcare] FROM [Property] WHERE [RowId]=?", withArgumentsInArray: [propertyId])
+        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [SiteId], [Name], [Healthcare] FROM [Property] WHERE [RowId]=?", withArgumentsInArray: [propertyId])
         if (resultSet != nil) {
             while resultSet.next() {
                 var resultProperty: Property = Property()
@@ -1672,14 +1834,14 @@ class ModelManager: NSObject {
                 property = resultProperty
             }
         }
-        sharedInstance.database!.close()
+        sharedModelManager.database!.close()
         return property
     }
     
-    func getAllProperty() -> NSMutableArray {
-        sharedInstance.database!.open()
-        let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [SiteId], [Name], [Healthcare] FROM [Property]", withArgumentsInArray: nil)
-        let propertys : NSMutableArray = NSMutableArray()
+    func getAllProperty() -> [Property] {
+        sharedModelManager.database!.open()
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [SiteId], [Name], [Healthcare] FROM [Property]", withArgumentsInArray: nil)
+        var propertyList: [Property] = [Property]()
         if (resultSet != nil) {
             while resultSet.next() {
                 let property : Property = Property()
@@ -1702,50 +1864,77 @@ class ModelManager: NSObject {
                 property.Name = resultSet.stringForColumn("Name")
                 property.Healthcare = resultSet.boolForColumn("Healthcare")
                 
-                propertys.addObject(property)
+                propertyList.append(property)
             }
         }
-        sharedInstance.database!.close()
-        return propertys
+        sharedModelManager.database!.close()
+        return propertyList
     }
     
-    func findPropertys(criteria: NSDictionary) -> NSMutableArray {
+    func findPropertyList(criteria: Dictionary<String, AnyObject>) -> [Property] {
+        var list: [Property] = [Property]()
+        var count: Int32 = 0
+        (list, count) = findPropertyList(criteria, pageSize: nil, pageNumber: nil)
+        return list
+    }
+
+    func findPropertyList(criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [Property], Count: Int32) {
+        //return variables
+        var count: Int32 = 0
+        var propertyList: [Property] = [Property]()
+        
+        //build the where clause
         var whereClause: String = String()
         var whereValues: [AnyObject] = [AnyObject]()
         
         (whereClause, whereValues) = buildWhereClause(criteria)
         
-        sharedInstance.database!.open()
-        let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [SiteId], [Name], [Healthcare] FROM [Property] WHERE " + whereClause, withArgumentsInArray: whereValues)
-        let propertys : NSMutableArray = NSMutableArray()
-        if (resultSet != nil) {
-            while resultSet.next() {
-                let property : Property = Property()
-                property.RowId = resultSet.stringForColumn("RowId")
-                property.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                property.CreatedOn = resultSet.dateForColumn("CreatedOn")
-                if !resultSet.columnIsNull("LastUpdatedBy")
-                {
-                    property.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
-                }
-                if !resultSet.columnIsNull("LastUpdatedOn")
-                {
-                    property.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
-                }
-                if !resultSet.columnIsNull("Deleted")
-                {
-                    property.Deleted = resultSet.dateForColumn("Deleted")
-                }
-                property.SiteId = resultSet.stringForColumn("SiteId")
-                property.Name = resultSet.stringForColumn("Name")
-                property.Healthcare = resultSet.boolForColumn("Healthcare")
-                
-                propertys.addObject(property)
+        sharedModelManager.database!.open()
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [Property] WHERE " + whereClause, withArgumentsInArray: whereValues)
+        if (countSet != nil) {
+            while countSet.next() {
+                count = countSet.intForColumnIndex(0)
             }
         }
         
-        sharedInstance.database!.close()
-        return propertys
+        if (count > 0)
+        {
+            var pageClause: String = String()
+            if (pageSize != nil && pageNumber != nil)
+            {
+                pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
+            }
+            
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [SiteId], [Name], [Healthcare] FROM [Property] WHERE " + whereClause + pageClause, withArgumentsInArray: whereValues)
+            if (resultSet != nil) {
+                while resultSet.next() {
+                    let property : Property = Property()
+                    property.RowId = resultSet.stringForColumn("RowId")
+                    property.CreatedBy = resultSet.stringForColumn("CreatedBy")
+                    property.CreatedOn = resultSet.dateForColumn("CreatedOn")
+                    if !resultSet.columnIsNull("LastUpdatedBy")
+                    {
+                        property.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                    }
+                    if !resultSet.columnIsNull("LastUpdatedOn")
+                    {
+                        property.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                    }
+                    if !resultSet.columnIsNull("Deleted")
+                    {
+                        property.Deleted = resultSet.dateForColumn("Deleted")
+                    }
+                    property.SiteId = resultSet.stringForColumn("SiteId")
+                    property.Name = resultSet.stringForColumn("Name")
+                    property.Healthcare = resultSet.boolForColumn("Healthcare")
+                    
+                    propertyList.append(property)
+                }
+            }
+        }
+        
+        sharedModelManager.database!.close()
+        return (propertyList, count)
     }
     
     // MARK: - ReferenceData
@@ -1816,9 +2005,9 @@ class ModelManager: NSObject {
         
         SQLStatement = "INSERT INTO [ReferenceData] (" + SQLParameterNames + ") VALUES (" + SQLParameterPlaceholders + ")"
         
-        sharedInstance.database!.open()
-        let isInserted = sharedInstance.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
-        sharedInstance.database!.close()
+        sharedModelManager.database!.open()
+        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        sharedModelManager.database!.close()
         return isInserted
     }
     
@@ -1876,24 +2065,24 @@ class ModelManager: NSObject {
         
         SQLStatement = "UPDATE [ReferenceData] SET " + SQLParameterNames + "WHERE [RowId]=?"
         
-        sharedInstance.database!.open()
-        let isUpdated = sharedInstance.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
-        sharedInstance.database!.close()
+        sharedModelManager.database!.open()
+        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        sharedModelManager.database!.close()
         return isUpdated
     }
     
     func deleteReferenceData(referenceData: ReferenceData) -> Bool {
-        sharedInstance.database!.open()
-        let isDeleted = sharedInstance.database!.executeUpdate("DELETE FROM [ReferenceData] WHERE [RowId]=?", withArgumentsInArray: [referenceData.RowId])
-        sharedInstance.database!.close()
+        sharedModelManager.database!.open()
+        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [ReferenceData] WHERE [RowId]=?", withArgumentsInArray: [referenceData.RowId])
+        sharedModelManager.database!.close()
         return isDeleted
     }
     
     func getReferenceData(referenceDataId: String) -> ReferenceData? {
-        sharedInstance.database!.open()
+        sharedModelManager.database!.open()
         var referenceData: ReferenceData? = nil
         
-        let resultSet = sharedInstance.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [StartDate], [EndDate], [Type], [Value], [Ordinal], [Display], [System], [ParentType], [ParentValue] FROM [ReferenceData] WHERE [RowId]=?", withArgumentsInArray: [referenceDataId])
+        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [StartDate], [EndDate], [Type], [Value], [Ordinal], [Display], [System], [ParentType], [ParentValue] FROM [ReferenceData] WHERE [RowId]=?", withArgumentsInArray: [referenceDataId])
         if (resultSet != nil) {
             while resultSet.next() {
                 var resultReferenceData: ReferenceData = ReferenceData()
@@ -1933,14 +2122,14 @@ class ModelManager: NSObject {
                 referenceData = resultReferenceData
             }
         }
-        sharedInstance.database!.close()
+        sharedModelManager.database!.close()
         return referenceData
     }
     
-    func getAllReferenceData() -> NSMutableArray {
-        sharedInstance.database!.open()
-        let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [StartDate], [EndDate], [Type], [Value], [Ordinal], [Display], [System], [ParentType], [ParentValue] FROM [ReferenceData]", withArgumentsInArray: nil)
-        let referenceDatas : NSMutableArray = NSMutableArray()
+    func getAllReferenceData() -> [ReferenceData] {
+        sharedModelManager.database!.open()
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [StartDate], [EndDate], [Type], [Value], [Ordinal], [Display], [System], [ParentType], [ParentValue] FROM [ReferenceData]", withArgumentsInArray: nil)
+        var referenceDataList: [ReferenceData] = [ReferenceData]()
         if (resultSet != nil) {
             while resultSet.next() {
                 let referenceData : ReferenceData = ReferenceData()
@@ -1975,63 +2164,88 @@ class ModelManager: NSObject {
                     referenceData.ParentValue = resultSet.stringForColumn("ParentValue")
                 }
                 
-                referenceDatas.addObject(referenceData)
+                referenceDataList.append(referenceData)
             }
         }
-        sharedInstance.database!.close()
-        return referenceDatas
+        sharedModelManager.database!.close()
+        return referenceDataList
     }
     
-    func findReferenceDatas(criteria: NSDictionary) -> NSMutableArray {
+    func findReferenceDataList(criteria: Dictionary<String, AnyObject>) -> [ReferenceData] {
+        var list: [ReferenceData] = [ReferenceData]()
+        var count: Int32 = 0
+        (list, count) = findReferenceDataList(criteria, pageSize: nil, pageNumber: nil)
+        return list
+    }
+
+    func findReferenceDataList(criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [ReferenceData], Count: Int32) {
+        //return variables
+        var count: Int32 = 0
+        var referenceDataList: [ReferenceData] = [ReferenceData]()
+        
+        //build the where clause
         var whereClause: String = String()
         var whereValues: [AnyObject] = [AnyObject]()
         
         (whereClause, whereValues) = buildWhereClause(criteria)
         
-        sharedInstance.database!.open()
-        let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [StartDate], [EndDate], [Type], [Value], [Ordinal], [Display], [System], [ParentType], [ParentValue] FROM [ReferenceData] WHERE " + whereClause, withArgumentsInArray: whereValues)
-        /*let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT * FROM [ReferenceData]", withArgumentsInArray: nil)*/
-        let referenceDatas : NSMutableArray = NSMutableArray()
-        if (resultSet != nil) {
-            while resultSet.next() {
-                let referenceData : ReferenceData = ReferenceData()
-                referenceData.RowId = resultSet.stringForColumn("RowId")
-                referenceData.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                referenceData.CreatedOn = resultSet.dateForColumn("CreatedOn")
-                if !resultSet.columnIsNull("LastUpdatedBy")
-                {
-                    referenceData.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
-                }
-                if !resultSet.columnIsNull("LastUpdatedOn")
-                {
-                    referenceData.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
-                }
-                if !resultSet.columnIsNull("Deleted")
-                {
-                    referenceData.Deleted = resultSet.dateForColumn("Deleted")
-                }
-                referenceData.StartDate = resultSet.dateForColumn("StartDate")
-                if !resultSet.columnIsNull("EndDate") {
-                    referenceData.EndDate = resultSet.dateForColumn("EndDate")
-                }
-                referenceData.Type = resultSet.stringForColumn("Type")
-                referenceData.Value = resultSet.stringForColumn("Value")
-                referenceData.Ordinal = Int(resultSet.intForColumn("Ordinal"))
-                referenceData.Display = resultSet.stringForColumn("Display")
-                referenceData.System = resultSet.boolForColumn("System")
-                if !resultSet.columnIsNull("ParentType") {
-                    referenceData.ParentType = resultSet.stringForColumn("ParentType")
-                }
-                if !resultSet.columnIsNull("ParentValue") {
-                    referenceData.ParentValue = resultSet.stringForColumn("ParentValue")
-                }
-                
-                referenceDatas.addObject(referenceData)
+        sharedModelManager.database!.open()
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [ReferenceData] WHERE " + whereClause, withArgumentsInArray: whereValues)
+        if (countSet != nil) {
+            while countSet.next() {
+                count = countSet.intForColumnIndex(0)
             }
         }
         
-        sharedInstance.database!.close()
-        return referenceDatas
+        if (count > 0)
+        {
+            var pageClause: String = String()
+            if (pageSize != nil && pageNumber != nil)
+            {
+                pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
+            }
+            
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [StartDate], [EndDate], [Type], [Value], [Ordinal], [Display], [System], [ParentType], [ParentValue] FROM [ReferenceData] WHERE " + whereClause + pageClause, withArgumentsInArray: whereValues)
+            if (resultSet != nil) {
+                while resultSet.next() {
+                    let referenceData : ReferenceData = ReferenceData()
+                    referenceData.RowId = resultSet.stringForColumn("RowId")
+                    referenceData.CreatedBy = resultSet.stringForColumn("CreatedBy")
+                    referenceData.CreatedOn = resultSet.dateForColumn("CreatedOn")
+                    if !resultSet.columnIsNull("LastUpdatedBy")
+                    {
+                        referenceData.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                    }
+                    if !resultSet.columnIsNull("LastUpdatedOn")
+                    {
+                        referenceData.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                    }
+                    if !resultSet.columnIsNull("Deleted")
+                    {
+                        referenceData.Deleted = resultSet.dateForColumn("Deleted")
+                    }
+                    referenceData.StartDate = resultSet.dateForColumn("StartDate")
+                    if !resultSet.columnIsNull("EndDate") {
+                        referenceData.EndDate = resultSet.dateForColumn("EndDate")
+                    }
+                    referenceData.Type = resultSet.stringForColumn("Type")
+                    referenceData.Value = resultSet.stringForColumn("Value")
+                    referenceData.Ordinal = Int(resultSet.intForColumn("Ordinal"))
+                    referenceData.Display = resultSet.stringForColumn("Display")
+                    referenceData.System = resultSet.boolForColumn("System")
+                    if !resultSet.columnIsNull("ParentType") {
+                        referenceData.ParentType = resultSet.stringForColumn("ParentType")
+                    }
+                    if !resultSet.columnIsNull("ParentValue") {
+                        referenceData.ParentValue = resultSet.stringForColumn("ParentValue")
+                    }
+                    referenceDataList.append(referenceData)
+                }
+            }
+        }
+        
+        sharedModelManager.database!.close()
+        return (referenceDataList, count)
     }
     
     // MARK: - Site
@@ -2075,9 +2289,9 @@ class ModelManager: NSObject {
         
         SQLStatement = "INSERT INTO [Site] (" + SQLParameterNames + ") VALUES (" + SQLParameterPlaceholders + ")"
         
-        sharedInstance.database!.open()
-        let isInserted = sharedInstance.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
-        sharedInstance.database!.close()
+        sharedModelManager.database!.open()
+        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        sharedModelManager.database!.close()
         return isInserted
     }
     
@@ -2115,24 +2329,24 @@ class ModelManager: NSObject {
         
         SQLStatement = "UPDATE [Site] SET " + SQLParameterNames + "WHERE [RowId]=?"
         
-        sharedInstance.database!.open()
-        let isUpdated = sharedInstance.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
-        sharedInstance.database!.close()
+        sharedModelManager.database!.open()
+        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        sharedModelManager.database!.close()
         return isUpdated
     }
     
     func deleteSite(site: Site) -> Bool {
-        sharedInstance.database!.open()
-        let isDeleted = sharedInstance.database!.executeUpdate("DELETE FROM [Site] WHERE [RowId]=?", withArgumentsInArray: [site.RowId])
-        sharedInstance.database!.close()
+        sharedModelManager.database!.open()
+        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [Site] WHERE [RowId]=?", withArgumentsInArray: [site.RowId])
+        sharedModelManager.database!.close()
         return isDeleted
     }
     
     func getSite(siteId: String) -> Site? {
-        sharedInstance.database!.open()
+        sharedModelManager.database!.open()
         var site: Site? = nil
         
-        let resultSet = sharedInstance.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [Name] FROM [Site] WHERE [RowId]=?", withArgumentsInArray: [siteId])
+        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [Name] FROM [Site] WHERE [RowId]=?", withArgumentsInArray: [siteId])
         if (resultSet != nil) {
             while resultSet.next() {
                 var resultSite: Site = Site()
@@ -2158,14 +2372,14 @@ class ModelManager: NSObject {
                 site = resultSite
             }
         }
-        sharedInstance.database!.close()
+        sharedModelManager.database!.close()
         return site
     }
     
-    func getAllSite() -> NSMutableArray {
-        sharedInstance.database!.open()
-        let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [Name] FROM [Site]", withArgumentsInArray: nil)
-        let sites : NSMutableArray = NSMutableArray()
+    func getAllSite() -> [Site] {
+        sharedModelManager.database!.open()
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [Name] FROM [Site]", withArgumentsInArray: nil)
+        var siteList: [Site] = [Site]()
         if (resultSet != nil) {
             while resultSet.next() {
                 let site : Site = Site()
@@ -2187,50 +2401,76 @@ class ModelManager: NSObject {
                 site.OrganisationId = resultSet.stringForColumn("OrganisationId")
                 site.Name = resultSet.stringForColumn("Name")
                 
-                sites.addObject(site)
+                siteList.append(site)
             }
         }
-        sharedInstance.database!.close()
-        return sites
+        sharedModelManager.database!.close()
+        return siteList
     }
     
-    func findSites(criteria: NSDictionary) -> NSMutableArray {
+    func findSiteList(criteria: Dictionary<String, AnyObject>) -> [Site] {
+        var list: [Site] = [Site]()
+        var count: Int32 = 0
+        (list, count) = findSiteList(criteria, pageSize: nil, pageNumber: nil)
+        return list
+    }
+
+    func findSiteList(criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [Site], Count: Int32) {
+        //return variables
+        var count: Int32 = 0
+        var siteList: [Site] = [Site]()
+        
+        //build the where clause
         var whereClause: String = String()
         var whereValues: [AnyObject] = [AnyObject]()
         
         (whereClause, whereValues) = buildWhereClause(criteria)
         
-        sharedInstance.database!.open()
-        let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [Name] FROM [Site] WHERE " + whereClause, withArgumentsInArray: whereValues)
-        /*let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT * FROM [Site]", withArgumentsInArray: nil)*/
-        let sites : NSMutableArray = NSMutableArray()
-        if (resultSet != nil) {
-            while resultSet.next() {
-                let site : Site = Site()
-                site.RowId = resultSet.stringForColumn("RowId")
-                site.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                site.CreatedOn = resultSet.dateForColumn("CreatedOn")
-                if !resultSet.columnIsNull("LastUpdatedBy")
-                {
-                    site.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
-                }
-                if !resultSet.columnIsNull("LastUpdatedOn")
-                {
-                    site.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
-                }
-                if !resultSet.columnIsNull("Deleted")
-                {
-                    site.Deleted = resultSet.dateForColumn("Deleted")
-                }
-                site.OrganisationId = resultSet.stringForColumn("OrganisationId")
-                site.Name = resultSet.stringForColumn("Name")
-                
-                sites.addObject(site)
+        sharedModelManager.database!.open()
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [Site] WHERE " + whereClause, withArgumentsInArray: whereValues)
+        if (countSet != nil) {
+            while countSet.next() {
+                count = countSet.intForColumnIndex(0)
             }
         }
         
-        sharedInstance.database!.close()
-        return sites
+        if (count > 0)
+        {
+            var pageClause: String = String()
+            if (pageSize != nil && pageNumber != nil)
+            {
+                pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
+            }
+            
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [Name] FROM [Site] WHERE " + whereClause + pageClause, withArgumentsInArray: whereValues)
+            if (resultSet != nil) {
+                while resultSet.next() {
+                    let site : Site = Site()
+                    site.RowId = resultSet.stringForColumn("RowId")
+                    site.CreatedBy = resultSet.stringForColumn("CreatedBy")
+                    site.CreatedOn = resultSet.dateForColumn("CreatedOn")
+                    if !resultSet.columnIsNull("LastUpdatedBy")
+                    {
+                        site.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                    }
+                    if !resultSet.columnIsNull("LastUpdatedOn")
+                    {
+                        site.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                    }
+                    if !resultSet.columnIsNull("Deleted")
+                    {
+                        site.Deleted = resultSet.dateForColumn("Deleted")
+                    }
+                    site.OrganisationId = resultSet.stringForColumn("OrganisationId")
+                    site.Name = resultSet.stringForColumn("Name")
+                    
+                    siteList.append(site)
+                }
+            }
+        }
+        
+        sharedModelManager.database!.close()
+        return (siteList, count)
     }
     
     // MARK: - Task
@@ -2364,9 +2604,9 @@ class ModelManager: NSObject {
         
         SQLStatement = "INSERT INTO [Task] (" + SQLParameterNames + ") VALUES (" + SQLParameterPlaceholders + ")"
         
-        sharedInstance.database!.open()
-        let isInserted = sharedInstance.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
-        sharedInstance.database!.close()
+        sharedModelManager.database!.open()
+        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        sharedModelManager.database!.close()
         return isInserted
     }
     
@@ -2471,24 +2711,24 @@ class ModelManager: NSObject {
         
         SQLStatement = "UPDATE [Task] SET " + SQLParameterNames + "WHERE [RowId]=?"
         
-        sharedInstance.database!.open()
-        let isUpdated = sharedInstance.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
-        sharedInstance.database!.close()
+        sharedModelManager.database!.open()
+        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        sharedModelManager.database!.close()
         return isUpdated
     }
     
     func deleteTask(task: Task) -> Bool {
-        sharedInstance.database!.open()
-        let isDeleted = sharedInstance.database!.executeUpdate("DELETE FROM [Task] WHERE [RowId]=?", withArgumentsInArray: [task.RowId])
-        sharedInstance.database!.close()
+        sharedModelManager.database!.open()
+        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [Task] WHERE [RowId]=?", withArgumentsInArray: [task.RowId])
+        sharedModelManager.database!.close()
         return isDeleted
     }
     
     func getTask(taskId: String) -> Task? {
-        sharedInstance.database!.open()
+        sharedModelManager.database!.open()
         var task: Task? = nil
         
-        let resultSet = sharedInstance.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [SiteId], [PropertyId], [LocationId], [LocationGroupName], [LocationName], [Room], [TaskTemplateId], [TaskRef], [PPMGroup], [AssetType], [TaskName], [Frequency], [AssetId], [AssetNumber], [ScheduledDate], [CompletedDate], [Status], [Priority], [EstimatedDuration], [OperativeId], [ActualDuration], [TravelDuration], [Comments], [AlternateAssetCode] FROM [Task] WHERE [RowId]=?", withArgumentsInArray: [taskId])
+        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [SiteId], [PropertyId], [LocationId], [LocationGroupName], [LocationName], [Room], [TaskTemplateId], [TaskRef], [PPMGroup], [AssetType], [TaskName], [Frequency], [AssetId], [AssetNumber], [ScheduledDate], [CompletedDate], [Status], [Priority], [EstimatedDuration], [OperativeId], [ActualDuration], [TravelDuration], [Comments], [AlternateAssetCode] FROM [Task] WHERE [RowId]=?", withArgumentsInArray: [taskId])
         if (resultSet != nil) {
             while resultSet.next() {
                 var resultTask: Task = Task()
@@ -2557,14 +2797,14 @@ class ModelManager: NSObject {
                 task = resultTask
             }
         }
-        sharedInstance.database!.close()
+        sharedModelManager.database!.close()
         return task
     }
     
-    func getAllTask() -> NSMutableArray {
-        sharedInstance.database!.open()
-        let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted],, [OrganisationId], [SiteId], [PropertyId], [LocationId], [LocationGroupName], [LocationName], [Room], [TaskTemplateId], [TaskRef], [PPMGroup], [AssetType], [TaskName], [Frequency], [AssetId], [AssetNumber], [ScheduledDate], [CompletedDate], [Status], [Priority], [EstimatedDuration], [OperativeId], [ActualDuration], [TravelDuration], [Comments], [AlternateAssetCode] FROM [Task]", withArgumentsInArray: nil)
-        let tasks : NSMutableArray = NSMutableArray()
+    func getAllTask() -> [Task] {
+        sharedModelManager.database!.open()
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [SiteId], [PropertyId], [LocationId], [LocationGroupName], [LocationName], [Room], [TaskTemplateId], [TaskRef], [PPMGroup], [AssetType], [TaskName], [Frequency], [AssetId], [AssetNumber], [ScheduledDate], [CompletedDate], [Status], [Priority], [EstimatedDuration], [OperativeId], [ActualDuration], [TravelDuration], [Comments], [AlternateAssetCode] FROM [Task]", withArgumentsInArray: nil)
+        var taskList: [Task] = [Task]()
         if (resultSet != nil) {
             while resultSet.next() {
                 let task : Task = Task()
@@ -2629,93 +2869,145 @@ class ModelManager: NSObject {
                     task.AlternateAssetCode = resultSet.stringForColumn("AlternateAssetCode")
                 }
                 
-                tasks.addObject(task)
+                taskList.append(task)
             }
         }
-        sharedInstance.database!.close()
-        return tasks
+        sharedModelManager.database!.close()
+        return taskList
     }
     
-    func findTasks(criteria: NSDictionary) -> NSMutableArray {
+    func findTaskList(criteria: Dictionary<String, AnyObject>) -> [Task] {
+        var list: [Task] = [Task]()
+        var count: Int32 = 0
+        (list, count) = findTaskList(criteria, pageSize: nil, pageNumber: nil, sortOrder: TaskSortOrder.Date)
+        return list
+    }
+
+    func findTaskList(criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [Task], Count: Int32) {
+        var list: [Task] = [Task]()
+        var count: Int32 = 0
+        (list, count) = findTaskList(criteria, pageSize: nil, pageNumber: nil, sortOrder: TaskSortOrder.Date)
+        return (list, count)
+    }
+        
+    func findTaskList(criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?, sortOrder: TaskSortOrder) -> (List: [Task], Count: Int32) {
+       //return variables
+        var count: Int32 = 0
+        var taskList: [Task] = [Task]()
+        
+        //build the order clause
+        var orderByClause: String = " ORDER BY "
+        
+        switch sortOrder {
+            
+        case .Date:
+            orderByClause += "[ScheduledDate] "
+            
+        case .Location:
+            orderByClause += "[LocationName] "
+            
+        case .Type:
+            orderByClause += "[PPMGroup] "
+           
+        case .Task:
+            orderByClause += "[TaskName] "
+            
+        }
+        
+        //build the where clause
         var whereClause: String = String()
         var whereValues: [AnyObject] = [AnyObject]()
         
         (whereClause, whereValues) = buildWhereClause(criteria)
         
-        sharedInstance.database!.open()
-        let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [SiteId], [PropertyId], [LocationId], [LocationGroupName], [LocationName], [Room], [TaskTemplateId], [TaskRef], [PPMGroup], [AssetType], [TaskName], [Frequency], [AssetId], [AssetNumber], [ScheduledDate], [CompletedDate], [Status], [Priority], [EstimatedDuration], [OperativeId], [ActualDuration], [TravelDuration], [Comments], [AlternateAssetCode] FROM [Task] WHERE " + whereClause, withArgumentsInArray: whereValues)
-        /*let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT * FROM [Task]", withArgumentsInArray: nil)*/
-        let tasks : NSMutableArray = NSMutableArray()
-        if (resultSet != nil) {
-            while resultSet.next() {
-                let task : Task = Task()
-                task.RowId = resultSet.stringForColumn("RowId")
-                task.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                task.CreatedOn = resultSet.dateForColumn("CreatedOn")
-                if !resultSet.columnIsNull("LastUpdatedBy")
-                {
-                    task.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
-                }
-                if !resultSet.columnIsNull("LastUpdatedOn")
-                {
-                    task.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
-                }
-                if !resultSet.columnIsNull("Deleted")
-                {
-                    task.Deleted = resultSet.dateForColumn("Deleted")
-                }
-                task.OrganisationId = resultSet.stringForColumn("OrganisationId")
-                task.SiteId = resultSet.stringForColumn("SiteId")
-                task.PropertyId = resultSet.stringForColumn("PropertyId")
-                task.LocationId = resultSet.stringForColumn("LocationId")
-                task.LocationGroupName = resultSet.stringForColumn("LocationGroupName")
-                task.LocationName = resultSet.stringForColumn("LocationName")
-                if !resultSet.columnIsNull("Room") {
-                    task.Room = resultSet.stringForColumn("Room")
-                }
-                if !resultSet.columnIsNull("TaskTemplateId") {
-                    task.TaskTemplateId = resultSet.stringForColumn("TaskTemplateId")
-                }
-                task.TaskRef = resultSet.stringForColumn("TaskRef")
-                if !resultSet.columnIsNull("PPMGroup") {
-                    task.PPMGroup = resultSet.stringForColumn("PPMGroup")
-                }
-                task.AssetType = resultSet.stringForColumn("AssetType")
-                task.TaskName = resultSet.stringForColumn("TaskName")
-                task.Frequency = resultSet.stringForColumn("Frequency")
-                task.AssetId = resultSet.stringForColumn("AssetId")
-                task.AssetNumber = resultSet.stringForColumn("AssetNumber")
-                task.ScheduledDate = resultSet.dateForColumn("ScheduledDate")
-                if !resultSet.columnIsNull("CompletedDate") {
-                    task.CompletedDate = resultSet.dateForColumn("CompletedDate")
-                }
-                task.Status = resultSet.stringForColumn("Status")
-                task.Priority = Int(resultSet.intForColumn("Priority"))
-                if !resultSet.columnIsNull("EstimatedDuration") {
-                    task.EstimatedDuration = Int(resultSet.intForColumn("EstimatedDuration"))
-                }
-                if !resultSet.columnIsNull("OperativeId") {
-                    task.OperativeId = resultSet.stringForColumn("OperativeId")
-                }
-                if !resultSet.columnIsNull("ActualDuration") {
-                    task.ActualDuration = Int(resultSet.intForColumn("ActualDuration"))
-                }
-                if !resultSet.columnIsNull("TravelDuration") {
-                    task.TravelDuration = Int(resultSet.intForColumn("TravelDuration"))
-                }
-                if !resultSet.columnIsNull("Comments") {
-                    task.Comments = resultSet.stringForColumn("Comments")
-                }
-                if !resultSet.columnIsNull("AlternateAssetCode") {
-                    task.AlternateAssetCode = resultSet.stringForColumn("AlternateAssetCode")
-                }
-                
-                tasks.addObject(task)
+        sharedModelManager.database!.open()
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [Task] WHERE " + whereClause + orderByClause, withArgumentsInArray: whereValues)
+        if (countSet != nil) {
+            while countSet.next() {
+                count = countSet.intForColumnIndex(0)
             }
         }
         
-        sharedInstance.database!.close()
-        return tasks
+        if (count > 0)
+        {
+            var pageClause: String = String()
+            if (pageSize != nil && pageNumber != nil)
+            {
+                pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
+            }
+            
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [SiteId], [PropertyId], [LocationId], [LocationGroupName], [LocationName], [Room], [TaskTemplateId], [TaskRef], [PPMGroup], [AssetType], [TaskName], [Frequency], [AssetId], [AssetNumber], [ScheduledDate], [CompletedDate], [Status], [Priority], [EstimatedDuration], [OperativeId], [ActualDuration], [TravelDuration], [Comments], [AlternateAssetCode] FROM [Task] WHERE " + whereClause  + orderByClause + pageClause, withArgumentsInArray: whereValues)
+            if (resultSet != nil) {
+                while resultSet.next() {
+                    let task : Task = Task()
+                    task.RowId = resultSet.stringForColumn("RowId")
+                    task.CreatedBy = resultSet.stringForColumn("CreatedBy")
+                    task.CreatedOn = resultSet.dateForColumn("CreatedOn")
+                    if !resultSet.columnIsNull("LastUpdatedBy")
+                    {
+                        task.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                    }
+                    if !resultSet.columnIsNull("LastUpdatedOn")
+                    {
+                        task.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                    }
+                    if !resultSet.columnIsNull("Deleted")
+                    {
+                        task.Deleted = resultSet.dateForColumn("Deleted")
+                    }
+                    task.OrganisationId = resultSet.stringForColumn("OrganisationId")
+                    task.SiteId = resultSet.stringForColumn("SiteId")
+                    task.PropertyId = resultSet.stringForColumn("PropertyId")
+                    task.LocationId = resultSet.stringForColumn("LocationId")
+                    task.LocationGroupName = resultSet.stringForColumn("LocationGroupName")
+                    task.LocationName = resultSet.stringForColumn("LocationName")
+                    if !resultSet.columnIsNull("Room") {
+                        task.Room = resultSet.stringForColumn("Room")
+                    }
+                    if !resultSet.columnIsNull("TaskTemplateId") {
+                        task.TaskTemplateId = resultSet.stringForColumn("TaskTemplateId")
+                    }
+                    task.TaskRef = resultSet.stringForColumn("TaskRef")
+                    if !resultSet.columnIsNull("PPMGroup") {
+                        task.PPMGroup = resultSet.stringForColumn("PPMGroup")
+                    }
+                    task.AssetType = resultSet.stringForColumn("AssetType")
+                    task.TaskName = resultSet.stringForColumn("TaskName")
+                    task.Frequency = resultSet.stringForColumn("Frequency")
+                    task.AssetId = resultSet.stringForColumn("AssetId")
+                    task.AssetNumber = resultSet.stringForColumn("AssetNumber")
+                    task.ScheduledDate = resultSet.dateForColumn("ScheduledDate")
+                    if !resultSet.columnIsNull("CompletedDate") {
+                        task.CompletedDate = resultSet.dateForColumn("CompletedDate")
+                    }
+                    task.Status = resultSet.stringForColumn("Status")
+                    task.Priority = Int(resultSet.intForColumn("Priority"))
+                    if !resultSet.columnIsNull("EstimatedDuration") {
+                        task.EstimatedDuration = Int(resultSet.intForColumn("EstimatedDuration"))
+                    }
+                    if !resultSet.columnIsNull("OperativeId") {
+                        task.OperativeId = resultSet.stringForColumn("OperativeId")
+                    }
+                    if !resultSet.columnIsNull("ActualDuration") {
+                        task.ActualDuration = Int(resultSet.intForColumn("ActualDuration"))
+                    }
+                    if !resultSet.columnIsNull("TravelDuration") {
+                        task.TravelDuration = Int(resultSet.intForColumn("TravelDuration"))
+                    }
+                    if !resultSet.columnIsNull("Comments") {
+                        task.Comments = resultSet.stringForColumn("Comments")
+                    }
+                    if !resultSet.columnIsNull("AlternateAssetCode") {
+                        task.AlternateAssetCode = resultSet.stringForColumn("AlternateAssetCode")
+                    }
+                    
+                    taskList.append(task)
+                }
+            }
+        }
+        
+        sharedModelManager.database!.close()
+        return (taskList, count)
     }
     
     // MARK: - TaskParameter
@@ -2754,7 +3046,7 @@ class ModelManager: NSObject {
         if taskParameter.TaskTemplateParameterId != nil {
             SQLParameterNames += ", [TaskTemplateParameterId]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(taskParameter.TaskTemplateParameterId!) 
+            SQLParameterValues.append(taskParameter.TaskTemplateParameterId!)
         }
         SQLParameterNames += ", [TaskId]"
         SQLParameterPlaceholders += ", ?"
@@ -2777,9 +3069,9 @@ class ModelManager: NSObject {
         
         SQLStatement = "INSERT INTO [TaskParameter] (" + SQLParameterNames + ") VALUES (" + SQLParameterPlaceholders + ")"
         
-        sharedInstance.database!.open()
-        let isInserted = sharedInstance.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
-        sharedInstance.database!.close()
+        sharedModelManager.database!.open()
+        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        sharedModelManager.database!.close()
         return isInserted
     }
     
@@ -2810,7 +3102,7 @@ class ModelManager: NSObject {
         
         if taskParameter.TaskTemplateParameterId != nil {
             SQLParameterNames += ", [TaskTemplateParameterId]=?"
-            SQLParameterValues.append(taskParameter.TaskTemplateParameterId!) 
+            SQLParameterValues.append(taskParameter.TaskTemplateParameterId!)
         }
         SQLParameterNames += ", [TaskId]=?"
         SQLParameterValues.append(taskParameter.TaskId)
@@ -2829,24 +3121,24 @@ class ModelManager: NSObject {
         
         SQLStatement = "UPDATE [TaskParameter] SET " + SQLParameterNames + "WHERE [RowId]=?"
         
-        sharedInstance.database!.open()
-        let isUpdated = sharedInstance.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
-        sharedInstance.database!.close()
+        sharedModelManager.database!.open()
+        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        sharedModelManager.database!.close()
         return isUpdated
     }
     
     func deleteTaskParameter(taskParameter: TaskParameter) -> Bool {
-        sharedInstance.database!.open()
-        let isDeleted = sharedInstance.database!.executeUpdate("DELETE FROM [TaskParameter] WHERE [RowId]=?", withArgumentsInArray: [taskParameter.RowId])
-        sharedInstance.database!.close()
+        sharedModelManager.database!.open()
+        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [TaskParameter] WHERE [RowId]=?", withArgumentsInArray: [taskParameter.RowId])
+        sharedModelManager.database!.close()
         return isDeleted
     }
     
     func getTaskParameter(taskParameterId: String) -> TaskParameter? {
-        sharedInstance.database!.open()
+        sharedModelManager.database!.open()
         var taskParameter: TaskParameter? = nil
         
-        let resultSet = sharedInstance.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TaskTemplateParameterId], [TaskId], [ParameterName], [ParameterType], [ParameterDisplay], [Collect], [ParameterValue] FROM [TaskParameter] WHERE [RowId]=?", withArgumentsInArray: [taskParameterId])
+        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TaskTemplateParameterId], [TaskId], [ParameterName], [ParameterType], [ParameterDisplay], [Collect], [ParameterValue] FROM [TaskParameter] WHERE [RowId]=?", withArgumentsInArray: [taskParameterId])
         if (resultSet != nil) {
             while resultSet.next() {
                 var resultTaskParameter: TaskParameter = TaskParameter()
@@ -2879,14 +3171,14 @@ class ModelManager: NSObject {
                 taskParameter = resultTaskParameter
             }
         }
-        sharedInstance.database!.close()
+        sharedModelManager.database!.close()
         return taskParameter
     }
     
-    func getAllTaskParameter() -> NSMutableArray {
-        sharedInstance.database!.open()
-        let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TaskTemplateParameterId], [TaskId], [ParameterName], [ParameterType], [ParameterDisplay], [Collect], [ParameterValue] FROM [TaskParameter]", withArgumentsInArray: nil)
-        let taskParameters : NSMutableArray = NSMutableArray()
+    func getAllTaskParameter() -> [TaskParameter] {
+        sharedModelManager.database!.open()
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TaskTemplateParameterId], [TaskId], [ParameterName], [ParameterType], [ParameterDisplay], [Collect], [ParameterValue] FROM [TaskParameter]", withArgumentsInArray: nil)
+        var taskParameterList: [TaskParameter] = [TaskParameter]()
         if (resultSet != nil) {
             while resultSet.next() {
                 let taskParameter : TaskParameter = TaskParameter()
@@ -2915,56 +3207,83 @@ class ModelManager: NSObject {
                 taskParameter.Collect = resultSet.boolForColumn("Collect")
                 taskParameter.ParameterValue = resultSet.stringForColumn("ParameterValue")
                 
-                taskParameters.addObject(taskParameter)
+                taskParameterList.append(taskParameter)
             }
         }
-        sharedInstance.database!.close()
-        return taskParameters
+        sharedModelManager.database!.close()
+        return taskParameterList
     }
     
-    func findTaskParameters(criteria: NSDictionary) -> NSMutableArray {
+    func findTaskParameterList(criteria: Dictionary<String, AnyObject>) -> [TaskParameter] {
+        var list: [TaskParameter] = [TaskParameter]()
+        var count: Int32 = 0
+        (list, count) = findTaskParameterList(criteria, pageSize: nil, pageNumber: nil)
+        return list
+    }
+
+    func findTaskParameterList(criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [TaskParameter], Count: Int32) {
+        //return variables
+        var count: Int32 = 0
+        var taskParameterList: [TaskParameter] = [TaskParameter]()
+        
+        //build the where clause
         var whereClause: String = String()
         var whereValues: [AnyObject] = [AnyObject]()
         
         (whereClause, whereValues) = buildWhereClause(criteria)
         
-        sharedInstance.database!.open()
-        let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TaskTemplateParameterId], [TaskId], [ParameterName], [ParameterType], [ParameterDisplay], [Collect], [ParameterValue] FROM [TaskParameter] WHERE " + whereClause, withArgumentsInArray: whereValues)
-        let taskParameters : NSMutableArray = NSMutableArray()
-        if (resultSet != nil) {
-            while resultSet.next() {
-                let taskParameter : TaskParameter = TaskParameter()
-                taskParameter.RowId = resultSet.stringForColumn("RowId")
-                taskParameter.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                taskParameter.CreatedOn = resultSet.dateForColumn("CreatedOn")
-                if !resultSet.columnIsNull("LastUpdatedBy")
-                {
-                    taskParameter.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
-                }
-                if !resultSet.columnIsNull("LastUpdatedOn")
-                {
-                    taskParameter.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
-                }
-                if !resultSet.columnIsNull("Deleted")
-                {
-                    taskParameter.Deleted = resultSet.dateForColumn("Deleted")
-                }
-                if !resultSet.columnIsNull("TaskTemplateParameterId") {
-                    taskParameter.TaskTemplateParameterId = resultSet.stringForColumn("TaskTemplateParameterId")
-                }
-                taskParameter.TaskId = resultSet.stringForColumn("TaskId")
-                taskParameter.ParameterName = resultSet.stringForColumn("ParameterName")
-                taskParameter.ParameterType = resultSet.stringForColumn("ParameterType")
-                taskParameter.ParameterDisplay = resultSet.stringForColumn("ParameterDisplay")
-                taskParameter.Collect = resultSet.boolForColumn("Collect")
-                taskParameter.ParameterValue = resultSet.stringForColumn("ParameterValue")
-                
-                taskParameters.addObject(taskParameter)
+        sharedModelManager.database!.open()
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [TaskParameter] WHERE " + whereClause, withArgumentsInArray: whereValues)
+        if (countSet != nil) {
+            while countSet.next() {
+                count = countSet.intForColumnIndex(0)
             }
         }
         
-        sharedInstance.database!.close()
-        return taskParameters
+        if (count > 0)
+        {
+            var pageClause: String = String()
+            if (pageSize != nil && pageNumber != nil)
+            {
+                pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
+            }
+            
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TaskTemplateParameterId], [TaskId], [ParameterName], [ParameterType], [ParameterDisplay], [Collect], [ParameterValue] FROM [TaskParameter] WHERE " + whereClause + pageClause, withArgumentsInArray: whereValues)
+            if (resultSet != nil) {
+                while resultSet.next() {
+                    let taskParameter : TaskParameter = TaskParameter()
+                    taskParameter.RowId = resultSet.stringForColumn("RowId")
+                    taskParameter.CreatedBy = resultSet.stringForColumn("CreatedBy")
+                    taskParameter.CreatedOn = resultSet.dateForColumn("CreatedOn")
+                    if !resultSet.columnIsNull("LastUpdatedBy")
+                    {
+                        taskParameter.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                    }
+                    if !resultSet.columnIsNull("LastUpdatedOn")
+                    {
+                        taskParameter.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                    }
+                    if !resultSet.columnIsNull("Deleted")
+                    {
+                        taskParameter.Deleted = resultSet.dateForColumn("Deleted")
+                    }
+                    if !resultSet.columnIsNull("TaskTemplateParameterId") {
+                        taskParameter.TaskTemplateParameterId = resultSet.stringForColumn("TaskTemplateParameterId")
+                    }
+                    taskParameter.TaskId = resultSet.stringForColumn("TaskId")
+                    taskParameter.ParameterName = resultSet.stringForColumn("ParameterName")
+                    taskParameter.ParameterType = resultSet.stringForColumn("ParameterType")
+                    taskParameter.ParameterDisplay = resultSet.stringForColumn("ParameterDisplay")
+                    taskParameter.Collect = resultSet.boolForColumn("Collect")
+                    taskParameter.ParameterValue = resultSet.stringForColumn("ParameterValue")
+                    
+                    taskParameterList.append(taskParameter)
+                }
+            }
+        }
+        
+        sharedModelManager.database!.close()
+        return (taskParameterList, count)
     }
     
     // MARK: - TaskTemplate
@@ -3018,9 +3337,9 @@ class ModelManager: NSObject {
         
         SQLStatement = "INSERT INTO [TaskTemplate] (" + SQLParameterNames + ") VALUES (" + SQLParameterPlaceholders + ")"
         
-        sharedInstance.database!.open()
-        let isInserted = sharedInstance.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
-        sharedInstance.database!.close()
+        sharedModelManager.database!.open()
+        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        sharedModelManager.database!.close()
         return isInserted
     }
     
@@ -3064,24 +3383,24 @@ class ModelManager: NSObject {
         
         SQLStatement = "UPDATE [TaskTemplate] SET " + SQLParameterNames + "WHERE [RowId]=?"
         
-        sharedInstance.database!.open()
-        let isUpdated = sharedInstance.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
-        sharedInstance.database!.close()
+        sharedModelManager.database!.open()
+        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        sharedModelManager.database!.close()
         return isUpdated
     }
     
     func deleteTaskTemplate(taskTemplate: TaskTemplate) -> Bool {
-        sharedInstance.database!.open()
-        let isDeleted = sharedInstance.database!.executeUpdate("DELETE FROM [TaskTemplate] WHERE [RowId]=?", withArgumentsInArray: [taskTemplate.RowId])
-        sharedInstance.database!.close()
+        sharedModelManager.database!.open()
+        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [TaskTemplate] WHERE [RowId]=?", withArgumentsInArray: [taskTemplate.RowId])
+        sharedModelManager.database!.close()
         return isDeleted
     }
     
     func getTaskTemplate(taskTemplateId: String) -> TaskTemplate? {
-        sharedInstance.database!.open()
+        sharedModelManager.database!.open()
         var taskTemplate: TaskTemplate? = nil
         
-        let resultSet = sharedInstance.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [AssetType], [TaskName], [Priority], [EstimatedDuration] FROM [TaskTemplate] WHERE [RowId]=?", withArgumentsInArray: [taskTemplateId])
+        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [AssetType], [TaskName], [Priority], [EstimatedDuration] FROM [TaskTemplate] WHERE [RowId]=?", withArgumentsInArray: [taskTemplateId])
         if (resultSet != nil) {
             while resultSet.next() {
                 var resultTaskTemplate: TaskTemplate = TaskTemplate()
@@ -3110,14 +3429,14 @@ class ModelManager: NSObject {
                 taskTemplate = resultTaskTemplate
             }
         }
-        sharedInstance.database!.close()
+        sharedModelManager.database!.close()
         return taskTemplate
     }
     
-    func getAllTaskTemplate() -> NSMutableArray {
-        sharedInstance.database!.open()
-        let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [AssetType], [TaskName], [Priority], [EstimatedDuration] FROM [TaskTemplate]", withArgumentsInArray: nil)
-        let taskTemplates : NSMutableArray = NSMutableArray()
+    func getAllTaskTemplate() -> [TaskTemplate] {
+        sharedModelManager.database!.open()
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [AssetType], [TaskName], [Priority], [EstimatedDuration] FROM [TaskTemplate]", withArgumentsInArray: nil)
+        var taskTemplateList: [TaskTemplate] = [TaskTemplate]()
         if (resultSet != nil) {
             while resultSet.next() {
                 let taskTemplate : TaskTemplate = TaskTemplate()
@@ -3142,52 +3461,79 @@ class ModelManager: NSObject {
                 taskTemplate.Priority = Int(resultSet.intForColumn("Priority"))
                 taskTemplate.EstimatedDuration = Int(resultSet.intForColumn("EstimatedDuration"))
                 
-                taskTemplates.addObject(taskTemplate)
+                taskTemplateList.append(taskTemplate)
             }
         }
-        sharedInstance.database!.close()
-        return taskTemplates
+        sharedModelManager.database!.close()
+        return taskTemplateList
     }
     
-    func findTaskTemplates(criteria: NSDictionary) -> NSMutableArray {
+    func findTaskTemplateList(criteria: Dictionary<String, AnyObject>) -> [TaskTemplate] {
+        var list: [TaskTemplate] = [TaskTemplate]()
+        var count: Int32 = 0
+        (list, count) = findTaskTemplateList(criteria, pageSize: nil, pageNumber: nil)
+        return list
+    }
+
+    func findTaskTemplateList(criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [TaskTemplate], Count: Int32) {
+        //return variables
+        var count: Int32 = 0
+        var taskTemplateList: [TaskTemplate] = [TaskTemplate]()
+        
+        //build the where clause
         var whereClause: String = String()
         var whereValues: [AnyObject] = [AnyObject]()
         
         (whereClause, whereValues) = buildWhereClause(criteria)
         
-        sharedInstance.database!.open()
-        let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [AssetType], [TaskName], [Priority], [EstimatedDuration]FROM [TaskTemplate] WHERE " + whereClause, withArgumentsInArray: whereValues)
-        let taskTemplates : NSMutableArray = NSMutableArray()
-        if (resultSet != nil) {
-            while resultSet.next() {
-                let taskTemplate : TaskTemplate = TaskTemplate()
-                taskTemplate.RowId = resultSet.stringForColumn("RowId")
-                taskTemplate.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                taskTemplate.CreatedOn = resultSet.dateForColumn("CreatedOn")
-                if !resultSet.columnIsNull("LastUpdatedBy")
-                {
-                    taskTemplate.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
-                }
-                if !resultSet.columnIsNull("LastUpdatedOn")
-                {
-                    taskTemplate.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
-                }
-                if !resultSet.columnIsNull("Deleted")
-                {
-                    taskTemplate.Deleted = resultSet.dateForColumn("Deleted")
-                }
-                taskTemplate.OrganisationId = resultSet.stringForColumn("OrganisationId")
-                taskTemplate.AssetType = resultSet.stringForColumn("AssetType")
-                taskTemplate.TaskName = resultSet.stringForColumn("TaskName")
-                taskTemplate.Priority = Int(resultSet.intForColumn("Priority"))
-                taskTemplate.EstimatedDuration = Int(resultSet.intForColumn("EstimatedDuration"))
-                
-                taskTemplates.addObject(taskTemplate)
+        sharedModelManager.database!.open()
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [TaskTemplate] WHERE " + whereClause, withArgumentsInArray: whereValues)
+        if (countSet != nil) {
+            while countSet.next() {
+                count = countSet.intForColumnIndex(0)
             }
         }
         
-        sharedInstance.database!.close()
-        return taskTemplates
+        if (count > 0)
+        {
+            var pageClause: String = String()
+            if (pageSize != nil && pageNumber != nil)
+            {
+                pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
+            }
+            
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [AssetType], [TaskName], [Priority], [EstimatedDuration]FROM [TaskTemplate] WHERE " + whereClause + pageClause, withArgumentsInArray: whereValues)
+            if (resultSet != nil) {
+                while resultSet.next() {
+                    let taskTemplate : TaskTemplate = TaskTemplate()
+                    taskTemplate.RowId = resultSet.stringForColumn("RowId")
+                    taskTemplate.CreatedBy = resultSet.stringForColumn("CreatedBy")
+                    taskTemplate.CreatedOn = resultSet.dateForColumn("CreatedOn")
+                    if !resultSet.columnIsNull("LastUpdatedBy")
+                    {
+                        taskTemplate.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                    }
+                    if !resultSet.columnIsNull("LastUpdatedOn")
+                    {
+                        taskTemplate.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                    }
+                    if !resultSet.columnIsNull("Deleted")
+                    {
+                        taskTemplate.Deleted = resultSet.dateForColumn("Deleted")
+                    }
+                    taskTemplate.OrganisationId = resultSet.stringForColumn("OrganisationId")
+                    taskTemplate.AssetType = resultSet.stringForColumn("AssetType")
+                    taskTemplate.TaskName = resultSet.stringForColumn("TaskName")
+                    taskTemplate.Priority = Int(resultSet.intForColumn("Priority"))
+                    taskTemplate.EstimatedDuration = Int(resultSet.intForColumn("EstimatedDuration"))
+                    
+                    taskTemplateList.append(taskTemplate)
+                }
+            }
+        }
+        
+        sharedModelManager.database!.close()
+        return (taskTemplateList, count)
     }
     
     // MARK: - TaskTemplateParameter
@@ -3241,12 +3587,12 @@ class ModelManager: NSObject {
         if taskTemplateParameter.ReferenceDataType != nil {
             SQLParameterNames += ", [ReferenceDataType]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(taskTemplateParameter.ReferenceDataType!) 
+            SQLParameterValues.append(taskTemplateParameter.ReferenceDataType!)
         }
         if taskTemplateParameter.ReferenceDataExtendedType != nil {
             SQLParameterNames += ", [ReferenceDataExtendedType]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(taskTemplateParameter.ReferenceDataExtendedType!) 
+            SQLParameterValues.append(taskTemplateParameter.ReferenceDataExtendedType!)
         }
         SQLParameterNames += ", [Ordinal]"
         SQLParameterPlaceholders += ", ?"
@@ -3255,9 +3601,9 @@ class ModelManager: NSObject {
         
         SQLStatement = "INSERT INTO [TaskTemplateParameter] (" + SQLParameterNames + ") VALUES (" + SQLParameterPlaceholders + ")"
         
-        sharedInstance.database!.open()
-        let isInserted = sharedInstance.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
-        sharedInstance.database!.close()
+        sharedModelManager.database!.open()
+        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        sharedModelManager.database!.close()
         return isInserted
     }
     
@@ -3298,11 +3644,11 @@ class ModelManager: NSObject {
         SQLParameterValues.append(taskTemplateParameter.Collect)
         if taskTemplateParameter.ReferenceDataType != nil {
             SQLParameterNames += ", [ReferenceDataType]=?"
-            SQLParameterValues.append(taskTemplateParameter.ReferenceDataType!) 
+            SQLParameterValues.append(taskTemplateParameter.ReferenceDataType!)
         }
         if taskTemplateParameter.ReferenceDataExtendedType != nil {
             SQLParameterNames += ", [ReferenceDataExtendedType]=?"
-            SQLParameterValues.append(taskTemplateParameter.ReferenceDataExtendedType!) 
+            SQLParameterValues.append(taskTemplateParameter.ReferenceDataExtendedType!)
         }
         SQLParameterNames += ", [Ordinal]=?"
         SQLParameterValues.append(taskTemplateParameter.Ordinal)
@@ -3312,24 +3658,24 @@ class ModelManager: NSObject {
         
         SQLStatement = "UPDATE [TaskTemplateParameter] SET " + SQLParameterNames + "WHERE [RowId]=?"
         
-        sharedInstance.database!.open()
-        let isUpdated = sharedInstance.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
-        sharedInstance.database!.close()
+        sharedModelManager.database!.open()
+        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        sharedModelManager.database!.close()
         return isUpdated
     }
     
     func deleteTaskTemplateParameter(taskTemplateParameter: TaskTemplateParameter) -> Bool {
-        sharedInstance.database!.open()
-        let isDeleted = sharedInstance.database!.executeUpdate("DELETE FROM [TaskTemplateParameter] WHERE [RowId]=?", withArgumentsInArray: [taskTemplateParameter.RowId])
-        sharedInstance.database!.close()
+        sharedModelManager.database!.open()
+        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [TaskTemplateParameter] WHERE [RowId]=?", withArgumentsInArray: [taskTemplateParameter.RowId])
+        sharedModelManager.database!.close()
         return isDeleted
     }
     
     func getTaskTemplateParameter(taskTemplateParameterId: String) -> TaskTemplateParameter? {
-        sharedInstance.database!.open()
+        sharedModelManager.database!.open()
         var taskTemplateParameter: TaskTemplateParameter? = nil
         
-        let resultSet = sharedInstance.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TaskTemplateId], [ParameterName], [ParameterType], [ParameterDisplay], [Collect], [ReferenceDataType], [ReferenceDataExtendedType], [Ordinal] FROM [TaskTemplateParameter] WHERE [RowId]=?", withArgumentsInArray: [taskTemplateParameterId])
+        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TaskTemplateId], [ParameterName], [ParameterType], [ParameterDisplay], [Collect], [ReferenceDataType], [ReferenceDataExtendedType], [Ordinal] FROM [TaskTemplateParameter] WHERE [RowId]=?", withArgumentsInArray: [taskTemplateParameterId])
         if (resultSet != nil) {
             while resultSet.next() {
                 var resultTaskTemplateParameter: TaskTemplateParameter = TaskTemplateParameter()
@@ -3365,14 +3711,14 @@ class ModelManager: NSObject {
                 taskTemplateParameter = resultTaskTemplateParameter
             }
         }
-        sharedInstance.database!.close()
+        sharedModelManager.database!.close()
         return taskTemplateParameter
     }
     
-    func getAllTaskTemplateParameter() -> NSMutableArray {
-        sharedInstance.database!.open()
-        let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TaskTemplateId], [ParameterName], [ParameterType], [ParameterDisplay], [Collect], [ReferenceDataType], [ReferenceDataExtendedType], [Ordinal] FROM [TaskTemplateParameter]", withArgumentsInArray: nil)
-        let taskTemplateParameters : NSMutableArray = NSMutableArray()
+    func getAllTaskTemplateParameter() -> [TaskTemplateParameter] {
+        sharedModelManager.database!.open()
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TaskTemplateId], [ParameterName], [ParameterType], [ParameterDisplay], [Collect], [ReferenceDataType], [ReferenceDataExtendedType], [Ordinal] FROM [TaskTemplateParameter]", withArgumentsInArray: nil)
+        var taskTemplateParameterList: [TaskTemplateParameter] = [TaskTemplateParameter]()
         if (resultSet != nil) {
             while resultSet.next() {
                 let taskTemplateParameter : TaskTemplateParameter = TaskTemplateParameter()
@@ -3404,59 +3750,86 @@ class ModelManager: NSObject {
                 }
                 taskTemplateParameter.Ordinal = Int(resultSet.intForColumn("Ordinal"))
                 
-                taskTemplateParameters.addObject(taskTemplateParameter)
+                taskTemplateParameterList.append(taskTemplateParameter)
             }
         }
-        sharedInstance.database!.close()
-        return taskTemplateParameters
+        sharedModelManager.database!.close()
+        return taskTemplateParameterList
     }
     
-    func findTaskTemplateParameters(criteria: NSDictionary) -> NSMutableArray {
+    func findTaskTemplateParameterList(criteria: Dictionary<String, AnyObject>) -> [TaskTemplateParameter] {
+        var list: [TaskTemplateParameter] = [TaskTemplateParameter]()
+        var count: Int32 = 0
+        (list, count) = findTaskTemplateParameterList(criteria, pageSize: nil, pageNumber: nil)
+        return list
+    }
+    
+    func findTaskTemplateParameterList(criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [TaskTemplateParameter], Count: Int32) {
+        //return variables
+        var count: Int32 = 0
+        var taskTemplateParameterList: [TaskTemplateParameter] = [TaskTemplateParameter]()
+        
+        //build the where clause
         var whereClause: String = String()
         var whereValues: [AnyObject] = [AnyObject]()
         
         (whereClause, whereValues) = buildWhereClause(criteria)
         
-        sharedInstance.database!.open()
-        let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TaskTemplateId], [ParameterName], [ParameterType], [ParameterDisplay], [Collect], [ReferenceDataType], [ReferenceDataExtendedType], [Ordinal] FROM [TaskTemplateParameter] WHERE " + whereClause, withArgumentsInArray: whereValues)
-        let taskTemplateParameters : NSMutableArray = NSMutableArray()
-        if (resultSet != nil) {
-            while resultSet.next() {
-                let taskTemplateParameter : TaskTemplateParameter = TaskTemplateParameter()
-                taskTemplateParameter.RowId = resultSet.stringForColumn("RowId")
-                taskTemplateParameter.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                taskTemplateParameter.CreatedOn = resultSet.dateForColumn("CreatedOn")
-                if !resultSet.columnIsNull("LastUpdatedBy")
-                {
-                    taskTemplateParameter.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
-                }
-                if !resultSet.columnIsNull("LastUpdatedOn")
-                {
-                    taskTemplateParameter.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
-                }
-                if !resultSet.columnIsNull("Deleted")
-                {
-                    taskTemplateParameter.Deleted = resultSet.dateForColumn("Deleted")
-                }
-                taskTemplateParameter.TaskTemplateId = resultSet.stringForColumn("TaskTemplateId")
-                taskTemplateParameter.ParameterName = resultSet.stringForColumn("ParameterName")
-                taskTemplateParameter.ParameterType = resultSet.stringForColumn("ParameterType")
-                taskTemplateParameter.ParameterDisplay = resultSet.stringForColumn("ParameterDisplay")
-                taskTemplateParameter.Collect = resultSet.boolForColumn("Collect")
-                if !resultSet.columnIsNull("ReferenceDataType") {
-                    taskTemplateParameter.ReferenceDataType = resultSet.stringForColumn("ReferenceDataType")
-                }
-                if !resultSet.columnIsNull("ReferenceDataExtendedType") {
-                    taskTemplateParameter.ReferenceDataExtendedType = resultSet.stringForColumn("ReferenceDataExtendedType")
-                }
-                taskTemplateParameter.Ordinal = Int(resultSet.intForColumn("Ordinal"))
-                
-                taskTemplateParameters.addObject(taskTemplateParameter)
+        sharedModelManager.database!.open()
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [TaskTemplateParameter] WHERE " + whereClause, withArgumentsInArray: whereValues)
+        if (countSet != nil) {
+            while countSet.next() {
+                count = countSet.intForColumnIndex(0)
             }
         }
         
-        sharedInstance.database!.close()
-        return taskTemplateParameters
+        if (count > 0)
+        {
+            var pageClause: String = String()
+            if (pageSize != nil && pageNumber != nil)
+            {
+                pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
+            }
+            
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TaskTemplateId], [ParameterName], [ParameterType], [ParameterDisplay], [Collect], [ReferenceDataType], [ReferenceDataExtendedType], [Ordinal] FROM [TaskTemplateParameter] WHERE " + whereClause + pageClause, withArgumentsInArray: whereValues)
+            if (resultSet != nil) {
+                while resultSet.next() {
+                    let taskTemplateParameter : TaskTemplateParameter = TaskTemplateParameter()
+                    taskTemplateParameter.RowId = resultSet.stringForColumn("RowId")
+                    taskTemplateParameter.CreatedBy = resultSet.stringForColumn("CreatedBy")
+                    taskTemplateParameter.CreatedOn = resultSet.dateForColumn("CreatedOn")
+                    if !resultSet.columnIsNull("LastUpdatedBy")
+                    {
+                        taskTemplateParameter.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                    }
+                    if !resultSet.columnIsNull("LastUpdatedOn")
+                    {
+                        taskTemplateParameter.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                    }
+                    if !resultSet.columnIsNull("Deleted")
+                    {
+                        taskTemplateParameter.Deleted = resultSet.dateForColumn("Deleted")
+                    }
+                    taskTemplateParameter.TaskTemplateId = resultSet.stringForColumn("TaskTemplateId")
+                    taskTemplateParameter.ParameterName = resultSet.stringForColumn("ParameterName")
+                    taskTemplateParameter.ParameterType = resultSet.stringForColumn("ParameterType")
+                    taskTemplateParameter.ParameterDisplay = resultSet.stringForColumn("ParameterDisplay")
+                    taskTemplateParameter.Collect = resultSet.boolForColumn("Collect")
+                    if !resultSet.columnIsNull("ReferenceDataType") {
+                        taskTemplateParameter.ReferenceDataType = resultSet.stringForColumn("ReferenceDataType")
+                    }
+                    if !resultSet.columnIsNull("ReferenceDataExtendedType") {
+                        taskTemplateParameter.ReferenceDataExtendedType = resultSet.stringForColumn("ReferenceDataExtendedType")
+                    }
+                    taskTemplateParameter.Ordinal = Int(resultSet.intForColumn("Ordinal"))
+                    
+                    taskTemplateParameterList.append(taskTemplateParameter)
+                }
+            }
+        }
+        
+        sharedModelManager.database!.close()
+        return (taskTemplateParameterList, count)
     }
 }
 

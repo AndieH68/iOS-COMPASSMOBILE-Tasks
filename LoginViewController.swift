@@ -72,21 +72,17 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         if username == "" || password == ""
         {
-            MessageLabel.text = ""
             ValidationLabel.hidden = false
             return
         }
         
-        MessageLabel.text = "Connecting to Server..."
-        
-        isRemoteAvailable = Reachability().connectedToNetwork()
+         isRemoteAvailable = Reachability().connectedToNetwork()
  
        
         if isRemoteAvailable {
             let data: NSData? = WebService.validateOperative(username!, password: password!)
             
             if data == nil{
-                MessageLabel.text = ""
                 ValidationLabel.hidden = false
                 ValidationLabel.text = "error with web service"
                 return
@@ -97,13 +93,15 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             if response.name == "soap:Fault"
             {
                 //fault code here
+                ValidationLabel.text = "Network error"
+                ValidationLabel.hidden = false
+                return
             }
         
             let operativeId = response["ValidateOperativeResult"].value
         
             if operativeId == nil || operativeId!.containsString("not found")
             {
-                MessageLabel.text = ""
                 ValidationLabel.hidden = false
                 return
             }
@@ -113,9 +111,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             }
         }
         
-        
-        MessageLabel.text = "Connecting to Client...."
-                
         //initialise local database connection
         
         var newOperative: Bool = false
@@ -124,11 +119,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         criteria["Username"] = username!
         criteria["Password"] = password!
         
-        let operatives: NSMutableArray = ModelManager.getInstance().findOperatives(criteria)
+        var operatives: [Operative] = [Operative]()
+        var count: Int32 = 0
+        (operatives, count) = ModelManager.getInstance().findOperativeList(criteria, pageSize: 1, pageNumber: 1)
         
-        if operatives.count == 1
+        if count == 1
         {
-            let operative: Operative = operatives[0] as! Operative
+            let operative: Operative = operatives[0]
             Session.OperativeId = operative.RowId
             Session.OrganisationId = operative.OrganisationId
             
@@ -144,14 +141,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         if Session.OperativeId == nil
         {
-            MessageLabel.text = ""
             ValidationLabel.hidden = false
             return
         }
-        
-        //Send any tasks which are marked as closed on this device since the last synchronisation of this device
-        //Session.SendTasks()
-        
+
         //if the newOperative flag is set, the operative is present on COMPASS but not in the local database
         //therefore we must bring down the operative synchronisation package to ensure operatives are updated
         if newOperative {
@@ -165,7 +158,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 let data: NSData? = WebService.getSynchronisationPackage(Session.OperativeId!, synchronisationDate: synchronisationDate, lastRowId: lastRowId, stage: stage)
 
                 if data == nil{
-                    MessageLabel.text = ""
                     ValidationLabel.hidden = false
                     ValidationLabel.text = "error with web service"
                     return
@@ -175,8 +167,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 
                 if response.name == "soap:Fault"
                 {
-                    //fault code here
-                }
+                    ValidationLabel.text = "Network error"
+                    ValidationLabel.hidden = false
+                    return                }
                 
                 let SynchronisationPackageData: NSData = (response["GetSynchronisationPackageResult"].value! as NSString).dataUsingEncoding(NSUTF8StringEncoding)!
                 
@@ -189,7 +182,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 }
                 
                 //check for empty pacakage
-                
+               
                 lastRowId = Utility.importData(SynchronisationPackageDocument!.children[0], entityType: .Operative)
             }
         
@@ -197,7 +190,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             
             if Session.OperativeId == nil
             {
-                MessageLabel.text = ""
                 ValidationLabel.hidden = false
                 return
             }
@@ -205,13 +197,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             Session.OrganisationId = operative?.OrganisationId
         
         }
-        
-        //Synchronous call, but this may be skipped is we are fetching data in the back ground
-        let synchronisationDate: NSDate = BaseDate
-        Utility.synchroniseData(synchronisationDate)
-        
-        //Code to dismiss the login screen and go to the main taks screen
-        Utility.invokeAlertMethod("Logged in", strBody: "User details found", delegate: nil)
         
         self.dismissViewControllerAnimated(true, completion: nil)
      }
