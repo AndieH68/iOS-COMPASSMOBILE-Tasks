@@ -33,8 +33,10 @@
 		A45CD6EB1C577D9E00C17BD7 /* TaskParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A45CD6EA1C577D9E00C17BD7 /* TaskParameter.swift */; };
 		A45CD6ED1C577DA800C17BD7 /* TaskTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A45CD6EC1C577DA800C17BD7 /* TaskTemplate.swift */; };
 		A45CD6EF1C577DB600C17BD7 /* TaskTemplateParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A45CD6EE1C577DB600C17BD7 /* TaskTemplateParameter.swift */; };
+		A49455E91C7CBED600BE6247 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49455E81C7CBED600BE6247 /* MainViewController.swift */; };
+		A49455EC1C7CBF2300BE6247 /* ModelUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49455EB1C7CBF2300BE6247 /* ModelUtility.swift */; };
+		A49455EE1C7CBF7500BE6247 /* TaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49455ED1C7CBF7500BE6247 /* TaskCell.swift */; };
 		A4A522F01C43F4A500D16A9A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A522EF1C43F4A500D16A9A /* AppDelegate.swift */; };
-		A4A522F21C43F4A500D16A9A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A522F11C43F4A500D16A9A /* ViewController.swift */; };
 		A4A522F51C43F4A500D16A9A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4A522F31C43F4A500D16A9A /* Main.storyboard */; };
 		A4A522F81C43F4A500D16A9A /* COMPASSMOBILE.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A4A522F61C43F4A500D16A9A /* COMPASSMOBILE.xcdatamodeld */; };
 		A4A522FA1C43F4A500D16A9A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A4A522F91C43F4A500D16A9A /* Assets.xcassets */; };
@@ -87,9 +89,11 @@
 		A45CD6EA1C577D9E00C17BD7 /* TaskParameter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskParameter.swift; sourceTree = "<group>"; };
 		A45CD6EC1C577DA800C17BD7 /* TaskTemplate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskTemplate.swift; sourceTree = "<group>"; };
 		A45CD6EE1C577DB600C17BD7 /* TaskTemplateParameter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskTemplateParameter.swift; sourceTree = "<group>"; };
+		A49455E81C7CBED600BE6247 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		A49455EB1C7CBF2300BE6247 /* ModelUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelUtility.swift; sourceTree = "<group>"; };
+		A49455ED1C7CBF7500BE6247 /* TaskCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskCell.swift; sourceTree = "<group>"; };
 		A4A522EC1C43F4A500D16A9A /* COMPASSMOBILE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = COMPASSMOBILE.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4A522EF1C43F4A500D16A9A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		A4A522F11C43F4A500D16A9A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		A4A522F41C43F4A500D16A9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A4A522F71C43F4A500D16A9A /* COMPASSMOBILE.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = COMPASSMOBILE.xcdatamodel; sourceTree = "<group>"; };
 		A4A522F91C43F4A500D16A9A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -140,6 +144,12 @@
 		A43C14091C514049001162ED /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				A40BB54A1C4FDFC0005C2AE6 /* Reachability.swift */,
+				A4034A831C51040300615D95 /* Session.swift */,
+				A43C140A1C514478001162ED /* WebService.swift */,
+				A40BB5601C4FED9E005C2AE6 /* Utility.swift */,
+				A43C140C1C522ABB001162ED /* Constants.swift */,
+				A4EDA3921C4E98C900667987 /* AEXML.swift */,
 				A4A522FE1C43F4A500D16A9A /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -165,6 +175,24 @@
 			name = Entity;
 			sourceTree = "<group>";
 		};
+		A49455E71C7CBEB600BE6247 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				A407DA7F1C44105700251228 /* LoginViewController.swift */,
+				A49455E81C7CBED600BE6247 /* MainViewController.swift */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		A49455EA1C7CBEDE00BE6247 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				A4A522FB1C43F4A500D16A9A /* LaunchScreen.storyboard */,
+				A4A522F31C43F4A500D16A9A /* Main.storyboard */,
+			);
+			name = Storyboards;
+			sourceTree = "<group>";
+		};
 		A4A522E31C43F4A500D16A9A = {
 			isa = PBXGroup;
 			children = (
@@ -186,24 +214,17 @@
 		A4A522EE1C43F4A500D16A9A /* COMPASSMOBILE */ = {
 			isa = PBXGroup;
 			children = (
+				A49455ED1C7CBF7500BE6247 /* TaskCell.swift */,
+				A49455EA1C7CBEDE00BE6247 /* Storyboards */,
+				A49455E71C7CBEB600BE6247 /* ViewControllers */,
 				A40BB54C1C4FE958005C2AE6 /* COMPASSMOBILE-Bridging-Header.h */,
 				A4034A851C5132EE00615D95 /* COMPASSDB.sqlite */,
-				A4EDA3921C4E98C900667987 /* AEXML.swift */,
 				A4A522EF1C43F4A500D16A9A /* AppDelegate.swift */,
-				A407DA7F1C44105700251228 /* LoginViewController.swift */,
-				A40BB54A1C4FDFC0005C2AE6 /* Reachability.swift */,
-				A4034A831C51040300615D95 /* Session.swift */,
-				A40BB5601C4FED9E005C2AE6 /* Utility.swift */,
-				A4A522F11C43F4A500D16A9A /* ViewController.swift */,
-				A43C140A1C514478001162ED /* WebService.swift */,
 				A4A522F91C43F4A500D16A9A /* Assets.xcassets */,
 				A4A522F61C43F4A500D16A9A /* COMPASSMOBILE.xcdatamodeld */,
 				A40BB55F1C4FED18005C2AE6 /* FMDB */,
-				A4A522FB1C43F4A500D16A9A /* LaunchScreen.storyboard */,
-				A4A522F31C43F4A500D16A9A /* Main.storyboard */,
 				A4EDA3941C4EA53100667987 /* models */,
 				A43C14091C514049001162ED /* Supporting Files */,
-				A43C140C1C522ABB001162ED /* Constants.swift */,
 			);
 			path = COMPASSMOBILE;
 			sourceTree = "<group>";
@@ -211,6 +232,7 @@
 		A4EDA3941C4EA53100667987 /* models */ = {
 			isa = PBXGroup;
 			children = (
+				A49455EB1C7CBF2300BE6247 /* ModelUtility.swift */,
 				A45CD6F01C579B3B00C17BD7 /* Entity */,
 				A40BB5641C4FF0A7005C2AE6 /* ModelManager.swift */,
 			);
@@ -323,17 +345,19 @@
 				A45CD6DF1C577D5100C17BD7 /* LocationGroup.swift in Sources */,
 				A4EDA3931C4E98C900667987 /* AEXML.swift in Sources */,
 				A45CD6DD1C577D4200C17BD7 /* Location.swift in Sources */,
+				A49455EC1C7CBF2300BE6247 /* ModelUtility.swift in Sources */,
 				A45CD6ED1C577DA800C17BD7 /* TaskTemplate.swift in Sources */,
 				A4EDA3961C4EA55500667987 /* ReferenceData.swift in Sources */,
 				A45CD6E71C577D8E00C17BD7 /* Property.swift in Sources */,
 				A45CD6EF1C577DB600C17BD7 /* TaskTemplateParameter.swift in Sources */,
 				A45CD6EB1C577D9E00C17BD7 /* TaskParameter.swift in Sources */,
+				A49455E91C7CBED600BE6247 /* MainViewController.swift in Sources */,
 				A40BB5651C4FF0A7005C2AE6 /* ModelManager.swift in Sources */,
+				A49455EE1C7CBF7500BE6247 /* TaskCell.swift in Sources */,
 				A43C140B1C514478001162ED /* WebService.swift in Sources */,
 				A45CD6E91C577D9600C17BD7 /* Task.swift in Sources */,
 				A407DA801C44105700251228 /* LoginViewController.swift in Sources */,
 				A4034A801C4FF41700615D95 /* Operative.swift in Sources */,
-				A4A522F21C43F4A500D16A9A /* ViewController.swift in Sources */,
 				A45CD6E51C577D8000C17BD7 /* Site.swift in Sources */,
 				A45CD6E11C577D6100C17BD7 /* LocationGroupMembership.swift in Sources */,
 				A45CD6E31C577D7600C17BD7 /* Organisation.swift in Sources */,
