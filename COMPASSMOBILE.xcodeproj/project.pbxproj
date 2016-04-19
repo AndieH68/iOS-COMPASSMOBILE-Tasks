@@ -20,6 +20,11 @@
 		A40BB55E1C4FE9D7005C2AE6 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A40BB55D1C4FE9D7005C2AE6 /* libsqlite3.0.tbd */; };
 		A40BB5611C4FED9E005C2AE6 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A40BB5601C4FED9E005C2AE6 /* Utility.swift */; };
 		A40BB5651C4FF0A7005C2AE6 /* ModelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A40BB5641C4FF0A7005C2AE6 /* ModelManager.swift */; };
+		A420ACE11C7F64A5003D4CA3 /* DownloadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A420ACE01C7F64A5003D4CA3 /* DownloadViewController.swift */; };
+		A420ACE31C7F64D0003D4CA3 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A420ACE21C7F64D0003D4CA3 /* SearchViewController.swift */; };
+		A420ACE71C7F6507003D4CA3 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A420ACE61C7F6507003D4CA3 /* FilterViewController.swift */; };
+		A420ACE91C7F6562003D4CA3 /* UploadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A420ACE81C7F6562003D4CA3 /* UploadViewController.swift */; };
+		A420ACEB1C7F656E003D4CA3 /* AddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A420ACEA1C7F656E003D4CA3 /* AddViewController.swift */; };
 		A43C140B1C514478001162ED /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43C140A1C514478001162ED /* WebService.swift */; };
 		A43C140D1C522ABB001162ED /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43C140C1C522ABB001162ED /* Constants.swift */; };
 		A45CD6DB1C577D3000C17BD7 /* Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = A45CD6DA1C577D3000C17BD7 /* Asset.swift */; };
@@ -40,7 +45,6 @@
 		A4A522F51C43F4A500D16A9A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4A522F31C43F4A500D16A9A /* Main.storyboard */; };
 		A4A522F81C43F4A500D16A9A /* COMPASSMOBILE.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A4A522F61C43F4A500D16A9A /* COMPASSMOBILE.xcdatamodeld */; };
 		A4A522FA1C43F4A500D16A9A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A4A522F91C43F4A500D16A9A /* Assets.xcassets */; };
-		A4A522FD1C43F4A500D16A9A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4A522FB1C43F4A500D16A9A /* LaunchScreen.storyboard */; };
 		A4EDA3931C4E98C900667987 /* AEXML.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4EDA3921C4E98C900667987 /* AEXML.swift */; };
 		A4EDA3961C4EA55500667987 /* ReferenceData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4EDA3951C4EA55500667987 /* ReferenceData.swift */; };
 /* End PBXBuildFile section */
@@ -76,6 +80,11 @@
 		A40BB55D1C4FE9D7005C2AE6 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		A40BB5601C4FED9E005C2AE6 /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 		A40BB5641C4FF0A7005C2AE6 /* ModelManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelManager.swift; sourceTree = "<group>"; };
+		A420ACE01C7F64A5003D4CA3 /* DownloadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadViewController.swift; sourceTree = "<group>"; };
+		A420ACE21C7F64D0003D4CA3 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		A420ACE61C7F6507003D4CA3 /* FilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
+		A420ACE81C7F6562003D4CA3 /* UploadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadViewController.swift; sourceTree = "<group>"; };
+		A420ACEA1C7F656E003D4CA3 /* AddViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddViewController.swift; sourceTree = "<group>"; };
 		A43C140A1C514478001162ED /* WebService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
 		A43C140C1C522ABB001162ED /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		A45CD6DA1C577D3000C17BD7 /* Asset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Asset.swift; sourceTree = "<group>"; };
@@ -97,7 +106,6 @@
 		A4A522F41C43F4A500D16A9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A4A522F71C43F4A500D16A9A /* COMPASSMOBILE.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = COMPASSMOBILE.xcdatamodel; sourceTree = "<group>"; };
 		A4A522F91C43F4A500D16A9A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		A4A522FC1C43F4A500D16A9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A4A522FE1C43F4A500D16A9A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A4A523031C43F4A500D16A9A /* COMPASSMOBILETests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = COMPASSMOBILETests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4EDA3921C4E98C900667987 /* AEXML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AEXML.swift; path = ../AEXML.swift; sourceTree = "<group>"; };
@@ -178,8 +186,13 @@
 		A49455E71C7CBEB600BE6247 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				A420ACE01C7F64A5003D4CA3 /* DownloadViewController.swift */,
 				A407DA7F1C44105700251228 /* LoginViewController.swift */,
 				A49455E81C7CBED600BE6247 /* MainViewController.swift */,
+				A420ACE21C7F64D0003D4CA3 /* SearchViewController.swift */,
+				A420ACE61C7F6507003D4CA3 /* FilterViewController.swift */,
+				A420ACE81C7F6562003D4CA3 /* UploadViewController.swift */,
+				A420ACEA1C7F656E003D4CA3 /* AddViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -187,7 +200,6 @@
 		A49455EA1C7CBEDE00BE6247 /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
-				A4A522FB1C43F4A500D16A9A /* LaunchScreen.storyboard */,
 				A4A522F31C43F4A500D16A9A /* Main.storyboard */,
 			);
 			name = Storyboards;
@@ -214,15 +226,15 @@
 		A4A522EE1C43F4A500D16A9A /* COMPASSMOBILE */ = {
 			isa = PBXGroup;
 			children = (
-				A49455ED1C7CBF7500BE6247 /* TaskCell.swift */,
+				A40BB55F1C4FED18005C2AE6 /* FMDB */,
 				A49455EA1C7CBEDE00BE6247 /* Storyboards */,
 				A49455E71C7CBEB600BE6247 /* ViewControllers */,
 				A40BB54C1C4FE958005C2AE6 /* COMPASSMOBILE-Bridging-Header.h */,
 				A4034A851C5132EE00615D95 /* COMPASSDB.sqlite */,
 				A4A522EF1C43F4A500D16A9A /* AppDelegate.swift */,
+				A49455ED1C7CBF7500BE6247 /* TaskCell.swift */,
 				A4A522F91C43F4A500D16A9A /* Assets.xcassets */,
 				A4A522F61C43F4A500D16A9A /* COMPASSMOBILE.xcdatamodeld */,
-				A40BB55F1C4FED18005C2AE6 /* FMDB */,
 				A4EDA3941C4EA53100667987 /* models */,
 				A43C14091C514049001162ED /* Supporting Files */,
 			);
@@ -232,8 +244,8 @@
 		A4EDA3941C4EA53100667987 /* models */ = {
 			isa = PBXGroup;
 			children = (
-				A49455EB1C7CBF2300BE6247 /* ModelUtility.swift */,
 				A45CD6F01C579B3B00C17BD7 /* Entity */,
+				A49455EB1C7CBF2300BE6247 /* ModelUtility.swift */,
 				A40BB5641C4FF0A7005C2AE6 /* ModelManager.swift */,
 			);
 			name = models;
@@ -321,7 +333,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A4034A861C5132EE00615D95 /* COMPASSDB.sqlite in Resources */,
-				A4A522FD1C43F4A500D16A9A /* LaunchScreen.storyboard in Resources */,
 				A4A522FA1C43F4A500D16A9A /* Assets.xcassets in Resources */,
 				A4A522F51C43F4A500D16A9A /* Main.storyboard in Resources */,
 			);
@@ -342,6 +353,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A40BB54B1C4FDFC0005C2AE6 /* Reachability.swift in Sources */,
+				A420ACE91C7F6562003D4CA3 /* UploadViewController.swift in Sources */,
+				A420ACEB1C7F656E003D4CA3 /* AddViewController.swift in Sources */,
 				A45CD6DF1C577D5100C17BD7 /* LocationGroup.swift in Sources */,
 				A4EDA3931C4E98C900667987 /* AEXML.swift in Sources */,
 				A45CD6DD1C577D4200C17BD7 /* Location.swift in Sources */,
@@ -353,12 +366,15 @@
 				A45CD6EB1C577D9E00C17BD7 /* TaskParameter.swift in Sources */,
 				A49455E91C7CBED600BE6247 /* MainViewController.swift in Sources */,
 				A40BB5651C4FF0A7005C2AE6 /* ModelManager.swift in Sources */,
+				A420ACE31C7F64D0003D4CA3 /* SearchViewController.swift in Sources */,
 				A49455EE1C7CBF7500BE6247 /* TaskCell.swift in Sources */,
 				A43C140B1C514478001162ED /* WebService.swift in Sources */,
+				A420ACE11C7F64A5003D4CA3 /* DownloadViewController.swift in Sources */,
 				A45CD6E91C577D9600C17BD7 /* Task.swift in Sources */,
 				A407DA801C44105700251228 /* LoginViewController.swift in Sources */,
 				A4034A801C4FF41700615D95 /* Operative.swift in Sources */,
 				A45CD6E51C577D8000C17BD7 /* Site.swift in Sources */,
+				A420ACE71C7F6507003D4CA3 /* FilterViewController.swift in Sources */,
 				A45CD6E11C577D6100C17BD7 /* LocationGroupMembership.swift in Sources */,
 				A45CD6E31C577D7600C17BD7 /* Organisation.swift in Sources */,
 				A40BB5591C4FE958005C2AE6 /* FMDatabaseAdditions.m in Sources */,
@@ -399,14 +415,6 @@
 				A4A522F41C43F4A500D16A9A /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		A4A522FB1C43F4A500D16A9A /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				A4A522FC1C43F4A500D16A9A /* Base */,
-			);
-			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
