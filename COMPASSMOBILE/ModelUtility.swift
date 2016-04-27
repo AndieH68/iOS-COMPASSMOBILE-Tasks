@@ -35,20 +35,20 @@ class ModelUtility: NSObject {
         return key
     }
     
-    func SystemKey(type: String, value: String)-> String {
-        return SystemKey(type, value: value, parentType: nil, parentValue: nil)
+    func ReferenceDataValueFromDisplay(type: String, value: String)-> String {
+        return ReferenceDataValueFromDisplay(type, value: value, parentType: nil, parentValue: nil)
     }
     
-    func SystemKey(type: String, value: String, parentType: String?, parentValue: String?) -> String {
+    func ReferenceDataValueFromDisplay(type: String, value: String, parentType: String?, parentValue: String?) -> String {
         guard let key = GetReverseReferenceDataList(type, parentType: parentType, parentValue: parentValue)[value] else {return ""}
         return key
     }
     
-    func SystemValue(type: String, key: String) -> String {
-        return SystemValue(type, key: key, parentType: nil, parentValue: nil)
+    func ReferenceDataDisplayFromValue(type: String, key: String) -> String {
+        return ReferenceDataDisplayFromValue(type, key: key, parentType: nil, parentValue: nil)
     }
     
-    func SystemValue(type: String, key: String, parentType: String?, parentValue: String?) -> String {
+    func ReferenceDataDisplayFromValue(type: String, key: String, parentType: String?, parentValue: String?) -> String {
         guard let value = GetReferenceDataList(type, parentType: parentType, parentValue: parentValue)[key] else {return ""}
         return value
     }
@@ -92,12 +92,12 @@ class ModelUtility: NSObject {
             var reverseReferenceDataList: Dictionary<String, String> = Dictionary<String, String>()
             
             //build the criteria
-            var criteria: Dictionary<String,AnyObject> = Dictionary<String,AnyObject>()
+            var criteria: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
             criteria["Type"] = type
             if (parentType != nil && parentValue != nil)
             {
-                criteria["ParentType"] = parentType!
-                criteria["ParentValue"] = parentValue!
+                criteria["ParentType"] = parentType! as String
+                criteria["ParentValue"] = parentValue! as String
             }
             
             //get the list of reference data from the databse

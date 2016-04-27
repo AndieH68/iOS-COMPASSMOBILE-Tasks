@@ -89,13 +89,13 @@ class ReferenceData: NSObject{
         if XMLElement.attributes.keys.contains("ParentType") {
             if XMLElement.attributes["ParentType"] != ""
             {
-                self.LastUpdatedBy = XMLElement.attributes["ParentType"]!
+                self.ParentType = XMLElement.attributes["ParentType"]!
             }
         }
         if XMLElement.attributes.keys.contains("ParentValue") {
             if XMLElement.attributes["ParentValue"] != ""
             {
-                self.LastUpdatedBy = XMLElement.attributes["ParentValue"]!
+                self.ParentValue = XMLElement.attributes["ParentValue"]!
             }
         }
     }

@@ -13,7 +13,7 @@ enum EntityType: Int32 {
 }
 
 enum TaskSortOrder: Int32 {
-    case Date = 1, Location = 2, Type = 3, Task = 4 //, Route = 5
+    case Date = 1, Location = 2, AssetType = 3, Task = 4 //, Route = 5
 }
 
 enum TaskPeriod: Int32 {

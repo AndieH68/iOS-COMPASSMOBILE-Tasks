@@ -46,7 +46,7 @@ class WebService : NSObject {
         return data
     }
 
-    class func getSynchronisationPackage (operativeId: String, synchronisationDate: NSDate, lastRowId: String, stage: Int32) -> NSData? {
+    class func getSynchronisationPackageSync (operativeId: String, synchronisationDate: NSDate, lastRowId: String, stage: Int32) -> NSData? {
         
         let urlString = "http://compass2.hydrop.com/services/servicepdautility2.asmx"
         let url = NSURL(string: urlString)

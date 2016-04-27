@@ -33,7 +33,12 @@ class Session : NSObject
     static var FilterLcoation: String? = String?()
     static var FilterAssetName: String? = String?()
     
+    static var TaskSort: TaskSortOrder = TaskSortOrder.Date
     static var TaskCount: Int32 = 0
+    
+    static var PageNumber: Int32 = 1
+    static var PageSize: Int32 = 20
+    static var MaxPage: Int32 = 1
     
     class func BuildCriteriaFromSession() -> Dictionary<String, String> {
         var criteria: Dictionary<String, String> = Dictionary<String, String>()
@@ -43,7 +48,7 @@ class Session : NSObject
         if (Session.FilterFrequency != nil) { criteria["Frequency"] = Session.FilterFrequency! }
         
         //treat scheduled date differently
-        //if (Session.FilterSiteId != nil) { criteria["SiteId"] = Session.FilterSiteId! }
+        //if (Session.FilterPeriod != nil) { criteria["Period"] = Session.FilterPeriod! }
         
         if (Session.FilterAssetGroup != nil) { criteria["PPMGroup"] = Session.FilterAssetGroup! }
         if (Session.FilterTaskName != nil) { criteria["TaskName"] = Session.FilterTaskName! }

@@ -209,6 +209,7 @@
 			isa = PBXGroup;
 			children = (
 				A40BB55D1C4FE9D7005C2AE6 /* libsqlite3.0.tbd */,
+				A4A522F61C43F4A500D16A9A /* COMPASSMOBILE.xcdatamodeld */,
 				A4A522EE1C43F4A500D16A9A /* COMPASSMOBILE */,
 				A4A522ED1C43F4A500D16A9A /* Products */,
 			);
@@ -229,12 +230,11 @@
 				A40BB55F1C4FED18005C2AE6 /* FMDB */,
 				A49455EA1C7CBEDE00BE6247 /* Storyboards */,
 				A49455E71C7CBEB600BE6247 /* ViewControllers */,
-				A40BB54C1C4FE958005C2AE6 /* COMPASSMOBILE-Bridging-Header.h */,
 				A4034A851C5132EE00615D95 /* COMPASSDB.sqlite */,
 				A4A522EF1C43F4A500D16A9A /* AppDelegate.swift */,
 				A49455ED1C7CBF7500BE6247 /* TaskCell.swift */,
 				A4A522F91C43F4A500D16A9A /* Assets.xcassets */,
-				A4A522F61C43F4A500D16A9A /* COMPASSMOBILE.xcdatamodeld */,
+				A40BB54C1C4FE958005C2AE6 /* COMPASSMOBILE-Bridging-Header.h */,
 				A4EDA3941C4EA53100667987 /* models */,
 				A43C14091C514049001162ED /* Supporting Files */,
 			);
@@ -533,7 +533,6 @@
 		A4A523101C43F4A500D16A9A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = COMPASSMOBILETests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = COM.HYDROP.COMPASSMOBILETests;
@@ -545,7 +544,6 @@
 		A4A523111C43F4A500D16A9A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = COMPASSMOBILETests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = COM.HYDROP.COMPASSMOBILETests;
@@ -593,7 +591,8 @@
 				A4A522F71C43F4A500D16A9A /* COMPASSMOBILE.xcdatamodel */,
 			);
 			currentVersion = A4A522F71C43F4A500D16A9A /* COMPASSMOBILE.xcdatamodel */;
-			path = COMPASSMOBILE.xcdatamodeld;
+			name = COMPASSMOBILE.xcdatamodeld;
+			path = COMPASSMOBILE/COMPASSMOBILE.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

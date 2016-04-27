@@ -155,7 +155,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
             while (lastRowId != EmptyGuid || count == 0) {
                 count += 1
-                let data: NSData? = WebService.getSynchronisationPackage(Session.OperativeId!, synchronisationDate: synchronisationDate, lastRowId: lastRowId, stage: stage)
+                let data: NSData? = WebService.getSynchronisationPackageSync(Session.OperativeId!, synchronisationDate: synchronisationDate, lastRowId: lastRowId, stage: stage)
 
                 if data == nil{
                     ValidationLabel.hidden = false

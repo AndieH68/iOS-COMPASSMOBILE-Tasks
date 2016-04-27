@@ -74,11 +74,18 @@ class Utility: NSObject {
     }
     
     // MARK: - Global
-    
     class func importData(packageData: AEXMLElement, entityType: EntityType) -> String {
+        let progressBar: UIProgressView = UIProgressView()
+        return importData(packageData, entityType: entityType,progressBar: progressBar)
+    }
+    
+    class func importData(packageData: AEXMLElement, entityType: EntityType, progressBar: UIProgressView) -> String {
         
         var lastDateInPackage: NSDate = BaseDate
         var lastRowId: String = EmptyGuid
+        
+        var current: Int = 0
+        var total: Int = 0
         
         switch entityType {
         
@@ -87,8 +94,12 @@ class Utility: NSObject {
             //get the data nodes
             let dataNode: AEXMLElement = packageData["Asset"]
             
+            total = dataNode.children.count
+            
             for childNode in dataNode.children
             {
+                current += 1
+                
                 //get the first child
                 let asset: Asset = Asset(XMLElement: childNode)
                 
@@ -115,15 +126,21 @@ class Utility: NSObject {
                     //no insert it
                     ModelManager.getInstance().updateAsset(asset)
                 }
+                
+                dispatch_async(dispatch_get_main_queue(),{progressBar.setProgress((Float(current) / Float(total)), animated: true)})
             }
             
         case .Location:
             
             //get the data nodes
             let dataNode: AEXMLElement = packageData["Location"]
+
+            total = dataNode.children.count
             
             for childNode in dataNode.children
             {
+                current += 1
+                
                 //get the first child
                 let location: Location = Location(XMLElement: childNode)
                 
@@ -150,6 +167,8 @@ class Utility: NSObject {
                     //no insert it
                     ModelManager.getInstance().updateLocation(location)
                 }
+                
+                dispatch_async(dispatch_get_main_queue(),{progressBar.setProgress((Float(current) / Float(total)), animated: true)})
             }
 
         case .LocationGroup:
@@ -157,8 +176,12 @@ class Utility: NSObject {
             //get the data nodes
             let dataNode: AEXMLElement = packageData["LocationGroup"]
             
+            total = dataNode.children.count
+            
             for childNode in dataNode.children
             {
+                current += 1
+                
                 //get the first child
                 let locationGroup: LocationGroup = LocationGroup(XMLElement: childNode)
                 
@@ -185,6 +208,8 @@ class Utility: NSObject {
                     //no insert it
                     ModelManager.getInstance().updateLocationGroup(locationGroup)
                 }
+                
+                dispatch_async(dispatch_get_main_queue(),{progressBar.setProgress((Float(current) / Float(total)), animated: true)})
             }
 
         case .LocationGroupMembership:
@@ -192,8 +217,12 @@ class Utility: NSObject {
             //get the data nodes
             let dataNode: AEXMLElement = packageData["LocationGroupMembership"]
             
+            total = dataNode.children.count
+            
             for childNode in dataNode.children
             {
+                current += 1
+                
                 //get the first child
                 let locationGroupMembership: LocationGroupMembership = LocationGroupMembership(XMLElement: childNode)
                 
@@ -220,6 +249,8 @@ class Utility: NSObject {
                     //no insert it
                     ModelManager.getInstance().updateLocationGroupMembership(locationGroupMembership)
                 }
+                
+                dispatch_async(dispatch_get_main_queue(),{progressBar.setProgress((Float(current) / Float(total)), animated: true)})
             }
             
         case .Operative:
@@ -227,8 +258,12 @@ class Utility: NSObject {
             //get the data nodes
             let dataNode: AEXMLElement = packageData["Operative"]
             
+            total = dataNode.children.count
+            
             for childNode in dataNode.children
             {
+                current += 1
+                
                 //get the first child
                 let operative: Operative = Operative(XMLElement: childNode)
                 
@@ -255,6 +290,8 @@ class Utility: NSObject {
                     //no insert it
                     ModelManager.getInstance().updateOperative(operative)
                 }
+                
+                dispatch_async(dispatch_get_main_queue(),{progressBar.setProgress((Float(current) / Float(total)), animated: true)})
             }
             
         case .Organisation:
@@ -262,8 +299,12 @@ class Utility: NSObject {
             //get the data nodes
             let dataNode: AEXMLElement = packageData["Organisation"]
             
+            total = dataNode.children.count
+            
             for childNode in dataNode.children
             {
+                current += 1
+                
                 //get the first child
                 let organisation: Organisation = Organisation(XMLElement: childNode)
                 
@@ -290,6 +331,8 @@ class Utility: NSObject {
                     //no insert it
                     ModelManager.getInstance().updateOrganisation(organisation)
                 }
+                
+                dispatch_async(dispatch_get_main_queue(),{progressBar.setProgress((Float(current) / Float(total)), animated: true)})
             }
 
         case .Site:
@@ -297,8 +340,12 @@ class Utility: NSObject {
             //get the data nodes
             let dataNode: AEXMLElement = packageData["Site"]
             
+            total = dataNode.children.count
+            
             for childNode in dataNode.children
             {
+                current += 1
+                
                 //get the first child
                 let site: Site = Site(XMLElement: childNode)
                 
@@ -325,6 +372,8 @@ class Utility: NSObject {
                     //no insert it
                     ModelManager.getInstance().updateSite(site)
                 }
+                
+                dispatch_async(dispatch_get_main_queue(),{progressBar.setProgress((Float(current) / Float(total)), animated: true)})
             }
             
         case .Property:
@@ -332,8 +381,12 @@ class Utility: NSObject {
             //get the data nodes
             let dataNode: AEXMLElement = packageData["Property"]
             
+            total = dataNode.children.count
+            
             for childNode in dataNode.children
             {
+                current += 1
+                
                 //get the first child
                 let property: Property = Property(XMLElement: childNode)
                 
@@ -360,6 +413,8 @@ class Utility: NSObject {
                     //no insert it
                     ModelManager.getInstance().updateProperty(property)
                 }
+                
+                dispatch_async(dispatch_get_main_queue(),{progressBar.setProgress((Float(current) / Float(total)), animated: true)})
             }
 
         case .ReferenceData:
@@ -367,8 +422,12 @@ class Utility: NSObject {
             //get the data nodes
             let dataNode: AEXMLElement = packageData["ReferenceData"]
             
+            total = dataNode.children.count
+            
             for childNode in dataNode.children
             {
+                current += 1
+                
                 //get the first child
                 let referenceData: ReferenceData = ReferenceData(XMLElement: childNode)
                 
@@ -395,15 +454,21 @@ class Utility: NSObject {
                     //no insert it
                     ModelManager.getInstance().updateReferenceData(referenceData)
                 }
-            }
+                
+                dispatch_async(dispatch_get_main_queue(),{progressBar.setProgress((Float(current) / Float(total)), animated: true)})
+           }
             
         case .Task:
             
             //get the data nodes
             let dataNode: AEXMLElement = packageData["Task"]
             
+            total = dataNode.children.count
+            
             for childNode in dataNode.children
             {
+                current += 1
+                
                 //get the first child
                 let task: Task = Task(XMLElement: childNode)
                 
@@ -430,6 +495,8 @@ class Utility: NSObject {
                     //no insert it
                     ModelManager.getInstance().updateTask(task)
                 }
+                
+                dispatch_async(dispatch_get_main_queue(),{progressBar.setProgress((Float(current) / Float(total)), animated: true)})
             }
 
         case .TaskParameter:
@@ -437,8 +504,12 @@ class Utility: NSObject {
             //get the data nodes
             let dataNode: AEXMLElement = packageData["TaskParameter"]
             
+            total = dataNode.children.count
+            
             for childNode in dataNode.children
             {
+                current += 1
+                
                 //get the first child
                 let taskParameter: TaskParameter = TaskParameter(XMLElement: childNode)
                 
@@ -465,6 +536,8 @@ class Utility: NSObject {
                     //no insert it
                     ModelManager.getInstance().updateTaskParameter(taskParameter)
                 }
+                
+                dispatch_async(dispatch_get_main_queue(),{progressBar.setProgress((Float(current) / Float(total)), animated: true)})
             }
 
         case .TaskTemplate:
@@ -472,8 +545,12 @@ class Utility: NSObject {
             //get the data nodes
             let dataNode: AEXMLElement = packageData["TaskTemplate"]
             
+            total = dataNode.children.count
+            
             for childNode in dataNode.children
             {
+                current += 1
+                
                 //get the first child
                 let taskTemplate: TaskTemplate = TaskTemplate(XMLElement: childNode)
                 
@@ -500,6 +577,8 @@ class Utility: NSObject {
                     //no insert it
                     ModelManager.getInstance().updateTaskTemplate(taskTemplate)
                 }
+                
+                dispatch_async(dispatch_get_main_queue(),{progressBar.setProgress((Float(current) / Float(total)), animated: true)})
             }
 
         case .TaskTemplateParameter:
@@ -507,8 +586,12 @@ class Utility: NSObject {
             //get the data nodes
             let dataNode: AEXMLElement = packageData["TaskTemplateParameter"]
             
+            total = dataNode.children.count
+            
             for childNode in dataNode.children
             {
+                current += 1
+                
                 //get the first child
                 let taskTemplateParameter: TaskTemplateParameter = TaskTemplateParameter(XMLElement: childNode)
                 
@@ -535,6 +618,8 @@ class Utility: NSObject {
                     //no insert it
                     ModelManager.getInstance().updateTaskTemplateParameter(taskTemplateParameter)
                 }
+                
+                dispatch_async(dispatch_get_main_queue(),{progressBar.setProgress((Float(current) / Float(total)), animated: true)})
             }
 
         //default:
@@ -545,32 +630,64 @@ class Utility: NSObject {
         return lastRowId
     }
     
-    class func SynchroniseData(synchronisationDate: NSDate) -> Bool {
+    class func SynchroniseAllData(stage: Int32, progressBar: UIProgressView) -> Bool {
         var SQLStatement: String
         var SQLParameterValues: [NSObject]
-        var synchronisationDateToUse: NSDate
-        SQLStatement = "SELECT LastSynchronisationDate FROM Synchronisation WHERE Type = 'Receive'"
+        var synchronisationDateToUse: NSDate = BaseDate
+        var synchronisationType: String = "Receive"
+        synchronisationType.appendContentsOf(String(stage))
+        
+        SQLStatement = "SELECT LastSynchronisationDate FROM Synchronisation WHERE Type = '" + synchronisationType + "'"
+        
         if let lastSynchronisationDate = ModelManager.getInstance().executeSingleDateReader(SQLStatement, SQLParameterValues: nil) {
             synchronisationDateToUse = lastSynchronisationDate
         }
-        else {
-          synchronisationDateToUse = synchronisationDate
-        }
         
-        if !refactoredGetAndImport(synchronisationDateToUse, stage: 1, entityType: EntityType.ReferenceData){ return false }
-        if !refactoredGetAndImport(synchronisationDateToUse, stage: 2, entityType: EntityType.Organisation){ return false }
-        if !refactoredGetAndImport(synchronisationDateToUse, stage: 3, entityType: EntityType.Site){ return false }
-        if !refactoredGetAndImport(synchronisationDateToUse, stage: 4, entityType: EntityType.Property){ return false }
-        if !refactoredGetAndImport(synchronisationDateToUse, stage: 5, entityType: EntityType.Location){ return false }
-        if !refactoredGetAndImport(synchronisationDateToUse, stage: 6, entityType: EntityType.LocationGroup){ return false }
-        if !refactoredGetAndImport(synchronisationDateToUse, stage: 7, entityType: EntityType.LocationGroupMembership){ return false }
-        if !refactoredGetAndImport(synchronisationDateToUse, stage: 8, entityType: EntityType.Asset){ return false }
-        if !refactoredGetAndImport(synchronisationDateToUse, stage: 10, entityType: EntityType.TaskTemplate){ return false }
-        if !refactoredGetAndImport(synchronisationDateToUse, stage: 11, entityType: EntityType.TaskTemplateParameter){ return false }
-        if !refactoredGetAndImport(synchronisationDateToUse, stage: 12, entityType: EntityType.Task){ return false }
+        switch stage{
+        
+        case 1:
+            if !refactoredGetAndImport(synchronisationDateToUse, stage: 1, entityType: EntityType.ReferenceData, progressBar: progressBar){ return false }
+            
+        case 2:
+            if !refactoredGetAndImport(synchronisationDateToUse, stage: 2, entityType: EntityType.Organisation, progressBar: progressBar){ return false }
+            
+        case 3:
+            if !refactoredGetAndImport(synchronisationDateToUse, stage: 3, entityType: EntityType.Site, progressBar: progressBar){ return false }
+            
+        case 4:
+            if !refactoredGetAndImport(synchronisationDateToUse, stage: 4, entityType: EntityType.Property, progressBar: progressBar){ return false }
+        
+        case 5:
+            if !refactoredGetAndImport(synchronisationDateToUse, stage: 5, entityType: EntityType.Location, progressBar: progressBar){ return false }
+            
+        case 6:
+            if !refactoredGetAndImport(synchronisationDateToUse, stage: 6, entityType: EntityType.LocationGroup, progressBar: progressBar){ return false }
+            
+        case 7:
+            if !refactoredGetAndImport(synchronisationDateToUse, stage: 7, entityType: EntityType.LocationGroupMembership, progressBar: progressBar){ return false }
+            
+        case 8:
+            if !refactoredGetAndImport(synchronisationDateToUse, stage: 8, entityType: EntityType.Asset, progressBar: progressBar){ return false }
+            
+        case 9:
+            if !refactoredGetAndImport(synchronisationDateToUse, stage: 9, entityType: EntityType.Operative, progressBar: progressBar){ return false }
+            
+        case 10:
+            if !refactoredGetAndImport(synchronisationDateToUse, stage: 10, entityType: EntityType.TaskTemplate, progressBar: progressBar){ return false }
+            
+        case 11:
+            if !refactoredGetAndImport(synchronisationDateToUse, stage: 11, entityType: EntityType.TaskTemplateParameter, progressBar: progressBar){ return false }
+            
+        case 12:
+            if !refactoredGetAndImport(synchronisationDateToUse, stage: 12, entityType: EntityType.Task, progressBar: progressBar){ return false }
 
-        //delete tasks that are not pending or outstanding
-        ModelManager.getInstance().executeDirect("DELETE FROM [Task] WHERE [Status] != 'Pending' AND [Status] != 'Outstanding'", SQLParameterValues: nil)
+            //delete tasks that are not pending or outstanding
+            ModelManager.getInstance().executeDirect("DELETE FROM [Task] WHERE [Status] != 'Pending' AND [Status] != 'Outstanding'", SQLParameterValues: nil)
+            
+        default:
+            //response = nil
+            print ("Invalid Stage")
+        }
         
         //update the synchronisation history
         let newSynchronisationDate = NSDate()
@@ -578,7 +695,7 @@ class Utility: NSObject {
         SQLStatement = "INSERT INTO [Synchronisation] (LastSynchronisationDate, Type) VALUES (?,?)"
         SQLParameterValues = [NSObject]()
         SQLParameterValues.append(newSynchronisationDate)
-        SQLParameterValues.append("Receive")
+        SQLParameterValues.append(synchronisationType)
         ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
         
         SQLStatement = "INSERT INTO [SynchronisationHistory] (SynchronisationDate, CreatedBy, CreatedOn ,Outcome) VALUES (?, ?, ?, ?)"
@@ -592,14 +709,16 @@ class Utility: NSObject {
         return true
     }
   
-    class func refactoredGetAndImport(synchronisationDate: NSDate, stage: Int32, entityType: EntityType) ->Bool {
+    class func refactoredGetAndImport(synchronisationDate: NSDate, stage: Int32, entityType: EntityType, progressBar: UIProgressView) -> Bool {
             
         var lastRowId: String = EmptyGuid
         var count: Int32 = 0
         
-        while (lastRowId != EmptyGuid || count == 0) {
+        while (lastRowId != EmptyGuid || count == 0) && (count < 200) {
             count += 1
-            let data: NSData? = WebService.getSynchronisationPackage(Session.OperativeId!, synchronisationDate: synchronisationDate, lastRowId: lastRowId, stage: stage)
+            progressBar.setProgress(((Float(count) / Float(count + 1))), animated: true);
+            
+            let data: NSData? = WebService.getSynchronisationPackageSync(Session.OperativeId!, synchronisationDate: synchronisationDate, lastRowId: lastRowId, stage: stage)
             
             if data == nil{
                 invokeAlertMethod("Error", strBody: "error with web service", delegate: nil)
@@ -624,12 +743,13 @@ class Utility: NSObject {
                 SynchronisationPackageDocument = nil
             }
             
-            lastRowId = Utility.importData(SynchronisationPackageDocument!.children[0], entityType: entityType)
+            lastRowId = Utility.importData(SynchronisationPackageDocument!.children[0], entityType: entityType, progressBar: progressBar)
             if entityType == EntityType.Task
             {
-              Utility.importData(SynchronisationPackageDocument!.children[0], entityType: .TaskParameter)
+              Utility.importData(SynchronisationPackageDocument!.children[0], entityType: .TaskParameter, progressBar: progressBar)
             }
             print(String(entityType) + " " + lastRowId + " " + String(count))
+            SynchronisationPackageDocument = nil
         }
         print(String(entityType) + " Data Done")
         return true

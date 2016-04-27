@@ -64,7 +64,7 @@ class ModelManager: NSObject {
         for (itemKey, itemValue) in criteria
         {
             whereClause += (loopCount > 0 ? " AND " : " ")
-            whereClause += (itemKey) + "=?"
+            whereClause += (itemKey) + " = ? "
             
             whereValues.append(itemValue)
             
@@ -318,8 +318,8 @@ class ModelManager: NSObject {
     
     func findAssetList(criteria: Dictionary<String, AnyObject>) -> [Asset] {
         var list: [Asset] = [Asset]()
-        var count: Int32 = 0
-        (list, count) = findAssetList(criteria, pageSize: nil, pageNumber: nil)
+        //var count: Int32 = 0
+        (list, _) = findAssetList(criteria, pageSize: nil, pageNumber: nil)
         return list
     }
 
@@ -654,8 +654,8 @@ class ModelManager: NSObject {
     
     func findLocationList(criteria: Dictionary<String, AnyObject>) -> [Location] {
         var list: [Location] = [Location]()
-        var count: Int32 = 0
-        (list, count) = findLocationList(criteria, pageSize: nil, pageNumber: nil)
+        //var count: Int32 = 0
+        (list, _) = findLocationList(criteria, pageSize: nil, pageNumber: nil)
         return list
     }
 
@@ -952,8 +952,8 @@ class ModelManager: NSObject {
     
     func findLocationGroupList(criteria: Dictionary<String, AnyObject>) -> [LocationGroup] {
         var list: [LocationGroup] = [LocationGroup]()
-        var count: Int32 = 0
-        (list, count) = findLocationGroupList(criteria, pageSize: nil, pageNumber: nil)
+        //var count: Int32 = 0
+        (list, _) = findLocationGroupList(criteria, pageSize: nil, pageNumber: nil)
         return list
     }
 
@@ -1188,8 +1188,8 @@ class ModelManager: NSObject {
     
     func findLocationGroupMembershipList(criteria: Dictionary<String, AnyObject>) -> [LocationGroupMembership] {
         var list: [LocationGroupMembership] = [LocationGroupMembership]()
-        var count: Int32 = 0
-        (list, count) = findLocationGroupMembershipList(criteria, pageSize: nil, pageNumber: nil)
+        //var count: Int32 = 0
+        (list, _) = findLocationGroupMembershipList(criteria, pageSize: nil, pageNumber: nil)
         return list
     }
 
@@ -1414,8 +1414,8 @@ class ModelManager: NSObject {
     
     func findOperativeList(criteria: Dictionary<String, AnyObject>) -> [Operative] {
         var list: [Operative] = [Operative]()
-        var count: Int32 = 0
-        (list, count) = findOperativeList(criteria, pageSize: nil, pageNumber: nil)
+        //var count: Int32 = 0
+        (list, _) = findOperativeList(criteria, pageSize: nil, pageNumber: nil)
         return list
     }
 
@@ -1642,8 +1642,8 @@ class ModelManager: NSObject {
     
     func findOrganisationList(criteria: Dictionary<String, AnyObject>) -> [Organisation] {
         var list: [Organisation] = [Organisation]()
-        var count: Int32 = 0
-        (list, count) = findOrganisationList(criteria, pageSize: nil, pageNumber: nil)
+        //var count: Int32 = 0
+        (list, _) = findOrganisationList(criteria, pageSize: nil, pageNumber: nil)
         return list
     }
 
@@ -1873,8 +1873,8 @@ class ModelManager: NSObject {
     
     func findPropertyList(criteria: Dictionary<String, AnyObject>) -> [Property] {
         var list: [Property] = [Property]()
-        var count: Int32 = 0
-        (list, count) = findPropertyList(criteria, pageSize: nil, pageNumber: nil)
+        //var count: Int32 = 0
+        (list, _) = findPropertyList(criteria, pageSize: nil, pageNumber: nil)
         return list
     }
 
@@ -2173,8 +2173,8 @@ class ModelManager: NSObject {
     
     func findReferenceDataList(criteria: Dictionary<String, AnyObject>) -> [ReferenceData] {
         var list: [ReferenceData] = [ReferenceData]()
-        var count: Int32 = 0
-        (list, count) = findReferenceDataList(criteria, pageSize: nil, pageNumber: nil)
+        //var count: Int32 = 0
+        (list, _) = findReferenceDataList(criteria, pageSize: nil, pageNumber: nil)
         return list
     }
 
@@ -2186,6 +2186,7 @@ class ModelManager: NSObject {
         //build the where clause
         var whereClause: String = String()
         var whereValues: [AnyObject] = [AnyObject]()
+        
         
         (whereClause, whereValues) = buildWhereClause(criteria)
         
@@ -2410,8 +2411,8 @@ class ModelManager: NSObject {
     
     func findSiteList(criteria: Dictionary<String, AnyObject>) -> [Site] {
         var list: [Site] = [Site]()
-        var count: Int32 = 0
-        (list, count) = findSiteList(criteria, pageSize: nil, pageNumber: nil)
+        //var count: Int32 = 0
+        (list, _) = findSiteList(criteria, pageSize: nil, pageNumber: nil)
         return list
     }
 
@@ -2878,8 +2879,8 @@ class ModelManager: NSObject {
     
     func findTaskList(criteria: Dictionary<String, AnyObject>) -> [Task] {
         var list: [Task] = [Task]()
-        var count: Int32 = 0
-        (list, count) = findTaskList(criteria, pageSize: nil, pageNumber: nil, sortOrder: TaskSortOrder.Date)
+        //var count: Int32 = 0
+        (list, _) = findTaskList(criteria, pageSize: nil, pageNumber: nil, sortOrder: TaskSortOrder.Date)
         return list
     }
 
@@ -2906,7 +2907,7 @@ class ModelManager: NSObject {
         case .Location:
             orderByClause += "[LocationName] "
             
-        case .Type:
+        case .AssetType:
             orderByClause += "[PPMGroup] "
            
         case .Task:
@@ -2920,8 +2921,13 @@ class ModelManager: NSObject {
         
         (whereClause, whereValues) = buildWhereClause(criteria)
         
+        if (whereClause != "")
+        {
+            whereClause = "WHERE " + whereClause
+        }
+        
         sharedModelManager.database!.open()
-        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [Task] WHERE " + whereClause + orderByClause, withArgumentsInArray: whereValues)
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [Task] " + whereClause + orderByClause, withArgumentsInArray: whereValues)
         if (countSet != nil) {
             while countSet.next() {
                 count = countSet.intForColumnIndex(0)
@@ -2936,7 +2942,7 @@ class ModelManager: NSObject {
                 pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
             }
             
-            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [SiteId], [PropertyId], [LocationId], [LocationGroupName], [LocationName], [Room], [TaskTemplateId], [TaskRef], [PPMGroup], [AssetType], [TaskName], [Frequency], [AssetId], [AssetNumber], [ScheduledDate], [CompletedDate], [Status], [Priority], [EstimatedDuration], [OperativeId], [ActualDuration], [TravelDuration], [Comments], [AlternateAssetCode] FROM [Task] WHERE " + whereClause  + orderByClause + pageClause, withArgumentsInArray: whereValues)
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [SiteId], [PropertyId], [LocationId], [LocationGroupName], [LocationName], [Room], [TaskTemplateId], [TaskRef], [PPMGroup], [AssetType], [TaskName], [Frequency], [AssetId], [AssetNumber], [ScheduledDate], [CompletedDate], [Status], [Priority], [EstimatedDuration], [OperativeId], [ActualDuration], [TravelDuration], [Comments], [AlternateAssetCode] FROM [Task] " + whereClause  + orderByClause + pageClause, withArgumentsInArray: whereValues)
             if (resultSet != nil) {
                 while resultSet.next() {
                     let task : Task = Task()
@@ -3216,8 +3222,8 @@ class ModelManager: NSObject {
     
     func findTaskParameterList(criteria: Dictionary<String, AnyObject>) -> [TaskParameter] {
         var list: [TaskParameter] = [TaskParameter]()
-        var count: Int32 = 0
-        (list, count) = findTaskParameterList(criteria, pageSize: nil, pageNumber: nil)
+        //var count: Int32 = 0
+        (list, _) = findTaskParameterList(criteria, pageSize: nil, pageNumber: nil)
         return list
     }
 
@@ -3470,8 +3476,8 @@ class ModelManager: NSObject {
     
     func findTaskTemplateList(criteria: Dictionary<String, AnyObject>) -> [TaskTemplate] {
         var list: [TaskTemplate] = [TaskTemplate]()
-        var count: Int32 = 0
-        (list, count) = findTaskTemplateList(criteria, pageSize: nil, pageNumber: nil)
+        //var count: Int32 = 0
+        (list, _) = findTaskTemplateList(criteria, pageSize: nil, pageNumber: nil)
         return list
     }
 
@@ -3759,8 +3765,8 @@ class ModelManager: NSObject {
     
     func findTaskTemplateParameterList(criteria: Dictionary<String, AnyObject>) -> [TaskTemplateParameter] {
         var list: [TaskTemplateParameter] = [TaskTemplateParameter]()
-        var count: Int32 = 0
-        (list, count) = findTaskTemplateParameterList(criteria, pageSize: nil, pageNumber: nil)
+        //var count: Int32 = 0
+        (list, _) = findTaskTemplateParameterList(criteria, pageSize: nil, pageNumber: nil)
         return list
     }
     
