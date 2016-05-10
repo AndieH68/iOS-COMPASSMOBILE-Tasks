@@ -91,7 +91,7 @@ class FilterViewController: UIViewController {
     }
 
     @IBAction func Cancel(sender: UIBarButtonItem) {
-        Session.NoRequery = true;
+        Session.ClearFilter();
         self.navigationController?.popViewControllerAnimated(true)
     }
     

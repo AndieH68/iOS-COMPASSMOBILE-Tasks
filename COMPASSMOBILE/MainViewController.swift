@@ -100,7 +100,8 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
        
         cell.taskRef.text = task.TaskRef
         cell.taskName.text = ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMTaskType", key: task.TaskName, parentType: "PPMAssetGroup", parentValue: task.PPMGroup!)
-        cell.location.text = task.LocationName
+        let PropertyName: String = (Session.FilterPropertyName != nil ? String() : ModelUtility.getInstance().GetPropertyName(task.PropertyId) + ", ")
+        cell.location.text = PropertyName + task.LocationName
         cell.type.text = ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMAssetGroup", key: task.PPMGroup!)
         cell.asset.text = task.AssetNumber
         cell.dateDue.text = task.ScheduledDate.toStringForView()

@@ -12,6 +12,8 @@ class Session : NSObject
 {
     static var OperativeId: String? = String?()
     static var OrganisationId: String? = String?()
+    
+    static var PropertyList: Dictionary<String, Property> = Dictionary<String, Property>()
  
     static var LookupLists: Dictionary<String, AnyObject> = Dictionary<String,AnyObject>()
     
@@ -59,5 +61,24 @@ class Session : NSObject
         if (Session.FilterAssetNumber != nil) { criteria["AssetNumber"] = Session.FilterAssetNumber! }
         
         return criteria
+    }
+    
+    class func ClearFilter()
+    {
+        FilterSiteId = String?()
+        FilterSiteName = String?()
+        FilterPropertyId = String?()
+        FilterPropertyName = String?()
+        FilterFrequency = String?()
+        FilterPeriod = String?("Due Today")
+        
+        FilterJustMyTasks = false
+        
+        FilterAssetGroup = String?()
+        FilterTaskName = String?()
+        FilterAssetType = String?()
+        FilterLocationGroup = String?()
+        FilterLocation = String?()
+        FilterAssetNumber = String?()
     }
 }

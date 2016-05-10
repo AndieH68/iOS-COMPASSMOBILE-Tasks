@@ -747,7 +747,93 @@ class ModelManager: NSObject {
         sharedModelManager.database!.close()
         return (locationList, count)
     }
-    
+
+    func findLocationListByLocationGroup(LocationGroupId: String, criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [Location], Count: Int32) {
+        //return variables
+        var count: Int32 = 0
+        var locationList: [Location] = [Location]()
+        
+        //build the order clause
+        let orderByClause: String = " ORDER BY [Name]"
+        
+        //build the where clause
+        var whereClause: String = String()
+        var whereValues: [AnyObject] = [AnyObject]()
+        
+        (whereClause, whereValues) = buildWhereClause(criteria)
+        whereClause += (whereClause != "" ? " AND " : "") + " [LocationGroupMembership].[LocationGroupId] = ? "
+        whereValues.append(LocationGroupId)
+        
+        if (whereClause != "")
+        {
+            whereClause = "WHERE " + whereClause
+        }
+        
+        sharedModelManager.database!.open()
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([Location].[RowId]) FROM [Location] INNER JOIN [LocationGroupMembership] ON [Location].[RowId] = [LocationGroupMembership].[LocationId] " + whereClause + orderByClause, withArgumentsInArray: whereValues)
+        if (countSet != nil) {
+            while countSet.next() {
+                count = countSet.intForColumnIndex(0)
+            }
+        }
+        
+        if (count > 0)
+        {
+            var pageClause: String = String()
+            if (pageSize != nil && pageNumber != nil)
+            {
+                pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
+            }
+            
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [Location].[RowId], [Location].[CreatedBy], [Location].[CreatedOn], [Location].[LastUpdatedBy], [Location].[LastUpdatedOn], [Location].[Deleted], [Location].[PropertyId], [Location].[Name], [Location].[Description], [Location].[Level], [Location].[Number], [Location].[SubNumber], [Location].[Use], [Location].[ClientLocationName] FROM [Location]  INNER JOIN [LocationGroupMembership] ON [Location].[RowId] = [LocationGroupMembership].[LocationId] " + whereClause + orderByClause + pageClause, withArgumentsInArray: whereValues)
+            
+            if (resultSet != nil) {
+                while resultSet.next() {
+                    let location : Location = Location()
+                    location.RowId = resultSet.stringForColumn("RowId")
+                    location.CreatedBy = resultSet.stringForColumn("CreatedBy")
+                    location.CreatedOn = resultSet.dateForColumn("CreatedOn")
+                    if !resultSet.columnIsNull("LastUpdatedBy") {
+                        location.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                    }
+                    if !resultSet.columnIsNull("LastUpdatedOn")
+                    {
+                        location.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                    }
+                    if !resultSet.columnIsNull("Deleted")
+                    {
+                        location.Deleted = resultSet.dateForColumn("Deleted")
+                    }
+                    location.PropertyId = resultSet.stringForColumn("PropertyId")
+                    location.Name = resultSet.stringForColumn("Name")
+                    if !resultSet.columnIsNull("Description") {
+                        location.Description = resultSet.stringForColumn("Description")
+                    }
+                    if !resultSet.columnIsNull("Level") {
+                        location.Level = resultSet.stringForColumn("Level")
+                    }
+                    if !resultSet.columnIsNull("Number") {
+                        location.Number = resultSet.stringForColumn("Number")
+                    }
+                    if !resultSet.columnIsNull("SubNumber") {
+                        location.SubNumber = resultSet.stringForColumn("SubNumber")
+                    }
+                    if !resultSet.columnIsNull("Use") {
+                        location.Use = resultSet.stringForColumn("Use")
+                    }
+                    if !resultSet.columnIsNull("ClientLocationName") {
+                        location.ClientLocationName = resultSet.stringForColumn("ClientLocationName")
+                    }
+                    
+                    locationList.append(location)
+                }
+            }
+        }
+        
+        sharedModelManager.database!.close()
+        return (locationList, count)
+    }
+
     // MARK: - LocationGroup
     
     func addLocationGroup(locationGroup: LocationGroup) -> Bool {
@@ -2234,7 +2320,6 @@ class ModelManager: NSObject {
         (list, count) = findReferenceDataList(criteria, pageSize: nil, pageNumber: nil, sortOrder: ReferenceDataSortOrder.Display)
         return (list, count)
     }
-    
     
     func findReferenceDataList(criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?, sortOrder: ReferenceDataSortOrder) -> (List: [ReferenceData], Count: Int32) {
         //return variables

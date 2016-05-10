@@ -35,6 +35,42 @@ class ModelUtility: NSObject {
         return key
     }
     
+    func AssetNumber(asset: Asset) -> String {
+        return (asset.ScanCode != nil ? "(" + asset.ScanCode! + ") " : "") + (asset.ClientName != nil ? asset.ClientName! : asset.HydropName)!
+    }
+  
+    func GetPropertyName(PropertyId: String) -> String {
+        if let currentProperty: Property = GetPropertyDetails(PropertyId)
+        {
+            return currentProperty.Name
+        }
+        else
+        {
+            return "Property not found"
+        }
+    }
+    
+    func GetPropertyDetails(PropertyId: String) -> Property? {
+        
+        if(Session.PropertyList.keys.contains(PropertyId))
+        {
+            return Session.PropertyList[PropertyId]
+        }
+        else
+        {
+            let currentProperty: Property? = ModelManager.getInstance().getProperty(PropertyId)
+            if (currentProperty != nil)
+            {
+                Session.PropertyList[PropertyId] = currentProperty
+                return currentProperty
+            }
+            else
+            {
+                return nil
+            }
+        }
+    }
+    
     func ReferenceDataValueFromDisplay(type: String, value: String)-> String {
         return ReferenceDataValueFromDisplay(type, value: value, parentType: nil, parentValue: nil)
     }

@@ -302,7 +302,7 @@
         <!--Filter-->
         <scene sceneID="XvG-rC-hXK">
             <objects>
-                <viewController title="Filter" id="4hd-cQ-A8L" userLabel="Filter" customClass="FilterViewController" customModule="COMPASSMOBILE" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Filter" automaticallyAdjustsScrollViewInsets="NO" id="4hd-cQ-A8L" userLabel="Filter" customClass="FilterViewController" customModule="COMPASSMOBILE" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="JxQ-4w-gND"/>
                         <viewControllerLayoutGuide type="bottom" id="deR-Np-NpO"/>
@@ -311,332 +311,360 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mbw-Qq-4Wd" userLabel="Sort Stack View">
-                                <rect key="frame" x="20" y="72" width="560" height="28"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nzp-hk-QdG">
+                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sort" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4KU-YU-vjv">
-                                        <rect key="frame" x="0.0" y="0.0" width="120" height="28"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VGd-4j-lvi" userLabel="Content View">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="537"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mbw-Qq-4Wd" userLabel="Sort Stack View">
+                                                <rect key="frame" x="20" y="8" width="560" height="30"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sort" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4KU-YU-vjv">
+                                                        <rect key="frame" x="0.0" y="0.0" width="120" height="30"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="120" id="Pfc-Ay-98A"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bordered" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="xnz-Oo-0rR" userLabel="Location, Type, Task">
+                                                        <rect key="frame" x="120" y="0.0" width="440" height="31"/>
+                                                        <segments>
+                                                            <segment title="Date"/>
+                                                            <segment title="Location"/>
+                                                            <segment title="Type"/>
+                                                            <segment title="Task"/>
+                                                        </segments>
+                                                        <connections>
+                                                            <action selector="TaskSort:" destination="BYZ-38-t0r" eventType="valueChanged" id="kIf-DC-JgI"/>
+                                                        </connections>
+                                                    </segmentedControl>
+                                                </subviews>
+                                                <color key="backgroundColor" red="0.066666670139999995" green="0.52156865600000002" blue="0.81176471709999998" alpha="1" colorSpace="calibratedRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="30" id="HcA-LG-52p"/>
+                                                </constraints>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5SC-Uj-DF8" userLabel="Site Stack View">
+                                                <rect key="frame" x="20" y="46" width="560" height="30"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Site" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ajp-J6-uQx">
+                                                        <rect key="frame" x="0.0" y="0.0" width="120" height="30"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="120" id="SdH-Z3-Gz3"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eLh-7k-EOg" userLabel="Site Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
+                                                        <rect key="frame" x="120" y="0.0" width="440" height="30"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <connections>
+                                                            <action selector="SiteChanged:" destination="4hd-cQ-A8L" eventType="valueChanged" id="S2M-GK-duv"/>
+                                                        </connections>
+                                                    </view>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="30" id="E5t-iI-1Tc"/>
+                                                </constraints>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ipx-TF-EBe" userLabel="Property Stack View">
+                                                <rect key="frame" x="20" y="84" width="560" height="30"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Property" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N30-fX-EQN">
+                                                        <rect key="frame" x="0.0" y="0.0" width="120" height="30"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="120" id="dxz-Kf-5SR"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DfE-Tn-2H3" userLabel="Property Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
+                                                        <rect key="frame" x="120" y="0.0" width="440" height="30"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <connections>
+                                                            <action selector="PropertyChanged:" destination="4hd-cQ-A8L" eventType="valueChanged" id="Xoc-Ex-GKs"/>
+                                                        </connections>
+                                                    </view>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="30" id="LQn-KM-290"/>
+                                                </constraints>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xnp-SC-3r8" userLabel="Frequency Stack View">
+                                                <rect key="frame" x="20" y="122" width="560" height="30"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Frequency" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vc3-oL-dwz">
+                                                        <rect key="frame" x="0.0" y="0.0" width="120" height="30"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="120" id="pl6-pf-alw"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0aM-nz-FtU" userLabel="Frequency Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
+                                                        <rect key="frame" x="120" y="0.0" width="440" height="30"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <connections>
+                                                            <action selector="FrequencyChanged:" destination="4hd-cQ-A8L" eventType="valueChanged" id="w82-Ku-eN3"/>
+                                                        </connections>
+                                                    </view>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="30" id="VhP-Af-o66"/>
+                                                </constraints>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z9F-Uu-oqF" userLabel="Period Stack View">
+                                                <rect key="frame" x="20" y="160" width="560" height="30"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Period" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mC1-s6-ydh">
+                                                        <rect key="frame" x="0.0" y="0.0" width="120" height="30"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="120" id="EGO-Wb-ZAY"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="McX-on-fk4" userLabel="Period Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
+                                                        <rect key="frame" x="120" y="0.0" width="440" height="30"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <connections>
+                                                            <action selector="PeriodChanged:" destination="4hd-cQ-A8L" eventType="valueChanged" id="A0B-0z-2fX"/>
+                                                        </connections>
+                                                    </view>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="30" id="O2x-Km-DcC"/>
+                                                </constraints>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dEA-je-AIR" userLabel="My Tasks Stack View">
+                                                <rect key="frame" x="140" y="198" width="440" height="31"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Just My Tasks" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3nh-vB-DSF">
+                                                        <rect key="frame" x="0.0" y="0.0" width="391" height="31"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="NNd-cx-n98">
+                                                        <rect key="frame" x="391" y="0.0" width="51" height="31"/>
+                                                        <connections>
+                                                            <action selector="MyTasksChanged:" destination="4hd-cQ-A8L" eventType="valueChanged" id="EyY-Y0-qIK"/>
+                                                        </connections>
+                                                    </switch>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="31" id="x5X-SQ-uGp"/>
+                                                </constraints>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UtI-TD-3Gm" userLabel="Asset Group Stack View">
+                                                <rect key="frame" x="20" y="237" width="560" height="30"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Asset Group" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p0R-6N-VbF">
+                                                        <rect key="frame" x="0.0" y="0.0" width="120" height="30"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="120" id="lHa-Xd-ER3"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ptj-NB-Q2k" userLabel="Asset Group Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
+                                                        <rect key="frame" x="120" y="0.0" width="440" height="30"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <connections>
+                                                            <action selector="AssetGroupChanged:" destination="4hd-cQ-A8L" eventType="valueChanged" id="Euc-7x-YL3"/>
+                                                        </connections>
+                                                    </view>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="30" id="grl-II-N4k"/>
+                                                </constraints>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Z8x-uj-B4l" userLabel="Task Name Stack View">
+                                                <rect key="frame" x="20" y="275" width="560" height="30"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Task Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="adg-Wr-Xt4">
+                                                        <rect key="frame" x="0.0" y="0.0" width="120" height="30"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="120" id="rY2-rj-JlN"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o4c-pU-And" userLabel="Task Name Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
+                                                        <rect key="frame" x="120" y="0.0" width="440" height="30"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <connections>
+                                                            <action selector="TaskNameChange:" destination="4hd-cQ-A8L" eventType="valueChanged" id="UxV-DW-r7v"/>
+                                                        </connections>
+                                                    </view>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="30" id="GaU-Zw-ITQ"/>
+                                                </constraints>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RXp-DL-pTG" userLabel="Asset Type Stack View">
+                                                <rect key="frame" x="20" y="313" width="560" height="30"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Asset Type" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uzw-ZR-J5i">
+                                                        <rect key="frame" x="0.0" y="0.0" width="120" height="30"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="120" id="aVX-oN-vWC"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fEe-R7-gT3" userLabel="Asset Type Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
+                                                        <rect key="frame" x="120" y="0.0" width="440" height="30"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <connections>
+                                                            <action selector="AssetTypeChanged:" destination="4hd-cQ-A8L" eventType="valueChanged" id="uUe-oz-iPu"/>
+                                                        </connections>
+                                                    </view>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="30" id="rUN-S1-rXo"/>
+                                                </constraints>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YpM-uL-YKI" userLabel="Area Stack View">
+                                                <rect key="frame" x="20" y="351" width="560" height="30"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Area" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VhH-3s-0d1">
+                                                        <rect key="frame" x="0.0" y="0.0" width="120" height="30"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="120" id="bxx-Wp-3ek"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AsR-4b-RQa" userLabel="Area Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
+                                                        <rect key="frame" x="120" y="0.0" width="440" height="30"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <connections>
+                                                            <action selector="LocationGroupChanged:" destination="4hd-cQ-A8L" eventType="valueChanged" id="rTE-VJ-rsc"/>
+                                                        </connections>
+                                                    </view>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="30" id="oLA-JX-x9G"/>
+                                                </constraints>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kCk-Qc-mPr" userLabel="Location Stack View">
+                                                <rect key="frame" x="20" y="389" width="560" height="30"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D1N-fn-6a2">
+                                                        <rect key="frame" x="0.0" y="0.0" width="120" height="30"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="120" id="ufH-4Z-JxB"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nG5-uN-Vcq" userLabel="Location Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
+                                                        <rect key="frame" x="120" y="0.0" width="440" height="30"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <connections>
+                                                            <action selector="LocationChanged:" destination="4hd-cQ-A8L" eventType="valueChanged" id="Mvz-u6-zxM"/>
+                                                        </connections>
+                                                    </view>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="30" id="8ok-Xp-Wsj"/>
+                                                </constraints>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aLI-Ji-Zad" userLabel="Asset Number Stack View">
+                                                <rect key="frame" x="20" y="427" width="560" height="30"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Asset Number" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NLc-Cq-YZt">
+                                                        <rect key="frame" x="0.0" y="0.0" width="120" height="30"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="120" id="hVR-26-Pb7"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="q6b-mc-UIN" userLabel="Asset Number Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
+                                                        <rect key="frame" x="120" y="0.0" width="440" height="30"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <connections>
+                                                            <action selector="AssetNumberChanged:" destination="4hd-cQ-A8L" eventType="valueChanged" id="sCM-Wn-1C7"/>
+                                                        </connections>
+                                                    </view>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="30" id="glN-v4-mgp"/>
+                                                </constraints>
+                                            </stackView>
+                                        </subviews>
+                                        <color key="backgroundColor" red="0.94901961088180542" green="0.94901961088180542" blue="0.94901961088180542" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="120" id="Pfc-Ay-98A"/>
+                                            <constraint firstItem="UtI-TD-3Gm" firstAttribute="leading" secondItem="VGd-4j-lvi" secondAttribute="leading" constant="20" id="2JN-iL-G0G"/>
+                                            <constraint firstItem="mbw-Qq-4Wd" firstAttribute="leading" secondItem="VGd-4j-lvi" secondAttribute="leading" constant="20" id="2lp-hN-RCB"/>
+                                            <constraint firstItem="z9F-Uu-oqF" firstAttribute="leading" secondItem="VGd-4j-lvi" secondAttribute="leading" constant="20" id="3er-JD-Z1J"/>
+                                            <constraint firstAttribute="trailing" secondItem="kCk-Qc-mPr" secondAttribute="trailing" constant="20" id="6NF-2u-rLe"/>
+                                            <constraint firstItem="UtI-TD-3Gm" firstAttribute="top" secondItem="dEA-je-AIR" secondAttribute="bottom" constant="8" id="7bR-fG-FiE"/>
+                                            <constraint firstItem="5SC-Uj-DF8" firstAttribute="top" secondItem="mbw-Qq-4Wd" secondAttribute="bottom" constant="8" id="8GD-Yd-de5"/>
+                                            <constraint firstItem="xnp-SC-3r8" firstAttribute="top" secondItem="Ipx-TF-EBe" secondAttribute="bottom" constant="8" id="8qY-HG-xFY"/>
+                                            <constraint firstAttribute="trailing" secondItem="mbw-Qq-4Wd" secondAttribute="trailing" constant="20" id="Aaw-DZ-k3t"/>
+                                            <constraint firstItem="YpM-uL-YKI" firstAttribute="top" secondItem="RXp-DL-pTG" secondAttribute="bottom" constant="8" id="FUs-JF-fon"/>
+                                            <constraint firstItem="Z8x-uj-B4l" firstAttribute="top" secondItem="UtI-TD-3Gm" secondAttribute="bottom" constant="8" id="FwN-7Y-8Ui"/>
+                                            <constraint firstItem="RXp-DL-pTG" firstAttribute="leading" secondItem="VGd-4j-lvi" secondAttribute="leading" constant="20" id="G3a-c0-2Xl"/>
+                                            <constraint firstItem="RXp-DL-pTG" firstAttribute="top" secondItem="Z8x-uj-B4l" secondAttribute="bottom" constant="8" id="IHi-jY-Gk2"/>
+                                            <constraint firstAttribute="trailing" secondItem="RXp-DL-pTG" secondAttribute="trailing" constant="20" id="JEK-6p-tez"/>
+                                            <constraint firstAttribute="bottom" secondItem="aLI-Ji-Zad" secondAttribute="bottom" constant="80" id="Lh4-vW-H0M"/>
+                                            <constraint firstAttribute="trailing" secondItem="UtI-TD-3Gm" secondAttribute="trailing" constant="20" id="Ngm-eu-Aba"/>
+                                            <constraint firstItem="YpM-uL-YKI" firstAttribute="leading" secondItem="VGd-4j-lvi" secondAttribute="leading" constant="20" id="OOx-8V-sKC"/>
+                                            <constraint firstItem="Ipx-TF-EBe" firstAttribute="leading" secondItem="VGd-4j-lvi" secondAttribute="leading" constant="20" id="OYe-TO-Cli"/>
+                                            <constraint firstItem="aLI-Ji-Zad" firstAttribute="top" secondItem="kCk-Qc-mPr" secondAttribute="bottom" constant="8" id="OgW-9Z-dB1"/>
+                                            <constraint firstAttribute="trailing" secondItem="z9F-Uu-oqF" secondAttribute="trailing" constant="20" id="Osi-iV-IkS"/>
+                                            <constraint firstItem="dEA-je-AIR" firstAttribute="leading" secondItem="VGd-4j-lvi" secondAttribute="leading" constant="140" id="Rzo-Bq-kS3"/>
+                                            <constraint firstAttribute="trailing" secondItem="xnp-SC-3r8" secondAttribute="trailing" constant="20" id="ZiC-FN-hht"/>
+                                            <constraint firstAttribute="trailing" secondItem="YpM-uL-YKI" secondAttribute="trailing" constant="20" id="a1v-j3-Tdn"/>
+                                            <constraint firstItem="dEA-je-AIR" firstAttribute="top" secondItem="z9F-Uu-oqF" secondAttribute="bottom" constant="8" id="asg-rB-sfa"/>
+                                            <constraint firstAttribute="trailing" secondItem="aLI-Ji-Zad" secondAttribute="trailing" constant="20" id="c3z-dH-bfG"/>
+                                            <constraint firstItem="5SC-Uj-DF8" firstAttribute="leading" secondItem="VGd-4j-lvi" secondAttribute="leading" constant="20" id="cRj-V9-mCW"/>
+                                            <constraint firstAttribute="trailing" secondItem="dEA-je-AIR" secondAttribute="trailing" constant="20" id="crF-4Y-ft0"/>
+                                            <constraint firstItem="kCk-Qc-mPr" firstAttribute="leading" secondItem="VGd-4j-lvi" secondAttribute="leading" constant="20" id="dcz-hZ-UIJ"/>
+                                            <constraint firstAttribute="trailing" secondItem="Ipx-TF-EBe" secondAttribute="trailing" constant="20" id="e1W-Th-i2u"/>
+                                            <constraint firstItem="xnp-SC-3r8" firstAttribute="leading" secondItem="VGd-4j-lvi" secondAttribute="leading" constant="20" id="g7d-Rh-6IA"/>
+                                            <constraint firstItem="aLI-Ji-Zad" firstAttribute="leading" secondItem="VGd-4j-lvi" secondAttribute="leading" constant="20" id="gYv-5q-6vI"/>
+                                            <constraint firstItem="mbw-Qq-4Wd" firstAttribute="top" secondItem="VGd-4j-lvi" secondAttribute="top" constant="8" id="hcd-ld-v5x"/>
+                                            <constraint firstAttribute="trailing" secondItem="Z8x-uj-B4l" secondAttribute="trailing" constant="20" id="l5S-it-cfH"/>
+                                            <constraint firstItem="Z8x-uj-B4l" firstAttribute="leading" secondItem="VGd-4j-lvi" secondAttribute="leading" constant="20" id="lYR-KB-P5a"/>
+                                            <constraint firstItem="Ipx-TF-EBe" firstAttribute="top" secondItem="5SC-Uj-DF8" secondAttribute="bottom" constant="8" id="nXp-Wk-iMe"/>
+                                            <constraint firstItem="kCk-Qc-mPr" firstAttribute="top" secondItem="YpM-uL-YKI" secondAttribute="bottom" constant="8" id="ng3-uQ-F0F"/>
+                                            <constraint firstAttribute="trailing" secondItem="5SC-Uj-DF8" secondAttribute="trailing" constant="20" id="orX-1m-smM"/>
+                                            <constraint firstItem="z9F-Uu-oqF" firstAttribute="top" secondItem="xnp-SC-3r8" secondAttribute="bottom" constant="8" id="puz-8z-bjx"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bordered" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="xnz-Oo-0rR" userLabel="Location, Type, Task">
-                                        <rect key="frame" x="120" y="0.0" width="440" height="29"/>
-                                        <segments>
-                                            <segment title="Date"/>
-                                            <segment title="Location"/>
-                                            <segment title="Type"/>
-                                            <segment title="Task"/>
-                                        </segments>
-                                        <connections>
-                                            <action selector="TaskSort:" destination="BYZ-38-t0r" eventType="valueChanged" id="kIf-DC-JgI"/>
-                                        </connections>
-                                    </segmentedControl>
-                                </subviews>
-                                <color key="backgroundColor" red="0.066666670139999995" green="0.52156865600000002" blue="0.81176471709999998" alpha="1" colorSpace="calibratedRGB"/>
-                            </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5SC-Uj-DF8" userLabel="Site Stack View">
-                                <rect key="frame" x="20" y="108" width="560" height="30"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Site" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ajp-J6-uQx">
-                                        <rect key="frame" x="0.0" y="0.0" width="120" height="30"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="120" id="SdH-Z3-Gz3"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eLh-7k-EOg" userLabel="Site Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
-                                        <rect key="frame" x="120" y="0.0" width="440" height="30"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <connections>
-                                            <action selector="SiteChanged:" destination="4hd-cQ-A8L" eventType="valueChanged" id="S2M-GK-duv"/>
-                                        </connections>
                                     </view>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="E5t-iI-1Tc"/>
+                                    <constraint firstItem="VGd-4j-lvi" firstAttribute="trailing" secondItem="Nzp-hk-QdG" secondAttribute="trailing" id="9xw-1a-ct9"/>
+                                    <constraint firstItem="VGd-4j-lvi" firstAttribute="leading" secondItem="Nzp-hk-QdG" secondAttribute="leading" id="TKg-tU-5l7"/>
+                                    <constraint firstItem="VGd-4j-lvi" firstAttribute="top" secondItem="Nzp-hk-QdG" secondAttribute="top" id="VEz-7n-tqS"/>
+                                    <constraint firstItem="VGd-4j-lvi" firstAttribute="bottom" secondItem="Nzp-hk-QdG" secondAttribute="bottom" id="mbR-lU-eTh"/>
                                 </constraints>
-                            </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ipx-TF-EBe" userLabel="Property Stack View">
-                                <rect key="frame" x="20" y="146" width="560" height="30"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Property" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N30-fX-EQN">
-                                        <rect key="frame" x="0.0" y="0.0" width="120" height="30"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="120" id="dxz-Kf-5SR"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DfE-Tn-2H3" userLabel="Property Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
-                                        <rect key="frame" x="120" y="0.0" width="440" height="30"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <connections>
-                                            <action selector="PropertyChanged:" destination="4hd-cQ-A8L" eventType="valueChanged" id="Xoc-Ex-GKs"/>
-                                        </connections>
-                                    </view>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="LQn-KM-290"/>
-                                </constraints>
-                            </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xnp-SC-3r8" userLabel="Frequency Stack View">
-                                <rect key="frame" x="20" y="184" width="560" height="30"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Frequency" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vc3-oL-dwz">
-                                        <rect key="frame" x="0.0" y="0.0" width="120" height="30"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="120" id="pl6-pf-alw"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0aM-nz-FtU" userLabel="Frequency Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
-                                        <rect key="frame" x="120" y="0.0" width="440" height="30"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <connections>
-                                            <action selector="FrequencyChanged:" destination="4hd-cQ-A8L" eventType="valueChanged" id="w82-Ku-eN3"/>
-                                        </connections>
-                                    </view>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="VhP-Af-o66"/>
-                                </constraints>
-                            </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z9F-Uu-oqF" userLabel="Period Stack View">
-                                <rect key="frame" x="20" y="222" width="560" height="30"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Period" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mC1-s6-ydh">
-                                        <rect key="frame" x="0.0" y="0.0" width="120" height="30"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="120" id="EGO-Wb-ZAY"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="McX-on-fk4" userLabel="Period Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
-                                        <rect key="frame" x="120" y="0.0" width="440" height="30"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <connections>
-                                            <action selector="PeriodChanged:" destination="4hd-cQ-A8L" eventType="valueChanged" id="A0B-0z-2fX"/>
-                                        </connections>
-                                    </view>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="O2x-Km-DcC"/>
-                                </constraints>
-                            </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dEA-je-AIR" userLabel="My Tasks Stack View">
-                                <rect key="frame" x="140" y="260" width="440" height="30"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Just My Tasks" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3nh-vB-DSF">
-                                        <rect key="frame" x="0.0" y="0.0" width="391" height="30"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="NNd-cx-n98">
-                                        <rect key="frame" x="391" y="0.0" width="51" height="30"/>
-                                        <connections>
-                                            <action selector="MyTasksChanged:" destination="4hd-cQ-A8L" eventType="valueChanged" id="EyY-Y0-qIK"/>
-                                        </connections>
-                                    </switch>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="x5X-SQ-uGp"/>
-                                </constraints>
-                            </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UtI-TD-3Gm" userLabel="Asset Group Stack View">
-                                <rect key="frame" x="20" y="298" width="560" height="30"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Asset Group" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p0R-6N-VbF">
-                                        <rect key="frame" x="0.0" y="0.0" width="120" height="30"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="120" id="lHa-Xd-ER3"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ptj-NB-Q2k" userLabel="Asset Group Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
-                                        <rect key="frame" x="120" y="0.0" width="440" height="30"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <connections>
-                                            <action selector="AssetGroupChanged:" destination="4hd-cQ-A8L" eventType="valueChanged" id="Euc-7x-YL3"/>
-                                        </connections>
-                                    </view>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="grl-II-N4k"/>
-                                </constraints>
-                            </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Z8x-uj-B4l" userLabel="Task Name Stack View">
-                                <rect key="frame" x="20" y="336" width="560" height="30"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Task Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="adg-Wr-Xt4">
-                                        <rect key="frame" x="0.0" y="0.0" width="120" height="30"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="120" id="rY2-rj-JlN"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o4c-pU-And" userLabel="Task Name Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
-                                        <rect key="frame" x="120" y="0.0" width="440" height="30"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <connections>
-                                            <action selector="TaskNameChange:" destination="4hd-cQ-A8L" eventType="valueChanged" id="UxV-DW-r7v"/>
-                                        </connections>
-                                    </view>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="GaU-Zw-ITQ"/>
-                                </constraints>
-                            </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RXp-DL-pTG" userLabel="Asset Type Stack View">
-                                <rect key="frame" x="20" y="374" width="560" height="30"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Asset Type" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uzw-ZR-J5i">
-                                        <rect key="frame" x="0.0" y="0.0" width="120" height="30"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="120" id="aVX-oN-vWC"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fEe-R7-gT3" userLabel="Asset Type Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
-                                        <rect key="frame" x="120" y="0.0" width="440" height="30"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <connections>
-                                            <action selector="AssetTypeChanged:" destination="4hd-cQ-A8L" eventType="valueChanged" id="uUe-oz-iPu"/>
-                                        </connections>
-                                    </view>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="rUN-S1-rXo"/>
-                                </constraints>
-                            </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YpM-uL-YKI" userLabel="Area Stack View">
-                                <rect key="frame" x="20" y="412" width="560" height="30"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Area" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VhH-3s-0d1">
-                                        <rect key="frame" x="0.0" y="0.0" width="120" height="30"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="120" id="bxx-Wp-3ek"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AsR-4b-RQa" userLabel="Area Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
-                                        <rect key="frame" x="120" y="0.0" width="440" height="30"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <connections>
-                                            <action selector="LocationGroupChanged:" destination="4hd-cQ-A8L" eventType="valueChanged" id="rTE-VJ-rsc"/>
-                                        </connections>
-                                    </view>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="oLA-JX-x9G"/>
-                                </constraints>
-                            </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kCk-Qc-mPr" userLabel="Location Stack View">
-                                <rect key="frame" x="20" y="450" width="560" height="30"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D1N-fn-6a2">
-                                        <rect key="frame" x="0.0" y="0.0" width="120" height="30"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="120" id="ufH-4Z-JxB"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nG5-uN-Vcq" userLabel="Location Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
-                                        <rect key="frame" x="120" y="0.0" width="440" height="30"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <connections>
-                                            <action selector="LocationChanged:" destination="4hd-cQ-A8L" eventType="valueChanged" id="Mvz-u6-zxM"/>
-                                        </connections>
-                                    </view>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="8ok-Xp-Wsj"/>
-                                </constraints>
-                            </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aLI-Ji-Zad" userLabel="Asset Number Stack View">
-                                <rect key="frame" x="20" y="488" width="560" height="30"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Asset Number" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NLc-Cq-YZt">
-                                        <rect key="frame" x="0.0" y="0.0" width="120" height="30"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="120" id="hVR-26-Pb7"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="q6b-mc-UIN" userLabel="Asset Number Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
-                                        <rect key="frame" x="120" y="0.0" width="440" height="30"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <connections>
-                                            <action selector="AssetNumberChanged:" destination="4hd-cQ-A8L" eventType="valueChanged" id="sCM-Wn-1C7"/>
-                                        </connections>
-                                    </view>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="glN-v4-mgp"/>
-                                </constraints>
-                            </stackView>
+                            </scrollView>
                         </subviews>
                         <color key="backgroundColor" red="0.94901961088180542" green="0.94901961088180542" blue="0.94901961088180542" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="z9F-Uu-oqF" firstAttribute="trailing" secondItem="aop-PV-jKF" secondAttribute="trailingMargin" id="0RD-Ux-q4t"/>
-                            <constraint firstItem="Z8x-uj-B4l" firstAttribute="top" secondItem="UtI-TD-3Gm" secondAttribute="bottom" constant="8" id="2qv-Ed-CiS"/>
-                            <constraint firstItem="YpM-uL-YKI" firstAttribute="top" secondItem="RXp-DL-pTG" secondAttribute="bottom" constant="8" id="3r4-ra-6IU"/>
-                            <constraint firstItem="5SC-Uj-DF8" firstAttribute="leading" secondItem="aop-PV-jKF" secondAttribute="leadingMargin" id="4dY-8Y-wHV"/>
-                            <constraint firstItem="dEA-je-AIR" firstAttribute="top" secondItem="z9F-Uu-oqF" secondAttribute="bottom" constant="8" id="5Bh-kG-7Mk"/>
-                            <constraint firstItem="UtI-TD-3Gm" firstAttribute="top" secondItem="dEA-je-AIR" secondAttribute="bottom" constant="8" id="5YW-Fd-tsu"/>
-                            <constraint firstItem="aLI-Ji-Zad" firstAttribute="leading" secondItem="aop-PV-jKF" secondAttribute="leadingMargin" id="6gC-pq-0Zg"/>
-                            <constraint firstItem="YpM-uL-YKI" firstAttribute="leading" secondItem="aop-PV-jKF" secondAttribute="leadingMargin" id="ALZ-AS-Ux7"/>
-                            <constraint firstItem="RXp-DL-pTG" firstAttribute="trailing" secondItem="aop-PV-jKF" secondAttribute="trailingMargin" id="AoD-mS-Xda"/>
-                            <constraint firstItem="z9F-Uu-oqF" firstAttribute="top" secondItem="xnp-SC-3r8" secondAttribute="bottom" constant="8" id="ApM-RH-uS9"/>
-                            <constraint firstItem="aLI-Ji-Zad" firstAttribute="top" secondItem="kCk-Qc-mPr" secondAttribute="bottom" constant="8" id="FBc-HI-RXA"/>
-                            <constraint firstItem="z9F-Uu-oqF" firstAttribute="leading" secondItem="aop-PV-jKF" secondAttribute="leadingMargin" id="In7-6N-XC1"/>
-                            <constraint firstItem="Ipx-TF-EBe" firstAttribute="leading" secondItem="aop-PV-jKF" secondAttribute="leadingMargin" id="K0A-GL-Ks1"/>
-                            <constraint firstItem="kCk-Qc-mPr" firstAttribute="leading" secondItem="aop-PV-jKF" secondAttribute="leadingMargin" id="KFa-jX-1Gz"/>
-                            <constraint firstItem="Z8x-uj-B4l" firstAttribute="trailing" secondItem="aop-PV-jKF" secondAttribute="trailingMargin" id="MXe-S5-2Ll"/>
-                            <constraint firstItem="Ipx-TF-EBe" firstAttribute="top" secondItem="5SC-Uj-DF8" secondAttribute="bottom" constant="8" id="Oak-74-fdT"/>
-                            <constraint firstItem="YpM-uL-YKI" firstAttribute="trailing" secondItem="aop-PV-jKF" secondAttribute="trailingMargin" id="SBS-Ht-FRf"/>
-                            <constraint firstItem="RXp-DL-pTG" firstAttribute="leading" secondItem="aop-PV-jKF" secondAttribute="leadingMargin" id="Tcn-Uk-I5T"/>
-                            <constraint firstItem="mbw-Qq-4Wd" firstAttribute="leading" secondItem="aop-PV-jKF" secondAttribute="leadingMargin" id="UYT-na-iDA"/>
-                            <constraint firstItem="xnp-SC-3r8" firstAttribute="trailing" secondItem="aop-PV-jKF" secondAttribute="trailingMargin" id="aLo-nz-bJf"/>
-                            <constraint firstItem="aLI-Ji-Zad" firstAttribute="trailing" secondItem="aop-PV-jKF" secondAttribute="trailingMargin" id="aSW-rk-Jo5"/>
-                            <constraint firstItem="kCk-Qc-mPr" firstAttribute="top" secondItem="YpM-uL-YKI" secondAttribute="bottom" constant="8" id="c2b-Kh-iqf"/>
-                            <constraint firstItem="dEA-je-AIR" firstAttribute="trailing" secondItem="aop-PV-jKF" secondAttribute="trailingMargin" id="cu8-g8-qbT"/>
-                            <constraint firstItem="5SC-Uj-DF8" firstAttribute="top" secondItem="mbw-Qq-4Wd" secondAttribute="bottom" constant="8" id="dav-gK-IMu"/>
-                            <constraint firstItem="xnp-SC-3r8" firstAttribute="top" secondItem="Ipx-TF-EBe" secondAttribute="bottom" constant="8" id="eJh-Zh-vcp"/>
-                            <constraint firstItem="Ipx-TF-EBe" firstAttribute="trailing" secondItem="aop-PV-jKF" secondAttribute="trailingMargin" id="fWc-Gl-TPX"/>
-                            <constraint firstItem="UtI-TD-3Gm" firstAttribute="leading" secondItem="aop-PV-jKF" secondAttribute="leadingMargin" id="gYi-Fg-F53"/>
-                            <constraint firstItem="xnp-SC-3r8" firstAttribute="leading" secondItem="aop-PV-jKF" secondAttribute="leadingMargin" id="htf-d1-KfS"/>
-                            <constraint firstItem="kCk-Qc-mPr" firstAttribute="trailing" secondItem="aop-PV-jKF" secondAttribute="trailingMargin" id="i4M-kL-I7c"/>
-                            <constraint firstItem="UtI-TD-3Gm" firstAttribute="trailing" secondItem="aop-PV-jKF" secondAttribute="trailingMargin" id="j92-qB-TYH"/>
-                            <constraint firstItem="dEA-je-AIR" firstAttribute="leading" secondItem="aop-PV-jKF" secondAttribute="leadingMargin" constant="120" id="jAZ-pT-VXh"/>
-                            <constraint firstItem="mbw-Qq-4Wd" firstAttribute="top" secondItem="JxQ-4w-gND" secondAttribute="bottom" constant="8" id="kiq-LF-9dl"/>
-                            <constraint firstItem="Z8x-uj-B4l" firstAttribute="leading" secondItem="aop-PV-jKF" secondAttribute="leadingMargin" id="mEE-aH-Edc"/>
-                            <constraint firstItem="mbw-Qq-4Wd" firstAttribute="trailing" secondItem="aop-PV-jKF" secondAttribute="trailingMargin" id="mlA-fS-3Z1"/>
-                            <constraint firstItem="RXp-DL-pTG" firstAttribute="top" secondItem="Z8x-uj-B4l" secondAttribute="bottom" constant="8" id="oKU-L0-6Jh"/>
-                            <constraint firstItem="5SC-Uj-DF8" firstAttribute="trailing" secondItem="aop-PV-jKF" secondAttribute="trailingMargin" id="tdB-B7-dKn"/>
+                            <constraint firstItem="VGd-4j-lvi" firstAttribute="width" secondItem="aop-PV-jKF" secondAttribute="width" id="6b4-Wm-RkL"/>
+                            <constraint firstItem="Nzp-hk-QdG" firstAttribute="leading" secondItem="aop-PV-jKF" secondAttribute="leading" id="Mz9-hS-ETd"/>
+                            <constraint firstItem="Nzp-hk-QdG" firstAttribute="bottom" secondItem="deR-Np-NpO" secondAttribute="top" id="Whz-6i-Oey"/>
+                            <constraint firstItem="Nzp-hk-QdG" firstAttribute="top" secondItem="JxQ-4w-gND" secondAttribute="bottom" id="fkS-si-b1a"/>
+                            <constraint firstItem="Nzp-hk-QdG" firstAttribute="trailing" secondItem="aop-PV-jKF" secondAttribute="trailing" id="pTe-h7-qTb"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Eoy-kb-HX8">
@@ -1130,7 +1158,7 @@
         <!--AddView-->
         <scene sceneID="V4Y-Uf-zQg">
             <objects>
-                <viewController title="Add" id="yMV-AF-Apa" userLabel="AddView" customClass="AddViewController" customModule="COMPASSMOBILE" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Add" automaticallyAdjustsScrollViewInsets="NO" id="yMV-AF-Apa" userLabel="AddView" customClass="AddViewController" customModule="COMPASSMOBILE" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="W74-dI-sAb"/>
                         <viewControllerLayoutGuide type="bottom" id="gc1-n8-aMv"/>
@@ -1138,20 +1166,276 @@
                     <view key="view" contentMode="scaleToFill" id="dR4-4v-GVm">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2gg-VR-MyC">
+                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EWY-ZE-JJ5" userLabel="Content View">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="537"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WXc-3n-e6l" userLabel="Site Stack View">
+                                                <rect key="frame" x="20" y="8" width="560" height="30"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Site" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YUS-k7-gXZ">
+                                                        <rect key="frame" x="0.0" y="0.0" width="120" height="30"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="120" id="aKr-nI-IM3"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Tl-cr-F3W" userLabel="Site Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
+                                                        <rect key="frame" x="120" y="0.0" width="440" height="30"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <connections>
+                                                            <action selector="SiteChanged:" destination="yMV-AF-Apa" eventType="valueChanged" id="X3C-V0-Pot"/>
+                                                        </connections>
+                                                    </view>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="30" id="Z0E-ix-yB9"/>
+                                                </constraints>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ct5-6Z-yjR" userLabel="Property Stack View">
+                                                <rect key="frame" x="20" y="46" width="560" height="30"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Property" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="64a-th-kRW">
+                                                        <rect key="frame" x="0.0" y="0.0" width="120" height="30"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="120" id="4OO-uK-eUJ"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ria-Qe-2lZ" userLabel="Property Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
+                                                        <rect key="frame" x="120" y="0.0" width="440" height="30"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <connections>
+                                                            <action selector="PropertyChanged:" destination="yMV-AF-Apa" eventType="valueChanged" id="ppf-AS-5RS"/>
+                                                        </connections>
+                                                    </view>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="30" id="NYO-rz-ntG"/>
+                                                </constraints>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IHg-W2-zdp" userLabel="Area Stack View">
+                                                <rect key="frame" x="20" y="84" width="560" height="30"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Area" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b94-KQ-A4e">
+                                                        <rect key="frame" x="0.0" y="0.0" width="120" height="30"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="120" id="U5F-k2-XU5"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R4q-cD-aI6" userLabel="Area Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
+                                                        <rect key="frame" x="120" y="0.0" width="440" height="30"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <connections>
+                                                            <action selector="LocationGroupChanged:" destination="yMV-AF-Apa" eventType="valueChanged" id="Dpq-mV-Dcm"/>
+                                                        </connections>
+                                                    </view>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="30" id="uZY-YQ-Dw2"/>
+                                                </constraints>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H8q-JA-dNk" userLabel="Location Stack View">
+                                                <rect key="frame" x="20" y="122" width="560" height="30"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JIc-y2-TIg">
+                                                        <rect key="frame" x="0.0" y="0.0" width="120" height="30"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="120" id="WM7-4V-7xL"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="izM-mM-Im5" userLabel="Location Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
+                                                        <rect key="frame" x="120" y="0.0" width="440" height="30"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <connections>
+                                                            <action selector="LocationChanged:" destination="yMV-AF-Apa" eventType="valueChanged" id="da1-M7-Fvq"/>
+                                                        </connections>
+                                                    </view>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="30" id="VQO-BF-Zbb"/>
+                                                </constraints>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aSU-rt-n6u" userLabel="Asset Type Stack View">
+                                                <rect key="frame" x="20" y="160" width="560" height="30"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Asset Type" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WC0-Tq-OFJ">
+                                                        <rect key="frame" x="0.0" y="0.0" width="120" height="30"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="120" id="P2w-1J-T7r"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y6w-Ko-pfQ" userLabel="Asset Type Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
+                                                        <rect key="frame" x="120" y="0.0" width="440" height="30"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <connections>
+                                                            <action selector="AssetTypeChanged:" destination="yMV-AF-Apa" eventType="valueChanged" id="Atp-ar-dUQ"/>
+                                                            <action selector="AssetTypeChanged:" destination="4hd-cQ-A8L" eventType="valueChanged" id="E2m-h8-27Z"/>
+                                                        </connections>
+                                                    </view>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="30" id="ZcK-dd-lg3"/>
+                                                </constraints>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aTT-nb-B9q" userLabel="Task Name Stack View">
+                                                <rect key="frame" x="20" y="236" width="560" height="30"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Task Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V2m-iy-DVL">
+                                                        <rect key="frame" x="0.0" y="0.0" width="120" height="30"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="120" id="d9y-Gj-1ar"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WYn-a4-GxS" userLabel="Task Name Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
+                                                        <rect key="frame" x="120" y="0.0" width="440" height="30"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <connections>
+                                                            <action selector="TaskNameChanged:" destination="yMV-AF-Apa" eventType="valueChanged" id="iZY-SD-zzY"/>
+                                                        </connections>
+                                                    </view>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="30" id="v9U-Ju-l1E"/>
+                                                </constraints>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1u4-HM-okz" userLabel="Asset Number Stack View">
+                                                <rect key="frame" x="20" y="274" width="560" height="30"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Asset Number" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eVb-KD-EEx">
+                                                        <rect key="frame" x="0.0" y="0.0" width="120" height="30"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="120" id="7TG-gI-zYe"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DnJ-Vz-AU2" userLabel="Asset Number Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
+                                                        <rect key="frame" x="120" y="0.0" width="440" height="30"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <connections>
+                                                            <action selector="AssetNumberChanged:" destination="yMV-AF-Apa" eventType="valueChanged" id="3df-Ph-X8g"/>
+                                                        </connections>
+                                                    </view>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="30" id="6vH-YY-ztw"/>
+                                                </constraints>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aau-Cf-gZN" userLabel="Asset Group Stack View">
+                                                <rect key="frame" x="20" y="198" width="560" height="30"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Asset Group" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ePA-8f-kIO">
+                                                        <rect key="frame" x="0.0" y="0.0" width="120" height="30"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="120" id="4OJ-rT-zWN"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ekl-Wi-AWW" userLabel="Asset Group Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
+                                                        <rect key="frame" x="120" y="0.0" width="440" height="30"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <connections>
+                                                            <action selector="AssetGroupChanged:" destination="yMV-AF-Apa" eventType="valueChanged" id="H9g-Gw-8oS"/>
+                                                        </connections>
+                                                    </view>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="30" id="yRb-ia-Yj4"/>
+                                                </constraints>
+                                            </stackView>
+                                        </subviews>
+                                        <color key="backgroundColor" red="0.94901961089999998" green="0.94901961089999998" blue="0.94901961089999998" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstItem="WXc-3n-e6l" firstAttribute="top" secondItem="EWY-ZE-JJ5" secondAttribute="top" constant="8" id="3Nb-hs-G6K"/>
+                                            <constraint firstAttribute="trailing" secondItem="1u4-HM-okz" secondAttribute="trailing" constant="20" id="8gq-BH-Heh"/>
+                                            <constraint firstItem="aSU-rt-n6u" firstAttribute="leading" secondItem="EWY-ZE-JJ5" secondAttribute="leading" constant="20" id="9Q9-gu-BU7"/>
+                                            <constraint firstItem="IHg-W2-zdp" firstAttribute="top" secondItem="ct5-6Z-yjR" secondAttribute="bottom" constant="8" id="Bga-vf-Vv4"/>
+                                            <constraint firstItem="H8q-JA-dNk" firstAttribute="top" secondItem="IHg-W2-zdp" secondAttribute="bottom" constant="8" id="Ey8-FH-EEg"/>
+                                            <constraint firstAttribute="trailing" secondItem="aau-Cf-gZN" secondAttribute="trailing" constant="20" id="IMK-HD-3be"/>
+                                            <constraint firstAttribute="trailing" secondItem="ct5-6Z-yjR" secondAttribute="trailing" constant="20" id="JCV-dK-QOB"/>
+                                            <constraint firstItem="ct5-6Z-yjR" firstAttribute="top" secondItem="WXc-3n-e6l" secondAttribute="bottom" constant="8" id="LLP-jw-K09"/>
+                                            <constraint firstAttribute="trailing" secondItem="H8q-JA-dNk" secondAttribute="trailing" constant="20" id="O1C-j7-zCi"/>
+                                            <constraint firstAttribute="bottom" secondItem="1u4-HM-okz" secondAttribute="bottom" constant="271" id="OUm-xM-T8t"/>
+                                            <constraint firstItem="WXc-3n-e6l" firstAttribute="leading" secondItem="EWY-ZE-JJ5" secondAttribute="leading" constant="20" id="QsW-hE-CuW"/>
+                                            <constraint firstItem="aTT-nb-B9q" firstAttribute="leading" secondItem="EWY-ZE-JJ5" secondAttribute="leading" constant="20" id="ThU-fU-uuF"/>
+                                            <constraint firstAttribute="trailing" secondItem="aSU-rt-n6u" secondAttribute="trailing" constant="20" id="VJI-zk-t8f"/>
+                                            <constraint firstItem="aSU-rt-n6u" firstAttribute="top" secondItem="H8q-JA-dNk" secondAttribute="bottom" constant="8" id="XXz-H5-5cm"/>
+                                            <constraint firstItem="aTT-nb-B9q" firstAttribute="top" secondItem="aau-Cf-gZN" secondAttribute="bottom" constant="8" id="dd1-8w-tbp"/>
+                                            <constraint firstItem="ct5-6Z-yjR" firstAttribute="leading" secondItem="EWY-ZE-JJ5" secondAttribute="leading" constant="20" id="egx-JI-IG9"/>
+                                            <constraint firstItem="aau-Cf-gZN" firstAttribute="leading" secondItem="EWY-ZE-JJ5" secondAttribute="leading" constant="20" id="gKW-8y-PCv"/>
+                                            <constraint firstItem="1u4-HM-okz" firstAttribute="leading" secondItem="EWY-ZE-JJ5" secondAttribute="leading" constant="20" id="hxz-mD-Zp7"/>
+                                            <constraint firstAttribute="trailing" secondItem="aTT-nb-B9q" secondAttribute="trailing" constant="20" id="jog-co-cPy"/>
+                                            <constraint firstItem="H8q-JA-dNk" firstAttribute="leading" secondItem="EWY-ZE-JJ5" secondAttribute="leading" constant="20" id="kMh-K9-pFr"/>
+                                            <constraint firstItem="1u4-HM-okz" firstAttribute="top" secondItem="aTT-nb-B9q" secondAttribute="bottom" constant="8" id="rC1-E6-Heu"/>
+                                            <constraint firstItem="IHg-W2-zdp" firstAttribute="leading" secondItem="EWY-ZE-JJ5" secondAttribute="leading" constant="20" id="rrP-VE-ipN"/>
+                                            <constraint firstAttribute="trailing" secondItem="WXc-3n-e6l" secondAttribute="trailing" constant="20" id="x9L-Ev-T2H"/>
+                                            <constraint firstItem="aau-Cf-gZN" firstAttribute="top" secondItem="aSU-rt-n6u" secondAttribute="bottom" constant="8" id="yYO-a9-VGa"/>
+                                            <constraint firstAttribute="trailing" secondItem="IHg-W2-zdp" secondAttribute="trailing" constant="20" id="zys-yp-pII"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="EWY-ZE-JJ5" firstAttribute="trailing" secondItem="2gg-VR-MyC" secondAttribute="trailing" id="8Ec-Lw-mUl"/>
+                                    <constraint firstItem="EWY-ZE-JJ5" firstAttribute="leading" secondItem="2gg-VR-MyC" secondAttribute="leading" id="WWk-vE-7uw"/>
+                                    <constraint firstItem="EWY-ZE-JJ5" firstAttribute="top" secondItem="2gg-VR-MyC" secondAttribute="top" id="vuo-Ej-ez7"/>
+                                    <constraint firstItem="EWY-ZE-JJ5" firstAttribute="bottom" secondItem="2gg-VR-MyC" secondAttribute="bottom" id="ynL-Xz-PMI" userLabel="Content View.bottom = bottom"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="2gg-VR-MyC" firstAttribute="bottom" secondItem="gc1-n8-aMv" secondAttribute="top" id="Ke5-II-F9f"/>
+                            <constraint firstItem="2gg-VR-MyC" firstAttribute="leading" secondItem="dR4-4v-GVm" secondAttribute="leading" id="TBb-BC-Cx6"/>
+                            <constraint firstItem="2gg-VR-MyC" firstAttribute="top" secondItem="W74-dI-sAb" secondAttribute="bottom" id="quy-bB-vtb"/>
+                            <constraint firstItem="EWY-ZE-JJ5" firstAttribute="width" secondItem="dR4-4v-GVm" secondAttribute="width" id="wvo-cj-sAr"/>
+                            <constraint firstItem="2gg-VR-MyC" firstAttribute="trailing" secondItem="dR4-4v-GVm" secondAttribute="trailing" id="yjE-lM-qT1"/>
+                        </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="qYz-ZL-4Iz">
+                    <navigationItem key="navigationItem" title="Add Task" id="qYz-ZL-4Iz">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="3aX-AV-4iO">
                             <connections>
                                 <action selector="Cancel:" destination="yMV-AF-Apa" id="Ipr-WR-tpZ"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="SYl-Rk-ig7">
+                        <barButtonItem key="rightBarButtonItem" title="Create" id="SYl-Rk-ig7">
                             <connections>
                                 <action selector="Done:" destination="yMV-AF-Apa" id="Sl6-eg-h7X"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="AssetGroupPopupSelector" destination="ekl-Wi-AWW" id="ZX1-Ez-nrT"/>
+                        <outlet property="AssetNumberPopupSelector" destination="DnJ-Vz-AU2" id="FFE-2p-krK"/>
+                        <outlet property="AssetTypePopupSelector" destination="y6w-Ko-pfQ" id="YCs-gB-GPe"/>
+                        <outlet property="LocationGroupPopupSelector" destination="R4q-cD-aI6" id="49G-CI-5OC"/>
+                        <outlet property="LocationPopupSelector" destination="izM-mM-Im5" id="nVJ-ch-Fac"/>
+                        <outlet property="PropertyPopupSelector" destination="Ria-Qe-2lZ" id="7Xx-cH-tSW"/>
+                        <outlet property="SitePopupSelector" destination="3Tl-cr-F3W" id="8x8-GA-NJA"/>
+                        <outlet property="TaskNamePopupSelector" destination="WYn-a4-GxS" id="vEX-cZ-QHy"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pMz-ma-Uy2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
