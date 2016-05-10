@@ -118,13 +118,29 @@ class Utility: NSObject {
                 let currentAsset: Asset? = ModelManager.getInstance().getAsset(asset.RowId)
                 if currentAsset == nil
                 {
-                    //yes update it
-                    ModelManager.getInstance().addAsset(asset)
+                    //is the current record deleted
+                    if (asset.Deleted == nil)
+                    {
+                        //no insert it
+                        ModelManager.getInstance().addAsset(asset)
+                    }
                 }
                 else
                 {
-                    //no insert it
-                    ModelManager.getInstance().updateAsset(asset)
+                    //yes
+                    
+                    //is the current record deleted
+                    if (asset.Deleted != nil)
+                    {
+                        //yes  - delete the asset
+                        ModelManager.getInstance().deleteAsset(asset)
+                    }
+                    else
+                    {
+                        //no  - update the asset
+                        ModelManager.getInstance().updateAsset(asset)
+                    }
+                    
                 }
                 
                 dispatch_async(dispatch_get_main_queue(),{progressBar.setProgress((Float(current) / Float(total)), animated: true)})
@@ -159,13 +175,29 @@ class Utility: NSObject {
                 let currentLocation: Location? = ModelManager.getInstance().getLocation(location.RowId)
                 if currentLocation == nil
                 {
-                    //yes update it
-                    ModelManager.getInstance().addLocation(location)
+                    //is the current record deleted
+                    if (location.Deleted == nil)
+                    {
+                        //no insert it
+                        ModelManager.getInstance().addLocation(location)
+                    }
                 }
                 else
                 {
-                    //no insert it
-                    ModelManager.getInstance().updateLocation(location)
+                    //yes
+                    
+                    //is the current record deleted
+                    if (location.Deleted != nil)
+                    {
+                        //yes  - delete the Location
+                        ModelManager.getInstance().deleteLocation(location)
+                    }
+                    else
+                    {
+                        //no  - update the Location
+                        ModelManager.getInstance().updateLocation(location)
+                    }
+                    
                 }
                 
                 dispatch_async(dispatch_get_main_queue(),{progressBar.setProgress((Float(current) / Float(total)), animated: true)})
@@ -200,13 +232,29 @@ class Utility: NSObject {
                 let currentLocationGroup: LocationGroup? = ModelManager.getInstance().getLocationGroup(locationGroup.RowId)
                 if currentLocationGroup == nil
                 {
-                    //yes update it
-                    ModelManager.getInstance().addLocationGroup(locationGroup)
+                    //is the current record deleted
+                    if (locationGroup.Deleted == nil)
+                    {
+                        //no insert it
+                        ModelManager.getInstance().addLocationGroup(locationGroup)
+                    }
                 }
                 else
                 {
-                    //no insert it
-                    ModelManager.getInstance().updateLocationGroup(locationGroup)
+                    //yes
+                    
+                    //is the current record deleted
+                    if (locationGroup.Deleted != nil)
+                    {
+                        //yes  - delete the LocationGroup
+                        ModelManager.getInstance().deleteLocationGroup(locationGroup)
+                    }
+                    else
+                    {
+                        //no  - update the LocationGroup
+                        ModelManager.getInstance().updateLocationGroup(locationGroup)
+                    }
+                    
                 }
                 
                 dispatch_async(dispatch_get_main_queue(),{progressBar.setProgress((Float(current) / Float(total)), animated: true)})
@@ -241,13 +289,29 @@ class Utility: NSObject {
                 let currentLocationGroupMembership: LocationGroupMembership? = ModelManager.getInstance().getLocationGroupMembership(locationGroupMembership.RowId)
                 if currentLocationGroupMembership == nil
                 {
-                    //yes update it
-                    ModelManager.getInstance().addLocationGroupMembership(locationGroupMembership)
+                    //is the current record deleted
+                    if (locationGroupMembership.Deleted == nil)
+                    {
+                        //no insert it
+                        ModelManager.getInstance().addLocationGroupMembership(locationGroupMembership)
+                    }
                 }
                 else
                 {
-                    //no insert it
-                    ModelManager.getInstance().updateLocationGroupMembership(locationGroupMembership)
+                    //yes
+                    
+                    //is the current record deleted
+                    if (locationGroupMembership.Deleted != nil)
+                    {
+                        //yes  - delete the LocationGroupMembership
+                        ModelManager.getInstance().deleteLocationGroupMembership(locationGroupMembership)
+                    }
+                    else
+                    {
+                        //no  - update the LocationGroupMembership
+                        ModelManager.getInstance().updateLocationGroupMembership(locationGroupMembership)
+                    }
+                    
                 }
                 
                 dispatch_async(dispatch_get_main_queue(),{progressBar.setProgress((Float(current) / Float(total)), animated: true)})
@@ -282,13 +346,29 @@ class Utility: NSObject {
                 let currentOperative: Operative? = ModelManager.getInstance().getOperative(operative.RowId)
                 if currentOperative == nil
                 {
-                    //yes update it
-                    ModelManager.getInstance().addOperative(operative)
+                    //is the current record deleted
+                    if (operative.Deleted == nil)
+                    {
+                        //no insert it
+                        ModelManager.getInstance().addOperative(operative)
+                    }
                 }
                 else
                 {
-                    //no insert it
-                    ModelManager.getInstance().updateOperative(operative)
+                    //yes
+                    
+                    //is the current record deleted
+                    if (operative.Deleted != nil)
+                    {
+                        //yes  - delete the Operative
+                        ModelManager.getInstance().deleteOperative(operative)
+                    }
+                    else
+                    {
+                        //no  - update the Operative
+                        ModelManager.getInstance().updateOperative(operative)
+                    }
+                    
                 }
                 
                 dispatch_async(dispatch_get_main_queue(),{progressBar.setProgress((Float(current) / Float(total)), animated: true)})
@@ -323,13 +403,29 @@ class Utility: NSObject {
                 let currentOrganisation: Organisation? = ModelManager.getInstance().getOrganisation(organisation.RowId)
                 if currentOrganisation == nil
                 {
-                    //yes update it
-                    ModelManager.getInstance().addOrganisation(organisation)
+                    //is the current record deleted
+                    if (organisation.Deleted == nil)
+                    {
+                        //no insert it
+                        ModelManager.getInstance().addOrganisation(organisation)
+                    }
                 }
                 else
                 {
-                    //no insert it
-                    ModelManager.getInstance().updateOrganisation(organisation)
+                    //yes
+                    
+                    //is the current record deleted
+                    if (organisation.Deleted != nil)
+                    {
+                        //yes  - delete the Organisation
+                        ModelManager.getInstance().deleteOrganisation(organisation)
+                    }
+                    else
+                    {
+                        //no  - update the Organisation
+                        ModelManager.getInstance().updateOrganisation(organisation)
+                    }
+                    
                 }
                 
                 dispatch_async(dispatch_get_main_queue(),{progressBar.setProgress((Float(current) / Float(total)), animated: true)})
@@ -364,13 +460,29 @@ class Utility: NSObject {
                 let currentSite: Site? = ModelManager.getInstance().getSite(site.RowId)
                 if currentSite == nil
                 {
-                    //yes update it
-                    ModelManager.getInstance().addSite(site)
+                    //is the current record deleted
+                    if (site.Deleted == nil)
+                    {
+                        //no insert it
+                        ModelManager.getInstance().addSite(site)
+                    }
                 }
                 else
                 {
-                    //no insert it
-                    ModelManager.getInstance().updateSite(site)
+                    //yes
+                    
+                    //is the current record deleted
+                    if (site.Deleted != nil)
+                    {
+                        //yes  - delete the Site
+                        ModelManager.getInstance().deleteSite(site)
+                    }
+                    else
+                    {
+                        //no  - update the Site
+                        ModelManager.getInstance().updateSite(site)
+                    }
+                    
                 }
                 
                 dispatch_async(dispatch_get_main_queue(),{progressBar.setProgress((Float(current) / Float(total)), animated: true)})
@@ -405,13 +517,29 @@ class Utility: NSObject {
                 let currentProperty: Property? = ModelManager.getInstance().getProperty(property.RowId)
                 if currentProperty == nil
                 {
-                    //yes update it
-                    ModelManager.getInstance().addProperty(property)
+                    //is the current record deleted
+                    if (property.Deleted == nil)
+                    {
+                        //no insert it
+                        ModelManager.getInstance().addProperty(property)
+                    }
                 }
                 else
                 {
-                    //no insert it
-                    ModelManager.getInstance().updateProperty(property)
+                    //yes
+                    
+                    //is the current record deleted
+                    if (property.Deleted != nil)
+                    {
+                        //yes  - delete the Property
+                        ModelManager.getInstance().deleteProperty(property)
+                    }
+                    else
+                    {
+                        //no  - update the Property
+                        ModelManager.getInstance().updateProperty(property)
+                    }
+                    
                 }
                 
                 dispatch_async(dispatch_get_main_queue(),{progressBar.setProgress((Float(current) / Float(total)), animated: true)})
@@ -446,13 +574,29 @@ class Utility: NSObject {
                 let currentReferenceData: ReferenceData? = ModelManager.getInstance().getReferenceData(referenceData.RowId)
                 if currentReferenceData == nil
                 {
-                    //yes update it
-                    ModelManager.getInstance().addReferenceData(referenceData)
+                    //is the current record deleted
+                    if (referenceData.Deleted == nil)
+                    {
+                        //no insert it
+                        ModelManager.getInstance().addReferenceData(referenceData)
+                    }
                 }
                 else
                 {
-                    //no insert it
-                    ModelManager.getInstance().updateReferenceData(referenceData)
+                    //yes
+                    
+                    //is the current record deleted
+                    if (referenceData.Deleted != nil)
+                    {
+                        //yes  - delete the ReferenceData
+                        ModelManager.getInstance().deleteReferenceData(referenceData)
+                    }
+                    else
+                    {
+                        //no  - update the ReferenceData
+                        ModelManager.getInstance().updateReferenceData(referenceData)
+                    }
+                    
                 }
                 
                 dispatch_async(dispatch_get_main_queue(),{progressBar.setProgress((Float(current) / Float(total)), animated: true)})
@@ -487,13 +631,29 @@ class Utility: NSObject {
                 let currentTask: Task? = ModelManager.getInstance().getTask(task.RowId)
                 if currentTask == nil
                 {
-                    //yes update it
-                    ModelManager.getInstance().addTask(task)
+                    //is the current record deleted
+                    if (task.Deleted == nil)
+                    {
+                        //no insert it
+                        ModelManager.getInstance().addTask(task)
+                    }
                 }
                 else
                 {
-                    //no insert it
-                    ModelManager.getInstance().updateTask(task)
+                    //yes
+                    
+                    //is the current record deleted
+                    if (task.Deleted != nil)
+                    {
+                        //yes  - delete the Task
+                        ModelManager.getInstance().deleteTask(task)
+                    }
+                    else
+                    {
+                        //no  - update the Task
+                        ModelManager.getInstance().updateTask(task)
+                    }
+                    
                 }
                 
                 dispatch_async(dispatch_get_main_queue(),{progressBar.setProgress((Float(current) / Float(total)), animated: true)})
@@ -528,13 +688,29 @@ class Utility: NSObject {
                 let currentTaskParameter: TaskParameter? = ModelManager.getInstance().getTaskParameter(taskParameter.RowId)
                 if currentTaskParameter == nil
                 {
-                    //yes update it
-                    ModelManager.getInstance().addTaskParameter(taskParameter)
+                    //is the current record deleted
+                    if (taskParameter.Deleted == nil)
+                    {
+                        //no insert it
+                        ModelManager.getInstance().addTaskParameter(taskParameter)
+                    }
                 }
                 else
                 {
-                    //no insert it
-                    ModelManager.getInstance().updateTaskParameter(taskParameter)
+                    //yes
+                    
+                    //is the current record deleted
+                    if (taskParameter.Deleted != nil)
+                    {
+                        //yes  - delete the TaskParameter
+                        ModelManager.getInstance().deleteTaskParameter(taskParameter)
+                    }
+                    else
+                    {
+                        //no  - update the TaskParameter
+                        ModelManager.getInstance().updateTaskParameter(taskParameter)
+                    }
+                    
                 }
                 
                 dispatch_async(dispatch_get_main_queue(),{progressBar.setProgress((Float(current) / Float(total)), animated: true)})
@@ -569,13 +745,29 @@ class Utility: NSObject {
                 let currentTaskTemplate: TaskTemplate? = ModelManager.getInstance().getTaskTemplate(taskTemplate.RowId)
                 if currentTaskTemplate == nil
                 {
-                    //yes update it
-                    ModelManager.getInstance().addTaskTemplate(taskTemplate)
+                    //is the current record deleted
+                    if (taskTemplate.Deleted == nil)
+                    {
+                        //no insert it
+                        ModelManager.getInstance().addTaskTemplate(taskTemplate)
+                    }
                 }
                 else
                 {
-                    //no insert it
-                    ModelManager.getInstance().updateTaskTemplate(taskTemplate)
+                    //yes
+                    
+                    //is the current record deleted
+                    if (taskTemplate.Deleted != nil)
+                    {
+                        //yes  - delete the TaskTemplate
+                        ModelManager.getInstance().deleteTaskTemplate(taskTemplate)
+                    }
+                    else
+                    {
+                        //no  - update the TaskTemplate
+                        ModelManager.getInstance().updateTaskTemplate(taskTemplate)
+                    }
+                    
                 }
                 
                 dispatch_async(dispatch_get_main_queue(),{progressBar.setProgress((Float(current) / Float(total)), animated: true)})
@@ -610,13 +802,29 @@ class Utility: NSObject {
                 let currentTaskTemplateParameter: TaskTemplateParameter? = ModelManager.getInstance().getTaskTemplateParameter(taskTemplateParameter.RowId)
                 if currentTaskTemplateParameter == nil
                 {
-                    //yes update it
-                    ModelManager.getInstance().addTaskTemplateParameter(taskTemplateParameter)
+                    //is the current record deleted
+                    if (taskTemplateParameter.Deleted == nil)
+                    {
+                        //no insert it
+                        ModelManager.getInstance().addTaskTemplateParameter(taskTemplateParameter)
+                    }
                 }
                 else
                 {
-                    //no insert it
-                    ModelManager.getInstance().updateTaskTemplateParameter(taskTemplateParameter)
+                    //yes
+                    
+                    //is the current record deleted
+                    if (taskTemplateParameter.Deleted != nil)
+                    {
+                        //yes  - delete the TaskTemplateParameter
+                        ModelManager.getInstance().deleteTaskTemplateParameter(taskTemplateParameter)
+                    }
+                    else
+                    {
+                        //no  - update the TaskTemplateParameter
+                        ModelManager.getInstance().updateTaskTemplateParameter(taskTemplateParameter)
+                    }
+                    
                 }
                 
                 dispatch_async(dispatch_get_main_queue(),{progressBar.setProgress((Float(current) / Float(total)), animated: true)})
@@ -714,7 +922,7 @@ class Utility: NSObject {
         var lastRowId: String = EmptyGuid
         var count: Int32 = 0
         
-        while (lastRowId != EmptyGuid || count == 0) && (count < 200) {
+        while (lastRowId != EmptyGuid || count == 0) {
             count += 1
             progressBar.setProgress(((Float(count) / Float(count + 1))), animated: true);
             
@@ -797,4 +1005,86 @@ extension NSDate
         dateStringFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
         return dateStringFormatter.stringFromDate(self)
     }
+    
+    func startOfDay() -> NSDate {
+        let dateStringFormatter = NSDateFormatter()
+        dateStringFormatter.dateFormat = DateFormatStartOfDay
+        dateStringFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
+        let startOfDay: NSDate =  NSDate(dateString: dateStringFormatter.stringFromDate(self))
+        return startOfDay
+    }
+ 
+    func endOfDay() -> NSDate {
+        let startOfDay: NSDate = self.startOfDay()
+        let calendar = NSCalendar.currentCalendar()
+        let startOfTomorrow = calendar.dateByAddingUnit(.Day, value: 1, toDate: startOfDay, options: NSCalendarOptions(rawValue: 0))!
+        let endOfDay = calendar.dateByAddingUnit(.Second, value: -1, toDate: startOfTomorrow, options: NSCalendarOptions(rawValue: 0))!
+        return endOfDay
+    }
+    
+    func startOfWeek() -> NSDate {
+        let calendar = NSCalendar.currentCalendar()
+        calendar.firstWeekday = 2
+        var startOfWeek : NSDate?
+        calendar.rangeOfUnit(.WeekOfYear, startDate: &startOfWeek, interval: nil, forDate: self)
+        return startOfWeek!
+    }
+   
+    func endOfWeek() -> NSDate {
+        let calendar = NSCalendar.currentCalendar()
+        calendar.firstWeekday = 2
+        var startOfWeek : NSDate?
+        calendar.rangeOfUnit(.WeekOfYear, startDate: &startOfWeek, interval: nil, forDate: self)
+        let startOfNextWeek = calendar.dateByAddingUnit(.Day, value: 7, toDate: startOfWeek!, options: NSCalendarOptions(rawValue: 0))!
+        let endOfWeek = calendar.dateByAddingUnit(.Second, value: -1, toDate: startOfNextWeek, options: NSCalendarOptions(rawValue: 0))!
+        return endOfWeek
+    }
+    
+    func startOfMonth() -> NSDate {
+        let dateStringFormatter = NSDateFormatter()
+        dateStringFormatter.dateFormat = DateFormatStartOfMonth
+        dateStringFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
+        return NSDate(dateString: dateStringFormatter.stringFromDate(self))
+    }
+ 
+    func endOfMonth() -> NSDate {
+        let dateStringFormatter = NSDateFormatter()
+        dateStringFormatter.dateFormat = DateFormatStartOfMonth
+        dateStringFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
+        var startOfMonth : NSDate?
+        startOfMonth =  NSDate(dateString: dateStringFormatter.stringFromDate(self))
+
+        let calendar = NSCalendar.currentCalendar()
+ 
+        let startOfNextMonth = calendar.dateByAddingUnit(.Month, value: 1, toDate: startOfMonth!, options: NSCalendarOptions(rawValue: 0))!
+        let endOfMonth = calendar.dateByAddingUnit(.Second, value: -1, toDate: startOfNextMonth, options: NSCalendarOptions(rawValue: 0))!
+        return endOfMonth
+    }
+    
+    func startOfNextMonth() -> NSDate {
+        let dateStringFormatter = NSDateFormatter()
+        dateStringFormatter.dateFormat = DateFormatStartOfMonth
+        dateStringFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
+        var startOfMonth : NSDate?
+        startOfMonth =  NSDate(dateString: dateStringFormatter.stringFromDate(self))
+        
+        let calendar = NSCalendar.currentCalendar()
+        let startOfNextMonth = calendar.dateByAddingUnit(.Month, value: 1, toDate: startOfMonth!, options: NSCalendarOptions(rawValue: 0))!
+        return startOfNextMonth
+    }
+    
+    func endOfNextMonth() -> NSDate {
+        let dateStringFormatter = NSDateFormatter()
+        dateStringFormatter.dateFormat = DateFormatStartOfMonth
+        dateStringFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
+        var startOfMonth : NSDate?
+        startOfMonth =  NSDate(dateString: dateStringFormatter.stringFromDate(self))
+        
+        let calendar = NSCalendar.currentCalendar()
+        
+        let startOfOverMonth = calendar.dateByAddingUnit(.Month, value: 2, toDate: startOfMonth!, options: NSCalendarOptions(rawValue: 0))!
+        let endOfNextMonth = calendar.dateByAddingUnit(.Second, value: -1, toDate: startOfOverMonth, options: NSCalendarOptions(rawValue: 0))!
+        return endOfNextMonth
+    }
+    
 }

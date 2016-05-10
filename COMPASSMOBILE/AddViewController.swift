@@ -10,4 +10,13 @@ import UIKit
 
 class AddViewController: UIViewController {
 
+    @IBAction func Cancel(sender: UIBarButtonItem) {
+                self.navigationController?.popViewControllerAnimated(true)
+    }
+    
+    @IBAction func Done(sender: UIBarButtonItem) {
+                self.navigationController?.popViewControllerAnimated(true)
+    }
+    
+
 }

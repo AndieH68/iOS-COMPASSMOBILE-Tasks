@@ -1,5 +1,5 @@
 //
-//  SearchViewController.swift
+//  SettingsViewController.swift
 //  COMPASSMOBILE
 //
 //  Created by Andrew Harper on 25/02/2016.
@@ -8,14 +8,13 @@
 
 import UIKit
 
-class SearchViewController: UIViewController {
-    
+class SettingsViewController: UIViewController {
+
     @IBAction func Cancel(sender: UIBarButtonItem) {
-        self.navigationController?.popViewControllerAnimated(true)
+                self.navigationController?.popViewControllerAnimated(true)
     }
     
     @IBAction func Done(sender: UIBarButtonItem) {
-        self.navigationController?.popViewControllerAnimated(true)
+                self.navigationController?.popViewControllerAnimated(true)
     }
-    
 }

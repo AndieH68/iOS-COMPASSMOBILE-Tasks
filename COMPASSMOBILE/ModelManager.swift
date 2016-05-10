@@ -335,8 +335,13 @@ class ModelManager: NSObject {
         
         (whereClause, whereValues) = buildWhereClause(criteria)
         
+        if (whereClause != "")
+        {
+            whereClause = "WHERE " + whereClause
+        }
+   
         sharedModelManager.database!.open()
-        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [Asset] WHERE " + whereClause, withArgumentsInArray: whereValues)
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [Asset] " + whereClause, withArgumentsInArray: whereValues)
         if (countSet != nil) {
             while countSet.next() {
                 count = countSet.intForColumnIndex(0)
@@ -351,7 +356,7 @@ class ModelManager: NSObject {
                 pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
             }
             
-            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [AssetType], [PropertyId], [LocationId], [HydropName], [ClientName], [ScanCode], [HotType], [ColdType] FROM [Asset] WHERE " + whereClause + pageClause, withArgumentsInArray: whereValues)
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [AssetType], [PropertyId], [LocationId], [HydropName], [ClientName], [ScanCode], [HotType], [ColdType] FROM [Asset] " + whereClause + pageClause, withArgumentsInArray: whereValues)
             if (resultSet != nil) {
                 while resultSet.next() {
                     let asset : Asset = Asset()
@@ -664,14 +669,22 @@ class ModelManager: NSObject {
         var count: Int32 = 0
         var locationList: [Location] = [Location]()
         
+        //build the order clause
+        let orderByClause: String = " ORDER BY [Name]"
+        
         //build the where clause
         var whereClause: String = String()
         var whereValues: [AnyObject] = [AnyObject]()
         
         (whereClause, whereValues) = buildWhereClause(criteria)
         
+        if (whereClause != "")
+        {
+            whereClause = "WHERE " + whereClause
+        }
+
         sharedModelManager.database!.open()
-        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [Location] WHERE " + whereClause, withArgumentsInArray: whereValues)
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [Location] " + whereClause + orderByClause, withArgumentsInArray: whereValues)
         if (countSet != nil) {
             while countSet.next() {
                 count = countSet.intForColumnIndex(0)
@@ -686,7 +699,7 @@ class ModelManager: NSObject {
                 pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
             }
             
-            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [PropertyId], [Name], [Description], [Level], [Number], [SubNumber], [Use], [ClientLocationName] FROM [Location] WHERE " + whereClause + pageClause, withArgumentsInArray: whereValues)
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [PropertyId], [Name], [Description], [Level], [Number], [SubNumber], [Use], [ClientLocationName] FROM [Location] " + whereClause + orderByClause + pageClause, withArgumentsInArray: whereValues)
             
             if (resultSet != nil) {
                 while resultSet.next() {
@@ -962,14 +975,22 @@ class ModelManager: NSObject {
         var count: Int32 = 0
         var locationGroupList: [LocationGroup] = [LocationGroup]()
         
+        //build the order clause
+        let orderByClause: String = " ORDER BY [Name]"
+        
         //build the where clause
         var whereClause: String = String()
         var whereValues: [AnyObject] = [AnyObject]()
         
         (whereClause, whereValues) = buildWhereClause(criteria)
         
+        if (whereClause != "")
+        {
+            whereClause = "WHERE " + whereClause
+        }
+
         sharedModelManager.database!.open()
-        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [LocationGroup] WHERE " + whereClause, withArgumentsInArray: whereValues)
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [LocationGroup] " + whereClause + orderByClause, withArgumentsInArray: whereValues)
         if (countSet != nil) {
             while countSet.next() {
                 count = countSet.intForColumnIndex(0)
@@ -984,7 +1005,7 @@ class ModelManager: NSObject {
                 pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
             }
             
-            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [PropertyId], [Type], [Name], [Description], [OccupantRiskFactor] FROM [LocationGroup] WHERE " + whereClause + pageClause, withArgumentsInArray: whereValues)
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [PropertyId], [Type], [Name], [Description], [OccupantRiskFactor] FROM [LocationGroup] " + whereClause + orderByClause + pageClause, withArgumentsInArray: whereValues)
             if (resultSet != nil) {
                 while resultSet.next() {
                     let locationGroup : LocationGroup = LocationGroup()
@@ -1204,8 +1225,13 @@ class ModelManager: NSObject {
         
         (whereClause, whereValues) = buildWhereClause(criteria)
         
+        if (whereClause != "")
+        {
+            whereClause = "WHERE " + whereClause
+        }
+
         sharedModelManager.database!.open()
-        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [LocationGroupMembership] WHERE " + whereClause, withArgumentsInArray: whereValues)
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [LocationGroupMembership] " + whereClause, withArgumentsInArray: whereValues)
         if (countSet != nil) {
             while countSet.next() {
                 count = countSet.intForColumnIndex(0)
@@ -1220,7 +1246,7 @@ class ModelManager: NSObject {
                 pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
             }
             
-            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [LocationGroupId], [LocationId] FROM [LocationGroupMembership] WHERE " + whereClause + pageClause, withArgumentsInArray: whereValues)
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [LocationGroupId], [LocationId] FROM [LocationGroupMembership] " + whereClause + pageClause, withArgumentsInArray: whereValues)
             if (resultSet != nil) {
                 while resultSet.next() {
                     let locationGroupMembership : LocationGroupMembership = LocationGroupMembership()
@@ -1424,14 +1450,22 @@ class ModelManager: NSObject {
         var count: Int32 = 0
         var operativeList: [Operative] = [Operative]()
         
+        //build the order clause
+        let orderByClause: String = " ORDER BY [Username]"
+        
         //build the where clause
         var whereClause: String = String()
         var whereValues: [AnyObject] = [AnyObject]()
         
         (whereClause, whereValues) = buildWhereClause(criteria)
         
+        if (whereClause != "")
+        {
+            whereClause = "WHERE " + whereClause
+        }
+
         sharedModelManager.database!.open()
-        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [Operative] WHERE " + whereClause, withArgumentsInArray: whereValues)
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [Operative] " + whereClause + orderByClause, withArgumentsInArray: whereValues)
         if (countSet != nil) {
             while countSet.next() {
                 count = countSet.intForColumnIndex(0)
@@ -1446,7 +1480,7 @@ class ModelManager: NSObject {
                 pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
             }
             
-            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [Username], [Password] FROM [Operative] WHERE " + whereClause + pageClause, withArgumentsInArray: whereValues)
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [Username], [Password] FROM [Operative] " + whereClause + orderByClause + pageClause, withArgumentsInArray: whereValues)
             if (resultSet != nil) {
                 while resultSet.next() {
                     let operative : Operative = Operative()
@@ -1652,14 +1686,22 @@ class ModelManager: NSObject {
         var count: Int32 = 0
         var organisationList: [Organisation] = [Organisation]()
         
+        //build the order clause
+        let orderByClause: String = " ORDER BY [Name]"
+        
         //build the where clause
         var whereClause: String = String()
         var whereValues: [AnyObject] = [AnyObject]()
         
         (whereClause, whereValues) = buildWhereClause(criteria)
         
+        if (whereClause != "")
+        {
+            whereClause = "WHERE " + whereClause
+        }
+
         sharedModelManager.database!.open()
-        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [Organisation] WHERE " + whereClause, withArgumentsInArray: whereValues)
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [Organisation] " + whereClause + orderByClause, withArgumentsInArray: whereValues)
         if (countSet != nil) {
             while countSet.next() {
                 count = countSet.intForColumnIndex(0)
@@ -1674,7 +1716,7 @@ class ModelManager: NSObject {
                 pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
             }
             
-            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [ParentOrganisationId], [Name] FROM [Organisation] WHERE " + whereClause + pageClause, withArgumentsInArray: whereValues)
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [ParentOrganisationId], [Name] FROM [Organisation] " + whereClause + orderByClause + pageClause, withArgumentsInArray: whereValues)
             if (resultSet != nil) {
                 while resultSet.next() {
                     let organisation : Organisation = Organisation()
@@ -1883,14 +1925,22 @@ class ModelManager: NSObject {
         var count: Int32 = 0
         var propertyList: [Property] = [Property]()
         
+        //build the order clause
+        let orderByClause: String = " ORDER BY [Name]"
+        
         //build the where clause
         var whereClause: String = String()
         var whereValues: [AnyObject] = [AnyObject]()
         
         (whereClause, whereValues) = buildWhereClause(criteria)
         
+        if (whereClause != "")
+        {
+            whereClause = "WHERE " + whereClause
+        }
+
         sharedModelManager.database!.open()
-        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [Property] WHERE " + whereClause, withArgumentsInArray: whereValues)
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [Property] " + whereClause + orderByClause, withArgumentsInArray: whereValues)
         if (countSet != nil) {
             while countSet.next() {
                 count = countSet.intForColumnIndex(0)
@@ -1905,7 +1955,7 @@ class ModelManager: NSObject {
                 pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
             }
             
-            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [SiteId], [Name], [Healthcare] FROM [Property] WHERE " + whereClause + pageClause, withArgumentsInArray: whereValues)
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [SiteId], [Name], [Healthcare] FROM [Property] " + whereClause + orderByClause + pageClause, withArgumentsInArray: whereValues)
             if (resultSet != nil) {
                 while resultSet.next() {
                     let property : Property = Property()
@@ -2179,19 +2229,44 @@ class ModelManager: NSObject {
     }
 
     func findReferenceDataList(criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [ReferenceData], Count: Int32) {
+        var list: [ReferenceData] = [ReferenceData]()
+        var count: Int32 = 0
+        (list, count) = findReferenceDataList(criteria, pageSize: nil, pageNumber: nil, sortOrder: ReferenceDataSortOrder.Display)
+        return (list, count)
+    }
+    
+    
+    func findReferenceDataList(criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?, sortOrder: ReferenceDataSortOrder) -> (List: [ReferenceData], Count: Int32) {
         //return variables
         var count: Int32 = 0
         var referenceDataList: [ReferenceData] = [ReferenceData]()
         
+        //build the order clause
+        var orderByClause: String = " ORDER BY "
+        
+        switch sortOrder {
+            
+        case .Display:
+            orderByClause += "[Display] "
+            
+        case .Ordinal:
+            orderByClause += "[Ordinal] "
+            
+        }
+
         //build the where clause
         var whereClause: String = String()
         var whereValues: [AnyObject] = [AnyObject]()
         
-        
         (whereClause, whereValues) = buildWhereClause(criteria)
         
+        if (whereClause != "")
+        {
+            whereClause = "WHERE " + whereClause
+        }
+
         sharedModelManager.database!.open()
-        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [ReferenceData] WHERE " + whereClause, withArgumentsInArray: whereValues)
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [ReferenceData] " + whereClause + orderByClause, withArgumentsInArray: whereValues)
         if (countSet != nil) {
             while countSet.next() {
                 count = countSet.intForColumnIndex(0)
@@ -2206,7 +2281,7 @@ class ModelManager: NSObject {
                 pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
             }
             
-            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [StartDate], [EndDate], [Type], [Value], [Ordinal], [Display], [System], [ParentType], [ParentValue] FROM [ReferenceData] WHERE " + whereClause + pageClause, withArgumentsInArray: whereValues)
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [StartDate], [EndDate], [Type], [Value], [Ordinal], [Display], [System], [ParentType], [ParentValue] FROM [ReferenceData] " + whereClause + orderByClause + pageClause, withArgumentsInArray: whereValues)
             if (resultSet != nil) {
                 while resultSet.next() {
                     let referenceData : ReferenceData = ReferenceData()
@@ -2421,14 +2496,22 @@ class ModelManager: NSObject {
         var count: Int32 = 0
         var siteList: [Site] = [Site]()
         
+        //build the order clause
+        let orderByClause: String = " ORDER BY [Name]"
+        
         //build the where clause
         var whereClause: String = String()
         var whereValues: [AnyObject] = [AnyObject]()
         
         (whereClause, whereValues) = buildWhereClause(criteria)
         
+        if (whereClause != "")
+        {
+            whereClause = "WHERE " + whereClause
+        }
+        
         sharedModelManager.database!.open()
-        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [Site] WHERE " + whereClause, withArgumentsInArray: whereValues)
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [Site] " + whereClause + orderByClause, withArgumentsInArray: whereValues)
         if (countSet != nil) {
             while countSet.next() {
                 count = countSet.intForColumnIndex(0)
@@ -2443,7 +2526,7 @@ class ModelManager: NSObject {
                 pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
             }
             
-            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [Name] FROM [Site] WHERE " + whereClause + pageClause, withArgumentsInArray: whereValues)
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [Name] FROM [Site] " + whereClause + orderByClause + pageClause, withArgumentsInArray: whereValues)
             if (resultSet != nil) {
                 while resultSet.next() {
                     let site : Site = Site()
@@ -2915,11 +2998,68 @@ class ModelManager: NSObject {
             
         }
         
+        var whereCriteria: Dictionary<String, AnyObject> = criteria
+        
+        whereCriteria["Period"] = nil  //remove the period criteria
+        
         //build the where clause
         var whereClause: String = String()
         var whereValues: [AnyObject] = [AnyObject]()
         
-        (whereClause, whereValues) = buildWhereClause(criteria)
+        (whereClause, whereValues) = buildWhereClause(whereCriteria)
+
+        
+        if (criteria.keys.contains("Period"))
+        {
+            switch criteria["Period"] as! String
+            {
+            case "Due Today":
+                 
+                let endOfToday: String = NSDate().endOfDay().toString()
+                
+                //dateFilter = " [ScheduledDate] <= '" + endOfToday + "'"
+                
+                whereClause += (whereClause != "" ? " AND " : " ")
+                whereClause += " [ScheduledDate] <= ? "
+                //print(endOfToday.stringByReplacingOccurrencesOfString("T", withString: " "))
+                whereValues.append(endOfToday.stringByReplacingOccurrencesOfString("T", withString: " "))
+                //whereValues.append("2016 APR 04")
+                
+            case "Due This Week":
+                
+                let endOfThisWeek: String = NSDate().endOfWeek().toString()
+            
+                whereClause += (whereClause != "" ? " AND " : " ")
+                whereClause += " [ScheduledDate] <= ? "
+                whereValues.append(endOfThisWeek)
+                
+            case "Due This Month":
+                
+                let endOfThisMonth: String = NSDate().endOfMonth().toString()
+                
+                whereClause += (whereClause != "" ? " AND " : " ")
+                whereClause += " [ScheduledDate] <= ? "
+                whereValues.append(endOfThisMonth)
+                
+            case "Due By the End of Next Month":
+  
+                let startOfNextMonth: String = NSDate().startOfNextMonth().toString()
+                let endOfNextMonth: String = NSDate().endOfNextMonth().toString()
+                whereClause += (whereClause != "" ? " AND " : " ")
+                whereClause += " [ScheduledDate] >= ? AND [ScheduledDate] <= ? "
+                whereValues.append(startOfNextMonth)
+                whereValues.append(endOfNextMonth)
+                
+            case "All":
+                //nothing to do
+                print("Catch All")
+            
+            default:
+                //nothing to do
+                print("Default")
+                
+            }
+        }
         
         if (whereClause != "")
         {
@@ -3232,14 +3372,22 @@ class ModelManager: NSObject {
         var count: Int32 = 0
         var taskParameterList: [TaskParameter] = [TaskParameter]()
         
+        //build the order clause
+        let orderByClause: String = " ORDER BY [Ordinal]"
+        
         //build the where clause
         var whereClause: String = String()
         var whereValues: [AnyObject] = [AnyObject]()
         
         (whereClause, whereValues) = buildWhereClause(criteria)
         
+        if (whereClause != "")
+        {
+            whereClause = "WHERE " + whereClause
+        }
+
         sharedModelManager.database!.open()
-        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [TaskParameter] WHERE " + whereClause, withArgumentsInArray: whereValues)
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [TaskParameter] " + whereClause + orderByClause, withArgumentsInArray: whereValues)
         if (countSet != nil) {
             while countSet.next() {
                 count = countSet.intForColumnIndex(0)
@@ -3254,7 +3402,7 @@ class ModelManager: NSObject {
                 pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
             }
             
-            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TaskTemplateParameterId], [TaskId], [ParameterName], [ParameterType], [ParameterDisplay], [Collect], [ParameterValue] FROM [TaskParameter] WHERE " + whereClause + pageClause, withArgumentsInArray: whereValues)
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TaskTemplateParameterId], [TaskId], [ParameterName], [ParameterType], [ParameterDisplay], [Collect], [ParameterValue] FROM [TaskParameter] " + whereClause + orderByClause + pageClause, withArgumentsInArray: whereValues)
             if (resultSet != nil) {
                 while resultSet.next() {
                     let taskParameter : TaskParameter = TaskParameter()
@@ -3486,14 +3634,22 @@ class ModelManager: NSObject {
         var count: Int32 = 0
         var taskTemplateList: [TaskTemplate] = [TaskTemplate]()
         
+        //build the order clause
+        let orderByClause: String = " ORDER BY [Priority]"
+        
         //build the where clause
         var whereClause: String = String()
         var whereValues: [AnyObject] = [AnyObject]()
         
         (whereClause, whereValues) = buildWhereClause(criteria)
         
+        if (whereClause != "")
+        {
+            whereClause = "WHERE " + whereClause
+        }
+
         sharedModelManager.database!.open()
-        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [TaskTemplate] WHERE " + whereClause, withArgumentsInArray: whereValues)
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [TaskTemplate] " + whereClause + orderByClause, withArgumentsInArray: whereValues)
         if (countSet != nil) {
             while countSet.next() {
                 count = countSet.intForColumnIndex(0)
@@ -3508,7 +3664,7 @@ class ModelManager: NSObject {
                 pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
             }
             
-            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [AssetType], [TaskName], [Priority], [EstimatedDuration]FROM [TaskTemplate] WHERE " + whereClause + pageClause, withArgumentsInArray: whereValues)
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [AssetType], [TaskName], [Priority], [EstimatedDuration]FROM [TaskTemplate] " + whereClause + orderByClause + pageClause, withArgumentsInArray: whereValues)
             if (resultSet != nil) {
                 while resultSet.next() {
                     let taskTemplate : TaskTemplate = TaskTemplate()
@@ -3775,14 +3931,22 @@ class ModelManager: NSObject {
         var count: Int32 = 0
         var taskTemplateParameterList: [TaskTemplateParameter] = [TaskTemplateParameter]()
         
+        //build the order clause
+        let orderByClause: String = " ORDER BY [Ordinal]"
+        
         //build the where clause
         var whereClause: String = String()
         var whereValues: [AnyObject] = [AnyObject]()
         
         (whereClause, whereValues) = buildWhereClause(criteria)
         
+        if (whereClause != "")
+        {
+            whereClause = "WHERE " + whereClause
+        }
+
         sharedModelManager.database!.open()
-        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [TaskTemplateParameter] WHERE " + whereClause, withArgumentsInArray: whereValues)
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [TaskTemplateParameter] " + whereClause + orderByClause, withArgumentsInArray: whereValues)
         if (countSet != nil) {
             while countSet.next() {
                 count = countSet.intForColumnIndex(0)
@@ -3797,7 +3961,7 @@ class ModelManager: NSObject {
                 pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
             }
             
-            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TaskTemplateId], [ParameterName], [ParameterType], [ParameterDisplay], [Collect], [ReferenceDataType], [ReferenceDataExtendedType], [Ordinal] FROM [TaskTemplateParameter] WHERE " + whereClause + pageClause, withArgumentsInArray: whereValues)
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TaskTemplateId], [ParameterName], [ParameterType], [ParameterDisplay], [Collect], [ReferenceDataType], [ReferenceDataExtendedType], [Ordinal] FROM [TaskTemplateParameter] " + whereClause + orderByClause + pageClause, withArgumentsInArray: whereValues)
             if (resultSet != nil) {
                 while resultSet.next() {
                     let taskTemplateParameter : TaskTemplateParameter = TaskTemplateParameter()

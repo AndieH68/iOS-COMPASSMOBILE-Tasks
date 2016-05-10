@@ -48,6 +48,13 @@ class KFPopupSelector: UIControl, UIPopoverPresentationControllerDelegate {
     /** if true, replace the button's text with the currently selected item */
     var displaySelectedValueInLabel: Bool = true
     
+    /** the horizontal alignment for the button text */
+    var buttonContentHorizontalAlignment: UIControlContentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
+    
+    /** the size of font for th etable to use*/
+    private var tableFont: UIFont = UIFont.systemFontOfSize(15.0)
+    
+    
     /** How the button title is displayed */
     enum LabelDecoration {
     case None
@@ -83,6 +90,10 @@ class KFPopupSelector: UIControl, UIPopoverPresentationControllerDelegate {
     func setLabelFont(font: UIFont) {
         button.titleLabel?.font = font
     }
+
+    func setTableFont(font: UIFont) {
+        tableFont = font
+    }
     
     /** Optional callback called when the user has selected an item */
     var itemSelected: ((Int)->())? = nil
@@ -110,10 +121,10 @@ class KFPopupSelector: UIControl, UIPopoverPresentationControllerDelegate {
     // -------- The TableViewController used internally in the popover
     
     class PopupViewController: UITableViewController {
-        let minWidth: CGFloat = 40.0
+        var minWidth: CGFloat = 160.0
         var optionsWidth: CGFloat = 40.0
-        
-        private let tableViewFont = UIFont.systemFontOfSize(15.0)
+
+        var tableViewFont: UIFont = UIFont.systemFontOfSize(15.0)
 
         var options: [Option] = [] {
             didSet {
@@ -191,6 +202,7 @@ class KFPopupSelector: UIControl, UIPopoverPresentationControllerDelegate {
     
     private func setupView() {
         button.setTitle(labelDecoration.apply(unselectedLabelText), forState: .Normal)
+        button.contentHorizontalAlignment = buttonContentHorizontalAlignment
         self.addSubview(button)
         button.frame = self.bounds
         button.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
@@ -249,8 +261,10 @@ class KFPopupSelector: UIControl, UIPopoverPresentationControllerDelegate {
         willOpenPopup?()
         if options.count > 0 {
             let pvc = PopupViewController(style: UITableViewStyle.Plain)
+            pvc.tableViewFont = tableFont
+            pvc.minWidth = self.bounds.width
             pvc.options = options
-            pvc.itemSelected = { (index:Int) -> () in 
+            pvc.itemSelected = { (index:Int) -> () in
                 pvc.dismissViewControllerAnimated(true) { 
                     self.currentlyPresentedPopup = nil 
                     self.selectedIndex = index

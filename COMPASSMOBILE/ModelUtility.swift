@@ -120,12 +120,189 @@ class ModelUtility: NSObject {
         return true
     }
     
-    //MARK: Task functions
-    func GetFilteredTaskList(pageNumber: Int32, sortOrder: TaskSortOrder) -> [Task]
+    //MARK: Filter functions
+
+    func GetFilterAssetGroupList(PropertyId: String, LocationGroupName: String?, Location: String?) -> [String]
     {
+        var AssetGroups: [String] = [String]()
+
+        var Query: String = "SELECT DISTINCT [PPMGroup] FROM [Task] WHERE [Deleted] IS NULL AND [PropertyId] = '" + PropertyId + "'"
+        if (LocationGroupName != nil)
+        {
+            Query += " AND [LocationGroupName] = '" + LocationGroupName! + "'"
+        }
         
-        
-        return [Task]()
+        if (Location != nil)
+        {
+            Query += " AND [LocationName] = '" + Location! + "'"
+        }
+        Query +=  " ORDER BY [PPMGroup]"
+        sharedModelManager.database!.open()
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsInArray: nil)
+        if (resultSet != nil) {
+            while resultSet.next()
+            {
+                AssetGroups.append(resultSet.stringForColumn("PPMGroup"))
+            }
+        }
+        return AssetGroups
     }
+    
+    func GetFilterTaskNameList(PropertyId: String, AssetGroup: String, AssetType: String?, LocationGroupName: String?, Location: String?) -> [String]
+    {
+        var TaskNames: [String] = [String]()
+        var Query: String = "SELECT DISTINCT [TaskName] FROM [Task] WHERE [Deleted] IS NULL AND [PropertyId] = '" + PropertyId + "' AND [PPMGroup] = '" + AssetGroup + "' "
+        if (AssetType != nil)
+        {
+            Query += " AND [AssetType] = '" + AssetType! + "'"
+        }
+        if (LocationGroupName != nil)
+        {
+            Query += " AND [LocationGroupName] = '" + LocationGroupName! + "'"
+        }
+        if (Location != nil)
+        {
+            Query += " AND [LocationName] = '" + Location! + "'"
+        }
+        Query +=  " ORDER BY [TaskName]"
+        sharedModelManager.database!.open()
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsInArray: nil)
+        if (resultSet != nil) {
+            while resultSet.next()
+            {
+                TaskNames.append(resultSet.stringForColumn("TaskName"))
+            }
+        }
+        return TaskNames
+    }
+    
+    func GetFilterAssetTypeList(PropertyId: String, AssetGroup: String, TaskName: String?, LocationGroupName: String?, Location: String?) -> [String]
+    {
+        var AssetTypes: [String] = [String]()
+        var Query: String = "SELECT DISTINCT [AssetType] FROM [Task] WHERE [Deleted] IS NULL AND [PropertyId] = '" + PropertyId + "' AND [PPMGroup] = '" + AssetGroup + "' "
+        if (TaskName != nil)
+        {
+            Query += " AND [TaskName] = '" + TaskName! + "'"
+        }
+        if (LocationGroupName != nil)
+        {
+            Query += " AND [LocationGroupName] = '" + LocationGroupName! + "'"
+        }
+        if (Location != nil)
+        {
+            Query += " AND [LocationName] = '" + Location! + "'"
+        }
+        Query += " ORDER BY [AssetType]"
+        sharedModelManager.database!.open()
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsInArray: nil)
+        if (resultSet != nil) {
+            while resultSet.next()
+            {
+                AssetTypes.append(resultSet.stringForColumn("AssetType"))
+            }
+        }
+        return AssetTypes
+    }
+    
+    func GetFilterLocationGroupList(PropertyId: String, AssetGroup: String?, TaskName: String?, AssetType: String?) -> [String]
+    {
+        var LocationGroups: [String] = [String]()
+        var Query: String = "SELECT DISTINCT [LocationGroupName] FROM [Task] WHERE [Deleted] IS NULL AND [PropertyId] = '" + PropertyId + "'"
+        if (AssetGroup != nil)
+        {
+            Query += " AND [PPMGroup] = '" + AssetGroup! + "'"
+        }
+        if (TaskName != nil)
+        {
+            Query += " AND [TaskName] = '" + TaskName! + "'"
+        }
+        if (AssetType != nil)
+        {
+            Query += " AND [AssetType] = '" + AssetType! + "'"
+        }
+        Query += " ORDER BY [LocationGroupName]"
+        sharedModelManager.database!.open()
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsInArray: nil)
+        if (resultSet != nil) {
+            while resultSet.next()
+            {
+                LocationGroups.append(resultSet.stringForColumn("LocationGroupName"))
+            }
+        }
+        return LocationGroups
+    }
+    
+    func GetFilterLocationList(PropertyId: String, AssetGroup: String?, TaskName: String?, AssetType: String?, LocationGroupName: String) -> [String]
+    {
+        var Locations: [String] = [String]()
+        var Query: String = "SELECT DISTINCT [LocationName] FROM [Task] WHERE [Deleted] IS NULL AND [PropertyId] = '" + PropertyId + "'"
+        if (AssetGroup != nil)
+        {
+            Query += " AND [PPMGroup] = '" + AssetGroup! + "'"
+        }
+        
+        if (TaskName != nil)
+        {
+            Query += " AND [TaskName] = '" + TaskName! + "'"
+        }
+        
+        if (AssetType != nil)
+        {
+            Query += " AND [AssetType] = '" + AssetType! + "'"
+        }
+        Query += " AND [LocationGroupName] = '" + LocationGroupName + "'"
+        Query += " ORDER BY [LocationName]"
+        sharedModelManager.database!.open()
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsInArray: nil)
+        if (resultSet != nil) {
+            while resultSet.next()
+            {
+                Locations.append(resultSet.stringForColumn("LocationName"))
+            }
+        }
+        return Locations
+    }
+
+    func GetFilterAssetNumberList(PropertyId: String, AssetGroup: String?, TaskName: String?, AssetType: String?, LocationGroupName: String?, Location: String?) -> [String]
+    {
+        var AssetNumbers: [String] = [String]()
+        var Query: String = "SELECT DISTINCT [AssetNumber] FROM [Task] WHERE [Deleted] IS NULL AND [PropertyId] = '" + PropertyId + "'"
+        if (AssetGroup != nil)
+        {
+            Query += " AND [PPMGroup] = '" + AssetGroup! + "'"
+        }
+
+        if (TaskName != nil)
+        {
+            Query += " AND [TaskName] = '" + TaskName! + "'"
+        }
+        
+        if (AssetType != nil)
+        {
+            Query += " AND [AssetType] = '" + AssetType! + "'"
+        }
+        
+        if (LocationGroupName != nil)
+        {
+            Query += " AND [LocationGroupName] = '" + LocationGroupName! + "'"
+        }
+        
+        if (Location != nil)
+        {
+            Query += " AND [LocationName] = '" + Location! + "'"
+        }
+        Query += " ORDER BY [AssetNumber]"
+        sharedModelManager.database!.open()
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsInArray: nil)
+        if (resultSet != nil) {
+            while resultSet.next()
+            {
+                AssetNumbers.append(resultSet.stringForColumn("AssetNumber"))
+            }
+        }
+        return AssetNumbers
+    }
+    
+
 }
 
