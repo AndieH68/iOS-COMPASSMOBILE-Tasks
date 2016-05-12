@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "COMPASSMOBILE/MainViewController.swift"
-            timestampString = "484566049.952378"
+            timestampString = "484758299.70845"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "70"
-            endingLineNumber = "70"
+            startingLineNumber = "122"
+            endingLineNumber = "122"
             landmarkName = "getTaskData(_:pageNumber:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -150,16 +150,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "COMPASSMOBILE/SearchViewController.swift"
-            timestampString = "484664372.730387"
+            filePath = "COMPASSMOBILE/Utility.swift"
+            timestampString = "484754000.0563"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "80"
-            endingLineNumber = "80"
-            landmarkName = "viewWillDisappear(_:)"
+            startingLineNumber = "47"
+            endingLineNumber = "47"
+            landmarkName = "invokeAlertMethod(_:strBody:delegate:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -169,13 +169,29 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "COMPASSMOBILE/WebService.swift"
-            timestampString = "484674728.547983"
+            filePath = "COMPASSMOBILE/Utility.swift"
+            timestampString = "484756134.98179"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "51"
-            endingLineNumber = "51"
-            landmarkName = "getSynchronisationPackageSync(_:synchronisationDate:lastRowId:stage:)"
+            startingLineNumber = "973"
+            endingLineNumber = "973"
+            landmarkName = "refactoredGetAndImport(_:stage:entityType:progressBar:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "COMPASSMOBILE/MainViewController.swift"
+            timestampString = "484753769.338508"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "45"
+            endingLineNumber = "45"
+            landmarkName = "didReceiveMemoryWarning()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

@@ -9,17 +9,18 @@
 import UIKit
 import Foundation
 
-class MainViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class MainViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, MBProgressHUDDelegate {
 
     @IBAction func logoutSelected(sender: UIBarButtonItem) {
         Session.OperativeId = nil
         viewDidAppear(true)
     }
 
+    var HUD: MBProgressHUD?
+    
     var taskData: [Task] = [] //NSMutableArray!
     var pageNumber: Int32 = 1
     var updateTable: Bool = true
-//    var frameView: UIView!
     
     @IBOutlet weak var SelectedSite: UILabel!
     @IBOutlet weak var SelectedProperty: UILabel!
@@ -53,6 +54,53 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
             // take the user to the login screen
             self.performSegueWithIdentifier("loginView", sender: self)
         }
+        
+        HUD = MBProgressHUD(view: self.navigationController!.view)
+        self.navigationController!.view.addSubview(HUD!)
+        
+        //se the HUD mode
+        HUD!.mode = .DeterminateHorizontalBar;
+        
+        // Register for HUD callbacks so we can remove it from the window at the right time
+        HUD!.delegate = self
+        
+        if Session.CheckDatabase == true
+        {
+            Utility.invokeAlertMethod("Synchronising", strBody: "The application is downloading data from COMPASS.  This process may take some time if this is the first time you have attempted to synchronise", delegate: nil)
+            
+            HUD!.labelText = "Synchronising"
+            
+            //CheckUploads()
+            
+            
+            HUD!.showWhileExecuting({self.CheckDownloads(self.HUD!)}, animated: true)
+            
+            Session.CheckDatabase = false
+        }
+    }
+    
+    // MARK: - Data Syncronisation
+    
+    func CheckDownloads(HUD: MBProgressHUD?)
+    {
+     
+        // Show the HUD while the provide method  executes in a new thread
+        Utility.SynchroniseAllData(1, progressBar: HUD)
+        Utility.SynchroniseAllData(10, progressBar: HUD)
+        Utility.SynchroniseAllData(11, progressBar: HUD)
+        Utility.SynchroniseAllData(9, progressBar: HUD)
+        Utility.SynchroniseAllData(2, progressBar: HUD)
+        Utility.SynchroniseAllData(3, progressBar: HUD)
+        Utility.SynchroniseAllData(4, progressBar: HUD)
+        Utility.SynchroniseAllData(6, progressBar: HUD)
+        Utility.SynchroniseAllData(5, progressBar: HUD)
+        Utility.SynchroniseAllData(7, progressBar: HUD)
+        Utility.SynchroniseAllData(8, progressBar: HUD)
+        
+        Utility.SynchroniseAllData(12, progressBar: HUD)
+        Utility.SynchroniseAllData(13, progressBar: HUD)
+        
+        self.getTaskData()
     }
  
     //MARK: Other methods

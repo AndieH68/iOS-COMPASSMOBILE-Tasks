@@ -17,4 +17,9 @@ class SettingsViewController: UIViewController {
     @IBAction func Done(sender: UIBarButtonItem) {
                 self.navigationController?.popViewControllerAnimated(true)
     }
+    @IBAction func Logout(sender: UIButton) {
+        Session.OperativeId = nil
+        Session.OrganisationId = "00000000-0000-0000-0000-000000000000"
+        self.navigationController?.popViewControllerAnimated(true)
+    }
 }

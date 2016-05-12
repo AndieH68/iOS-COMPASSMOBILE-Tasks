@@ -48,12 +48,12 @@ class DownloadViewController: UIViewController {
         ReferenceDataProgress.setProgress(0, animated: true)
         self.ReferenceDataFeedback.text = ""
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND,0), {
-            Utility.SynchroniseAllData(1, progressBar: self.ReferenceDataProgress);
-            dispatch_async(dispatch_get_main_queue(),{self.ReferenceDataProgress.setProgress(1, animated: true);
-                self.doEnableButtons(true);
-                self.ReferenceDataFeedback.text = "Done"})
-            })
+//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND,0), {
+//            Utility.SynchroniseAllData(1, progressBar: self.ReferenceDataProgress);
+//            dispatch_async(dispatch_get_main_queue(),{self.ReferenceDataProgress.setProgress(1, animated: true);
+//                self.doEnableButtons(true);
+//                self.ReferenceDataFeedback.text = "Done"})
+//            })
     }
     
     @IBAction func downloadTaskTemplate(sender: UIButton) {
@@ -61,26 +61,26 @@ class DownloadViewController: UIViewController {
         TaskTemplateProgress.setProgress(0, animated: true)
         self.TaskTemplateFeedback.text = ""
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND,0), {
-            Utility.SynchroniseAllData(10, progressBar: self.TaskTemplateProgress);
-            Utility.SynchroniseAllData(11, progressBar: self.TaskTemplateProgress);
-            dispatch_async(dispatch_get_main_queue(),{self.TaskTemplateProgress.setProgress(1, animated: true);
-                self.doEnableButtons(true);
-                self.TaskTemplateFeedback.text = "Done"})
-        })
+//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND,0), {
+//            Utility.SynchroniseAllData(10, progressBar: self.TaskTemplateProgress);
+//            Utility.SynchroniseAllData(11, progressBar: self.TaskTemplateProgress);
+//            dispatch_async(dispatch_get_main_queue(),{self.TaskTemplateProgress.setProgress(1, animated: true);
+//                self.doEnableButtons(true);
+//                self.TaskTemplateFeedback.text = "Done"})
+//        })
     }
     
     @IBAction func downloadOperative(sender: UIButton) {
         self.doEnableButtons(false)
         OperativeProgress.setProgress(0, animated: true)
         self.OperativeFeedback.text = ""
-        
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND,0), {
-            Utility.SynchroniseAllData(9, progressBar: self.OperativeProgress);
-            dispatch_async(dispatch_get_main_queue(),{self.OperativeProgress.setProgress(1, animated: true);
-                self.doEnableButtons(true);
-                self.OperativeFeedback.text = "Done"})
-        })
+//        
+//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND,0), {
+//            Utility.SynchroniseAllData(9, progressBar: self.OperativeProgress);
+//            dispatch_async(dispatch_get_main_queue(),{self.OperativeProgress.setProgress(1, animated: true);
+//                self.doEnableButtons(true);
+//                self.OperativeFeedback.text = "Done"})
+//        })
     }
     
     @IBAction func downloadOrganisation(sender: UIButton) {
@@ -88,12 +88,12 @@ class DownloadViewController: UIViewController {
         OrganisationProgress.setProgress(0, animated: true)
         self.OrganisationFeedback.text = ""
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND,0), {
-            Utility.SynchroniseAllData(2, progressBar: self.OrganisationProgress);
-            dispatch_async(dispatch_get_main_queue(),{self.OrganisationProgress.setProgress(1, animated: true);
-                self.doEnableButtons(true);
-                self.OrganisationFeedback.text = "Done"})
-        })
+//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND,0), {
+//            Utility.SynchroniseAllData(2, progressBar: self.OrganisationProgress);
+//            dispatch_async(dispatch_get_main_queue(),{self.OrganisationProgress.setProgress(1, animated: true);
+//                self.doEnableButtons(true);
+//                self.OrganisationFeedback.text = "Done"})
+//        })
     }
     
     @IBAction func downloadSite(sender: UIButton) {
@@ -101,12 +101,12 @@ class DownloadViewController: UIViewController {
         SiteProgress.setProgress(0, animated: true)
         self.SiteFeedback.text = ""
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND,0), {
-            Utility.SynchroniseAllData(3, progressBar: self.SiteProgress);
-            dispatch_async(dispatch_get_main_queue(),{self.SiteProgress.setProgress(1, animated: true);
-                self.doEnableButtons(true);
-                self.SiteFeedback.text = "Done"})
-        })
+//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND,0), {
+//            Utility.SynchroniseAllData(3, progressBar: self.SiteProgress);
+//            dispatch_async(dispatch_get_main_queue(),{self.SiteProgress.setProgress(1, animated: true);
+//                self.doEnableButtons(true);
+//                self.SiteFeedback.text = "Done"})
+//        })
     }
     
     @IBAction func downloadProperty(sender: UIButton) {
@@ -114,12 +114,12 @@ class DownloadViewController: UIViewController {
         PropertyProgress.setProgress(0, animated: true)
         self.PropertyFeedback.text = ""
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND,0), {
-            Utility.SynchroniseAllData(4, progressBar: self.PropertyProgress);
-            dispatch_async(dispatch_get_main_queue(),{self.PropertyProgress.setProgress(1, animated: true);
-                self.doEnableButtons(true);
-                self.PropertyFeedback.text = "Done"})
-        })
+//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND,0), {
+//            Utility.SynchroniseAllData(4, progressBar: self.PropertyProgress);
+//            dispatch_async(dispatch_get_main_queue(),{self.PropertyProgress.setProgress(1, animated: true);
+//                self.doEnableButtons(true);
+//                self.PropertyFeedback.text = "Done"})
+//        })
     }
     
     @IBAction func downloadArea(sender: UIButton) {
@@ -127,12 +127,12 @@ class DownloadViewController: UIViewController {
         AreaProgress.setProgress(0, animated: true)
         self.AreaFeedback.text = ""
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND,0), {
-            Utility.SynchroniseAllData(6, progressBar: self.AreaProgress);
-            dispatch_async(dispatch_get_main_queue(),{self.AreaProgress.setProgress(1, animated: true);
-                self.doEnableButtons(true);
-                self.AreaFeedback.text = "Done"})
-        })
+//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND,0), {
+//            Utility.SynchroniseAllData(6, progressBar: self.AreaProgress);
+//            dispatch_async(dispatch_get_main_queue(),{self.AreaProgress.setProgress(1, animated: true);
+//                self.doEnableButtons(true);
+//                self.AreaFeedback.text = "Done"})
+//        })
     }
     
     @IBAction func downloadLocation(sender: UIButton) {
@@ -140,13 +140,13 @@ class DownloadViewController: UIViewController {
         LocationProgress.setProgress(0, animated: true)
         self.LocationFeedback.text = ""
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND,0), {
-            Utility.SynchroniseAllData(5, progressBar: self.LocationProgress);
-            Utility.SynchroniseAllData(7, progressBar: self.LocationProgress);
-            dispatch_async(dispatch_get_main_queue(),{self.LocationProgress.setProgress(1, animated: true);
-                self.doEnableButtons(true);
-                self.LocationFeedback.text = "Done"})
-        })
+//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND,0), {
+//            Utility.SynchroniseAllData(5, progressBar: self.LocationProgress);
+//            Utility.SynchroniseAllData(7, progressBar: self.LocationProgress);
+//            dispatch_async(dispatch_get_main_queue(),{self.LocationProgress.setProgress(1, animated: true);
+//                self.doEnableButtons(true);
+//                self.LocationFeedback.text = "Done"})
+//        })
     }
 
     @IBAction func downloadAsset(sender: UIButton) {
@@ -154,12 +154,12 @@ class DownloadViewController: UIViewController {
         AssetProgress.setProgress(0, animated: true)
         self.AssetFeedback.text = ""
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND,0), {
-            Utility.SynchroniseAllData(8, progressBar: self.AssetProgress);
-            dispatch_async(dispatch_get_main_queue(),{self.AssetProgress.setProgress(1, animated: true);
-                self.doEnableButtons(true);
-                self.AssetFeedback.text = "Done"})
-        })
+//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND,0), {
+//            Utility.SynchroniseAllData(8, progressBar: self.AssetProgress);
+//            dispatch_async(dispatch_get_main_queue(),{self.AssetProgress.setProgress(1, animated: true);
+//                self.doEnableButtons(true);
+//                self.AssetFeedback.text = "Done"})
+//        })
     }
 
     @IBAction func downloadTask(sender: UIButton) {
@@ -167,12 +167,12 @@ class DownloadViewController: UIViewController {
        TaskProgress.setProgress(0, animated: true)
         self.TaskFeedback.text = ""
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND,0), {
-            Utility.SynchroniseAllData(12, progressBar: self.TaskProgress);
-            dispatch_async(dispatch_get_main_queue(),{self.TaskProgress.setProgress(1, animated: true);
-                self.doEnableButtons(true);
-                self.TaskFeedback.text = "Done"})
-        })
+//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND,0), {
+//            Utility.SynchroniseAllData(12, progressBar: self.TaskProgress);
+//            dispatch_async(dispatch_get_main_queue(),{self.TaskProgress.setProgress(1, animated: true);
+//                self.doEnableButtons(true);
+//                self.TaskFeedback.text = "Done"})
+//        })
     }
     
 

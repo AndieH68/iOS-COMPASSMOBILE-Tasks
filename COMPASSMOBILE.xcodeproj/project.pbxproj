@@ -49,6 +49,7 @@
 		A4EDA3931C4E98C900667987 /* AEXML.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4EDA3921C4E98C900667987 /* AEXML.swift */; };
 		A4EDA3961C4EA55500667987 /* ReferenceData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4EDA3951C4EA55500667987 /* ReferenceData.swift */; };
 		A4F16F9D1CE4716200270AFE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A4F16F9C1CE4716200270AFE /* Assets.xcassets */; };
+		A4F16F9F1CE4B9B200270AFE /* MBProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4F16F9E1CE4B9B200270AFE /* MBProgressHUD.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -103,6 +104,7 @@
 		A4EDA3921C4E98C900667987 /* AEXML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AEXML.swift; path = ../AEXML.swift; sourceTree = "<group>"; };
 		A4EDA3951C4EA55500667987 /* ReferenceData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferenceData.swift; sourceTree = "<group>"; };
 		A4F16F9C1CE4716200270AFE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A4F16F9E1CE4B9B200270AFE /* MBProgressHUD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBProgressHUD.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,6 +148,7 @@
 				A43C140C1C522ABB001162ED /* Constants.swift */,
 				A4EDA3921C4E98C900667987 /* AEXML.swift */,
 				A4A522FE1C43F4A500D16A9A /* Info.plist */,
+				A4F16F9E1CE4B9B200270AFE /* MBProgressHUD.swift */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -328,6 +331,7 @@
 				A49455EE1C7CBF7500BE6247 /* TaskCell.swift in Sources */,
 				A43C140B1C514478001162ED /* WebService.swift in Sources */,
 				A420ACE11C7F64A5003D4CA3 /* DownloadViewController.swift in Sources */,
+				A4F16F9F1CE4B9B200270AFE /* MBProgressHUD.swift in Sources */,
 				A45CD6E91C577D9600C17BD7 /* Task.swift in Sources */,
 				A407DA801C44105700251228 /* LoginViewController.swift in Sources */,
 				A4034A801C4FF41700615D95 /* Operative.swift in Sources */,

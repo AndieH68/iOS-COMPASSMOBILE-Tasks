@@ -10,7 +10,7 @@ import UIKit
 
 class Session : NSObject
 {
-    
+    static var RootViewController: UIViewController = UIViewController()
     static var Server: String = String()
     static var CheckDatabase: Bool = false
     

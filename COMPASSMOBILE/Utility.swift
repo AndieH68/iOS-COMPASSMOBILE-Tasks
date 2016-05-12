@@ -75,11 +75,10 @@ class Utility: NSObject {
     
     // MARK: - Global
     class func importData(packageData: AEXMLElement, entityType: EntityType) -> String {
-        let progressBar: UIProgressView = UIProgressView()
-        return importData(packageData, entityType: entityType,progressBar: progressBar)
+        return importData(packageData, entityType: entityType, progressBar: nil)
     }
     
-    class func importData(packageData: AEXMLElement, entityType: EntityType, progressBar: UIProgressView?) -> String {
+    class func importData(packageData: AEXMLElement, entityType: EntityType, progressBar: MBProgressHUD?) -> String {
         
         var lastDateInPackage: NSDate = BaseDate
         var lastRowId: String = EmptyGuid
@@ -145,7 +144,7 @@ class Utility: NSObject {
                 
                 if (progressBar != nil)
                 {
-                    dispatch_async(dispatch_get_main_queue(),{progressBar!.setProgress((Float(current) / Float(total)), animated: true)})
+                    dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Asset"; progressBar!.progress = (Float(current) / Float(total))})
                 }
             }
             
@@ -205,7 +204,7 @@ class Utility: NSObject {
                 
                 if (progressBar != nil)
                 {
-                    dispatch_async(dispatch_get_main_queue(),{progressBar!.setProgress((Float(current) / Float(total)), animated: true)})
+                    dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Location"; progressBar!.progress = (Float(current) / Float(total))})
                 }
             }
 
@@ -265,7 +264,7 @@ class Utility: NSObject {
                 
                 if (progressBar != nil)
                 {
-                    dispatch_async(dispatch_get_main_queue(),{progressBar!.setProgress((Float(current) / Float(total)), animated: true)})
+                    dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Area"; progressBar!.progress = (Float(current) / Float(total))})
                 }
             }
 
@@ -325,7 +324,7 @@ class Utility: NSObject {
                 
                 if (progressBar != nil)
                 {
-                    dispatch_async(dispatch_get_main_queue(),{progressBar!.setProgress((Float(current) / Float(total)), animated: true)})
+                    dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Area Link"; progressBar!.progress = (Float(current) / Float(total))})
                 }
             }
             
@@ -385,7 +384,7 @@ class Utility: NSObject {
                 
                 if (progressBar != nil)
                 {
-                    dispatch_async(dispatch_get_main_queue(),{progressBar!.setProgress((Float(current) / Float(total)), animated: true)})
+                    dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Operative"; progressBar!.progress = (Float(current) / Float(total))})
                 }
             }
             
@@ -445,7 +444,7 @@ class Utility: NSObject {
                 
                 if (progressBar != nil)
                 {
-                    dispatch_async(dispatch_get_main_queue(),{progressBar!.setProgress((Float(current) / Float(total)), animated: true)})
+                    dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Organisation"; progressBar!.progress = (Float(current) / Float(total))})
                 }
             }
 
@@ -505,7 +504,7 @@ class Utility: NSObject {
                 
                 if (progressBar != nil)
                 {
-                    dispatch_async(dispatch_get_main_queue(),{progressBar!.setProgress((Float(current) / Float(total)), animated: true)})
+                    dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Site"; progressBar!.progress = (Float(current) / Float(total))})
                 }
             }
             
@@ -565,7 +564,7 @@ class Utility: NSObject {
                 
                 if (progressBar != nil)
                 {
-                    dispatch_async(dispatch_get_main_queue(),{progressBar!.setProgress((Float(current) / Float(total)), animated: true)})
+                    dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Property"; progressBar!.progress = (Float(current) / Float(total))})
                 }
             }
 
@@ -624,7 +623,7 @@ class Utility: NSObject {
                 
                 if (progressBar != nil)
                 {
-                    dispatch_async(dispatch_get_main_queue(),{progressBar!.setProgress((Float(current) / Float(total)), animated: true)})
+                    dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Reference"; progressBar!.progress = (Float(current) / Float(total))})
                 }
             }
             
@@ -684,7 +683,7 @@ class Utility: NSObject {
                 
                 if (progressBar != nil)
                 {
-                    dispatch_async(dispatch_get_main_queue(),{progressBar!.setProgress((Float(current) / Float(total)), animated: true)})
+                    dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Task"; progressBar!.progress = (Float(current) / Float(total))})
                 }
             }
 
@@ -744,7 +743,7 @@ class Utility: NSObject {
                 
                 if (progressBar != nil)
                 {
-                    dispatch_async(dispatch_get_main_queue(),{progressBar!.setProgress((Float(current) / Float(total)), animated: true)})
+                    dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Task Parameters"; progressBar!.progress = (Float(current) / Float(total))})
                 }
             }
 
@@ -804,7 +803,7 @@ class Utility: NSObject {
                 
                 if (progressBar != nil)
                 {
-                    dispatch_async(dispatch_get_main_queue(),{progressBar!.setProgress((Float(current) / Float(total)), animated: true)})
+                    dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Templates"; progressBar!.progress = (Float(current) / Float(total))})
                 }
             }
 
@@ -864,7 +863,7 @@ class Utility: NSObject {
                 
                 if (progressBar != nil)
                 {
-                    dispatch_async(dispatch_get_main_queue(),{progressBar!.setProgress((Float(current) / Float(total)), animated: true)})
+                    dispatch_async(dispatch_get_main_queue(), {progressBar!.labelText = "Template Parameters"; progressBar!.progress = (Float(current) / Float(total))})
                 }
             }
 
@@ -876,7 +875,7 @@ class Utility: NSObject {
         return lastRowId
     }
     
-    class func SynchroniseAllData(stage: Int32, progressBar: UIProgressView?) -> Bool {
+    class func SynchroniseAllData(stage: Int32, progressBar: MBProgressHUD?) -> Bool {
         var SQLStatement: String
         var SQLParameterValues: [NSObject]
         var synchronisationDateToUse: NSDate = BaseDate
@@ -956,7 +955,7 @@ class Utility: NSObject {
         return true
     }
   
-    class func refactoredGetAndImport(synchronisationDate: NSDate, stage: Int32, entityType: EntityType, progressBar: UIProgressView?) -> Bool {
+    class func refactoredGetAndImport(synchronisationDate: NSDate, stage: Int32, entityType: EntityType, progressBar: MBProgressHUD?) -> Bool {
             
         var lastRowId: String = EmptyGuid
         var count: Int32 = 0
@@ -965,7 +964,7 @@ class Utility: NSObject {
             count += 1
             if (progressBar != nil)
             {
-                progressBar!.setProgress(((Float(count) / Float(count + 1))), animated: true);
+                progressBar!.progress = (Float(count) / Float(count + 1));
             }
             
             let data: NSData? = WebService.getSynchronisationPackageSync(Session.OperativeId!, synchronisationDate: synchronisationDate, lastRowId: lastRowId, stage: stage)
@@ -994,10 +993,10 @@ class Utility: NSObject {
             }
             
             lastRowId = Utility.importData(SynchronisationPackageDocument!.children[0], entityType: entityType, progressBar: progressBar)
-            if entityType == EntityType.Task
-            {
-              Utility.importData(SynchronisationPackageDocument!.children[0], entityType: .TaskParameter, progressBar: progressBar)
-            }
+            //if entityType == EntityType.Task
+            //{
+            //  Utility.importData(SynchronisationPackageDocument!.children[0], entityType: .TaskParameter, progressBar: progressBar)
+            //}
             print(String(entityType) + " " + lastRowId + " " + String(count))
             SynchronisationPackageDocument = nil
         }
