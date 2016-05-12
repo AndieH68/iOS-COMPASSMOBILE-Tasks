@@ -12,7 +12,7 @@ class WebService : NSObject {
     
     class func validateOperative (username: String, password: String) -> NSData? {
         
-        let urlString = "http://compass2.hydrop.com/services/servicepdautility2.asmx"
+        let urlString = "http://" + Session.Server + "/services/servicepdautility2.asmx"
         let url = NSURL(string: urlString)
         
         let theSession = NSURLSession.sharedSession()
@@ -27,7 +27,7 @@ class WebService : NSObject {
         let soapMessage: String = soapHeader + soapBody + soapFooter
         
         theRequest.HTTPMethod = "POST"
-        theRequest.addValue("compass2.hydrop.com", forHTTPHeaderField: "Host")
+        theRequest.addValue(Session.Server, forHTTPHeaderField: "Host")
         theRequest.addValue("text/xml; charset=utf-8", forHTTPHeaderField: "Content-Type")
         theRequest.addValue(String(soapMessage.characters.count), forHTTPHeaderField: "Content-Length")
         theRequest.addValue(soapAction, forHTTPHeaderField: "SOAPAction")
@@ -48,7 +48,7 @@ class WebService : NSObject {
 
     class func getSynchronisationPackageSync (operativeId: String, synchronisationDate: NSDate, lastRowId: String, stage: Int32) -> NSData? {
         
-        let urlString = "http://compass2.hydrop.com/services/servicepdautility2.asmx"
+        let urlString = "http://" + Session.Server + "/services/servicepdautility2.asmx"
         let url = NSURL(string: urlString)
         
         let theSession = NSURLSession.sharedSession()
@@ -63,7 +63,7 @@ class WebService : NSObject {
         let soapMessage: String = soapHeader + soapBody + soapFooter
         
         theRequest.HTTPMethod = "POST"
-        theRequest.addValue("compass2.hydrop.com", forHTTPHeaderField: "Host")
+        theRequest.addValue(Session.Server, forHTTPHeaderField: "Host")
         theRequest.addValue("text/xml; charset=utf-8", forHTTPHeaderField: "Content-Type")
         theRequest.addValue(String(soapMessage.characters.count), forHTTPHeaderField: "Content-Length")
         theRequest.addValue(soapAction, forHTTPHeaderField: "SOAPAction")

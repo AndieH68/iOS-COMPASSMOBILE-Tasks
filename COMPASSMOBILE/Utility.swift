@@ -79,7 +79,7 @@ class Utility: NSObject {
         return importData(packageData, entityType: entityType,progressBar: progressBar)
     }
     
-    class func importData(packageData: AEXMLElement, entityType: EntityType, progressBar: UIProgressView) -> String {
+    class func importData(packageData: AEXMLElement, entityType: EntityType, progressBar: UIProgressView?) -> String {
         
         var lastDateInPackage: NSDate = BaseDate
         var lastRowId: String = EmptyGuid
@@ -143,7 +143,10 @@ class Utility: NSObject {
                     
                 }
                 
-                dispatch_async(dispatch_get_main_queue(),{progressBar.setProgress((Float(current) / Float(total)), animated: true)})
+                if (progressBar != nil)
+                {
+                    dispatch_async(dispatch_get_main_queue(),{progressBar!.setProgress((Float(current) / Float(total)), animated: true)})
+                }
             }
             
         case .Location:
@@ -200,7 +203,10 @@ class Utility: NSObject {
                     
                 }
                 
-                dispatch_async(dispatch_get_main_queue(),{progressBar.setProgress((Float(current) / Float(total)), animated: true)})
+                if (progressBar != nil)
+                {
+                    dispatch_async(dispatch_get_main_queue(),{progressBar!.setProgress((Float(current) / Float(total)), animated: true)})
+                }
             }
 
         case .LocationGroup:
@@ -257,7 +263,10 @@ class Utility: NSObject {
                     
                 }
                 
-                dispatch_async(dispatch_get_main_queue(),{progressBar.setProgress((Float(current) / Float(total)), animated: true)})
+                if (progressBar != nil)
+                {
+                    dispatch_async(dispatch_get_main_queue(),{progressBar!.setProgress((Float(current) / Float(total)), animated: true)})
+                }
             }
 
         case .LocationGroupMembership:
@@ -314,7 +323,10 @@ class Utility: NSObject {
                     
                 }
                 
-                dispatch_async(dispatch_get_main_queue(),{progressBar.setProgress((Float(current) / Float(total)), animated: true)})
+                if (progressBar != nil)
+                {
+                    dispatch_async(dispatch_get_main_queue(),{progressBar!.setProgress((Float(current) / Float(total)), animated: true)})
+                }
             }
             
         case .Operative:
@@ -371,7 +383,10 @@ class Utility: NSObject {
                     
                 }
                 
-                dispatch_async(dispatch_get_main_queue(),{progressBar.setProgress((Float(current) / Float(total)), animated: true)})
+                if (progressBar != nil)
+                {
+                    dispatch_async(dispatch_get_main_queue(),{progressBar!.setProgress((Float(current) / Float(total)), animated: true)})
+                }
             }
             
         case .Organisation:
@@ -428,7 +443,10 @@ class Utility: NSObject {
                     
                 }
                 
-                dispatch_async(dispatch_get_main_queue(),{progressBar.setProgress((Float(current) / Float(total)), animated: true)})
+                if (progressBar != nil)
+                {
+                    dispatch_async(dispatch_get_main_queue(),{progressBar!.setProgress((Float(current) / Float(total)), animated: true)})
+                }
             }
 
         case .Site:
@@ -485,7 +503,10 @@ class Utility: NSObject {
                     
                 }
                 
-                dispatch_async(dispatch_get_main_queue(),{progressBar.setProgress((Float(current) / Float(total)), animated: true)})
+                if (progressBar != nil)
+                {
+                    dispatch_async(dispatch_get_main_queue(),{progressBar!.setProgress((Float(current) / Float(total)), animated: true)})
+                }
             }
             
         case .Property:
@@ -542,7 +563,10 @@ class Utility: NSObject {
                     
                 }
                 
-                dispatch_async(dispatch_get_main_queue(),{progressBar.setProgress((Float(current) / Float(total)), animated: true)})
+                if (progressBar != nil)
+                {
+                    dispatch_async(dispatch_get_main_queue(),{progressBar!.setProgress((Float(current) / Float(total)), animated: true)})
+                }
             }
 
         case .ReferenceData:
@@ -596,11 +620,13 @@ class Utility: NSObject {
                         //no  - update the ReferenceData
                         ModelManager.getInstance().updateReferenceData(referenceData)
                     }
-                    
                 }
                 
-                dispatch_async(dispatch_get_main_queue(),{progressBar.setProgress((Float(current) / Float(total)), animated: true)})
-           }
+                if (progressBar != nil)
+                {
+                    dispatch_async(dispatch_get_main_queue(),{progressBar!.setProgress((Float(current) / Float(total)), animated: true)})
+                }
+            }
             
         case .Task:
             
@@ -656,7 +682,10 @@ class Utility: NSObject {
                     
                 }
                 
-                dispatch_async(dispatch_get_main_queue(),{progressBar.setProgress((Float(current) / Float(total)), animated: true)})
+                if (progressBar != nil)
+                {
+                    dispatch_async(dispatch_get_main_queue(),{progressBar!.setProgress((Float(current) / Float(total)), animated: true)})
+                }
             }
 
         case .TaskParameter:
@@ -713,7 +742,10 @@ class Utility: NSObject {
                     
                 }
                 
-                dispatch_async(dispatch_get_main_queue(),{progressBar.setProgress((Float(current) / Float(total)), animated: true)})
+                if (progressBar != nil)
+                {
+                    dispatch_async(dispatch_get_main_queue(),{progressBar!.setProgress((Float(current) / Float(total)), animated: true)})
+                }
             }
 
         case .TaskTemplate:
@@ -770,7 +802,10 @@ class Utility: NSObject {
                     
                 }
                 
-                dispatch_async(dispatch_get_main_queue(),{progressBar.setProgress((Float(current) / Float(total)), animated: true)})
+                if (progressBar != nil)
+                {
+                    dispatch_async(dispatch_get_main_queue(),{progressBar!.setProgress((Float(current) / Float(total)), animated: true)})
+                }
             }
 
         case .TaskTemplateParameter:
@@ -827,7 +862,10 @@ class Utility: NSObject {
                     
                 }
                 
-                dispatch_async(dispatch_get_main_queue(),{progressBar.setProgress((Float(current) / Float(total)), animated: true)})
+                if (progressBar != nil)
+                {
+                    dispatch_async(dispatch_get_main_queue(),{progressBar!.setProgress((Float(current) / Float(total)), animated: true)})
+                }
             }
 
         //default:
@@ -838,7 +876,7 @@ class Utility: NSObject {
         return lastRowId
     }
     
-    class func SynchroniseAllData(stage: Int32, progressBar: UIProgressView) -> Bool {
+    class func SynchroniseAllData(stage: Int32, progressBar: UIProgressView?) -> Bool {
         var SQLStatement: String
         var SQLParameterValues: [NSObject]
         var synchronisationDateToUse: NSDate = BaseDate
@@ -889,13 +927,14 @@ class Utility: NSObject {
         case 12:
             if !refactoredGetAndImport(synchronisationDateToUse, stage: 12, entityType: EntityType.Task, progressBar: progressBar){ return false }
 
-            //delete tasks that are not pending or outstanding
-            ModelManager.getInstance().executeDirect("DELETE FROM [Task] WHERE [Status] != 'Pending' AND [Status] != 'Outstanding'", SQLParameterValues: nil)
-            
+        case 13:
+            if !refactoredGetAndImport(synchronisationDateToUse, stage: 13, entityType: EntityType.TaskParameter, progressBar: progressBar){ return false }
+
         default:
             //response = nil
             print ("Invalid Stage")
         }
+
         
         //update the synchronisation history
         let newSynchronisationDate = NSDate()
@@ -917,14 +956,17 @@ class Utility: NSObject {
         return true
     }
   
-    class func refactoredGetAndImport(synchronisationDate: NSDate, stage: Int32, entityType: EntityType, progressBar: UIProgressView) -> Bool {
+    class func refactoredGetAndImport(synchronisationDate: NSDate, stage: Int32, entityType: EntityType, progressBar: UIProgressView?) -> Bool {
             
         var lastRowId: String = EmptyGuid
         var count: Int32 = 0
         
         while (lastRowId != EmptyGuid || count == 0) {
             count += 1
-            progressBar.setProgress(((Float(count) / Float(count + 1))), animated: true);
+            if (progressBar != nil)
+            {
+                progressBar!.setProgress(((Float(count) / Float(count + 1))), animated: true);
+            }
             
             let data: NSData? = WebService.getSynchronisationPackageSync(Session.OperativeId!, synchronisationDate: synchronisationDate, lastRowId: lastRowId, stage: stage)
             

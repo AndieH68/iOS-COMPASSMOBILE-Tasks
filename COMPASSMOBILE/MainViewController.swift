@@ -73,10 +73,10 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         var count: Int32 = 0
         
         // go and get the search/filter criteria from the vlaues selected in the session
-        let criteria: Dictionary<String, String> = Session.BuildCriteriaFromSession()
+        let criteria: Dictionary<String, AnyObject> = Session.BuildCriteriaFromSession()
         
         // go and get the task data based on the criteria built
-        (taskData, count) = ModelManager.getInstance().findTaskList(criteria, pageSize: size, pageNumber: page, sortOrder: Session.TaskSort)
+        (taskData, count) = ModelManager.getInstance().findTaskList(criteria, onlyPending: true, pageSize: size, pageNumber: page, sortOrder: Session.TaskSort)
         
         //store the tasks count in the session
         Session.TaskCount = count

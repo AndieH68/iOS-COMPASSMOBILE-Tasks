@@ -11,7 +11,8 @@ import UIKit
 class LoginViewController: UIViewController, UITextFieldDelegate {
 
     // MARK: - Properties
-    
+   
+    @IBOutlet weak var ServerTextField: UITextField!
     @IBOutlet weak var UsernameTextField: UITextField!
     @IBOutlet weak var PasswordTextField: UITextField!
     @IBOutlet weak var ValidationLabel: UILabel!
@@ -20,10 +21,16 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        ServerTextField.delegate = self
         UsernameTextField.delegate = self
         PasswordTextField.delegate = self
 
         // Do any additional setup after loading the view.
+        ServerTextField.text = Session.Server
+        
+        let defaults = NSUserDefaults.standardUserDefaults()
+        UsernameTextField.text = defaults.objectForKey("Username") as? String
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -67,20 +74,29 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         ValidationLabel.text = "Invalid username or password"
         ValidationLabel.hidden = true
         
-        let username = UsernameTextField.text
-        let password = PasswordTextField.text
+        if (ServerTextField.text == "")
+        {
+            ValidationLabel.text = "Please enter the server details"
+            ValidationLabel.hidden = false
+            return
+        }
+
+        Session.Server = ServerTextField.text!
         
-        if username == "" || password == ""
+        if (UsernameTextField.text == "" || UsernameTextField.text == "")
         {
             ValidationLabel.hidden = false
             return
         }
+
+        let username: String = UsernameTextField.text!
+        let password: String = PasswordTextField.text!
         
-         isRemoteAvailable = Reachability().connectedToNetwork()
+        isRemoteAvailable = Reachability().connectedToNetwork()
  
        
         if isRemoteAvailable {
-            let data: NSData? = WebService.validateOperative(username!, password: password!)
+            let data: NSData? = WebService.validateOperative(username, password: password)
             
             if data == nil{
                 ValidationLabel.hidden = false
@@ -116,8 +132,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         var newOperative: Bool = false
         
         var criteria: Dictionary<String,AnyObject> = Dictionary<String,AnyObject>()
-        criteria["Username"] = username!
-        criteria["Password"] = password!
+        criteria["Username"] = username
+        criteria["Password"] = password
         
         var operatives: [Operative] = [Operative]()
         var count: Int32 = 0
@@ -197,6 +213,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             Session.OrganisationId = operative?.OrganisationId
         
         }
+        
+        Session.CheckDatabase = true;
+ 
+        let defaults = NSUserDefaults.standardUserDefaults()
+        defaults.setObject(Session.Server, forKey: "Server")
+        defaults.setObject(username, forKey: "Username")
         
         self.dismissViewControllerAnimated(true, completion: nil)
      }

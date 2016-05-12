@@ -10,6 +10,10 @@ import UIKit
 
 class Session : NSObject
 {
+    
+    static var Server: String = String()
+    static var CheckDatabase: Bool = false
+    
     static var OperativeId: String? = String?()
     static var OrganisationId: String? = String?()
     
@@ -45,9 +49,9 @@ class Session : NSObject
     static var PageSize: Int32 = 20
     static var MaxPage: Int32 = 1
     
-    class func BuildCriteriaFromSession() -> Dictionary<String, String> {
-        var criteria: Dictionary<String, String> = Dictionary<String, String>()
-        
+    class func BuildCriteriaFromSession() -> Dictionary<String, AnyObject> {
+        var criteria: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
+        criteria["OrganisationId"] = Session.OrganisationId!
         if (Session.FilterSiteId != nil) { criteria["SiteId"] = Session.FilterSiteId! }
         if (Session.FilterPropertyId != nil) { criteria["PropertyId"] = Session.FilterPropertyId! }
         if (Session.FilterFrequency != nil) { criteria["Frequency"] = Session.FilterFrequency! }
@@ -59,6 +63,8 @@ class Session : NSObject
         if (Session.FilterLocationGroup != nil) { criteria["LocationGroupName"] = Session.FilterLocationGroup! }
         if (Session.FilterLocation != nil) { criteria["LocationName"] = Session.FilterLocation! }
         if (Session.FilterAssetNumber != nil) { criteria["AssetNumber"] = Session.FilterAssetNumber! }
+        
+        if (Session.FilterJustMyTasks == true) { criteria["OperativeId"] = Session.OperativeId }
         
         return criteria
     }

@@ -18,6 +18,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         Utility.copyFile("COMPASSDB.sqlite")
+        
+        let defaults = NSUserDefaults.standardUserDefaults()
+        Session.Server = defaults.objectForKey("Server") as? String ?? String()
+ 
+        Session.OrganisationId = "00000000-0000-0000-0000-000000000000"
+        
         return true
     }
 

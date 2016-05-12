@@ -64,7 +64,15 @@ class ModelManager: NSObject {
         for (itemKey, itemValue) in criteria
         {
             whereClause += (loopCount > 0 ? " AND " : " ")
-            whereClause += (itemKey) + " = ? "
+            
+            if (itemValue is String)
+            {
+                whereClause += (itemKey) + " LIKE ? "
+            }
+            else
+            {
+                whereClause += (itemKey) + " = ? "
+            }
             
             whereValues.append(itemValue)
             
@@ -3045,21 +3053,21 @@ class ModelManager: NSObject {
         return taskList
     }
     
-    func findTaskList(criteria: Dictionary<String, AnyObject>) -> [Task] {
+    func findTaskList(criteria: Dictionary<String, AnyObject>, onlyPending: Bool) -> [Task] {
         var list: [Task] = [Task]()
         //var count: Int32 = 0
-        (list, _) = findTaskList(criteria, pageSize: nil, pageNumber: nil, sortOrder: TaskSortOrder.Date)
+        (list, _) = findTaskList(criteria, onlyPending: true, pageSize: nil, pageNumber: nil, sortOrder: TaskSortOrder.Date)
         return list
     }
 
-    func findTaskList(criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [Task], Count: Int32) {
+    func findTaskList(criteria: Dictionary<String, AnyObject>, onlyPending: Bool, pageSize: Int32?, pageNumber: Int32?) -> (List: [Task], Count: Int32) {
         var list: [Task] = [Task]()
         var count: Int32 = 0
-        (list, count) = findTaskList(criteria, pageSize: nil, pageNumber: nil, sortOrder: TaskSortOrder.Date)
+        (list, count) = findTaskList(criteria, onlyPending: true, pageSize: nil, pageNumber: nil, sortOrder: TaskSortOrder.Date)
         return (list, count)
     }
         
-    func findTaskList(criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?, sortOrder: TaskSortOrder) -> (List: [Task], Count: Int32) {
+    func findTaskList(criteria: Dictionary<String, AnyObject>, onlyPending: Bool, pageSize: Int32?, pageNumber: Int32?, sortOrder: TaskSortOrder) -> (List: [Task], Count: Int32) {
        //return variables
         var count: Int32 = 0
         var taskList: [Task] = [Task]()
@@ -3069,7 +3077,7 @@ class ModelManager: NSObject {
         
         switch sortOrder {
             
-        case .Date:
+        case .Date: 
             orderByClause += "[ScheduledDate] "
             
         case .Location:
@@ -3086,6 +3094,7 @@ class ModelManager: NSObject {
         var whereCriteria: Dictionary<String, AnyObject> = criteria
         
         whereCriteria["Period"] = nil  //remove the period criteria
+        whereCriteria["Status"] = nil
         
         //build the where clause
         var whereClause: String = String()
@@ -3146,9 +3155,19 @@ class ModelManager: NSObject {
             }
         }
         
+        var whereClausePredicate: String = String()
+        if (onlyPending)
+        {
+            whereClausePredicate = "WHERE [Status] IN ('Pending','Outstanding') AND "
+        }
+        else
+        {
+            whereClausePredicate = "WHERE [Status] IN ('Complete') AND "
+        }
+        
         if (whereClause != "")
         {
-            whereClause = "WHERE " + whereClause
+            whereClause = whereClausePredicate + whereClause
         }
         
         sharedModelManager.database!.open()
