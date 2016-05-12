@@ -51,16 +51,6 @@
 		A4F16F9D1CE4716200270AFE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A4F16F9C1CE4716200270AFE /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		A4A523041C43F4A500D16A9A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A4A522E41C43F4A500D16A9A /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = A4A522EB1C43F4A500D16A9A;
-			remoteInfo = COMPASSMOBILE;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		A4034A7F1C4FF41700615D95 /* Operative.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operative.swift; sourceTree = "<group>"; };
 		A4034A831C51040300615D95 /* Session.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
@@ -110,7 +100,6 @@
 		A4A522F41C43F4A500D16A9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A4A522F71C43F4A500D16A9A /* COMPASSMOBILE.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = COMPASSMOBILE.xcdatamodel; sourceTree = "<group>"; };
 		A4A522FE1C43F4A500D16A9A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A4A523031C43F4A500D16A9A /* COMPASSMOBILETests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = COMPASSMOBILETests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4EDA3921C4E98C900667987 /* AEXML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AEXML.swift; path = ../AEXML.swift; sourceTree = "<group>"; };
 		A4EDA3951C4EA55500667987 /* ReferenceData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferenceData.swift; sourceTree = "<group>"; };
 		A4F16F9C1CE4716200270AFE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -122,13 +111,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A40BB55E1C4FE9D7005C2AE6 /* libsqlite3.0.tbd in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A4A523001C43F4A500D16A9A /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -225,7 +207,6 @@
 			isa = PBXGroup;
 			children = (
 				A4A522EC1C43F4A500D16A9A /* COMPASSMOBILE.app */,
-				A4A523031C43F4A500D16A9A /* COMPASSMOBILETests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -277,24 +258,6 @@
 			productReference = A4A522EC1C43F4A500D16A9A /* COMPASSMOBILE.app */;
 			productType = "com.apple.product-type.application";
 		};
-		A4A523021C43F4A500D16A9A /* COMPASSMOBILETests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = A4A5230F1C43F4A500D16A9A /* Build configuration list for PBXNativeTarget "COMPASSMOBILETests" */;
-			buildPhases = (
-				A4A522FF1C43F4A500D16A9A /* Sources */,
-				A4A523001C43F4A500D16A9A /* Frameworks */,
-				A4A523011C43F4A500D16A9A /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				A4A523051C43F4A500D16A9A /* PBXTargetDependency */,
-			);
-			name = COMPASSMOBILETests;
-			productName = COMPASSMOBILETests;
-			productReference = A4A523031C43F4A500D16A9A /* COMPASSMOBILETests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -307,10 +270,6 @@
 				TargetAttributes = {
 					A4A522EB1C43F4A500D16A9A = {
 						CreatedOnToolsVersion = 7.2;
-					};
-					A4A523021C43F4A500D16A9A = {
-						CreatedOnToolsVersion = 7.2;
-						TestTargetID = A4A522EB1C43F4A500D16A9A;
 					};
 				};
 			};
@@ -328,7 +287,6 @@
 			projectRoot = "";
 			targets = (
 				A4A522EB1C43F4A500D16A9A /* COMPASSMOBILE */,
-				A4A523021C43F4A500D16A9A /* COMPASSMOBILETests */,
 			);
 		};
 /* End PBXProject section */
@@ -341,13 +299,6 @@
 				A4034A861C5132EE00615D95 /* COMPASSDB.sqlite in Resources */,
 				A4F16F9D1CE4716200270AFE /* Assets.xcassets in Resources */,
 				A4A522F51C43F4A500D16A9A /* Main.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A4A523011C43F4A500D16A9A /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -399,22 +350,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A4A522FF1C43F4A500D16A9A /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		A4A523051C43F4A500D16A9A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = A4A522EB1C43F4A500D16A9A /* COMPASSMOBILE */;
-			targetProxy = A4A523041C43F4A500D16A9A /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		A4A522F31C43F4A500D16A9A /* Main.storyboard */ = {
@@ -538,28 +474,6 @@
 			};
 			name = Release;
 		};
-		A4A523101C43F4A500D16A9A /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				INFOPLIST_FILE = COMPASSMOBILETests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = COM.HYDROP.COMPASSMOBILETests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/COMPASSMOBILE.app/COMPASSMOBILE";
-			};
-			name = Debug;
-		};
-		A4A523111C43F4A500D16A9A /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				INFOPLIST_FILE = COMPASSMOBILETests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = COM.HYDROP.COMPASSMOBILETests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/COMPASSMOBILE.app/COMPASSMOBILE";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -577,15 +491,6 @@
 			buildConfigurations = (
 				A4A5230D1C43F4A500D16A9A /* Debug */,
 				A4A5230E1C43F4A500D16A9A /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		A4A5230F1C43F4A500D16A9A /* Build configuration list for PBXNativeTarget "COMPASSMOBILETests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				A4A523101C43F4A500D16A9A /* Debug */,
-				A4A523111C43F4A500D16A9A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
