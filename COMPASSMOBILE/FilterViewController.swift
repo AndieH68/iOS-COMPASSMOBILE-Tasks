@@ -10,6 +10,8 @@ import UIKit
 
 class FilterViewController: UIViewController {
 
+    @IBOutlet var TaskSortSegment: UISegmentedControl!
+    
     @IBOutlet var SitePopupSelector: KFPopupSelector!
     @IBOutlet var PropertyPopupSelector: KFPopupSelector!
     @IBOutlet var FrequencyPopupSelector: KFPopupSelector!
@@ -61,7 +63,23 @@ class FilterViewController: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+ 
         
+        switch Session.TaskSort
+        {
+            case .Date:
+                TaskSortSegment.selectedSegmentIndex = 0
+            
+            case .Location:
+                TaskSortSegment.selectedSegmentIndex = 1
+            
+            case .AssetType:
+                TaskSortSegment.selectedSegmentIndex = 2
+
+            case .Task:
+                TaskSortSegment.selectedSegmentIndex = 3
+        }
+     
         JustMyTasks.on = Session.FilterJustMyTasks
  
         PropertyPopupSelector.unselectedLabelText = "not applicable"
@@ -302,7 +320,11 @@ class FilterViewController: UIViewController {
         var count: Int = 1 //we already have the blank row
         for currentTaskName: String in TaskNameData
         {
-            let currentTaskNameDisplay: String = ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMTaskType", key: currentTaskName, parentType: "PPMAssetGroup", parentValue: Session.FilterAssetGroup)
+            var currentTaskNameDisplay: String = currentTaskName
+            if (currentTaskNameDisplay != RemedialTask)
+            {
+                currentTaskNameDisplay = ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMTaskType", key: currentTaskName, parentType: "PPMAssetGroup", parentValue: Session.FilterAssetGroup)
+            }
             TaskNames.append(currentTaskNameDisplay)
             TaskNameDictionary[currentTaskNameDisplay] = currentTaskName
             if (currentTaskName == Session.FilterTaskName) { selectedIndex = count}
@@ -557,7 +579,14 @@ class FilterViewController: UIViewController {
         //set the property filter
         if (TaskNamePopupSelector.selectedIndex != nil && TaskNames[TaskNamePopupSelector.selectedIndex!] != "")
         {
-            Session.FilterTaskName = TaskNameDictionary[TaskNames[TaskNamePopupSelector.selectedIndex!]]
+            if(TaskNames[TaskNamePopupSelector.selectedIndex!] == RemedialTask)
+            {
+                 Session.FilterTaskName = RemedialTask
+            }
+            else
+            {
+                Session.FilterTaskName = TaskNameDictionary[TaskNames[TaskNamePopupSelector.selectedIndex!]]
+            }
             
             //do the AssetType stuff
             PopulateAssetTypeSelector()

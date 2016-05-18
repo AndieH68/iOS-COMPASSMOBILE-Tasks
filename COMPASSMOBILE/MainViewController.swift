@@ -72,7 +72,6 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
             
             //CheckUploads()
             
-            
             HUD!.showWhileExecuting({self.CheckDownloads(self.HUD!)}, animated: true)
             
             Session.CheckDatabase = false
@@ -147,7 +146,12 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let task:Task = taskData[indexPath.row]
        
         cell.taskRef.text = task.TaskRef
-        cell.taskName.text = ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMTaskType", key: task.TaskName, parentType: "PPMAssetGroup", parentValue: task.PPMGroup!)
+        var TaskName: String = task.TaskName
+        if (TaskName != RemedialTask)
+        {
+            TaskName = ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMTaskType", key: task.TaskName, parentType: "PPMAssetGroup", parentValue: task.PPMGroup!)
+        }
+        cell.taskName.text = TaskName
         let PropertyName: String = (Session.FilterPropertyName != nil ? String() : ModelUtility.getInstance().GetPropertyName(task.PropertyId) + ", ")
         cell.location.text = PropertyName + task.LocationName
         cell.type.text = ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMAssetGroup", key: task.PPMGroup!)

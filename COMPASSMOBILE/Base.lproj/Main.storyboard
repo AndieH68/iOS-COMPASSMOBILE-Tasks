@@ -262,7 +262,7 @@
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="kI3-Wt-Rhf"/>
                                     <barButtonItem title="Settings" id="ZbK-1m-lbA">
                                         <connections>
-                                            <segue destination="76G-et-9gB" kind="show" id="P2g-Ew-ZA5"/>
+                                            <segue destination="XUJ-aM-MUt" kind="show" id="bVA-3Z-6Rz"/>
                                         </connections>
                                     </barButtonItem>
                                 </items>
@@ -297,7 +297,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="344" y="8"/>
+            <point key="canvasLocation" x="-774" y="-337"/>
         </scene>
         <!--Filter-->
         <scene sceneID="XvG-rC-hXK">
@@ -668,14 +668,14 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Eoy-kb-HX8">
-                        <barButtonItem key="leftBarButtonItem" title="Clear" id="Tvk-bg-I5B">
-                            <connections>
-                                <action selector="Cancel:" destination="4hd-cQ-A8L" id="hhC-Pu-xkr"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="v2b-wq-ABe">
+                        <barButtonItem key="leftBarButtonItem" systemItem="done" id="v2b-wq-ABe">
                             <connections>
                                 <action selector="Done:" destination="4hd-cQ-A8L" id="4VP-Wf-1cJ"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Clear Filter" id="Tvk-bg-I5B">
+                            <connections>
+                                <action selector="Cancel:" destination="4hd-cQ-A8L" id="hhC-Pu-xkr"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -691,11 +691,381 @@
                         <outlet property="PropertyPopupSelector" destination="DfE-Tn-2H3" id="995-Ed-KDT"/>
                         <outlet property="SitePopupSelector" destination="eLh-7k-EOg" id="6Yw-8F-0RK"/>
                         <outlet property="TaskNamePopupSelector" destination="o4c-pU-And" id="xbe-cL-DXh"/>
+                        <outlet property="TaskSortSegment" destination="xnz-Oo-0rR" id="q9a-Mr-V8n"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XDX-zX-TI8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1426" y="-162"/>
+            <point key="canvasLocation" x="98" y="-718"/>
+        </scene>
+        <!--Settings-->
+        <scene sceneID="vea-Uc-GbX">
+            <objects>
+                <tableViewController id="XUJ-aM-MUt" customClass="SettingsViewController" customModule="COMPASSMOBILE" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="bo6-4c-fsV">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <sections>
+                            <tableViewSection headerTitle="Bluetooth" id="P9s-Hg-xvF" userLabel="Bluetooth">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="KhW-8B-RHe">
+                                        <rect key="frame" x="0.0" y="92" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KhW-8B-RHe" id="jpz-Xu-Bde">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pairing" textAlignment="natural" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pkm-yH-ghq">
+                                                    <rect key="frame" x="42" y="11" width="68" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="68" id="o2b-dp-D6b"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Mii-mD-qav">
+                                                    <rect key="frame" x="8" y="9" width="26" height="26"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="26" id="pnT-HA-Eti"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" semanticContentAttribute="spatial" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text=" &gt;" textAlignment="right" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xyc-hv-xJt">
+                                                    <rect key="frame" x="424" y="11" width="168" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Mii-mD-qav" firstAttribute="top" secondItem="jpz-Xu-Bde" secondAttribute="topMargin" constant="1" id="7K4-Bg-DWk"/>
+                                                <constraint firstItem="xyc-hv-xJt" firstAttribute="trailing" secondItem="jpz-Xu-Bde" secondAttribute="trailingMargin" constant="8" id="91c-44-z1r"/>
+                                                <constraint firstItem="xyc-hv-xJt" firstAttribute="trailing" secondItem="jpz-Xu-Bde" secondAttribute="trailingMargin" id="AzY-ho-Ii4"/>
+                                                <constraint firstItem="Mii-mD-qav" firstAttribute="centerY" secondItem="Pkm-yH-ghq" secondAttribute="centerY" id="Bt9-O4-Dqa"/>
+                                                <constraint firstItem="Mii-mD-qav" firstAttribute="centerY" secondItem="jpz-Xu-Bde" secondAttribute="centerY" id="LLh-2w-Hv7"/>
+                                                <constraint firstItem="Pkm-yH-ghq" firstAttribute="leading" secondItem="Mii-mD-qav" secondAttribute="trailing" constant="8" symbolic="YES" id="UY1-LY-jHy"/>
+                                                <constraint firstItem="Mii-mD-qav" firstAttribute="leading" secondItem="jpz-Xu-Bde" secondAttribute="leadingMargin" id="lao-KK-FGD"/>
+                                                <constraint firstItem="Pkm-yH-ghq" firstAttribute="baseline" secondItem="xyc-hv-xJt" secondAttribute="baseline" id="opG-wt-Xsg"/>
+                                            </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="91c-44-z1r"/>
+                                                </mask>
+                                            </variation>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection headerTitle="Preferences" id="z1e-pr-mab" userLabel="Preferences">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="9Nz-9n-sUS">
+                                        <rect key="frame" x="0.0" y="164" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9Nz-9n-sUS" id="0iJ-1P-UZs">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Wsm-fs-kfN">
+                                                    <rect key="frame" x="8" y="8" width="26" height="26"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="26" id="wjO-8j-WOc"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <switch opaque="NO" contentMode="scaleToFill" semanticContentAttribute="spatial" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="right" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="0K3-aE-FVV">
+                                                    <rect key="frame" x="543" y="6" width="51" height="31"/>
+                                                    <connections>
+                                                        <action selector="TaskTiming:" destination="XUJ-aM-MUt" eventType="valueChanged" id="MPc-TW-a8c"/>
+                                                    </connections>
+                                                </switch>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Use Task Timings" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6aJ-zh-pfn">
+                                                    <rect key="frame" x="42" y="11" width="145" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="145" id="A2o-5l-d3L"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Wsm-fs-kfN" firstAttribute="centerY" secondItem="0iJ-1P-UZs" secondAttribute="centerY" id="7gj-ue-aVc"/>
+                                                <constraint firstItem="Wsm-fs-kfN" firstAttribute="top" secondItem="0iJ-1P-UZs" secondAttribute="topMargin" id="BXT-BP-ght"/>
+                                                <constraint firstItem="0K3-aE-FVV" firstAttribute="trailing" secondItem="0iJ-1P-UZs" secondAttribute="trailingMargin" id="UAA-e1-Kcf"/>
+                                                <constraint firstItem="Wsm-fs-kfN" firstAttribute="centerY" secondItem="6aJ-zh-pfn" secondAttribute="centerY" id="VQi-ic-Uav"/>
+                                                <constraint firstItem="Wsm-fs-kfN" firstAttribute="leading" secondItem="0iJ-1P-UZs" secondAttribute="leadingMargin" id="WaR-r7-aIe"/>
+                                                <constraint firstItem="6aJ-zh-pfn" firstAttribute="leading" secondItem="Wsm-fs-kfN" secondAttribute="trailing" constant="8" symbolic="YES" id="cQo-53-Npl"/>
+                                                <constraint firstItem="6aJ-zh-pfn" firstAttribute="centerY" secondItem="0K3-aE-FVV" secondAttribute="centerY" id="n9Q-NS-xg3"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="Waq-gf-WQc">
+                                        <rect key="frame" x="0.0" y="208" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Waq-gf-WQc" id="SWf-BR-WEm">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="TOI-VT-s15">
+                                                    <rect key="frame" x="8" y="8" width="26" height="26"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="26" id="as0-WJ-GxX"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <switch opaque="NO" contentMode="scaleToFill" semanticContentAttribute="playback" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="right" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="MS8-cb-OCX">
+                                                    <rect key="frame" x="543" y="6" width="51" height="31"/>
+                                                    <connections>
+                                                        <action selector="TemperatureProfile:" destination="XUJ-aM-MUt" eventType="valueChanged" id="4XR-Pa-bxm"/>
+                                                    </connections>
+                                                </switch>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Use Temperature Profile" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l6e-KM-YOa">
+                                                    <rect key="frame" x="42" y="11" width="191" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="191" id="jLk-IV-fR9"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="l6e-KM-YOa" firstAttribute="centerY" secondItem="MS8-cb-OCX" secondAttribute="centerY" id="5fW-jl-mic"/>
+                                                <constraint firstItem="TOI-VT-s15" firstAttribute="leading" secondItem="SWf-BR-WEm" secondAttribute="leadingMargin" id="Ny9-gd-dSa"/>
+                                                <constraint firstItem="l6e-KM-YOa" firstAttribute="leading" secondItem="TOI-VT-s15" secondAttribute="trailing" constant="8" symbolic="YES" id="fzD-du-6eb"/>
+                                                <constraint firstItem="TOI-VT-s15" firstAttribute="centerY" secondItem="l6e-KM-YOa" secondAttribute="centerY" id="j7K-BX-X2g"/>
+                                                <constraint firstItem="MS8-cb-OCX" firstAttribute="trailing" secondItem="SWf-BR-WEm" secondAttribute="trailingMargin" id="tXy-vz-QHP"/>
+                                                <constraint firstItem="TOI-VT-s15" firstAttribute="top" secondItem="SWf-BR-WEm" secondAttribute="topMargin" id="uea-tG-qOu"/>
+                                                <constraint firstItem="TOI-VT-s15" firstAttribute="centerY" secondItem="SWf-BR-WEm" secondAttribute="centerY" id="wh4-1S-0UP"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection headerTitle="Synchronisation" id="eRG-RE-a6a" userLabel="Synchronisation">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="rlo-oy-S9W" userLabel="Upload Tasks Table View Cell">
+                                        <rect key="frame" x="0.0" y="280" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rlo-oy-S9W" id="NsS-gR-WCH">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Upload Tasks" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aKf-WQ-Phh">
+                                                    <rect key="frame" x="42" y="11" width="113" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="113" id="ttm-b1-O0R"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bBi-5K-odO">
+                                                    <rect key="frame" x="8" y="8" width="26" height="26"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="26" id="MdG-sZ-GMF"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="10" textAlignment="right" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="beK-5w-9Vq">
+                                                    <rect key="frame" x="522" y="11" width="70" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="aKf-WQ-Phh" firstAttribute="baseline" secondItem="beK-5w-9Vq" secondAttribute="baseline" id="Cmp-hf-dRL"/>
+                                                <constraint firstItem="bBi-5K-odO" firstAttribute="centerY" secondItem="aKf-WQ-Phh" secondAttribute="centerY" id="FIC-ud-viO"/>
+                                                <constraint firstItem="bBi-5K-odO" firstAttribute="centerY" secondItem="NsS-gR-WCH" secondAttribute="centerY" id="Oeo-F8-mTJ"/>
+                                                <constraint firstItem="bBi-5K-odO" firstAttribute="top" secondItem="NsS-gR-WCH" secondAttribute="topMargin" id="QKm-xR-fcI"/>
+                                                <constraint firstItem="beK-5w-9Vq" firstAttribute="trailing" secondItem="NsS-gR-WCH" secondAttribute="trailingMargin" id="ePt-wH-6OU"/>
+                                                <constraint firstItem="aKf-WQ-Phh" firstAttribute="leading" secondItem="bBi-5K-odO" secondAttribute="trailing" constant="8" symbolic="YES" id="kVo-wl-6ce"/>
+                                                <constraint firstItem="bBi-5K-odO" firstAttribute="leading" secondItem="NsS-gR-WCH" secondAttribute="leadingMargin" id="vzM-gR-oPc"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="HVy-o3-qDO" userLabel="Synchronise Data Table View Cell">
+                                        <rect key="frame" x="0.0" y="324" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="HVy-o3-qDO" id="4ze-dP-OdS">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bdh-W6-JL2">
+                                                    <rect key="frame" x="8" y="8" width="26" height="26"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="26" id="4sL-ZS-Z7L"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Synchronise Data" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E3K-uu-vwu">
+                                                    <rect key="frame" x="42" y="11" width="144" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="144" id="MUm-2p-JXH"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="bdh-W6-JL2" firstAttribute="top" secondItem="4ze-dP-OdS" secondAttribute="topMargin" id="EP4-nf-r4g"/>
+                                                <constraint firstItem="E3K-uu-vwu" firstAttribute="leading" secondItem="bdh-W6-JL2" secondAttribute="trailing" constant="8" symbolic="YES" id="MDy-Yf-qdX"/>
+                                                <constraint firstItem="bdh-W6-JL2" firstAttribute="centerY" secondItem="4ze-dP-OdS" secondAttribute="centerY" id="PW5-RG-44V"/>
+                                                <constraint firstItem="bdh-W6-JL2" firstAttribute="centerY" secondItem="E3K-uu-vwu" secondAttribute="centerY" id="Szn-xV-OFG"/>
+                                                <constraint firstItem="bdh-W6-JL2" firstAttribute="leading" secondItem="4ze-dP-OdS" secondAttribute="leadingMargin" id="brY-Pu-UsY"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="Wdw-q4-IQM" userLabel="Reset Synchronisation Dates Table View Cell">
+                                        <rect key="frame" x="0.0" y="368" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Wdw-q4-IQM" id="RxK-M3-Tse">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mFK-on-to2">
+                                                    <rect key="frame" x="8" y="8" width="26" height="26"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="26" id="bb4-UZ-FDD"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reset Synchronisation Dates" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lkC-BH-hqV">
+                                                    <rect key="frame" x="42" y="11" width="224" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="224" id="lCU-ka-cQ7"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="lkC-BH-hqV" firstAttribute="leading" secondItem="mFK-on-to2" secondAttribute="trailing" constant="8" symbolic="YES" id="3ly-CJ-fNe"/>
+                                                <constraint firstItem="mFK-on-to2" firstAttribute="centerY" secondItem="RxK-M3-Tse" secondAttribute="centerY" id="Re5-xl-f4D"/>
+                                                <constraint firstItem="mFK-on-to2" firstAttribute="leading" secondItem="RxK-M3-Tse" secondAttribute="leadingMargin" id="SEj-uC-VY3"/>
+                                                <constraint firstItem="mFK-on-to2" firstAttribute="top" secondItem="RxK-M3-Tse" secondAttribute="topMargin" id="cCh-a0-rWA"/>
+                                                <constraint firstItem="mFK-on-to2" firstAttribute="centerY" secondItem="lkC-BH-hqV" secondAttribute="centerY" id="uMN-Ab-xtV"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="s8O-l9-uKu" userLabel="Reset Task Data Table View Cell">
+                                        <rect key="frame" x="0.0" y="412" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="s8O-l9-uKu" id="TdK-oL-N20">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="f2J-1N-BsG">
+                                                    <rect key="frame" x="8" y="8" width="26" height="26"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="26" id="Wzx-1P-oRo"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reset Task Data" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9ww-d7-BmS">
+                                                    <rect key="frame" x="42" y="11" width="132" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="132" id="1jP-iu-e8J"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="f2J-1N-BsG" firstAttribute="top" secondItem="TdK-oL-N20" secondAttribute="topMargin" id="QNo-2d-DxQ"/>
+                                                <constraint firstItem="f2J-1N-BsG" firstAttribute="centerY" secondItem="9ww-d7-BmS" secondAttribute="centerY" id="TGx-Aq-xGe"/>
+                                                <constraint firstItem="9ww-d7-BmS" firstAttribute="leading" secondItem="f2J-1N-BsG" secondAttribute="trailing" constant="8" symbolic="YES" id="aVn-rM-WeZ"/>
+                                                <constraint firstItem="f2J-1N-BsG" firstAttribute="centerY" secondItem="TdK-oL-N20" secondAttribute="centerY" id="mZZ-SU-xBq"/>
+                                                <constraint firstItem="f2J-1N-BsG" firstAttribute="leading" secondItem="TdK-oL-N20" secondAttribute="leadingMargin" id="pEZ-jt-yK5"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="nmL-yN-PpG" userLabel="Reset All Data Table View Cell">
+                                        <rect key="frame" x="0.0" y="456" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nmL-yN-PpG" id="mXW-Gi-4Bs">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Lo3-d6-gse">
+                                                    <rect key="frame" x="8" y="8" width="26" height="26"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="26" id="56n-Hl-5ls"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reset All Data" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jht-Re-cnt">
+                                                    <rect key="frame" x="42" y="11" width="112" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="112" id="9lh-x3-bm4"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Lo3-d6-gse" firstAttribute="leading" secondItem="mXW-Gi-4Bs" secondAttribute="leadingMargin" id="5ww-1T-01j"/>
+                                                <constraint firstItem="Lo3-d6-gse" firstAttribute="centerY" secondItem="mXW-Gi-4Bs" secondAttribute="centerY" id="AF8-07-TLh"/>
+                                                <constraint firstItem="Lo3-d6-gse" firstAttribute="top" secondItem="mXW-Gi-4Bs" secondAttribute="topMargin" id="MZO-Wj-yYL"/>
+                                                <constraint firstItem="jht-Re-cnt" firstAttribute="leading" secondItem="Lo3-d6-gse" secondAttribute="trailing" constant="8" symbolic="YES" id="WLT-dp-0hz"/>
+                                                <constraint firstItem="Lo3-d6-gse" firstAttribute="centerY" secondItem="jht-Re-cnt" secondAttribute="centerY" id="rHK-ZV-fBb"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection headerTitle="Account" id="mic-4m-ksL" userLabel="Account">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="Y8G-xL-ji9" userLabel="Logout Table View Cell">
+                                        <rect key="frame" x="0.0" y="528" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Y8G-xL-ji9" id="1Dn-Ug-4qm">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Logout" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Udm-iW-NeG">
+                                                    <rect key="frame" x="42" y="11" width="67" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="67" id="uPG-Cf-uiP"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="TJM-MW-aFh">
+                                                    <rect key="frame" x="8" y="8" width="26" height="26"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="26" id="oK6-VM-T2t"/>
+                                                    </constraints>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="TJM-MW-aFh" firstAttribute="leading" secondItem="1Dn-Ug-4qm" secondAttribute="leadingMargin" id="SsH-w5-eV5"/>
+                                                <constraint firstItem="Udm-iW-NeG" firstAttribute="leading" secondItem="TJM-MW-aFh" secondAttribute="trailing" constant="8" symbolic="YES" id="Xgf-Cf-NiW"/>
+                                                <constraint firstItem="TJM-MW-aFh" firstAttribute="top" secondItem="1Dn-Ug-4qm" secondAttribute="topMargin" id="atS-WV-CeK"/>
+                                                <constraint firstItem="TJM-MW-aFh" firstAttribute="centerY" secondItem="1Dn-Ug-4qm" secondAttribute="centerY" id="jo2-zb-zcZ"/>
+                                                <constraint firstItem="TJM-MW-aFh" firstAttribute="centerY" secondItem="Udm-iW-NeG" secondAttribute="centerY" id="r5r-YQ-CY3"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                        </sections>
+                        <connections>
+                            <outlet property="dataSource" destination="XUJ-aM-MUt" id="xwf-mS-pCc"/>
+                            <outlet property="delegate" destination="XUJ-aM-MUt" id="rMU-XL-nr0"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Settings" id="h45-hj-Red">
+                        <barButtonItem key="leftBarButtonItem" systemItem="done" id="IGi-qc-qLU">
+                            <connections>
+                                <action selector="Done:" destination="XUJ-aM-MUt" id="j3g-am-tCb"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="TnV-s6-iZi" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="77" y="828"/>
         </scene>
         <!--Search-->
         <scene sceneID="eSy-LW-I3n">
@@ -735,451 +1105,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="D7j-vU-2Ch" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1446" y="537"/>
-        </scene>
-        <!--Settings-->
-        <scene sceneID="JJb-oN-Kig">
-            <objects>
-                <viewController title="Settings" id="76G-et-9gB" customClass="SettingsViewController" customModule="COMPASSMOBILE" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="OCl-Dz-m5f"/>
-                        <viewControllerLayoutGuide type="bottom" id="ezq-pe-DVv"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="JMC-k8-rqX">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Bluetooth Probe" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yAz-le-ZGX">
-                                <rect key="frame" x="20" y="83" width="143" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="COMPASS Server" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UcO-nH-4jj" userLabel="Database">
-                                <rect key="frame" x="20" y="127" width="143" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="diM-4C-ELP">
-                                <rect key="frame" x="29" y="346" width="100" height="30"/>
-                                <state key="normal" title="Logout"/>
-                                <connections>
-                                    <action selector="Logout:" destination="76G-et-9gB" eventType="touchUpInside" id="zkH-uN-wcI"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="A4v-9v-7IC">
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="e1R-hq-ygA">
-                            <connections>
-                                <action selector="Done:" destination="76G-et-9gB" id="Lqa-JA-u5G"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="1Wu-2A-ufn" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1426" y="1372"/>
-        </scene>
-        <!--Download-->
-        <scene sceneID="Hbe-M2-5EF">
-            <objects>
-                <viewController id="qro-Xa-glQ" userLabel="Download" customClass="DownloadViewController" customModule="COMPASSMOBILE" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="6No-4T-XMj"/>
-                        <viewControllerLayoutGuide type="bottom" id="rwp-dg-DbA"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="8f8-Wf-Iqw">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Reference Data" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Or7-pp-IA7" userLabel="ReferenceData">
-                                <rect key="frame" x="20" y="73" width="148" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="brE-RT-rNJ" userLabel="ReferenceDataGo">
-                                <rect key="frame" x="188" y="72" width="46" height="30"/>
-                                <color key="backgroundColor" red="0.066666670139999995" green="0.52156865600000002" blue="0.81176471709999998" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
-                                <state key="normal" title="Go">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="8"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="downloadReferenceData:" destination="qro-Xa-glQ" eventType="touchUpInside" id="U8u-UY-uWn"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xeo-2V-1iw" userLabel="ReferenceDataFeedback">
-                                <rect key="frame" x="263" y="73" width="113" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progressViewStyle="bar" progress="0.10000000000000001" translatesAutoresizingMaskIntoConstraints="NO" id="eCq-bh-3r2" userLabel="ReferenceDataProgressBar">
-                                <rect key="frame" x="263" y="100" width="114" height="3"/>
-                                <rect key="contentStretch" x="0.0" y="0.0" width="0.94999999999999996" height="1"/>
-                                <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                    <rect key="frame" x="263" y="100" width="114" height="2.5"/>
-                                </variation>
-                            </progressView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Task Templates" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gvh-5b-g2W" userLabel="TaskTemplate">
-                                <rect key="frame" x="20" y="111" width="148" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7lr-eU-KJx" userLabel="TaskTemplateGo">
-                                <rect key="frame" x="188" y="110" width="46" height="30"/>
-                                <color key="backgroundColor" red="0.066666670139999995" green="0.52156865600000002" blue="0.81176471709999998" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
-                                <state key="normal" title="Go">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="8"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="downloadTaskTemplate:" destination="qro-Xa-glQ" eventType="touchUpInside" id="9IW-vM-TUP"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h4b-eC-HSN" userLabel="TaskTemplateFeedback">
-                                <rect key="frame" x="263" y="111" width="113" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progressViewStyle="bar" progress="0.10000000149011612" translatesAutoresizingMaskIntoConstraints="NO" id="fm8-qT-Peh" userLabel="TaskTemplateProgressBar">
-                                <rect key="frame" x="263" y="138" width="114" height="3"/>
-                                <rect key="contentStretch" x="0.0" y="0.0" width="0.94999999999999996" height="1"/>
-                                <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                    <rect key="frame" x="263" y="138" width="114" height="2.5"/>
-                                </variation>
-                            </progressView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Operatives" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i0e-fE-vlE" userLabel="Operative">
-                                <rect key="frame" x="20" y="148" width="148" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g6h-Ta-EO0" userLabel="OperativeGo">
-                                <rect key="frame" x="188" y="148" width="46" height="30"/>
-                                <color key="backgroundColor" red="0.066666670139999995" green="0.52156865600000002" blue="0.81176471709999998" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="Go">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="8"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="downloadOperative:" destination="qro-Xa-glQ" eventType="touchUpInside" id="5bV-bx-Iab"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D1t-ug-YR2" userLabel="OperativeFeedback">
-                                <rect key="frame" x="263" y="148" width="113" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Organisations" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uCQ-Ee-jbn" userLabel="Organisation">
-                                <rect key="frame" x="20" y="187" width="148" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H5Y-g2-QVy" userLabel="OrganisationGo">
-                                <rect key="frame" x="188" y="186" width="46" height="30"/>
-                                <color key="backgroundColor" red="0.066666670139999995" green="0.52156865600000002" blue="0.81176471709999998" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="Go">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="8"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="downloadOrganisation:" destination="qro-Xa-glQ" eventType="touchUpInside" id="pjV-2b-cby"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DvW-OP-kmY" userLabel="OrganisationFeedback">
-                                <rect key="frame" x="263" y="187" width="113" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progressViewStyle="bar" progress="0.10000000149011612" translatesAutoresizingMaskIntoConstraints="NO" id="aWL-bn-xAZ" userLabel="OrganisationProgressBar">
-                                <rect key="frame" x="263" y="214" width="114" height="3"/>
-                                <rect key="contentStretch" x="0.0" y="0.0" width="0.94999999999999996" height="1"/>
-                                <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                    <rect key="frame" x="263" y="214" width="114" height="2.5"/>
-                                </variation>
-                            </progressView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Sites" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h1O-HS-zLm" userLabel="Site">
-                                <rect key="frame" x="20" y="224" width="148" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5rK-eh-2Pt" userLabel="SiteGo">
-                                <rect key="frame" x="188" y="224" width="46" height="30"/>
-                                <color key="backgroundColor" red="0.066666670139999995" green="0.52156865600000002" blue="0.81176471709999998" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="Go">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="8"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="downloadSite:" destination="qro-Xa-glQ" eventType="touchUpInside" id="3dk-Ks-M66"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6ET-vU-32g" userLabel="SiteFeedback">
-                                <rect key="frame" x="263" y="224" width="113" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progressViewStyle="bar" progress="0.10000000149011612" translatesAutoresizingMaskIntoConstraints="NO" id="3Eg-U5-Pl8" userLabel="SiteProgressBar">
-                                <rect key="frame" x="263" y="252" width="114" height="3"/>
-                                <rect key="contentStretch" x="0.0" y="0.0" width="0.94999999999999996" height="1"/>
-                                <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                    <rect key="frame" x="263" y="252" width="114" height="2.5"/>
-                                </variation>
-                            </progressView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Properties" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dRV-zJ-qn8" userLabel="Property">
-                                <rect key="frame" x="20" y="263" width="148" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LCl-dP-Bnh" userLabel="PropertyGo">
-                                <rect key="frame" x="188" y="262" width="46" height="30"/>
-                                <color key="backgroundColor" red="0.066666670139999995" green="0.52156865600000002" blue="0.81176471709999998" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="Go">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="8"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="downloadProperty:" destination="qro-Xa-glQ" eventType="touchUpInside" id="x75-bn-2Ed"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="POP-3k-mG2" userLabel="PropertyFeedback">
-                                <rect key="frame" x="263" y="263" width="113" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progressViewStyle="bar" progress="0.10000000149011612" translatesAutoresizingMaskIntoConstraints="NO" id="Qy5-io-SSG" userLabel="PropertyProgressBar">
-                                <rect key="frame" x="263" y="290" width="114" height="3"/>
-                                <rect key="contentStretch" x="0.0" y="0.0" width="0.94999999999999996" height="1"/>
-                                <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                    <rect key="frame" x="263" y="290" width="114" height="2.5"/>
-                                </variation>
-                            </progressView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Areas" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r6i-ZS-ma4" userLabel="Area">
-                                <rect key="frame" x="20" y="301" width="148" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yfv-2b-G5T" userLabel="AreaGo">
-                                <rect key="frame" x="188" y="300" width="46" height="30"/>
-                                <color key="backgroundColor" red="0.066666670139999995" green="0.52156865600000002" blue="0.81176471709999998" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="Go">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="8"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="downloadArea:" destination="qro-Xa-glQ" eventType="touchUpInside" id="zOj-56-TgM"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TD1-o0-0QK" userLabel="AreaFeedback">
-                                <rect key="frame" x="263" y="301" width="113" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progressViewStyle="bar" progress="0.10000000149011612" translatesAutoresizingMaskIntoConstraints="NO" id="VRf-cc-8eC" userLabel="AreaProgressBar">
-                                <rect key="frame" x="263" y="328" width="114" height="3"/>
-                                <rect key="contentStretch" x="0.0" y="0.0" width="0.94999999999999996" height="1"/>
-                                <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                    <rect key="frame" x="263" y="328" width="114" height="2.5"/>
-                                </variation>
-                            </progressView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Locations" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nKi-9O-3JV" userLabel="Location">
-                                <rect key="frame" x="20" y="339" width="148" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="McG-fA-RkW" userLabel="LocationGo">
-                                <rect key="frame" x="188" y="338" width="46" height="30"/>
-                                <color key="backgroundColor" red="0.066666670139999995" green="0.52156865600000002" blue="0.81176471709999998" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="Go">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="8"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="downloadLocation:" destination="qro-Xa-glQ" eventType="touchUpInside" id="U4g-rx-mc2"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vTz-rg-zIv" userLabel="LocationFeedback">
-                                <rect key="frame" x="263" y="339" width="113" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progressViewStyle="bar" progress="0.10000000149011612" translatesAutoresizingMaskIntoConstraints="NO" id="dmG-zA-6oa" userLabel="LocationProgressBar">
-                                <rect key="frame" x="263" y="366" width="114" height="3"/>
-                                <rect key="contentStretch" x="0.0" y="0.0" width="0.94999999999999996" height="1"/>
-                                <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                    <rect key="frame" x="263" y="366" width="114" height="2.5"/>
-                                </variation>
-                            </progressView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Assets" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HcA-vn-7rY" userLabel="Asset">
-                                <rect key="frame" x="20" y="377" width="148" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="63w-EP-VOs" userLabel="AssetGo">
-                                <rect key="frame" x="188" y="376" width="46" height="30"/>
-                                <color key="backgroundColor" red="0.066666670139999995" green="0.52156865600000002" blue="0.81176471709999998" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="Go">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="8"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="downloadAsset:" destination="qro-Xa-glQ" eventType="touchUpInside" id="ptY-rt-OKP"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9dL-iI-xbG" userLabel="AssetFeedback">
-                                <rect key="frame" x="263" y="377" width="113" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progressViewStyle="bar" progress="0.10000000149011612" translatesAutoresizingMaskIntoConstraints="NO" id="Jh0-bH-1Jd" userLabel="AssetProgressBar">
-                                <rect key="frame" x="263" y="404" width="114" height="3"/>
-                                <rect key="contentStretch" x="0.0" y="0.0" width="0.94999999999999996" height="1"/>
-                                <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                    <rect key="frame" x="263" y="404" width="114" height="2.5"/>
-                                </variation>
-                            </progressView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Tasks" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d1N-gb-XzH" userLabel="Task">
-                                <rect key="frame" x="20" y="415" width="148" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eqZ-UH-j3I" userLabel="TaskGo">
-                                <rect key="frame" x="188" y="414" width="46" height="30"/>
-                                <color key="backgroundColor" red="0.066666670139999995" green="0.52156865600000002" blue="0.81176471709999998" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="Go">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <state key="highlighted" title="Go"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="8"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="downloadTask:" destination="qro-Xa-glQ" eventType="touchUpInside" id="TyE-fP-7Uh"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RDw-rC-BnL" userLabel="TaskFeedback">
-                                <rect key="frame" x="263" y="415" width="113" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progressViewStyle="bar" progress="0.10000000149011612" translatesAutoresizingMaskIntoConstraints="NO" id="yE5-TD-MZa" userLabel="TaskProgressBar">
-                                <rect key="frame" x="263" y="442" width="114" height="3"/>
-                                <rect key="contentStretch" x="0.0" y="0.0" width="0.94999999999999996" height="1"/>
-                                <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                    <rect key="frame" x="263" y="442" width="114" height="2.5"/>
-                                </variation>
-                            </progressView>
-                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progressViewStyle="bar" progress="0.10000000149011612" translatesAutoresizingMaskIntoConstraints="NO" id="sVK-EV-6v6" userLabel="OperativeProgressBar">
-                                <rect key="frame" x="263" y="176" width="114" height="3"/>
-                                <rect key="contentStretch" x="0.0" y="0.0" width="0.94999999999999996" height="1"/>
-                                <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                    <rect key="frame" x="263" y="176" width="114" height="2.5"/>
-                                </variation>
-                            </progressView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="COMPASS Download" id="UU7-k0-7w6">
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="dJ4-Ee-Ssx"/>
-                    </navigationItem>
-                    <connections>
-                        <outlet property="AreaButton" destination="yfv-2b-G5T" id="bFR-rt-Hfx"/>
-                        <outlet property="AreaFeedback" destination="TD1-o0-0QK" id="Ei4-W8-h2c"/>
-                        <outlet property="AreaProgress" destination="VRf-cc-8eC" id="nM2-UA-LRQ"/>
-                        <outlet property="AssetButton" destination="63w-EP-VOs" id="VW5-Ee-fhj"/>
-                        <outlet property="AssetFeedback" destination="9dL-iI-xbG" id="RJW-wW-Yro"/>
-                        <outlet property="AssetProgress" destination="Jh0-bH-1Jd" id="rme-bJ-xej"/>
-                        <outlet property="LocationButton" destination="McG-fA-RkW" id="qcf-Y5-MP7"/>
-                        <outlet property="LocationFeedback" destination="vTz-rg-zIv" id="Chw-HJ-Fi2"/>
-                        <outlet property="LocationProgress" destination="dmG-zA-6oa" id="DEL-Xa-mtg"/>
-                        <outlet property="OperativeButton" destination="g6h-Ta-EO0" id="8Cg-SS-gIO"/>
-                        <outlet property="OperativeFeedback" destination="D1t-ug-YR2" id="IvV-9k-DN5"/>
-                        <outlet property="OperativeProgress" destination="sVK-EV-6v6" id="cYW-Af-vlJ"/>
-                        <outlet property="OrganisationButton" destination="H5Y-g2-QVy" id="VEG-Et-S5v"/>
-                        <outlet property="OrganisationFeedback" destination="DvW-OP-kmY" id="edM-Cj-4XK"/>
-                        <outlet property="OrganisationProgress" destination="aWL-bn-xAZ" id="MeQ-6a-Eab"/>
-                        <outlet property="PropertyButton" destination="LCl-dP-Bnh" id="h5T-vo-I3C"/>
-                        <outlet property="PropertyFeedback" destination="POP-3k-mG2" id="pNU-Pl-ouD"/>
-                        <outlet property="PropertyProgress" destination="Qy5-io-SSG" id="ou8-OC-hcV"/>
-                        <outlet property="ReferenceDataButton" destination="brE-RT-rNJ" id="mU7-Fc-daQ"/>
-                        <outlet property="ReferenceDataFeedback" destination="Xeo-2V-1iw" id="tWj-5a-cV7"/>
-                        <outlet property="ReferenceDataProgress" destination="eCq-bh-3r2" id="CVC-1d-7tA"/>
-                        <outlet property="SiteButton" destination="5rK-eh-2Pt" id="meK-LQ-hb7"/>
-                        <outlet property="SiteFeedback" destination="6ET-vU-32g" id="K04-Yt-hVe"/>
-                        <outlet property="SiteProgress" destination="3Eg-U5-Pl8" id="EAt-uF-kQb"/>
-                        <outlet property="TaskButton" destination="eqZ-UH-j3I" id="W5E-k3-Akx"/>
-                        <outlet property="TaskFeedback" destination="RDw-rC-BnL" id="fxL-bq-6ge"/>
-                        <outlet property="TaskProgress" destination="yE5-TD-MZa" id="QhQ-g0-hXd"/>
-                        <outlet property="TaskTemplateButton" destination="7lr-eU-KJx" id="XYy-u5-qWM"/>
-                        <outlet property="TaskTemplateFeedback" destination="h4b-eC-HSN" id="Slz-Re-OTe"/>
-                        <outlet property="TaskTemplateProgress" destination="fm8-qT-Peh" id="uVr-X9-4Z3"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="mJc-JT-PEe" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3264" y="1629"/>
+            <point key="canvasLocation" x="98" y="9"/>
         </scene>
         <!--AddView-->
         <scene sceneID="V4Y-Uf-zQg">
@@ -1425,15 +1351,15 @@
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="EWY-ZE-JJ5" firstAttribute="trailing" secondItem="2gg-VR-MyC" secondAttribute="trailing" id="8Ec-Lw-mUl"/>
+                                    <constraint firstItem="EWY-ZE-JJ5" firstAttribute="bottom" secondItem="2gg-VR-MyC" secondAttribute="bottom" id="Gmo-bg-uGf"/>
                                     <constraint firstItem="EWY-ZE-JJ5" firstAttribute="leading" secondItem="2gg-VR-MyC" secondAttribute="leading" id="WWk-vE-7uw"/>
                                     <constraint firstItem="EWY-ZE-JJ5" firstAttribute="top" secondItem="2gg-VR-MyC" secondAttribute="top" id="vuo-Ej-ez7"/>
-                                    <constraint firstItem="EWY-ZE-JJ5" firstAttribute="bottom" secondItem="2gg-VR-MyC" secondAttribute="bottom" id="ynL-Xz-PMI" userLabel="Content View.bottom = bottom"/>
                                 </constraints>
                             </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="2gg-VR-MyC" firstAttribute="bottom" secondItem="gc1-n8-aMv" secondAttribute="top" id="Ke5-II-F9f"/>
+                            <constraint firstItem="2gg-VR-MyC" firstAttribute="bottom" secondItem="gc1-n8-aMv" secondAttribute="top" id="E9c-sV-8Nu"/>
                             <constraint firstItem="2gg-VR-MyC" firstAttribute="leading" secondItem="dR4-4v-GVm" secondAttribute="leading" id="TBb-BC-Cx6"/>
                             <constraint firstItem="2gg-VR-MyC" firstAttribute="top" secondItem="W74-dI-sAb" secondAttribute="bottom" id="quy-bB-vtb"/>
                             <constraint firstItem="EWY-ZE-JJ5" firstAttribute="width" secondItem="dR4-4v-GVm" secondAttribute="width" id="wvo-cj-sAr"/>
@@ -1465,7 +1391,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pMz-ma-Uy2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1426" y="-948"/>
+            <point key="canvasLocation" x="98" y="-1488"/>
         </scene>
         <!--COMPASS Login-->
         <scene sceneID="rOS-cN-wnN">
@@ -1648,7 +1574,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BhU-Lu-v35" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="344" y="888"/>
+            <point key="canvasLocation" x="-774" y="404"/>
         </scene>
         <!--Task Navigator-->
         <scene sceneID="WVx-cb-3l7">
@@ -1667,7 +1593,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iwp-FZ-jKI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="344" y="-852"/>
+            <point key="canvasLocation" x="-774" y="-1138"/>
         </scene>
     </scenes>
     <resources>

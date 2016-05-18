@@ -10,16 +10,19 @@ import UIKit
 
 class Session : NSObject
 {
-    static var RootViewController: UIViewController = UIViewController()
+    //static var RootViewController: UIViewController = UIViewController()
     static var Server: String = String()
     static var CheckDatabase: Bool = false
+    
+    static var TaskTiming: Bool = false
+    static var TemperatureProfile: Bool = false
     
     static var OperativeId: String? = String?()
     static var OrganisationId: String? = String?()
     
     static var PropertyList: Dictionary<String, Property> = Dictionary<String, Property>()
  
-    static var LookupLists: Dictionary<String, AnyObject> = Dictionary<String,AnyObject>()
+    //static var LookupLists: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
     
     static var ReferenceLists: Dictionary<String, Dictionary<String, String>> = Dictionary<String, Dictionary<String, String>>()
     static var ReverseReferenceLists: Dictionary<String, Dictionary<String, String>> = Dictionary<String, Dictionary<String, String>>()
@@ -46,7 +49,7 @@ class Session : NSObject
     static var TaskCount: Int32 = 0
     
     static var PageNumber: Int32 = 1
-    static var PageSize: Int32 = 20
+    static var PageSize: Int32 = 1000
     static var MaxPage: Int32 = 1
     
     class func BuildCriteriaFromSession() -> Dictionary<String, AnyObject> {

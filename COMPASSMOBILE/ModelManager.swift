@@ -3109,19 +3109,15 @@ class ModelManager: NSObject {
             {
             case "Due Today":
                  
-                let endOfToday: String = NSDate().endOfDay().toString()
-                
-                //dateFilter = " [ScheduledDate] <= '" + endOfToday + "'"
+                let endOfToday: NSDate = NSDate().endOfDay()
                 
                 whereClause += (whereClause != "" ? " AND " : " ")
                 whereClause += " [ScheduledDate] <= ? "
-                //print(endOfToday.stringByReplacingOccurrencesOfString("T", withString: " "))
-                whereValues.append(endOfToday.stringByReplacingOccurrencesOfString("T", withString: " "))
-                //whereValues.append("2016 APR 04")
+                whereValues.append(endOfToday)
                 
             case "Due This Week":
                 
-                let endOfThisWeek: String = NSDate().endOfWeek().toString()
+                let endOfThisWeek: NSDate = NSDate().endOfWeek()
             
                 whereClause += (whereClause != "" ? " AND " : " ")
                 whereClause += " [ScheduledDate] <= ? "
@@ -3129,7 +3125,7 @@ class ModelManager: NSObject {
                 
             case "Due This Month":
                 
-                let endOfThisMonth: String = NSDate().endOfMonth().toString()
+                let endOfThisMonth: NSDate = NSDate().endOfMonth()
                 
                 whereClause += (whereClause != "" ? " AND " : " ")
                 whereClause += " [ScheduledDate] <= ? "
@@ -3137,8 +3133,8 @@ class ModelManager: NSObject {
                 
             case "Due By the End of Next Month":
   
-                let startOfNextMonth: String = NSDate().startOfNextMonth().toString()
-                let endOfNextMonth: String = NSDate().endOfNextMonth().toString()
+                let startOfNextMonth: NSDate = NSDate().startOfNextMonth()
+                let endOfNextMonth: NSDate = NSDate().endOfNextMonth()
                 whereClause += (whereClause != "" ? " AND " : " ")
                 whereClause += " [ScheduledDate] >= ? AND [ScheduledDate] <= ? "
                 whereValues.append(startOfNextMonth)

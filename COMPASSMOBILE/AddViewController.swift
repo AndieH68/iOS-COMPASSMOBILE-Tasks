@@ -20,36 +20,43 @@ class AddViewController: UIViewController {
     @IBOutlet weak var AssetNumberPopupSelector: KFPopupSelector!
 
     var Sites: [String] = []
-    var SiteDictionary: Dictionary<String, String> = [:]
+    var SiteDictionary: Dictionary<String, String> = [:] //name, id
     var SiteId: String? = String?()
     
     var Properties: [String] = []
-    var PropertyDictionary: Dictionary<String, String> = [:]
+    var PropertyDictionary: Dictionary<String, String> = [:] //name, id
     var PropertyId: String? = String?()
     
     var LocationGroups: [String] = []
-    var LocationGroupDictionary: Dictionary<String, String> = [:]
+    var LocationGroupDictionary: Dictionary<String, String> = [:] //name, id
     var LocationGroupId: String? = String?()
+    var LocationGroupName: String? = String?()
     
     var Locations: [String] = []
-    var LocationDictionary: Dictionary<String, String> = [:]
+    var LocationDictionary: Dictionary<String, String> = [:] //name, id
     var LocationId: String? = String?()
+    var LocationName: String? = String?()
+    var Room: String? = String?()
     
     var AssetTypes: [String] = []
-    var AssetTypeDictionary: Dictionary<String, String> = [:]
+    var AssetTypeDictionary: Dictionary<String, String> = [:] //name, id
     var AssetType: String? = String?()
     
     var AssetGroups: [String] = []
-    var AssetGroupDictionary: Dictionary<String, String> = [:]
+    var AssetGroupDictionary: Dictionary<String, String> = [:] //name, id
     var AssetGroup: String? = String?()
     
     var TaskNames: [String] = []
-    var TaskNameDictionary: Dictionary<String, String> = [:]
+    var TaskNameDictionary: Dictionary<String, String> = [:] //name, id
     var TaskName: String? = String?()
+    var TaskTemplateId: String? = String?()
+    var EstimatedDuration: Int? = Int?()
+    var TaskRef: String = String()
     
     var AssetNumbers: [String] = []
-    var AssetNumberDictionary: Dictionary<String, String> = [:]
+    var AssetNumberDictionary: Dictionary<String, String> = [:] //name, id
     var AssetId: String? = String?()
+    var AssetNumber: String? = String?()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -88,7 +95,21 @@ class AddViewController: UIViewController {
     }
     
     @IBAction func Done(sender: UIBarButtonItem) {
-                self.navigationController?.popViewControllerAnimated(true)
+        //based off the optons selected we can create the task
+        if (AssetId == nil)
+        {
+            Utility.invokeAlertMethod("Error", strBody: "Please select all options", delegate: nil)
+            return
+        }
+        
+        //create the task and go to the task form
+        let rowId: String = String(NSUUID())
+        let now: NSDate = NSDate()
+        let newTask: Task = Task(rowId: rowId, createdBy: Session.OperativeId!, createdOn: now, lastUpdatedBy: nil, lastUpdatedOn: nil, deleted: nil, organisationId: Session.OrganisationId!, siteId: SiteId!, propertyId: PropertyId!, locationId: LocationId!, locationGroupName: LocationGroupName!, locationName: LocationName!, room: Room, taskTemplateId: TaskTemplateId, taskRef: TaskRef, PPMGroup: AssetGroup, assetType: AssetType!, taskName: TaskName!, frequency: "Adhoc", assetId: AssetId!, assetNumber: AssetNumber!, scheduledDate: now, completedDate: nil, status: "Pending", priority: 30, estimatedDuration: EstimatedDuration, operativeId: Session.OperativeId, actualDuration: nil, travelDuration: nil, comments: nil, alternateAssetCode: nil)
+        
+        ModelManager.getInstance().addTask(newTask)
+            
+        self.navigationController?.popViewControllerAnimated(true)
     }
 
     // MARK : populate the drop downs
@@ -409,6 +430,7 @@ class AddViewController: UIViewController {
         if (LocationGroupPopupSelector.selectedIndex != nil && LocationGroups[LocationGroupPopupSelector.selectedIndex!] != "")
         {
             LocationGroupId = LocationGroupDictionary[LocationGroups[LocationGroupPopupSelector.selectedIndex!]]
+            LocationGroupName = LocationGroups[LocationGroupPopupSelector.selectedIndex!]
             
             //do the location stuff
             PopulateLocationSelector()
@@ -418,6 +440,7 @@ class AddViewController: UIViewController {
         {
             if (LocationGroupPopupSelector.selectedIndex != nil) { LocationGroupPopupSelector.selectedIndex = nil }
             LocationGroupId = nil
+            LocationGroupName = nil
             LocationPopupSelector.unselectedLabelText = "not applicable"
             LocationPopupSelector.enabled = false
         }
@@ -428,15 +451,16 @@ class AddViewController: UIViewController {
         if (LocationPopupSelector.selectedIndex != nil && Locations[LocationPopupSelector.selectedIndex!] != "")
         {
             LocationId = LocationDictionary[Locations[LocationPopupSelector.selectedIndex!]]
-            
+            LocationName = Locations[LocationPopupSelector.selectedIndex!]
             //do the asset type stuff
             PopulateAssetTypeSelector()
-            AssetGroupPopupSelector.enabled = true
+            AssetTypePopupSelector.enabled = true
         }
         else
         {
             if (LocationPopupSelector.selectedIndex != nil) { LocationPopupSelector.selectedIndex = nil }
             LocationId = nil
+            LocationName = nil
             AssetTypePopupSelector.unselectedLabelText = "not applicable"
             AssetTypePopupSelector.enabled = false
         }
@@ -444,7 +468,7 @@ class AddViewController: UIViewController {
     
     @IBAction func AssetTypeChanged(sender: KFPopupSelector) {
         //set the asset type
-        if (LocationPopupSelector.selectedIndex != nil && Locations[LocationPopupSelector.selectedIndex!] != "")
+        if (AssetTypePopupSelector.selectedIndex != nil && AssetTypes[AssetTypePopupSelector.selectedIndex!] != "")
         {
             AssetType = AssetTypeDictionary[AssetTypes[AssetTypePopupSelector.selectedIndex!]]
             
@@ -454,7 +478,7 @@ class AddViewController: UIViewController {
         }
         else
         {
-            if (LocationPopupSelector.selectedIndex != nil) { LocationPopupSelector.selectedIndex = nil }
+            if (AssetTypePopupSelector.selectedIndex != nil) { AssetTypePopupSelector.selectedIndex = nil }
             AssetType = nil
             AssetGroupPopupSelector.unselectedLabelText = "not applicable"
             AssetGroupPopupSelector.enabled = false

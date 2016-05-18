@@ -74,11 +74,11 @@ class Utility: NSObject {
     }
     
     // MARK: - Global
-    class func importData(packageData: AEXMLElement, entityType: EntityType) -> String {
+    class func importData(packageData: AEXMLElement, entityType: EntityType) -> (String, NSDate) {
         return importData(packageData, entityType: entityType, progressBar: nil)
     }
     
-    class func importData(packageData: AEXMLElement, entityType: EntityType, progressBar: MBProgressHUD?) -> String {
+    class func importData(packageData: AEXMLElement, entityType: EntityType, progressBar: MBProgressHUD?) -> (String, NSDate) {
         
         var lastDateInPackage: NSDate = BaseDate
         var lastRowId: String = EmptyGuid
@@ -97,6 +97,7 @@ class Utility: NSObject {
             
             for childNode in dataNode.children
             {
+                autoreleasepool{
                 current += 1
                 
                 //get the first child
@@ -146,6 +147,7 @@ class Utility: NSObject {
                 {
                     dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Asset"; progressBar!.progress = (Float(current) / Float(total))})
                 }
+                }
             }
             
         case .Location:
@@ -157,6 +159,7 @@ class Utility: NSObject {
             
             for childNode in dataNode.children
             {
+                autoreleasepool{
                 current += 1
                 
                 //get the first child
@@ -206,6 +209,7 @@ class Utility: NSObject {
                 {
                     dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Location"; progressBar!.progress = (Float(current) / Float(total))})
                 }
+                }
             }
 
         case .LocationGroup:
@@ -217,6 +221,7 @@ class Utility: NSObject {
             
             for childNode in dataNode.children
             {
+                autoreleasepool{
                 current += 1
                 
                 //get the first child
@@ -266,6 +271,7 @@ class Utility: NSObject {
                 {
                     dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Area"; progressBar!.progress = (Float(current) / Float(total))})
                 }
+                }
             }
 
         case .LocationGroupMembership:
@@ -277,6 +283,7 @@ class Utility: NSObject {
             
             for childNode in dataNode.children
             {
+                autoreleasepool{
                 current += 1
                 
                 //get the first child
@@ -326,6 +333,7 @@ class Utility: NSObject {
                 {
                     dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Area Link"; progressBar!.progress = (Float(current) / Float(total))})
                 }
+                }
             }
             
         case .Operative:
@@ -337,6 +345,7 @@ class Utility: NSObject {
             
             for childNode in dataNode.children
             {
+                autoreleasepool{
                 current += 1
                 
                 //get the first child
@@ -386,6 +395,7 @@ class Utility: NSObject {
                 {
                     dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Operative"; progressBar!.progress = (Float(current) / Float(total))})
                 }
+                }
             }
             
         case .Organisation:
@@ -397,6 +407,7 @@ class Utility: NSObject {
             
             for childNode in dataNode.children
             {
+                autoreleasepool{
                 current += 1
                 
                 //get the first child
@@ -446,6 +457,7 @@ class Utility: NSObject {
                 {
                     dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Organisation"; progressBar!.progress = (Float(current) / Float(total))})
                 }
+                }
             }
 
         case .Site:
@@ -457,6 +469,7 @@ class Utility: NSObject {
             
             for childNode in dataNode.children
             {
+                autoreleasepool{
                 current += 1
                 
                 //get the first child
@@ -506,6 +519,7 @@ class Utility: NSObject {
                 {
                     dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Site"; progressBar!.progress = (Float(current) / Float(total))})
                 }
+                }
             }
             
         case .Property:
@@ -517,6 +531,7 @@ class Utility: NSObject {
             
             for childNode in dataNode.children
             {
+                autoreleasepool{
                 current += 1
                 
                 //get the first child
@@ -566,6 +581,7 @@ class Utility: NSObject {
                 {
                     dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Property"; progressBar!.progress = (Float(current) / Float(total))})
                 }
+                }
             }
 
         case .ReferenceData:
@@ -577,6 +593,7 @@ class Utility: NSObject {
             
             for childNode in dataNode.children
             {
+                autoreleasepool{
                 current += 1
                 
                 //get the first child
@@ -625,6 +642,7 @@ class Utility: NSObject {
                 {
                     dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Reference"; progressBar!.progress = (Float(current) / Float(total))})
                 }
+                }
             }
             
         case .Task:
@@ -636,6 +654,7 @@ class Utility: NSObject {
             
             for childNode in dataNode.children
             {
+                autoreleasepool{
                 current += 1
                 
                 //get the first child
@@ -685,6 +704,7 @@ class Utility: NSObject {
                 {
                     dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Task"; progressBar!.progress = (Float(current) / Float(total))})
                 }
+                }
             }
 
         case .TaskParameter:
@@ -696,6 +716,7 @@ class Utility: NSObject {
             
             for childNode in dataNode.children
             {
+                autoreleasepool{
                 current += 1
                 
                 //get the first child
@@ -745,6 +766,7 @@ class Utility: NSObject {
                 {
                     dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Task Parameters"; progressBar!.progress = (Float(current) / Float(total))})
                 }
+                }
             }
 
         case .TaskTemplate:
@@ -756,6 +778,7 @@ class Utility: NSObject {
             
             for childNode in dataNode.children
             {
+                autoreleasepool{
                 current += 1
                 
                 //get the first child
@@ -805,6 +828,7 @@ class Utility: NSObject {
                 {
                     dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Templates"; progressBar!.progress = (Float(current) / Float(total))})
                 }
+                }
             }
 
         case .TaskTemplateParameter:
@@ -816,6 +840,7 @@ class Utility: NSObject {
             
             for childNode in dataNode.children
             {
+                autoreleasepool{
                 current += 1
                 
                 //get the first child
@@ -865,6 +890,7 @@ class Utility: NSObject {
                 {
                     dispatch_async(dispatch_get_main_queue(), {progressBar!.labelText = "Template Parameters"; progressBar!.progress = (Float(current) / Float(total))})
                 }
+                }
             }
 
         //default:
@@ -872,62 +898,78 @@ class Utility: NSObject {
             //print ("invalid EntityType")
         }
         
-        return lastRowId
+        return (lastRowId, lastDateInPackage)
     }
     
     class func SynchroniseAllData(stage: Int32, progressBar: MBProgressHUD?) -> Bool {
         var SQLStatement: String
         var SQLParameterValues: [NSObject]
         var synchronisationDateToUse: NSDate = BaseDate
-        var synchronisationType: String = "Receive"
+        var synchronisationType: String = Session.OrganisationId! + ":Receive:"
         synchronisationType.appendContentsOf(String(stage))
         
-        SQLStatement = "SELECT LastSynchronisationDate FROM Synchronisation WHERE Type = '" + synchronisationType + "'"
+        SQLStatement = "SELECT [LastSynchronisationDate] FROM [Synchronisation] WHERE [Type] = '" + synchronisationType + "'"
         
         if let lastSynchronisationDate = ModelManager.getInstance().executeSingleDateReader(SQLStatement, SQLParameterValues: nil) {
             synchronisationDateToUse = lastSynchronisationDate
         }
         
+        var state: Bool
+        var lastDate: NSDate?
+        
         switch stage{
         
         case 1:
-            if !refactoredGetAndImport(synchronisationDateToUse, stage: 1, entityType: EntityType.ReferenceData, progressBar: progressBar){ return false }
+            (state, lastDate) = refactoredGetAndImport(synchronisationDateToUse, stage: 1, entityType: EntityType.ReferenceData, progressBar: progressBar)
+            if (!state){ return false }
             
         case 2:
-            if !refactoredGetAndImport(synchronisationDateToUse, stage: 2, entityType: EntityType.Organisation, progressBar: progressBar){ return false }
+            (state, lastDate) = refactoredGetAndImport(synchronisationDateToUse, stage: 2, entityType: EntityType.Organisation, progressBar: progressBar)
+            if (!state){ return false }
             
         case 3:
-            if !refactoredGetAndImport(synchronisationDateToUse, stage: 3, entityType: EntityType.Site, progressBar: progressBar){ return false }
+            (state, lastDate) = refactoredGetAndImport(synchronisationDateToUse, stage: 3, entityType: EntityType.Site, progressBar: progressBar)
+            if (!state){ return false }
             
         case 4:
-            if !refactoredGetAndImport(synchronisationDateToUse, stage: 4, entityType: EntityType.Property, progressBar: progressBar){ return false }
+            (state, lastDate) = refactoredGetAndImport(synchronisationDateToUse, stage: 4, entityType: EntityType.Property, progressBar: progressBar)
+            if (!state){ return false }
         
         case 5:
-            if !refactoredGetAndImport(synchronisationDateToUse, stage: 5, entityType: EntityType.Location, progressBar: progressBar){ return false }
+            (state, lastDate) = refactoredGetAndImport(synchronisationDateToUse, stage: 5, entityType: EntityType.Location, progressBar: progressBar)
+            if (!state){ return false }
             
         case 6:
-            if !refactoredGetAndImport(synchronisationDateToUse, stage: 6, entityType: EntityType.LocationGroup, progressBar: progressBar){ return false }
+            (state, lastDate) = refactoredGetAndImport(synchronisationDateToUse, stage: 6, entityType: EntityType.LocationGroup, progressBar: progressBar)
+            if (!state){ return false }
             
         case 7:
-            if !refactoredGetAndImport(synchronisationDateToUse, stage: 7, entityType: EntityType.LocationGroupMembership, progressBar: progressBar){ return false }
+            (state, lastDate) = refactoredGetAndImport(synchronisationDateToUse, stage: 7, entityType: EntityType.LocationGroupMembership, progressBar: progressBar)
+            if (!state){ return false }
             
         case 8:
-            if !refactoredGetAndImport(synchronisationDateToUse, stage: 8, entityType: EntityType.Asset, progressBar: progressBar){ return false }
+            (state, lastDate) = refactoredGetAndImport(synchronisationDateToUse, stage: 8, entityType: EntityType.Asset, progressBar: progressBar)
+            if (!state){ return false }
             
         case 9:
-            if !refactoredGetAndImport(synchronisationDateToUse, stage: 9, entityType: EntityType.Operative, progressBar: progressBar){ return false }
+            (state, lastDate) = refactoredGetAndImport(synchronisationDateToUse, stage: 9, entityType: EntityType.Operative, progressBar: progressBar)
+            if (!state){ return false }
             
         case 10:
-            if !refactoredGetAndImport(synchronisationDateToUse, stage: 10, entityType: EntityType.TaskTemplate, progressBar: progressBar){ return false }
+            (state, lastDate) = refactoredGetAndImport(synchronisationDateToUse, stage: 10, entityType: EntityType.TaskTemplate, progressBar: progressBar)
+            if (!state) {return false }
             
         case 11:
-            if !refactoredGetAndImport(synchronisationDateToUse, stage: 11, entityType: EntityType.TaskTemplateParameter, progressBar: progressBar){ return false }
+            (state, lastDate) = refactoredGetAndImport(synchronisationDateToUse, stage: 11, entityType: EntityType.TaskTemplateParameter, progressBar: progressBar)
+            if (!state){ return false }
             
         case 12:
-            if !refactoredGetAndImport(synchronisationDateToUse, stage: 12, entityType: EntityType.Task, progressBar: progressBar){ return false }
+            (state, lastDate) = refactoredGetAndImport(synchronisationDateToUse, stage: 12, entityType: EntityType.Task, progressBar: progressBar)
+            if (!state){ return false }
 
         case 13:
-            if !refactoredGetAndImport(synchronisationDateToUse, stage: 13, entityType: EntityType.TaskParameter, progressBar: progressBar){ return false }
+            (state, lastDate) = refactoredGetAndImport(synchronisationDateToUse, stage: 13, entityType: EntityType.TaskParameter, progressBar: progressBar)
+            if (!state){ return false }
 
         default:
             //response = nil
@@ -935,16 +977,21 @@ class Utility: NSObject {
         }
 
         
+        SQLStatement = "DELETE FROM [Synchronisation] WHERE [Type] = ?"
+        SQLParameterValues = [NSObject]()
+        SQLParameterValues.append(synchronisationType)
+        ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
+
         //update the synchronisation history
         let newSynchronisationDate = NSDate()
-        
-        SQLStatement = "INSERT INTO [Synchronisation] (LastSynchronisationDate, Type) VALUES (?,?)"
+    
+        SQLStatement = "INSERT INTO [Synchronisation] ([LastSynchronisationDate], [Type]) VALUES (?,?)"
         SQLParameterValues = [NSObject]()
         SQLParameterValues.append(newSynchronisationDate)
         SQLParameterValues.append(synchronisationType)
         ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
         
-        SQLStatement = "INSERT INTO [SynchronisationHistory] (SynchronisationDate, CreatedBy, CreatedOn ,Outcome) VALUES (?, ?, ?, ?)"
+        SQLStatement = "INSERT INTO [SynchronisationHistory] ([SynchronisationDate], [CreatedBy], [CreatedOn], [Outcome]) VALUES (?, ?, ?, ?)"
         SQLParameterValues = [NSObject]()
         SQLParameterValues.append(newSynchronisationDate)
         SQLParameterValues.append(Session.OperativeId!)
@@ -955,8 +1002,9 @@ class Utility: NSObject {
         return true
     }
   
-    class func refactoredGetAndImport(synchronisationDate: NSDate, stage: Int32, entityType: EntityType, progressBar: MBProgressHUD?) -> Bool {
-            
+    class func refactoredGetAndImport(synchronisationDate: NSDate, stage: Int32, entityType: EntityType, progressBar: MBProgressHUD?) -> (Bool, NSDate?) {
+        
+        var lastDate: NSDate = NSDate()
         var lastRowId: String = EmptyGuid
         var count: Int32 = 0
         
@@ -971,7 +1019,7 @@ class Utility: NSObject {
             
             if data == nil{
                 invokeAlertMethod("Error", strBody: "error with web service", delegate: nil)
-                return false
+                return (false, nil)
             }
             
             let response: AEXMLElement = Utility.openSoapEnvelope(data)!
@@ -979,7 +1027,7 @@ class Utility: NSObject {
             if response.name == "soap:Fault"
             {
                 //fault code here
-                return false
+                return (false, nil)
             }
             
             let SynchronisationPackageData: NSData = (response["GetSynchronisationPackageResult"].value! as NSString).dataUsingEncoding(NSUTF8StringEncoding)!
@@ -992,16 +1040,174 @@ class Utility: NSObject {
                 SynchronisationPackageDocument = nil
             }
             
-            lastRowId = Utility.importData(SynchronisationPackageDocument!.children[0], entityType: entityType, progressBar: progressBar)
-            //if entityType == EntityType.Task
-            //{
-            //  Utility.importData(SynchronisationPackageDocument!.children[0], entityType: .TaskParameter, progressBar: progressBar)
-            //}
+            if (SynchronisationPackageDocument != nil)
+            {
+                (lastRowId,lastDate) = Utility.importData(SynchronisationPackageDocument!.children[0], entityType: entityType, progressBar: progressBar)
+            }
+
             print(String(entityType) + " " + lastRowId + " " + String(count))
             SynchronisationPackageDocument = nil
         }
         print(String(entityType) + " Data Done")
-        return true
+        return (true, lastDate)
+    }
+    
+    class func SendTaskDetails() -> (Bool, Int32) {
+        
+        var isRemoteAvailable = Reachability().connectedToNetwork()
+        var taskCounter: Int32 = 0;
+        
+        if isRemoteAvailable {
+            var SQLStatement: String
+            var SQLParameterValues: [NSObject]
+            var synchronisationDateToUse: NSDate = BaseDate
+            var synchronisationType: String = Session.OrganisationId! + ":Send"
+            
+            SQLStatement = "SELECT [LastSynchronisationDate] FROM [Synchronisation] WHERE [Type] = '" + synchronisationType + "'"
+            
+            if let lastSynchronisationDate = ModelManager.getInstance().executeSingleDateReader(SQLStatement, SQLParameterValues: nil) {
+                synchronisationDateToUse = lastSynchronisationDate
+            }
+            
+            var state: Bool
+            var lastDate: NSDate?
+            var lastRowId: String = String("00000000-0000-0000-0000-000000000000")
+            
+            let taskQuery: String = "SELECT RowId, '<Task Id=\"' + CAST(RowId AS VARCHAR(40)) + '\">' + COALESCE('<CreatedBy>' + CAST(CreatedBy AS VARCHAR(40)) + '</CreatedBy>','<CreatedBy />') + COALESCE('<CreatedOn>' + CAST(CreatedOn AS VARCHAR(20)) + '</CreatedOn>','<CreatedOn />') + COALESCE('<LastUpdatedBy>' + CAST(LastUpdatedBy AS VARCHAR(40)) + '</LastUpdatedBy>','<LastUpdatedBy />') + COALESCE('<LastUpdatedOn>' + CAST(LastUpdatedOn AS VARCHAR(20)) + '</LastUpdatedOn>','<LastUpdatedOn />') + COALESCE('<Deleted>' + CAST(Deleted AS VARCHAR(20)) + '</Deleted>','<Deleted />') + COALESCE('<OrganisationId>' + CAST(OrganisationId AS VARCHAR(40)) + '</OrganisationId>','<OrganisationId />') + COALESCE('<SiteId>' + CAST(SiteId AS VARCHAR(40)) + '</SiteId>','<SiteId />') + COALESCE('<PropertyId>' + CAST(PropertyId AS VARCHAR(40)) + '</PropertyId>','<PropertyId />') + COALESCE('<LocationId>' + CAST(LocationId AS VARCHAR(40)) + '</LocationId>','<LocationId />') + COALESCE('<TaskTemplateId>' + CAST(TaskTemplateId AS VARCHAR(40)) + '</TaskTemplateId>','<TaskTemplateId />') + COALESCE('<TaskRef>' + TaskRef + '</TaskRef>','<TaskRef />') + COALESCE('<PPMGroup>' + PPMGroup + '</PPMGroup>','<PPMGroup />') + COALESCE('<AssetType>' + AssetType + '</AssetType>','<AssetType />') + COALESCE('<TaskName>' + TaskName + '</TaskName>','<TaskName />') + COALESCE('<Frequency>' + Frequency + '</Frequency>','<Frequency />') + COALESCE('<AssetId>' + CAST(AssetId AS VARCHAR(40)) + '</AssetId>','<AssetId />') + COALESCE('<ScheduledDate>' + CAST(ScheduledDate AS VARCHAR(20)) + '</ScheduledDate>','<ScheduledDate />') + COALESCE('<CompletedDate>' + CAST(CompletedDate AS VARCHAR(20)) + '</CompletedDate>','<CompletedDate />') + COALESCE('<Status>' + Status + '</Status>','<Status />') + COALESCE('<Status>Docking</Status>','<Status />') + COALESCE('<Priority>' + CAST(Priority AS VARCHAR(20)) + '</Priority>','<Priority />') + COALESCE('<EstimatedDuration>' + CAST(EstimatedDuration AS VARCHAR(20)) + '</EstimatedDuration>','<EstimatedDuration />') + COALESCE('<OperativeId>' + CAST(OperativeId AS VARCHAR(40)) + '</OperativeId>','<OperativeId />') + COALESCE('<ActualDuration>' + CAST(ActualDuration AS VARCHAR(20)) + '</ActualDuration>','<ActualDuration />') + COALESCE('<TravelDuration>' + CAST(TravelDuration AS VARCHAR(20)) + '</TravelDuration>','<TravelDuration />') + '<Docked>False</Docked>' + COALESCE('<Comments>' + Comments + '</Comments>','<Comments />') + '</Task>' FROM Task WHERE (Status = 'Complete' OR Status = 'Outstanding') AND COALESCE(LastUpdatedOn, CreatedOn) >= ? AND RowId > ? ORDER BY RowId "
+
+            let taskParameterQuery: String = "SELECT '<TaskParameter Id=\"' + CAST(TaskParameter.RowId AS VARCHAR(40)) + '\">' + COALESCE('<CreatedBy>' + CAST(TaskParameter.CreatedBy AS VARCHAR(40)) + '</CreatedBy>','<CreatedBy />') + COALESCE('<CreatedOn>' + CAST(TaskParameter.CreatedOn AS VARCHAR(20)) + '</CreatedOn>','<CreatedOn />') + COALESCE('<LastUpdatedBy>' + CAST(TaskParameter.LastUpdatedBy AS VARCHAR(40)) + '</LastUpdatedBy>','<LastUpdatedBy />') + COALESCE('<LastUpdatedOn>' + CAST(TaskParameter.LastUpdatedOn AS VARCHAR(20)) + '</LastUpdatedOn>','<LastUpdatedOn />') + COALESCE('<Deleted>' + CAST(TaskParameter.Deleted AS VARCHAR(20)) + '</Deleted>','<Deleted />') + COALESCE('<TaskTemplateParameterId>' + CAST(TaskParameter.TaskTemplateParameterId AS VARCHAR(40)) + '</TaskTemplateParameterId>','<TaskTemplateParameterId />') + COALESCE('<TaskId>' + CAST(TaskParameter.TaskId AS VARCHAR(40)) + '</TaskId>','<TaskId />') + COALESCE('<ParameterName>' + TaskParameter.ParameterName + '</ParameterName>','<ParameterName />') + COALESCE('<ParameterType>' + TaskParameter.ParameterType + '</ParameterType>','<ParameterType />') + COALESCE('<ParameterDisplay>' + TaskParameter.ParameterDisplay + '</ParameterDisplay>','<ParameterDisplay />') + COALESCE('<Collect>' + CASE WHEN TaskParameter.Collect = 1 THEN 'True' ELSE 'False' END + '</Collect>','<Collect />') + COALESCE('<ParameterValue>' + TaskParameter.ParameterValue + '</ParameterValue>','<ParameterValue />') + '</TaskParameter>' FROM TaskParameter WHERE TaskParameter.TaskId = ? "
+            
+            var noMore: Bool = false
+            
+            while (!noMore)
+            {
+                var taskList: [String] = [String]()
+            
+                var taskQueryParameters: [AnyObject] = [AnyObject]()
+                taskQueryParameters.append(synchronisationDateToUse)
+                taskQueryParameters.append(lastRowId)
+                
+                var taskData: String = "<Tasks>"
+  
+                let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(taskQuery, withArgumentsInArray: taskQueryParameters)
+                if (resultSet != nil)
+                {
+                    while resultSet.next()
+                    {
+                        let rowId = resultSet.stringForColumnIndex(0)
+                        let taskRecord = resultSet.stringForColumnIndex(1)
+                        
+                        taskCounter += 1
+                        taskList.append(rowId)
+                        taskData += taskRecord
+                    }
+                }
+                taskData += "</Tasks>"
+            
+                if (taskData == "<Tasks></Tasks>")
+                {
+                    taskData = "<Tasks />"
+                    noMore = true;
+                }
+                
+                
+                var taskParameterData: String = "<TaskParameters>"
+                        
+                for taskId in taskList
+                {
+                    lastRowId = taskId;
+                    
+                    var taskParameterQueryParameters: [AnyObject] = [AnyObject]()
+                    taskParameterQueryParameters.append(lastRowId)
+                    
+                    let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(taskParameterQuery, withArgumentsInArray: taskParameterQueryParameters)
+                    if (resultSet != nil)
+                    {
+                        while resultSet.next()
+                        {
+                            let taskParameterRecord = resultSet.stringForColumnIndex(0)
+                            taskParameterData += taskParameterRecord
+                        }
+                    }
+                }
+                taskParameterData += "</TaskParameters>"
+                
+                if (taskParameterData == "<TaskParameters></TaskParameters>")
+                {
+                    taskParameterData = "<TaskParameters />"
+                }
+                    
+                var PDASynchronisationPackage: String = "<PDASynchronisation>" + taskData + taskParameterData + "</PDASynchronisation>"
+                //let PDASynchronisationPackage: String = "&lt;PDASynchronisation&gt;&lt;Tasks /&gt;&lt;TaskParameters /&gt;&lt;/PDASynchronisation&gt;"
+                
+                PDASynchronisationPackage = PDASynchronisationPackage.xmlSimpleEscape()
+                
+                let data: NSData? = WebService.sendSyncronisationPackageSync(Session.OperativeId!, sysnchronisationPackage: PDASynchronisationPackage)
+                
+                if data == nil{
+                    invokeAlertMethod("Error", strBody: "error with web service", delegate: nil)
+                    return (false, 0)
+                }
+                
+                let response: AEXMLElement = Utility.openSoapEnvelope(data)!
+                
+                if response.name == "soap:Fault"
+                {
+                    //fault code here
+                    return (false, 0)
+                }
+                
+                let updateStatement = "UPDATE Task SET LastUpdatedBy = ?,LastUpdatedOn = ?, Status = 'Docked' WHERE RowId = ?";
+                
+                //set the status of all the tsks to docked
+                for taskId in taskList
+                {
+                    var taskUpdateParameters: [AnyObject] = [AnyObject]()
+                    taskUpdateParameters.append(Session.OperativeId!)
+                    taskUpdateParameters.append(NSDate())
+                    taskUpdateParameters.append(taskId)
+                    
+                    sharedModelManager.database!.executeUpdate(updateStatement, withArgumentsInArray: taskUpdateParameters)
+                }
+                
+                SQLStatement = "DELETE FROM [Synchronisation] WHERE [Type] = ?"
+                SQLParameterValues = [NSObject]()
+                SQLParameterValues.append(synchronisationType)
+                ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
+                
+                //update the synchronisation history
+                let newSynchronisationDate = NSDate()
+                
+                SQLStatement = "INSERT INTO [Synchronisation] ([LastSynchronisationDate], [Type]) VALUES (?,?)"
+                SQLParameterValues = [NSObject]()
+                SQLParameterValues.append(newSynchronisationDate)
+                SQLParameterValues.append(synchronisationType)
+                ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
+                
+                SQLStatement = "INSERT INTO [SynchronisationHistory] ([SynchronisationDate], [CreatedBy], [CreatedOn], [Outcome]) VALUES (?, ?, ?, ?)"
+                SQLParameterValues = [NSObject]()
+                SQLParameterValues.append(newSynchronisationDate)
+                SQLParameterValues.append(Session.OperativeId!)
+                SQLParameterValues.append(newSynchronisationDate)
+                SQLParameterValues.append("Success")
+                ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
+                
+            }
+        }
+        return (isRemoteAvailable, taskCounter)
+    }
+    
+    func findKeyForValue(value: String, dictionary: [String: [String]]) ->String?
+    {
+        for (key, array) in dictionary
+        {
+            if (array.contains(value))
+            {
+                return key
+            }
+        }
+        
+        return nil
     }
 }
 
@@ -1128,4 +1334,52 @@ extension NSDate
         return endOfNextMonth
     }
     
+}
+
+extension String
+{
+    typealias SimpleToFromReplaceList = [(fromSubString:String,toSubString:String)]
+
+    func simpleReplace( mapList:SimpleToFromReplaceList ) -> String
+    {
+        var string = self
+
+        for (fromStr, toStr) in mapList
+        {
+            let separatedList = string.componentsSeparatedByString(fromStr)
+            if separatedList.count > 1
+            {
+                string = separatedList.joinWithSeparator(toStr)
+            }
+        }
+    
+        return string
+    }
+
+    func xmlSimpleUnescape() -> String
+    {
+        let mapList : SimpleToFromReplaceList = [
+        ("&amp;",  "&"),
+        ("&quot;", "\""),
+        ("&#x27;", "'"),
+        ("&#x39;", "'"),
+        ("&#x92;", "'"),
+        ("&#x96;", "'"),
+        ("&gt;",   ">"),
+        ("&lt;",   "<")]
+
+        return self.simpleReplace(mapList)
+    }
+
+    func xmlSimpleEscape() -> String
+    {
+        let mapList : SimpleToFromReplaceList = [
+        ("&",  "&amp;"),
+        ("\"", "&quot;"),
+        ("'",  "&#x27;"),
+        (">",  "&gt;"),
+        ("<",  "&lt;")]
+
+        return self.simpleReplace(mapList)
+    }
 }

@@ -198,8 +198,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 }
                 
                 //check for empty pacakage
-               
-                lastRowId = Utility.importData(SynchronisationPackageDocument!.children[0], entityType: .Operative)
+               (lastRowId, _) = Utility.importData(SynchronisationPackageDocument!.children[0], entityType: .Operative)
             }
         
             let operative: Operative? = ModelManager.getInstance().getOperative(Session.OperativeId!)

@@ -47,7 +47,7 @@ class Task: NSObject {
     // MARK: - Contructors
     
     convenience
-    init(rowId:String, createdBy: String, createdOn: NSDate, lastUpdatedBy: String?, lastUpdatedOn: NSDate?, deleted: NSDate?, organisationId: String, siteId: String, propertyId: String, locationId: String, locationGroupName: String, locationName: String, room: String?, taskTemplateId: String?, taskRef: String, pPMGroup: String?, assetType: String, taskName: String, frequency: String, assetId: String, assetNumber: String, scheduledDate: NSDate, completedDate: NSDate?, status: String, priority: Int, estimatedDuration: Int?, operativeId: String?, actualDuration: Int?, travelDuration: Int?, comments: String?, alternateAssetCode: String?) {
+    init(rowId: String, createdBy: String, createdOn: NSDate, lastUpdatedBy: String?, lastUpdatedOn: NSDate?, deleted: NSDate?, organisationId: String, siteId: String, propertyId: String, locationId: String, locationGroupName: String, locationName: String, room: String?, taskTemplateId: String?, taskRef: String, PPMGroup: String?, assetType: String, taskName: String, frequency: String, assetId: String, assetNumber: String, scheduledDate: NSDate, completedDate: NSDate?, status: String, priority: Int, estimatedDuration: Int?, operativeId: String?, actualDuration: Int?, travelDuration: Int?, comments: String?, alternateAssetCode: String?) {
         self.init()
         self.RowId = rowId
         self.CreatedBy = createdBy
@@ -64,7 +64,7 @@ class Task: NSObject {
         self.Room = room
         self.TaskTemplateId = taskTemplateId
         self.TaskRef = taskRef
-        self.PPMGroup = pPMGroup
+        self.PPMGroup = PPMGroup
         self.AssetType = assetType
         self.TaskName = taskName
         self.Frequency = frequency

@@ -20,12 +20,11 @@
 		A40BB55E1C4FE9D7005C2AE6 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A40BB55D1C4FE9D7005C2AE6 /* libsqlite3.0.tbd */; };
 		A40BB5611C4FED9E005C2AE6 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A40BB5601C4FED9E005C2AE6 /* Utility.swift */; };
 		A40BB5651C4FF0A7005C2AE6 /* ModelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A40BB5641C4FF0A7005C2AE6 /* ModelManager.swift */; };
-		A40E51531CE0CD77003F67BD /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A40E51521CE0CD77003F67BD /* SettingsViewController.swift */; };
-		A420ACE11C7F64A5003D4CA3 /* DownloadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A420ACE01C7F64A5003D4CA3 /* DownloadViewController.swift */; };
 		A420ACE31C7F64D0003D4CA3 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A420ACE21C7F64D0003D4CA3 /* SearchViewController.swift */; };
 		A420ACE71C7F6507003D4CA3 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A420ACE61C7F6507003D4CA3 /* FilterViewController.swift */; };
 		A420ACE91C7F6562003D4CA3 /* UploadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A420ACE81C7F6562003D4CA3 /* UploadViewController.swift */; };
 		A420ACEB1C7F656E003D4CA3 /* AddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A420ACEA1C7F656E003D4CA3 /* AddViewController.swift */; };
+		A43AFD8C1CEB694E00C67FAE /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43AFD8B1CEB694E00C67FAE /* SettingsViewController.swift */; };
 		A43C140B1C514478001162ED /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43C140A1C514478001162ED /* WebService.swift */; };
 		A43C140D1C522ABB001162ED /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43C140C1C522ABB001162ED /* Constants.swift */; };
 		A4529CA61CD2373C00D9C185 /* KFPopupSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4529CA51CD2373C00D9C185 /* KFPopupSelector.swift */; };
@@ -73,12 +72,11 @@
 		A40BB55D1C4FE9D7005C2AE6 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		A40BB5601C4FED9E005C2AE6 /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 		A40BB5641C4FF0A7005C2AE6 /* ModelManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelManager.swift; sourceTree = "<group>"; };
-		A40E51521CE0CD77003F67BD /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
-		A420ACE01C7F64A5003D4CA3 /* DownloadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadViewController.swift; sourceTree = "<group>"; };
 		A420ACE21C7F64D0003D4CA3 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		A420ACE61C7F6507003D4CA3 /* FilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
 		A420ACE81C7F6562003D4CA3 /* UploadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadViewController.swift; sourceTree = "<group>"; };
 		A420ACEA1C7F656E003D4CA3 /* AddViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddViewController.swift; sourceTree = "<group>"; };
+		A43AFD8B1CEB694E00C67FAE /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = ../SettingsViewController.swift; sourceTree = "<group>"; };
 		A43C140A1C514478001162ED /* WebService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
 		A43C140C1C522ABB001162ED /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		A4529CA51CD2373C00D9C185 /* KFPopupSelector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KFPopupSelector.swift; path = "KFPopupSelector control/KFPopupSelector.swift"; sourceTree = "<group>"; };
@@ -181,8 +179,7 @@
 				A420ACEA1C7F656E003D4CA3 /* AddViewController.swift */,
 				A420ACE61C7F6507003D4CA3 /* FilterViewController.swift */,
 				A420ACE21C7F64D0003D4CA3 /* SearchViewController.swift */,
-				A40E51521CE0CD77003F67BD /* SettingsViewController.swift */,
-				A420ACE01C7F64A5003D4CA3 /* DownloadViewController.swift */,
+				A43AFD8B1CEB694E00C67FAE /* SettingsViewController.swift */,
 				A420ACE81C7F6562003D4CA3 /* UploadViewController.swift */,
 			);
 			name = ViewControllers;
@@ -317,7 +314,7 @@
 				A420ACEB1C7F656E003D4CA3 /* AddViewController.swift in Sources */,
 				A45CD6DF1C577D5100C17BD7 /* LocationGroup.swift in Sources */,
 				A4EDA3931C4E98C900667987 /* AEXML.swift in Sources */,
-				A40E51531CE0CD77003F67BD /* SettingsViewController.swift in Sources */,
+				A43AFD8C1CEB694E00C67FAE /* SettingsViewController.swift in Sources */,
 				A45CD6DD1C577D4200C17BD7 /* Location.swift in Sources */,
 				A49455EC1C7CBF2300BE6247 /* ModelUtility.swift in Sources */,
 				A45CD6ED1C577DA800C17BD7 /* TaskTemplate.swift in Sources */,
@@ -330,7 +327,6 @@
 				A420ACE31C7F64D0003D4CA3 /* SearchViewController.swift in Sources */,
 				A49455EE1C7CBF7500BE6247 /* TaskCell.swift in Sources */,
 				A43C140B1C514478001162ED /* WebService.swift in Sources */,
-				A420ACE11C7F64A5003D4CA3 /* DownloadViewController.swift in Sources */,
 				A4F16F9F1CE4B9B200270AFE /* MBProgressHUD.swift in Sources */,
 				A45CD6E91C577D9600C17BD7 /* Task.swift in Sources */,
 				A407DA801C44105700251228 /* LoginViewController.swift in Sources */,
@@ -385,7 +381,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Andie Harper (G55Q7ECT79)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;

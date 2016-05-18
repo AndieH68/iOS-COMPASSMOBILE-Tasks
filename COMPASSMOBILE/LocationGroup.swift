@@ -70,25 +70,25 @@ class LocationGroup: NSObject {
         if XMLElement.attributes.keys.contains("Type") {
             if XMLElement.attributes["Type"] != ""
             {
-                self.LastUpdatedBy = XMLElement.attributes["Type"]!
+                self.Type = XMLElement.attributes["Type"]!
             }
         }
         if XMLElement.attributes.keys.contains("Name") {
             if XMLElement.attributes["Name"] != ""
             {
-                self.LastUpdatedBy = XMLElement.attributes["Name"]!
+                self.Name = XMLElement.attributes["Name"]!
             }
         }
         if XMLElement.attributes.keys.contains("Description") {
             if XMLElement.attributes["Description"] != ""
             {
-                self.LastUpdatedBy = XMLElement.attributes["Description"]!
+                self.Description = XMLElement.attributes["Description"]!
             }
         }
         if XMLElement.attributes.keys.contains("OccupantRiskFactor") {
             if XMLElement.attributes["OccupantRiskFactor"] != ""
             {
-                self.LastUpdatedBy = XMLElement.attributes["OccupantRiskFactor"]!
+                self.OccupantRiskFactor = XMLElement.attributes["OccupantRiskFactor"]!
             }
         }
     }

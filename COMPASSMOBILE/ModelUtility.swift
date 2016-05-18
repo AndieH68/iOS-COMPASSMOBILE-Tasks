@@ -36,7 +36,7 @@ class ModelUtility: NSObject {
     }
     
     func AssetNumber(asset: Asset) -> String {
-        return (asset.ScanCode != nil ? "(" + asset.ScanCode! + ") " : "") + (asset.ClientName != nil ? asset.ClientName! : asset.HydropName)!
+        return (asset.ScanCode != nil ? "(" + asset.ScanCode! + ") " : "") + (asset.ClientName != nil ? asset.ClientName! : (asset.HydropName != nil ? asset.HydropName! : "UNKNOWN"))
     }
   
     func GetPropertyName(PropertyId: String) -> String {
