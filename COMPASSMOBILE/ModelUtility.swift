@@ -339,6 +339,21 @@ class ModelUtility: NSObject {
         return AssetNumbers
     }
     
+    func GetCompletedTaskCount() -> Int32
+    {
+        var count: Int32 = 0
+        let Query: String = "SELECT COUNT(RowId) FROM [Task] WHERE [Status] = 'Complete' AND [OrganisationId] = '" + Session.OrganisationId! + "'"
+        sharedModelManager.database!.open()
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsInArray: nil)
+        if (resultSet != nil) {
+            while resultSet.next()
+            {
+                count = resultSet.intForColumnIndex(0)
+            }
+        }
+        return count
+    }
+    
 
 }
 

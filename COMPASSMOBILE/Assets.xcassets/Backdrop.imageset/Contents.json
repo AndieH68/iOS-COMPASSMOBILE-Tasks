@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "backdrop-1.jpg",
+      "filename" : "iphone-bg.jpg",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "backdrop-2.jpg",
+      "filename" : "iphone-bg-1.jpg",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "backdrop-3.jpg",
+      "filename" : "iphone-bg-2.jpg",
       "scale" : "3x"
     }
   ],

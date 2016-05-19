@@ -147,7 +147,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             
             if !isRemoteAvailable
             {
-                Utility.invokeAlertMethod("No remote", strBody: "Logged in locally", delegate: nil)
+                Utility.invokeAlertMethod(self, title: "No remote", message: "Logged in locally", delegate: nil)
             }
         }
         else

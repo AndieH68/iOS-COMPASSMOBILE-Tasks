@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            Session.RootViewController = rootView
 //        }
         
-        Utility.copyFile("COMPASSDB.sqlite")
+        Utility.copyFile((self.window?.rootViewController)!, fileName: "COMPASSDB.sqlite")
         
         let defaults = NSUserDefaults.standardUserDefaults()
         Session.Server = defaults.objectForKey("Server") as? String ?? String()

@@ -9,17 +9,15 @@
 import AVFoundation
 import UIKit
 
-class SettingsViewController: UITableViewController
+class SettingsViewController: UITableViewController, MBProgressHUDDelegate
 {
+    
+    var selfHUD: MBProgressHUD?
     
     @IBAction func Done(sender: UIBarButtonItem) {
         self.navigationController?.popViewControllerAnimated(true)
     }
     
-    @IBAction func UploadTasks(sender: UIButton) {
-    }
-    
-
     @IBAction func TaskTiming(sender: UISwitch) {
         Session.TaskTiming = sender.on
         let defaults = NSUserDefaults.standardUserDefaults()
@@ -32,9 +30,29 @@ class SettingsViewController: UITableViewController
         defaults.setBool(Session.TemperatureProfile, forKey: "TemperatureProfile")
     }
     
+    @IBOutlet var CompletedTasks: UILabel!
     
     override func viewDidLoad() {
-        print("Did load")
+        
+        CompletedTasks.text = String(ModelUtility.getInstance().GetCompletedTaskCount())
+        
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        
+        if let currentView: UIView = self.navigationController!.view
+        {
+            selfHUD = MBProgressHUD(view: currentView)
+        
+            currentView.addSubview(selfHUD!)
+        
+            //set the HUD mode
+            selfHUD!.mode = .DeterminateHorizontalBar;
+            
+            // Register for HUD callbacks so we can remove it from the window at the right time
+            selfHUD!.delegate = self
+        }
+
     }
     
     // MARK - UItable
@@ -46,13 +64,6 @@ class SettingsViewController: UITableViewController
         
         switch indexPath.section
         {
-        case 0:
-            //bluetooth
-            print("do the bluetooth set up")
-            
-        case 1:
-            print("nothing to do here")
-            
         case 2:
             
             switch indexPath.row
@@ -125,7 +136,7 @@ class SettingsViewController: UITableViewController
                 userPrompt.addAction(UIAlertAction(
                     title: "Yes",
                     style: UIAlertActionStyle.Destructive,
-                    handler: self.ResetSynchronisationHandler))
+                    handler: self.ResetTaskHandler))
                 
                 presentViewController(userPrompt, animated: true, completion: nil)
                 
@@ -164,48 +175,31 @@ class SettingsViewController: UITableViewController
     
 
     func UploadHandler (actionTarget: UIAlertAction) {
-        
-        var success: Bool = false
-        var taskCount: Int32 = 0
-        
-        let title: String = "Tasks Sent"
-        var message: String = "Send Tasks failed"
-        
-        (success,taskCount) = Utility.SendTaskDetails()
-        
-        if (success)
-        {
-            if (taskCount > 0)
-            {
-                message = String(taskCount) + " Task(s) sent to COMPASS"            }
-            else
-            {
-                message = "No data sent to COMPASS"
-            }
-        }
-        
-        let userPrompt: UIAlertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-        
-        //the default action
-        userPrompt.addAction(UIAlertAction(
-            title: "Ok",
-            style: UIAlertActionStyle.Default,
-            handler: nil))
-        
-        presentViewController(userPrompt, animated: true, completion: nil)
-    
+
+        selfHUD!.labelText = "Uploading"
+        selfHUD!.showWhileExecuting({Utility.SendTasks(self, HUD: self.selfHUD)}, animated: true)
+
     }
     
     func ResynchroniseHandler (actionTarget: UIAlertAction) {
-        print ("resynchronise pressed")
+
+        selfHUD!.labelText = "Downloading"
+        selfHUD!.showWhileExecuting({Utility.DownloadAll(self, HUD: self.selfHUD)}, animated: true)
+
     }
     
     func ResetSynchronisationHandler (actionTarget: UIAlertAction) {
-        print ("yes pressed")
+
+        selfHUD!.labelText = "Resetting"
+        selfHUD!.showWhileExecuting({Utility.ResetSynchronisationDates(self, HUD: self.selfHUD)}, animated: true)
+
     }
     
-    func ResetTasksHandler (actionTarget: UIAlertAction) {
-        print ("yes pressed")
+    func ResetTaskHandler (actionTarget: UIAlertAction) {
+
+        selfHUD!.labelText = "Resetting"
+        selfHUD!.showWhileExecuting({Utility.ResetTasks(self, HUD: self.selfHUD)}, animated: true)
+
     }
     
     func ResetAllDataSecondPromptHandler (actionTarget: UIAlertAction) {
@@ -227,7 +221,14 @@ class SettingsViewController: UITableViewController
     }
     
     func ResetAllDataHandler (actionTarget: UIAlertAction) {
-        print ("yes pressed")
+
+        selfHUD!.labelText = "Resetting"
+        selfHUD!.showWhileExecuting({Utility.ResetAllData(self, HUD: self.selfHUD)}, animated: true)
+        
+        //Logout
+        Session.OperativeId = nil
+        Session.OrganisationId = "00000000-0000-0000-0000-000000000000"
+        self.navigationController?.popViewControllerAnimated(true)
     }
     
 

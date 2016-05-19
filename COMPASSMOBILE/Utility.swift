@@ -18,7 +18,7 @@ class Utility: NSObject {
         return fileURL.path!
     }
     
-    class func copyFile(fileName: NSString) {
+    class func copyFile(viewController: UIViewController, fileName: NSString) {
         let dbPath: String = getPath(fileName as String)
         let fileManager = NSFileManager.defaultManager()
         if !fileManager.fileExistsAtPath(dbPath) {
@@ -33,23 +33,29 @@ class Utility: NSObject {
                 error = error1
             }
             if (error != nil) {
-                let alert: UIAlertView = UIAlertView()
-                alert.title = "Error Occured"
-                alert.message = error?.localizedDescription
-                alert.delegate = nil
-                alert.addButtonWithTitle("Ok")
-                alert.show()
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.invokeAlertMethod(viewController, title: "Error Occured", message: (error?.localizedDescription)!, delegate: nil)
+                })
+
             }
         }
     }
     
-    class func invokeAlertMethod(strTitle: NSString, strBody: NSString, delegate: AnyObject?) {
-        let alert: UIAlertView = UIAlertView()
-        alert.message = strBody as String
-        alert.title = strTitle as String
-        alert.delegate = delegate
-        alert.addButtonWithTitle("Ok")
-        alert.show()
+    class func invokeAlertMethod(viewController: UIViewController, title: String, message: String, delegate: AnyObject?) {
+//        let alert: UIAlertView = UIAlertView()
+//        alert.message = strBody as String
+//        alert.title = strTitle as String
+//        alert.delegate = delegate
+//        alert.addButtonWithTitle("Ok")
+//        alert.show()
+//        
+        let userPrompt: UIAlertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
+        
+        //the default action
+        let addAction = UIAlertAction( title: "Ok", style: UIAlertActionStyle.Default) {UIAlertAction in delegate}
+        userPrompt.addAction(addAction)
+        
+        dispatch_async(dispatch_get_main_queue(),{viewController.presentViewController(userPrompt, animated: true, completion: nil)})
     }
     
     class func openSoapEnvelope(data: NSData?) -> AEXMLElement?{
@@ -901,7 +907,7 @@ class Utility: NSObject {
         return (lastRowId, lastDateInPackage)
     }
     
-    class func SynchroniseAllData(stage: Int32, progressBar: MBProgressHUD?) -> Bool {
+    class func SynchroniseAllData(viewController: UIViewController, stage: Int32, progressBar: MBProgressHUD?) -> Bool {
         var SQLStatement: String
         var SQLParameterValues: [NSObject]
         var synchronisationDateToUse: NSDate = BaseDate
@@ -915,60 +921,60 @@ class Utility: NSObject {
         }
         
         var state: Bool
-        var lastDate: NSDate?
+        //var lastDate: NSDate?
         
         switch stage{
         
         case 1:
-            (state, lastDate) = refactoredGetAndImport(synchronisationDateToUse, stage: 1, entityType: EntityType.ReferenceData, progressBar: progressBar)
+            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 1, entityType: EntityType.ReferenceData, progressBar: progressBar)
             if (!state){ return false }
             
         case 2:
-            (state, lastDate) = refactoredGetAndImport(synchronisationDateToUse, stage: 2, entityType: EntityType.Organisation, progressBar: progressBar)
+            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 2, entityType: EntityType.Organisation, progressBar: progressBar)
             if (!state){ return false }
             
         case 3:
-            (state, lastDate) = refactoredGetAndImport(synchronisationDateToUse, stage: 3, entityType: EntityType.Site, progressBar: progressBar)
+            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 3, entityType: EntityType.Site, progressBar: progressBar)
             if (!state){ return false }
             
         case 4:
-            (state, lastDate) = refactoredGetAndImport(synchronisationDateToUse, stage: 4, entityType: EntityType.Property, progressBar: progressBar)
+            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 4, entityType: EntityType.Property, progressBar: progressBar)
             if (!state){ return false }
         
         case 5:
-            (state, lastDate) = refactoredGetAndImport(synchronisationDateToUse, stage: 5, entityType: EntityType.Location, progressBar: progressBar)
+            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 5, entityType: EntityType.Location, progressBar: progressBar)
             if (!state){ return false }
             
         case 6:
-            (state, lastDate) = refactoredGetAndImport(synchronisationDateToUse, stage: 6, entityType: EntityType.LocationGroup, progressBar: progressBar)
+            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 6, entityType: EntityType.LocationGroup, progressBar: progressBar)
             if (!state){ return false }
             
         case 7:
-            (state, lastDate) = refactoredGetAndImport(synchronisationDateToUse, stage: 7, entityType: EntityType.LocationGroupMembership, progressBar: progressBar)
+            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 7, entityType: EntityType.LocationGroupMembership, progressBar: progressBar)
             if (!state){ return false }
             
         case 8:
-            (state, lastDate) = refactoredGetAndImport(synchronisationDateToUse, stage: 8, entityType: EntityType.Asset, progressBar: progressBar)
+            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 8, entityType: EntityType.Asset, progressBar: progressBar)
             if (!state){ return false }
             
         case 9:
-            (state, lastDate) = refactoredGetAndImport(synchronisationDateToUse, stage: 9, entityType: EntityType.Operative, progressBar: progressBar)
+            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 9, entityType: EntityType.Operative, progressBar: progressBar)
             if (!state){ return false }
             
         case 10:
-            (state, lastDate) = refactoredGetAndImport(synchronisationDateToUse, stage: 10, entityType: EntityType.TaskTemplate, progressBar: progressBar)
+            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 10, entityType: EntityType.TaskTemplate, progressBar: progressBar)
             if (!state) {return false }
             
         case 11:
-            (state, lastDate) = refactoredGetAndImport(synchronisationDateToUse, stage: 11, entityType: EntityType.TaskTemplateParameter, progressBar: progressBar)
+            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 11, entityType: EntityType.TaskTemplateParameter, progressBar: progressBar)
             if (!state){ return false }
             
         case 12:
-            (state, lastDate) = refactoredGetAndImport(synchronisationDateToUse, stage: 12, entityType: EntityType.Task, progressBar: progressBar)
+            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 12, entityType: EntityType.Task, progressBar: progressBar)
             if (!state){ return false }
 
         case 13:
-            (state, lastDate) = refactoredGetAndImport(synchronisationDateToUse, stage: 13, entityType: EntityType.TaskParameter, progressBar: progressBar)
+            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 13, entityType: EntityType.TaskParameter, progressBar: progressBar)
             if (!state){ return false }
 
         default:
@@ -1002,7 +1008,7 @@ class Utility: NSObject {
         return true
     }
   
-    class func refactoredGetAndImport(synchronisationDate: NSDate, stage: Int32, entityType: EntityType, progressBar: MBProgressHUD?) -> (Bool, NSDate?) {
+    class func refactoredGetAndImport(viewController: UIViewController, synchronisationDate: NSDate, stage: Int32, entityType: EntityType, progressBar: MBProgressHUD?) -> (Bool, NSDate?) {
         
         var lastDate: NSDate = NSDate()
         var lastRowId: String = EmptyGuid
@@ -1018,7 +1024,7 @@ class Utility: NSObject {
             let data: NSData? = WebService.getSynchronisationPackageSync(Session.OperativeId!, synchronisationDate: synchronisationDate, lastRowId: lastRowId, stage: stage)
             
             if data == nil{
-                invokeAlertMethod("Error", strBody: "error with web service", delegate: nil)
+                invokeAlertMethod(viewController, title: "Error", message: "error with web service", delegate: nil)
                 return (false, nil)
             }
             
@@ -1052,16 +1058,48 @@ class Utility: NSObject {
         return (true, lastDate)
     }
     
-    class func SendTaskDetails() -> (Bool, Int32) {
+
+    class func CheckSynchronisation(viewController: UIViewController, HUD: MBProgressHUD?)
+    {
+        self.SendTasks(viewController, HUD: HUD)
         
-        var isRemoteAvailable = Reachability().connectedToNetwork()
+        self.DownloadAll(viewController, HUD: HUD)
+    }
+    
+    class func SendTasks(viewController: UIViewController, HUD: MBProgressHUD?)
+    {
+        var success: Bool = false
+        var taskCount: Int32 = 0
+        
+        var message: String = "Send Tasks failed"
+        
+        (success,taskCount) = Utility.SendTaskDetails(viewController, HUD: HUD)
+        
+        if (success)
+        {
+            if (taskCount > 0)
+            {
+                message = String(taskCount) + " Task(s) sent to COMPASS"            }
+            else
+            {
+                message = "No data sent to COMPASS"
+            }
+        }
+        
+        dispatch_async(dispatch_get_main_queue(),{invokeAlertMethod(viewController, title: "Tasks Sent", message: message, delegate: nil)})
+    
+    }
+    
+    class func SendTaskDetails(viewController: UIViewController, HUD: MBProgressHUD?) -> (Bool, Int32) {
+        
+        let isRemoteAvailable = Reachability().connectedToNetwork()
         var taskCounter: Int32 = 0;
         
         if isRemoteAvailable {
             var SQLStatement: String
             var SQLParameterValues: [NSObject]
             var synchronisationDateToUse: NSDate = BaseDate
-            var synchronisationType: String = Session.OrganisationId! + ":Send"
+            let synchronisationType: String = Session.OrganisationId! + ":Send"
             
             SQLStatement = "SELECT [LastSynchronisationDate] FROM [Synchronisation] WHERE [Type] = '" + synchronisationType + "'"
             
@@ -1069,8 +1107,6 @@ class Utility: NSObject {
                 synchronisationDateToUse = lastSynchronisationDate
             }
             
-            var state: Bool
-            var lastDate: NSDate?
             var lastRowId: String = String("00000000-0000-0000-0000-000000000000")
             
             let taskQuery: String = "SELECT RowId, '<Task Id=\"' + CAST(RowId AS VARCHAR(40)) + '\">' + COALESCE('<CreatedBy>' + CAST(CreatedBy AS VARCHAR(40)) + '</CreatedBy>','<CreatedBy />') + COALESCE('<CreatedOn>' + CAST(CreatedOn AS VARCHAR(20)) + '</CreatedOn>','<CreatedOn />') + COALESCE('<LastUpdatedBy>' + CAST(LastUpdatedBy AS VARCHAR(40)) + '</LastUpdatedBy>','<LastUpdatedBy />') + COALESCE('<LastUpdatedOn>' + CAST(LastUpdatedOn AS VARCHAR(20)) + '</LastUpdatedOn>','<LastUpdatedOn />') + COALESCE('<Deleted>' + CAST(Deleted AS VARCHAR(20)) + '</Deleted>','<Deleted />') + COALESCE('<OrganisationId>' + CAST(OrganisationId AS VARCHAR(40)) + '</OrganisationId>','<OrganisationId />') + COALESCE('<SiteId>' + CAST(SiteId AS VARCHAR(40)) + '</SiteId>','<SiteId />') + COALESCE('<PropertyId>' + CAST(PropertyId AS VARCHAR(40)) + '</PropertyId>','<PropertyId />') + COALESCE('<LocationId>' + CAST(LocationId AS VARCHAR(40)) + '</LocationId>','<LocationId />') + COALESCE('<TaskTemplateId>' + CAST(TaskTemplateId AS VARCHAR(40)) + '</TaskTemplateId>','<TaskTemplateId />') + COALESCE('<TaskRef>' + TaskRef + '</TaskRef>','<TaskRef />') + COALESCE('<PPMGroup>' + PPMGroup + '</PPMGroup>','<PPMGroup />') + COALESCE('<AssetType>' + AssetType + '</AssetType>','<AssetType />') + COALESCE('<TaskName>' + TaskName + '</TaskName>','<TaskName />') + COALESCE('<Frequency>' + Frequency + '</Frequency>','<Frequency />') + COALESCE('<AssetId>' + CAST(AssetId AS VARCHAR(40)) + '</AssetId>','<AssetId />') + COALESCE('<ScheduledDate>' + CAST(ScheduledDate AS VARCHAR(20)) + '</ScheduledDate>','<ScheduledDate />') + COALESCE('<CompletedDate>' + CAST(CompletedDate AS VARCHAR(20)) + '</CompletedDate>','<CompletedDate />') + COALESCE('<Status>' + Status + '</Status>','<Status />') + COALESCE('<Status>Docking</Status>','<Status />') + COALESCE('<Priority>' + CAST(Priority AS VARCHAR(20)) + '</Priority>','<Priority />') + COALESCE('<EstimatedDuration>' + CAST(EstimatedDuration AS VARCHAR(20)) + '</EstimatedDuration>','<EstimatedDuration />') + COALESCE('<OperativeId>' + CAST(OperativeId AS VARCHAR(40)) + '</OperativeId>','<OperativeId />') + COALESCE('<ActualDuration>' + CAST(ActualDuration AS VARCHAR(20)) + '</ActualDuration>','<ActualDuration />') + COALESCE('<TravelDuration>' + CAST(TravelDuration AS VARCHAR(20)) + '</TravelDuration>','<TravelDuration />') + '<Docked>False</Docked>' + COALESCE('<Comments>' + Comments + '</Comments>','<Comments />') + '</Task>' FROM Task WHERE (Status = 'Complete' OR Status = 'Outstanding') AND COALESCE(LastUpdatedOn, CreatedOn) >= ? AND RowId > ? ORDER BY RowId "
@@ -1145,7 +1181,7 @@ class Utility: NSObject {
                 let data: NSData? = WebService.sendSyncronisationPackageSync(Session.OperativeId!, sysnchronisationPackage: PDASynchronisationPackage)
                 
                 if data == nil{
-                    invokeAlertMethod("Error", strBody: "error with web service", delegate: nil)
+                    invokeAlertMethod(viewController, title: "Error", message: "error with web service", delegate: nil)
                     return (false, 0)
                 }
                 
@@ -1196,6 +1232,136 @@ class Utility: NSObject {
         }
         return (isRemoteAvailable, taskCounter)
     }
+ 
+    class func DownloadAll(viewController: UIViewController, HUD: MBProgressHUD?)
+    {
+        self.DownloadAllDetails(viewController, HUD: HUD)
+        
+        dispatch_async(dispatch_get_main_queue(),{invokeAlertMethod(viewController, title: "Synchronise", message: "Download complete", delegate: nil)})
+        
+    }
+    
+    class func DownloadAllDetails(viewController: UIViewController,HUD: MBProgressHUD?)
+    {
+        
+        // Show the HUD while the provide method  executes in a new thread
+        Utility.SynchroniseAllData(viewController, stage: 1, progressBar: HUD)
+        Utility.SynchroniseAllData(viewController, stage: 10, progressBar: HUD)
+        Utility.SynchroniseAllData(viewController, stage: 11, progressBar: HUD)
+        Utility.SynchroniseAllData(viewController, stage: 9, progressBar: HUD)
+        Utility.SynchroniseAllData(viewController, stage: 2, progressBar: HUD)
+        Utility.SynchroniseAllData(viewController, stage: 3, progressBar: HUD)
+        Utility.SynchroniseAllData(viewController, stage: 4, progressBar: HUD)
+        Utility.SynchroniseAllData(viewController, stage: 6, progressBar: HUD)
+        Utility.SynchroniseAllData(viewController, stage: 5, progressBar: HUD)
+        Utility.SynchroniseAllData(viewController, stage: 7, progressBar: HUD)
+        Utility.SynchroniseAllData(viewController, stage: 8, progressBar: HUD)
+        
+        Utility.SynchroniseAllData(viewController, stage: 12, progressBar: HUD)
+        Utility.SynchroniseAllData(viewController, stage: 13, progressBar: HUD)
+        
+        var SQLStatement: String
+        var SQLParameterValues: [NSObject]
+        
+        SQLStatement = "DELETE FROM [Task] WHERE [OrganisationId] = ? AND [Status] IN ('Complete','Incomplete','Rescheduled')"
+        SQLParameterValues = [NSObject]()
+        SQLParameterValues.append(Session.OrganisationId!)
+        ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
+        
+    }
+   
+    class func ResetSynchronisationDates(viewController: UIViewController, HUD: MBProgressHUD?)
+    {
+        self.ResetSynchronisationDatesDetails(HUD)
+        
+        dispatch_async(dispatch_get_main_queue(),{invokeAlertMethod(viewController, title: "Synchronise", message: "Synchronisation complete", delegate: nil)})
+    }
+    
+    class func ResetSynchronisationDatesDetails(HUD: MBProgressHUD?)
+    {
+        var SQLStatement: String
+        var SQLParameterValues: [NSObject]
+        let synchronisationType: String = Session.OrganisationId! + ":Receive%"
+
+        SQLStatement = "DELETE FROM [Synchronisation] WHERE [Type] LIKE ?"
+        SQLParameterValues = [NSObject]()
+        SQLParameterValues.append(synchronisationType)
+        ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
+    }
+    
+    class func ResetTasks(viewController: UIViewController, HUD: MBProgressHUD?)
+    {
+        self.ResetTasksDetails(HUD)
+        
+        dispatch_async(dispatch_get_main_queue(),{invokeAlertMethod(viewController, title: "Synchronise", message: "Synchronisation complete", delegate: nil)})
+
+    }
+    
+    class func ResetTasksDetails(HUD: MBProgressHUD?)
+    {
+        var SQLStatement: String
+        var SQLParameterValues: [NSObject]
+        
+        var synchronisationType: String = Session.OrganisationId! + ":Receive:12"
+        SQLStatement = "DELETE FROM [Synchronisation] WHERE [Type] LIKE ?"
+        SQLParameterValues = [NSObject]()
+        SQLParameterValues.append(synchronisationType)
+        ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
+    
+        synchronisationType = Session.OrganisationId! + ":Receive:13"
+        SQLStatement = "DELETE FROM [Synchronisation] WHERE [Type] LIKE ?"
+        SQLParameterValues = [NSObject]()
+        SQLParameterValues.append(synchronisationType)
+        ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
+        
+        SQLStatement = "DELETE FROM [Task] WHERE [OrganisationId] = ?"
+        SQLParameterValues = [NSObject]()
+        SQLParameterValues.append(Session.OrganisationId!)
+        ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
+        
+    
+    }
+    
+    class func ResetAllData(viewController: UIViewController, HUD: MBProgressHUD?)
+    {
+        self.ResetAllDataDetails(HUD)
+        
+        dispatch_async(dispatch_get_main_queue(),{invokeAlertMethod(viewController, title: "Synchronise", message: "Synchronisation complete", delegate: nil)})
+    }
+    
+    class func ResetAllDataDetails(HUD: MBProgressHUD?)
+    {
+        var SQLStatement: String
+        var SQLParameterValues: [NSObject]  = [NSObject]()
+
+        ModelManager.getInstance().executeDirect("DELETE FROM [ReferenceData]", SQLParameterValues: SQLParameterValues)
+        ModelManager.getInstance().executeDirect("DELETE FROM [TaskTemplate]", SQLParameterValues: SQLParameterValues)
+        ModelManager.getInstance().executeDirect("DELETE FROM [TaskTemplateParameter]", SQLParameterValues: SQLParameterValues)
+        ModelManager.getInstance().executeDirect("DELETE FROM [Operative]", SQLParameterValues: SQLParameterValues)
+        ModelManager.getInstance().executeDirect("DELETE FROM [Organisation]", SQLParameterValues: SQLParameterValues)
+        ModelManager.getInstance().executeDirect("DELETE FROM [Site]", SQLParameterValues: SQLParameterValues)
+        ModelManager.getInstance().executeDirect("DELETE FROM [Property]", SQLParameterValues: SQLParameterValues)
+        ModelManager.getInstance().executeDirect("DELETE FROM [LocationGroup]", SQLParameterValues: SQLParameterValues)
+        ModelManager.getInstance().executeDirect("DELETE FROM [LocationGroupMembership]", SQLParameterValues: SQLParameterValues)
+        ModelManager.getInstance().executeDirect("DELETE FROM [Location]", SQLParameterValues: SQLParameterValues)
+        ModelManager.getInstance().executeDirect("DELETE FROM [Asset]", SQLParameterValues: SQLParameterValues)
+        ModelManager.getInstance().executeDirect("DELETE FROM [Task]", SQLParameterValues: SQLParameterValues)
+        ModelManager.getInstance().executeDirect("DELETE FROM [TaskParameter]", SQLParameterValues: SQLParameterValues)
+
+        var synchronisationType: String = Session.OrganisationId! + ":Receive%"
+        SQLStatement = "DELETE FROM [Synchronisation] WHERE [Type] LIKE ?"
+        SQLParameterValues = [NSObject]()
+        SQLParameterValues.append(synchronisationType)
+        ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
+        
+        synchronisationType = Session.OrganisationId! + ":Send%"
+        
+        SQLStatement = "DELETE FROM [Synchronisation] WHERE [Type] LIKE ?"
+        SQLParameterValues = [NSObject]()
+        SQLParameterValues.append(synchronisationType)
+        ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
+    }
+
     
     func findKeyForValue(value: String, dictionary: [String: [String]]) ->String?
     {

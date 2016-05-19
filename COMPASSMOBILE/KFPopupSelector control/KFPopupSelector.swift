@@ -226,20 +226,31 @@ class KFPopupSelector: UIControl, UIPopoverPresentationControllerDelegate {
     }
     
     private var viewController: UIViewController? {
-        for var next:UIView? = self.superview; next != nil; next = next?.superview {
+        var next: UIView? = self.superview
+        while (next?.superview != nil)
+        {
+           next = next?.superview
             let responder = next?.nextResponder()
             if let vc = responder as? UIViewController {
                 return vc
             }
-        }
-        return nil
+       }
+       return nil
+        
+//        for var next: UIView? = self.superview; next != nil; next = next?.superview {
+//            let responder = next?.nextResponder()
+//            if let vc = responder as? UIViewController {
+//                return vc
+//            }
+//        }
+//        return nil
     }
     
     func dragged(sender: UIPanGestureRecognizer!) {
         if let tableView = currentlyPresentedPopup?.tableView {
             switch(sender.state) {
             case .Changed:
-                if let popupContainer = tableView.superview {
+                if tableView.superview != nil {
                     let pos = sender.locationInView(tableView)
                     if let ip = tableView.indexPathForRowAtPoint(pos) {
                         tableView.selectRowAtIndexPath(ip, animated: false, scrollPosition: UITableViewScrollPosition.None)

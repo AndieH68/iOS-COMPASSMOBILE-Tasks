@@ -793,7 +793,7 @@ class ModelManager: NSObject {
                 pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
             }
             
-            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [Location].[RowId], [Location].[CreatedBy], [Location].[CreatedOn], [Location].[LastUpdatedBy], [Location].[LastUpdatedOn], [Location].[Deleted], [Location].[PropertyId], [Location].[Name], [Location].[Description], [Location].[Level], [Location].[Number], [Location].[SubNumber], [Location].[Use], [Location].[ClientLocationName] FROM [Location]  INNER JOIN [LocationGroupMembership] ON [Location].[RowId] = [LocationGroupMembership].[LocationId] " + whereClause + orderByClause + pageClause, withArgumentsInArray: whereValues)
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [Location].[RowId], [Location].[CreatedBy], [Location].[CreatedOn], [Location].[LastUpdatedBy], [Location].[LastUpdatedOn], [Location].[Deleted], [Location].[PropertyId], [Location].[Name], [Location].[Description], [Location].[Level], [Location].[Number], [Location].[SubNumber], [Location].[Use], [Location].[ClientLocationName] FROM [Location] INNER JOIN [LocationGroupMembership] ON [Location].[RowId] = [LocationGroupMembership].[LocationId] " + whereClause + orderByClause + pageClause, withArgumentsInArray: whereValues)
             
             if (resultSet != nil) {
                 while resultSet.next() {

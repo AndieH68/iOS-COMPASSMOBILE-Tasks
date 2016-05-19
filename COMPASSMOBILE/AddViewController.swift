@@ -98,7 +98,7 @@ class AddViewController: UIViewController {
         //based off the optons selected we can create the task
         if (AssetId == nil)
         {
-            Utility.invokeAlertMethod("Error", strBody: "Please select all options", delegate: nil)
+            Utility.invokeAlertMethod(self, title: "Error", message: "Please select all options", delegate: nil)
             return
         }
         

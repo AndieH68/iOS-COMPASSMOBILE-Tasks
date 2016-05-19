@@ -47,6 +47,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
 
     override func viewDidAppear(animated: Bool) {
+        
         //check that we have already populated the operativeid for the session.
         if Session.OperativeId == nil
         {
@@ -55,51 +56,36 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
             self.performSegueWithIdentifier("loginView", sender: self)
         }
         
-        HUD = MBProgressHUD(view: self.navigationController!.view)
-        self.navigationController!.view.addSubview(HUD!)
-        
-        //se the HUD mode
-        HUD!.mode = .DeterminateHorizontalBar;
-        
-        // Register for HUD callbacks so we can remove it from the window at the right time
-        HUD!.delegate = self
-        
         if Session.CheckDatabase == true
         {
-            Utility.invokeAlertMethod("Synchronising", strBody: "The application is downloading data from COMPASS.  This process may take some time if this is the first time you have attempted to synchronise", delegate: nil)
+            let userPrompt: UIAlertController = UIAlertController(title: "Synchronising", message: "The application is downloading data from COMPASS.  This process may take some time if this is the first time you have attempted to synchronise", preferredStyle: UIAlertControllerStyle.Alert)
             
-            HUD!.labelText = "Synchronising"
+            //the default action
+            userPrompt.addAction(UIAlertAction(
+                title: "Ok",
+                style: UIAlertActionStyle.Default,
+                handler: self.DoSynchronise))
             
-            //CheckUploads()
-            
-            HUD!.showWhileExecuting({self.CheckDownloads(self.HUD!)}, animated: true)
-            
+            self.presentViewController(userPrompt, animated: true, completion: nil)
+
             Session.CheckDatabase = false
         }
     }
     
-    // MARK: - Data Syncronisation
-    
-    func CheckDownloads(HUD: MBProgressHUD?)
+    func DoSynchronise (actionTarget: UIAlertAction)
     {
-     
-        // Show the HUD while the provide method  executes in a new thread
-        Utility.SynchroniseAllData(1, progressBar: HUD)
-        Utility.SynchroniseAllData(10, progressBar: HUD)
-        Utility.SynchroniseAllData(11, progressBar: HUD)
-        Utility.SynchroniseAllData(9, progressBar: HUD)
-        Utility.SynchroniseAllData(2, progressBar: HUD)
-        Utility.SynchroniseAllData(3, progressBar: HUD)
-        Utility.SynchroniseAllData(4, progressBar: HUD)
-        Utility.SynchroniseAllData(6, progressBar: HUD)
-        Utility.SynchroniseAllData(5, progressBar: HUD)
-        Utility.SynchroniseAllData(7, progressBar: HUD)
-        Utility.SynchroniseAllData(8, progressBar: HUD)
+        HUD = MBProgressHUD(view: self.navigationController!.view)
         
-        Utility.SynchroniseAllData(12, progressBar: HUD)
-        Utility.SynchroniseAllData(13, progressBar: HUD)
+        self.navigationController!.view.addSubview(HUD!)
         
-        self.getTaskData()
+        //set the HUD mode
+        HUD!.mode = .DeterminateHorizontalBar;
+        
+        // Register for HUD callbacks so we can remove it from the window at the right time
+        HUD!.delegate = self
+        HUD!.labelText = "Synchronising"
+        
+        HUD!.showWhileExecuting({Utility.CheckSynchronisation(self, HUD: self.HUD!)}, animated: true)
     }
  
     //MARK: Other methods

@@ -174,8 +174,8 @@
 		A49455E71C7CBEB600BE6247 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				A407DA7F1C44105700251228 /* LoginViewController.swift */,
 				A49455E81C7CBED600BE6247 /* MainViewController.swift */,
+				A407DA7F1C44105700251228 /* LoginViewController.swift */,
 				A420ACEA1C7F656E003D4CA3 /* AddViewController.swift */,
 				A420ACE61C7F6507003D4CA3 /* FilterViewController.swift */,
 				A420ACE21C7F64D0003D4CA3 /* SearchViewController.swift */,
