@@ -105,7 +105,7 @@ class AddViewController: UIViewController {
         //create the task and go to the task form
         let rowId: String = String(NSUUID())
         let now: NSDate = NSDate()
-        let newTask: Task = Task(rowId: rowId, createdBy: Session.OperativeId!, createdOn: now, lastUpdatedBy: nil, lastUpdatedOn: nil, deleted: nil, organisationId: Session.OrganisationId!, siteId: SiteId!, propertyId: PropertyId!, locationId: LocationId!, locationGroupName: LocationGroupName!, locationName: LocationName!, room: Room, taskTemplateId: TaskTemplateId, taskRef: TaskRef, PPMGroup: AssetGroup, assetType: AssetType!, taskName: TaskName!, frequency: "Adhoc", assetId: AssetId!, assetNumber: AssetNumber!, scheduledDate: now, completedDate: nil, status: "Pending", priority: 30, estimatedDuration: EstimatedDuration, operativeId: Session.OperativeId, actualDuration: nil, travelDuration: nil, comments: nil, alternateAssetCode: nil)
+        let newTask: Task = Task(rowId: rowId, createdBy: Session.OperativeId!, createdOn: now, lastUpdatedBy: nil, lastUpdatedOn: nil, deleted: nil, organisationId: Session.OrganisationId!, siteId: SiteId!, propertyId: PropertyId!, locationId: LocationId!, locationGroupName: LocationGroupName!, locationName: LocationName!, room: Room, taskTemplateId: TaskTemplateId, taskRef: TaskRef, PPMGroup: AssetGroup, assetType: AssetType!, taskName: TaskName!, frequency: "Ad-hoc", assetId: AssetId!, assetNumber: AssetNumber!, scheduledDate: now, completedDate: nil, status: "Pending", priority: 30, estimatedDuration: EstimatedDuration, operativeId: Session.OperativeId, actualDuration: nil, travelDuration: nil, comments: nil, alternateAssetCode: nil)
         
         ModelManager.getInstance().addTask(newTask)
             

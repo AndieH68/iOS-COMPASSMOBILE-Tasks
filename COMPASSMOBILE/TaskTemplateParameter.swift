@@ -26,11 +26,13 @@ class TaskTemplateParameter: NSObject {
     var ReferenceDataType: String? = nil
     var ReferenceDataExtendedType: String? = nil
     var Ordinal: Int = Int()
+    var Predecessor: String? = nil
+    var PredecessorTrueValue: String? = nil
 
     // MARK: - Contructors
     
     convenience
-    init(rowId:String, createdBy: String, createdOn: NSDate, lastUpdatedBy: String?, lastUpdatedOn: NSDate?, deleted: NSDate?, taskTemplateId: String, parameterName: String, parameterType: String, parameterDisplay: String, collect: Bool, referenceDataType: String?, referenceDataExtendedType: String?, ordinal: Int) {
+    init(rowId:String, createdBy: String, createdOn: NSDate, lastUpdatedBy: String?, lastUpdatedOn: NSDate?, deleted: NSDate?, taskTemplateId: String, parameterName: String, parameterType: String, parameterDisplay: String, collect: Bool, referenceDataType: String?, referenceDataExtendedType: String?, ordinal: Int, predecessor: String?, predecessorTrueValue: String?) {
         self.init()
         self.RowId = rowId
         self.CreatedBy = createdBy
@@ -46,6 +48,8 @@ class TaskTemplateParameter: NSObject {
         self.ReferenceDataType = referenceDataType
         self.ReferenceDataExtendedType = referenceDataExtendedType
         self.Ordinal = ordinal
+        self.Predecessor = predecessor
+        self.PredecessorTrueValue = predecessorTrueValue
     }
     
     convenience
@@ -88,6 +92,17 @@ class TaskTemplateParameter: NSObject {
             }
         }
         self.Ordinal = Int(XMLElement.attributes["Ordinal"]!)!
+        if XMLElement.attributes.keys.contains("Predecessor") {
+            if XMLElement.attributes["Predecessor"] != "" {
+                self.Predecessor = XMLElement.attributes["Predecessor"]!
+            }
+        }
+        if XMLElement.attributes.keys.contains("PredecessorTrueValue") {
+            if XMLElement.attributes["PredecessorTrueValue"] != "" {
+                self.PredecessorTrueValue = XMLElement.attributes["PredecessorTrueValue"]!
+            }
+        }
+
 
     }
 }

@@ -72,6 +72,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
     
+
     func DoSynchronise (actionTarget: UIAlertAction)
     {
         HUD = MBProgressHUD(view: self.navigationController!.view)
@@ -127,9 +128,9 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let cell:TaskCell = tableView.dequeueReusableCellWithIdentifier("TaskCell") as! TaskCell
+        let cell: TaskCell = tableView.dequeueReusableCellWithIdentifier("TaskCell") as! TaskCell
         
-        let task:Task = taskData[indexPath.row]
+        let task: Task = taskData[indexPath.row]
        
         cell.taskRef.text = task.TaskRef
         var TaskName: String = task.TaskName
@@ -143,15 +144,19 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         cell.type.text = ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMAssetGroup", key: task.PPMGroup!)
         cell.asset.text = task.AssetNumber
         cell.dateDue.text = task.ScheduledDate.toStringForView()
+        cell.taskId = task.RowId
         
         return cell
     }
     
+    
     //MARK: Navigation Methods
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-//        switch segue.identifier!
-//        {
-//            case "addSegue":
+        print(segue.identifier!)
+       switch segue.identifier!
+        {
+            case "TaskSegue":
+                Session.TaskId = (sender as! TaskCell).taskId
 //                let btnAdd : UIButton = sender as! UIButton
 //            
 //            
@@ -164,10 +169,10 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
 //            case "settingsSegue":
 //                let btnAdd : UIButton = sender as! UIButton
 //            
-//        default:
-//            print("Default")
-//            
-//        }
+        default:
+            print("Default")
+        
+        }
         
     
     }

@@ -3857,6 +3857,16 @@ class ModelManager: NSObject {
             SQLParameterValues.append(taskTemplateParameter.ReferenceDataExtendedType!)
         }
         SQLParameterNames += ", [Ordinal]"
+        if taskTemplateParameter.Predecessor != nil {
+            SQLParameterNames += ", [Predecessor]"
+            SQLParameterPlaceholders += ", ?"
+            SQLParameterValues.append(taskTemplateParameter.Predecessor!)
+        }
+        if taskTemplateParameter.PredecessorTrueValue != nil {
+            SQLParameterNames += ", [PredecessorTrueValue]"
+            SQLParameterPlaceholders += ", ?"
+            SQLParameterValues.append(taskTemplateParameter.PredecessorTrueValue!)
+        }
         SQLParameterPlaceholders += ", ?"
         SQLParameterValues.append(taskTemplateParameter.Ordinal)
         
@@ -3913,8 +3923,15 @@ class ModelManager: NSObject {
             SQLParameterValues.append(taskTemplateParameter.ReferenceDataExtendedType!)
         }
         SQLParameterNames += ", [Ordinal]=?"
+        if taskTemplateParameter.Predecessor != nil {
+            SQLParameterNames += ", [Predecessor]=?"
+            SQLParameterValues.append(taskTemplateParameter.Predecessor!)
+        }
+        if taskTemplateParameter.PredecessorTrueValue != nil {
+            SQLParameterNames += ", [PredecessorTrueValue]=?"
+            SQLParameterValues.append(taskTemplateParameter.PredecessorTrueValue!)
+        }
         SQLParameterValues.append(taskTemplateParameter.Ordinal)
-        
         
         SQLParameterValues.append(taskTemplateParameter.RowId)
         
@@ -3937,7 +3954,7 @@ class ModelManager: NSObject {
         sharedModelManager.database!.open()
         var taskTemplateParameter: TaskTemplateParameter? = nil
         
-        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TaskTemplateId], [ParameterName], [ParameterType], [ParameterDisplay], [Collect], [ReferenceDataType], [ReferenceDataExtendedType], [Ordinal] FROM [TaskTemplateParameter] WHERE [RowId]=?", withArgumentsInArray: [taskTemplateParameterId])
+        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TaskTemplateId], [ParameterName], [ParameterType], [ParameterDisplay], [Collect], [ReferenceDataType], [ReferenceDataExtendedType], [Ordinal], [Predecessor], [PredecessorTrueValue] FROM [TaskTemplateParameter] WHERE [RowId]=?", withArgumentsInArray: [taskTemplateParameterId])
         if (resultSet != nil) {
             while resultSet.next() {
                 var resultTaskTemplateParameter: TaskTemplateParameter = TaskTemplateParameter()
@@ -3969,7 +3986,12 @@ class ModelManager: NSObject {
                     resultTaskTemplateParameter.ReferenceDataExtendedType = resultSet.stringForColumn("ReferenceDataExtendedType")
                 }
                 resultTaskTemplateParameter.Ordinal = Int(resultSet.intForColumn("Ordinal"))
-                
+                if !resultSet.columnIsNull("Predecessor") {
+                    resultTaskTemplateParameter.Predecessor = resultSet.stringForColumn("Predecessor")
+                }
+                if !resultSet.columnIsNull("PredecessorTrueValue") {
+                    resultTaskTemplateParameter.PredecessorTrueValue = resultSet.stringForColumn("PredecessorTrueValue")
+                }
                 taskTemplateParameter = resultTaskTemplateParameter
             }
         }
@@ -3979,7 +4001,7 @@ class ModelManager: NSObject {
     
     func getAllTaskTemplateParameter() -> [TaskTemplateParameter] {
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TaskTemplateId], [ParameterName], [ParameterType], [ParameterDisplay], [Collect], [ReferenceDataType], [ReferenceDataExtendedType], [Ordinal] FROM [TaskTemplateParameter]", withArgumentsInArray: nil)
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TaskTemplateId], [ParameterName], [ParameterType], [ParameterDisplay], [Collect], [ReferenceDataType], [ReferenceDataExtendedType], [Ordinal], [Predecessor], [PredecessorTrueValue] FROM [TaskTemplateParameter]", withArgumentsInArray: nil)
         var taskTemplateParameterList: [TaskTemplateParameter] = [TaskTemplateParameter]()
         if (resultSet != nil) {
             while resultSet.next() {
@@ -4011,7 +4033,12 @@ class ModelManager: NSObject {
                     taskTemplateParameter.ReferenceDataExtendedType = resultSet.stringForColumn("ReferenceDataExtendedType")
                 }
                 taskTemplateParameter.Ordinal = Int(resultSet.intForColumn("Ordinal"))
-                
+                if !resultSet.columnIsNull("Predecessor") {
+                    taskTemplateParameter.Predecessor = resultSet.stringForColumn("Predecessor")
+                }
+                if !resultSet.columnIsNull("PredecessorTrueValue") {
+                    taskTemplateParameter.PredecessorTrueValue = resultSet.stringForColumn("PredecessorTrueValue")
+                }
                 taskTemplateParameterList.append(taskTemplateParameter)
             }
         }
@@ -4061,7 +4088,7 @@ class ModelManager: NSObject {
                 pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
             }
             
-            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TaskTemplateId], [ParameterName], [ParameterType], [ParameterDisplay], [Collect], [ReferenceDataType], [ReferenceDataExtendedType], [Ordinal] FROM [TaskTemplateParameter] " + whereClause + orderByClause + pageClause, withArgumentsInArray: whereValues)
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TaskTemplateId], [ParameterName], [ParameterType], [ParameterDisplay], [Collect], [ReferenceDataType], [ReferenceDataExtendedType], [Ordinal], [Predecessor], [PredecessorTrueValue] FROM [TaskTemplateParameter] " + whereClause + orderByClause + pageClause, withArgumentsInArray: whereValues)
             if (resultSet != nil) {
                 while resultSet.next() {
                     let taskTemplateParameter : TaskTemplateParameter = TaskTemplateParameter()
@@ -4092,6 +4119,12 @@ class ModelManager: NSObject {
                         taskTemplateParameter.ReferenceDataExtendedType = resultSet.stringForColumn("ReferenceDataExtendedType")
                     }
                     taskTemplateParameter.Ordinal = Int(resultSet.intForColumn("Ordinal"))
+                    if !resultSet.columnIsNull("Predecessor") {
+                        taskTemplateParameter.Predecessor = resultSet.stringForColumn("Predecessor")
+                    }
+                    if !resultSet.columnIsNull("PredecessorTrueValue") {
+                        taskTemplateParameter.PredecessorTrueValue = resultSet.stringForColumn("PredecessorTrueValue")
+                    }
                     
                     taskTemplateParameterList.append(taskTemplateParameter)
                 }

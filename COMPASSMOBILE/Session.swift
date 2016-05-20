@@ -52,6 +52,8 @@ class Session : NSObject
     static var PageSize: Int32 = 1000
     static var MaxPage: Int32 = 1
     
+    static var TaskId: String? = nil
+    
     class func BuildCriteriaFromSession() -> Dictionary<String, AnyObject> {
         var criteria: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
         criteria["OrganisationId"] = Session.OrganisationId!

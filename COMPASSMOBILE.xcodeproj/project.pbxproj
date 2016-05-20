@@ -45,6 +45,7 @@
 		A4A522F01C43F4A500D16A9A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A522EF1C43F4A500D16A9A /* AppDelegate.swift */; };
 		A4A522F51C43F4A500D16A9A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4A522F31C43F4A500D16A9A /* Main.storyboard */; };
 		A4A522F81C43F4A500D16A9A /* COMPASSMOBILE.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A4A522F61C43F4A500D16A9A /* COMPASSMOBILE.xcdatamodeld */; };
+		A4DC551D1CEF0C9700833910 /* TaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4DC551C1CEF0C9700833910 /* TaskViewController.swift */; };
 		A4EDA3931C4E98C900667987 /* AEXML.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4EDA3921C4E98C900667987 /* AEXML.swift */; };
 		A4EDA3961C4EA55500667987 /* ReferenceData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4EDA3951C4EA55500667987 /* ReferenceData.swift */; };
 		A4F16F9D1CE4716200270AFE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A4F16F9C1CE4716200270AFE /* Assets.xcassets */; };
@@ -99,6 +100,7 @@
 		A4A522F41C43F4A500D16A9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A4A522F71C43F4A500D16A9A /* COMPASSMOBILE.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = COMPASSMOBILE.xcdatamodel; sourceTree = "<group>"; };
 		A4A522FE1C43F4A500D16A9A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A4DC551C1CEF0C9700833910 /* TaskViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskViewController.swift; sourceTree = "<group>"; };
 		A4EDA3921C4E98C900667987 /* AEXML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AEXML.swift; path = ../AEXML.swift; sourceTree = "<group>"; };
 		A4EDA3951C4EA55500667987 /* ReferenceData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferenceData.swift; sourceTree = "<group>"; };
 		A4F16F9C1CE4716200270AFE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 		A49455E71C7CBEB600BE6247 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				A4DC551C1CEF0C9700833910 /* TaskViewController.swift */,
 				A49455E81C7CBED600BE6247 /* MainViewController.swift */,
 				A407DA7F1C44105700251228 /* LoginViewController.swift */,
 				A420ACEA1C7F656E003D4CA3 /* AddViewController.swift */,
@@ -320,6 +323,7 @@
 				A45CD6ED1C577DA800C17BD7 /* TaskTemplate.swift in Sources */,
 				A4EDA3961C4EA55500667987 /* ReferenceData.swift in Sources */,
 				A45CD6E71C577D8E00C17BD7 /* Property.swift in Sources */,
+				A4DC551D1CEF0C9700833910 /* TaskViewController.swift in Sources */,
 				A45CD6EF1C577DB600C17BD7 /* TaskTemplateParameter.swift in Sources */,
 				A45CD6EB1C577D9E00C17BD7 /* TaskParameter.swift in Sources */,
 				A49455E91C7CBED600BE6247 /* MainViewController.swift in Sources */,
