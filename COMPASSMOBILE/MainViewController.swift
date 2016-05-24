@@ -152,29 +152,31 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     //MARK: Navigation Methods
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        print(segue.identifier!)
-       switch segue.identifier!
+        if (segue.identifier != nil)
         {
-            case "TaskSegue":
-                Session.TaskId = (sender as! TaskCell).taskId
-//                let btnAdd : UIButton = sender as! UIButton
-//            
-//            
-//            case "filterSegue":
-//                let btnAdd : UIButton = sender as! UIButton
-//            
-//            case "searchSegue":
-//                let btnAdd : UIButton = sender as! UIButton
-//            
-//            case "settingsSegue":
-//                let btnAdd : UIButton = sender as! UIButton
-//            
-        default:
-            print("Default")
+
+           switch segue.identifier!
+            {
+                case "TaskSegue":
+                    Session.TaskId = (sender as! TaskCell).taskId
+    //                let btnAdd : UIButton = sender as! UIButton
+    //            
+    //            
+    //            case "filterSegue":
+    //                let btnAdd : UIButton = sender as! UIButton
+    //            
+    //            case "searchSegue":
+    //                let btnAdd : UIButton = sender as! UIButton
+    //            
+    //            case "settingsSegue":
+    //                let btnAdd : UIButton = sender as! UIButton
+    //            
+            default:
+                print("Default")
+            
+            }
         
         }
-        
-    
     }
 }
 

@@ -22,7 +22,7 @@ class Session : NSObject
     
     static var PropertyList: Dictionary<String, Property> = Dictionary<String, Property>()
  
-    //static var LookupLists: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
+    static var LookupLists: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
     
     static var ReferenceLists: Dictionary<String, Dictionary<String, String>> = Dictionary<String, Dictionary<String, String>>()
     static var ReverseReferenceLists: Dictionary<String, Dictionary<String, String>> = Dictionary<String, Dictionary<String, String>>()

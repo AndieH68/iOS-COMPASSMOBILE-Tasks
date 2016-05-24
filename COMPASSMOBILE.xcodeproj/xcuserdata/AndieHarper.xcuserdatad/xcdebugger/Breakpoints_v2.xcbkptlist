@@ -150,32 +150,32 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "COMPASSMOBILE/MainViewController.swift"
-            timestampString = "485454316.409938"
+            filePath = "COMPASSMOBILE/TaskViewController.swift"
+            timestampString = "485800909.202936"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "159"
-            endingLineNumber = "159"
-            landmarkName = "prepareForSegue(_:sender:)"
+            startingLineNumber = "215"
+            endingLineNumber = "215"
+            landmarkName = "tableView(_:cellForRowAtIndexPath:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "COMPASSMOBILE/MainViewController.swift"
-            timestampString = "485454316.409938"
+            filePath = "COMPASSMOBILE/TaskViewController.swift"
+            timestampString = "485800909.202936"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "156"
-            endingLineNumber = "156"
-            landmarkName = "prepareForSegue(_:sender:)"
+            startingLineNumber = "129"
+            endingLineNumber = "129"
+            landmarkName = "AnswerPopupChanged(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

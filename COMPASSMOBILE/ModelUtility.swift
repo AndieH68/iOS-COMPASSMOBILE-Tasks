@@ -115,6 +115,52 @@ class ModelUtility: NSObject {
         return Session.ReverseReferenceLists[key]!  //we've already checked if it exists to unwrapping if ok
     }
     
+    func GetLookupList(ReferenceDataType: String, ExtendedReferenceDataType: String?) -> [String]
+    {
+        var returnArray: [String] = [String]()
+        
+        if (!Session.LookupLists.keys.contains(ReferenceDataType))
+        {
+            var lookupList: [String] = [String]()
+            
+            var criteria: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
+            criteria["Type"] = ReferenceDataType
+            
+            //get the list of reference data from the databse
+            let (referenceDataListData, _) = ModelManager.getInstance().findReferenceDataList(criteria, pageSize: nil, pageNumber: nil, sortOrder: ReferenceDataSortOrder.Ordinal)
+            
+            for referenceDataItem in referenceDataListData {
+                lookupList.append(referenceDataItem.Display)
+            }
+            Session.LookupLists[ReferenceDataType] = lookupList
+        }
+        
+        returnArray = Session.LookupLists[ReferenceDataType] as! [String]
+ 
+        if (ExtendedReferenceDataType != nil)
+        {
+            if (!Session.LookupLists.keys.contains(ExtendedReferenceDataType!))
+            {
+                var lookupList: [String] = [String]()
+                
+                var criteria: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
+                criteria["Type"] = ExtendedReferenceDataType!
+                
+                //get the list of reference data from the databse
+                let (referenceDataListData, _) = ModelManager.getInstance().findReferenceDataList(criteria, pageSize: nil, pageNumber: nil, sortOrder: ReferenceDataSortOrder.Ordinal)
+                
+                for referenceDataItem in referenceDataListData {
+                    lookupList.append(referenceDataItem.Display)
+                }
+                Session.LookupLists[ExtendedReferenceDataType!] = lookupList
+            }
+            
+            returnArray.appendContentsOf(Session.LookupLists[ExtendedReferenceDataType!] as! [String])
+        }
+        
+        return returnArray
+    }
+    
     func PopulateReferenceListCache(type: String, parentType: String?, parentValue: String?) -> Bool {
         
         //get a the reference data unique key

@@ -35,3 +35,4 @@ let BaseDate: NSDate = NSDate(dateString: "2000-01-01T00:00:00.000")
 let EmptyGuid: String = "00000000-0000-0000-0000-000000000000"
 
 let RemedialTask: String = "Remedial Task"
+let Accessible: String = "Accessible"

@@ -20,6 +20,9 @@
 		A40BB55E1C4FE9D7005C2AE6 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A40BB55D1C4FE9D7005C2AE6 /* libsqlite3.0.tbd */; };
 		A40BB5611C4FED9E005C2AE6 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A40BB5601C4FED9E005C2AE6 /* Utility.swift */; };
 		A40BB5651C4FF0A7005C2AE6 /* ModelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A40BB5641C4FF0A7005C2AE6 /* ModelManager.swift */; };
+		A40FC1BA1CF27FFF003B1413 /* TaskTemplateParameterCellFreetext.swift in Sources */ = {isa = PBXBuildFile; fileRef = A40FC1B91CF27FFF003B1413 /* TaskTemplateParameterCellFreetext.swift */; };
+		A40FC1BC1CF28023003B1413 /* TaskTemplateParameterCellNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = A40FC1BB1CF28023003B1413 /* TaskTemplateParameterCellNumber.swift */; };
+		A40FC1BE1CF28038003B1413 /* TaskTemplateParameterCellDropdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = A40FC1BD1CF28038003B1413 /* TaskTemplateParameterCellDropdown.swift */; };
 		A420ACE31C7F64D0003D4CA3 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A420ACE21C7F64D0003D4CA3 /* SearchViewController.swift */; };
 		A420ACE71C7F6507003D4CA3 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A420ACE61C7F6507003D4CA3 /* FilterViewController.swift */; };
 		A420ACE91C7F6562003D4CA3 /* UploadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A420ACE81C7F6562003D4CA3 /* UploadViewController.swift */; };
@@ -46,6 +49,7 @@
 		A4A522F51C43F4A500D16A9A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4A522F31C43F4A500D16A9A /* Main.storyboard */; };
 		A4A522F81C43F4A500D16A9A /* COMPASSMOBILE.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A4A522F61C43F4A500D16A9A /* COMPASSMOBILE.xcdatamodeld */; };
 		A4DC551D1CEF0C9700833910 /* TaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4DC551C1CEF0C9700833910 /* TaskViewController.swift */; };
+		A4E56D891CF334C800E520A7 /* TaskTemplateParameterCellTextArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4E56D881CF334C800E520A7 /* TaskTemplateParameterCellTextArea.swift */; };
 		A4EDA3931C4E98C900667987 /* AEXML.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4EDA3921C4E98C900667987 /* AEXML.swift */; };
 		A4EDA3961C4EA55500667987 /* ReferenceData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4EDA3951C4EA55500667987 /* ReferenceData.swift */; };
 		A4F16F9D1CE4716200270AFE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A4F16F9C1CE4716200270AFE /* Assets.xcassets */; };
@@ -73,6 +77,9 @@
 		A40BB55D1C4FE9D7005C2AE6 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		A40BB5601C4FED9E005C2AE6 /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 		A40BB5641C4FF0A7005C2AE6 /* ModelManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelManager.swift; sourceTree = "<group>"; };
+		A40FC1B91CF27FFF003B1413 /* TaskTemplateParameterCellFreetext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskTemplateParameterCellFreetext.swift; sourceTree = "<group>"; };
+		A40FC1BB1CF28023003B1413 /* TaskTemplateParameterCellNumber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskTemplateParameterCellNumber.swift; sourceTree = "<group>"; };
+		A40FC1BD1CF28038003B1413 /* TaskTemplateParameterCellDropdown.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskTemplateParameterCellDropdown.swift; sourceTree = "<group>"; };
 		A420ACE21C7F64D0003D4CA3 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		A420ACE61C7F6507003D4CA3 /* FilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
 		A420ACE81C7F6562003D4CA3 /* UploadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadViewController.swift; sourceTree = "<group>"; };
@@ -101,6 +108,7 @@
 		A4A522F71C43F4A500D16A9A /* COMPASSMOBILE.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = COMPASSMOBILE.xcdatamodel; sourceTree = "<group>"; };
 		A4A522FE1C43F4A500D16A9A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A4DC551C1CEF0C9700833910 /* TaskViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskViewController.swift; sourceTree = "<group>"; };
+		A4E56D881CF334C800E520A7 /* TaskTemplateParameterCellTextArea.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskTemplateParameterCellTextArea.swift; sourceTree = "<group>"; };
 		A4EDA3921C4E98C900667987 /* AEXML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AEXML.swift; path = ../AEXML.swift; sourceTree = "<group>"; };
 		A4EDA3951C4EA55500667987 /* ReferenceData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferenceData.swift; sourceTree = "<group>"; };
 		A4F16F9C1CE4716200270AFE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -223,6 +231,10 @@
 				A4034A851C5132EE00615D95 /* COMPASSDB.sqlite */,
 				A4A522EF1C43F4A500D16A9A /* AppDelegate.swift */,
 				A49455ED1C7CBF7500BE6247 /* TaskCell.swift */,
+				A40FC1B91CF27FFF003B1413 /* TaskTemplateParameterCellFreetext.swift */,
+				A4E56D881CF334C800E520A7 /* TaskTemplateParameterCellTextArea.swift */,
+				A40FC1BB1CF28023003B1413 /* TaskTemplateParameterCellNumber.swift */,
+				A40FC1BD1CF28038003B1413 /* TaskTemplateParameterCellDropdown.swift */,
 				A40BB54C1C4FE958005C2AE6 /* COMPASSMOBILE-Bridging-Header.h */,
 				A4F16F9C1CE4716200270AFE /* Assets.xcassets */,
 				A4EDA3941C4EA53100667987 /* models */,
@@ -318,9 +330,11 @@
 				A45CD6DF1C577D5100C17BD7 /* LocationGroup.swift in Sources */,
 				A4EDA3931C4E98C900667987 /* AEXML.swift in Sources */,
 				A43AFD8C1CEB694E00C67FAE /* SettingsViewController.swift in Sources */,
+				A4E56D891CF334C800E520A7 /* TaskTemplateParameterCellTextArea.swift in Sources */,
 				A45CD6DD1C577D4200C17BD7 /* Location.swift in Sources */,
 				A49455EC1C7CBF2300BE6247 /* ModelUtility.swift in Sources */,
 				A45CD6ED1C577DA800C17BD7 /* TaskTemplate.swift in Sources */,
+				A40FC1BA1CF27FFF003B1413 /* TaskTemplateParameterCellFreetext.swift in Sources */,
 				A4EDA3961C4EA55500667987 /* ReferenceData.swift in Sources */,
 				A45CD6E71C577D8E00C17BD7 /* Property.swift in Sources */,
 				A4DC551D1CEF0C9700833910 /* TaskViewController.swift in Sources */,
@@ -342,6 +356,8 @@
 				A40BB5591C4FE958005C2AE6 /* FMDatabaseAdditions.m in Sources */,
 				A45CD6DB1C577D3000C17BD7 /* Asset.swift in Sources */,
 				A40BB55C1C4FE958005C2AE6 /* FMResultSet.m in Sources */,
+				A40FC1BE1CF28038003B1413 /* TaskTemplateParameterCellDropdown.swift in Sources */,
+				A40FC1BC1CF28023003B1413 /* TaskTemplateParameterCellNumber.swift in Sources */,
 				A40BB5611C4FED9E005C2AE6 /* Utility.swift in Sources */,
 				A4A522F81C43F4A500D16A9A /* COMPASSMOBILE.xcdatamodeld in Sources */,
 				A40BB55A1C4FE958005C2AE6 /* FMDatabasePool.m in Sources */,

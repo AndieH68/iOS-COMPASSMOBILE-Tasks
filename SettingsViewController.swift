@@ -58,9 +58,6 @@ class SettingsViewController: UITableViewController, MBProgressHUDDelegate
     // MARK - UItable
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        print(String(indexPath.section))
-        print(String(indexPath.row))
-        
         
         switch indexPath.section
         {

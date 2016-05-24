@@ -899,15 +899,13 @@ class Utility: NSObject {
                 }
             }
 
-        //default:
-            //response = nil
-            //print ("invalid EntityType")
         }
         
         return (lastRowId, lastDateInPackage)
     }
     
-    class func SynchroniseAllData(viewController: UIViewController, stage: Int32, progressBar: MBProgressHUD?) -> Bool {
+    class func SynchroniseAllData(viewController: UIViewController, stage: Int32, progressBar: MBProgressHUD?) -> Bool
+    {
         var SQLStatement: String
         var SQLParameterValues: [NSObject]
         var synchronisationDateToUse: NSDate = BaseDate
@@ -1051,10 +1049,8 @@ class Utility: NSObject {
                 (lastRowId,lastDate) = Utility.importData(SynchronisationPackageDocument!.children[0], entityType: entityType, progressBar: progressBar)
             }
 
-            print(String(entityType) + " " + lastRowId + " " + String(count))
             SynchronisationPackageDocument = nil
         }
-        print(String(entityType) + " Data Done")
         return (true, lastDate)
     }
     
@@ -1549,3 +1545,4 @@ extension String
         return self.simpleReplace(mapList)
     }
 }
+

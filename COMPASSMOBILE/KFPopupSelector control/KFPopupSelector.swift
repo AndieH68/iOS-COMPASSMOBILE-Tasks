@@ -184,6 +184,13 @@ class KFPopupSelector: UIControl, UIPopoverPresentationControllerDelegate {
     
     var currentlyPresentedPopup: PopupViewController? = nil
     
+    var selectedValue: String?
+    {
+        get {
+            return buttonText;
+        }
+    }
+    
     private let button = UIButton(type: .System)
     
     private var buttonText: String? {

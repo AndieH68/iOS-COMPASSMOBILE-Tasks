@@ -3846,6 +3846,7 @@ class ModelManager: NSObject {
         SQLParameterNames += ", [Collect]"
         SQLParameterPlaceholders += ", ?"
         SQLParameterValues.append(taskTemplateParameter.Collect)
+        
         if taskTemplateParameter.ReferenceDataType != nil {
             SQLParameterNames += ", [ReferenceDataType]"
             SQLParameterPlaceholders += ", ?"
@@ -3857,6 +3858,9 @@ class ModelManager: NSObject {
             SQLParameterValues.append(taskTemplateParameter.ReferenceDataExtendedType!)
         }
         SQLParameterNames += ", [Ordinal]"
+        SQLParameterPlaceholders += ", ?"
+        SQLParameterValues.append(taskTemplateParameter.Ordinal)
+        
         if taskTemplateParameter.Predecessor != nil {
             SQLParameterNames += ", [Predecessor]"
             SQLParameterPlaceholders += ", ?"
@@ -3867,8 +3871,7 @@ class ModelManager: NSObject {
             SQLParameterPlaceholders += ", ?"
             SQLParameterValues.append(taskTemplateParameter.PredecessorTrueValue!)
         }
-        SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(taskTemplateParameter.Ordinal)
+
         
         
         SQLStatement = "INSERT INTO [TaskTemplateParameter] (" + SQLParameterNames + ") VALUES (" + SQLParameterPlaceholders + ")"
@@ -3923,6 +3926,8 @@ class ModelManager: NSObject {
             SQLParameterValues.append(taskTemplateParameter.ReferenceDataExtendedType!)
         }
         SQLParameterNames += ", [Ordinal]=?"
+        SQLParameterValues.append(taskTemplateParameter.Ordinal)
+        
         if taskTemplateParameter.Predecessor != nil {
             SQLParameterNames += ", [Predecessor]=?"
             SQLParameterValues.append(taskTemplateParameter.Predecessor!)
@@ -3931,8 +3936,7 @@ class ModelManager: NSObject {
             SQLParameterNames += ", [PredecessorTrueValue]=?"
             SQLParameterValues.append(taskTemplateParameter.PredecessorTrueValue!)
         }
-        SQLParameterValues.append(taskTemplateParameter.Ordinal)
-        
+
         SQLParameterValues.append(taskTemplateParameter.RowId)
         
         SQLStatement = "UPDATE [TaskTemplateParameter] SET " + SQLParameterNames + "WHERE [RowId]=?"
@@ -4119,6 +4123,7 @@ class ModelManager: NSObject {
                         taskTemplateParameter.ReferenceDataExtendedType = resultSet.stringForColumn("ReferenceDataExtendedType")
                     }
                     taskTemplateParameter.Ordinal = Int(resultSet.intForColumn("Ordinal"))
+
                     if !resultSet.columnIsNull("Predecessor") {
                         taskTemplateParameter.Predecessor = resultSet.stringForColumn("Predecessor")
                     }
