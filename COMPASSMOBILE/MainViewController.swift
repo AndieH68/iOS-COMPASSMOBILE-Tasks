@@ -159,18 +159,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
             {
                 case "TaskSegue":
                     Session.TaskId = (sender as! TaskCell).taskId
-    //                let btnAdd : UIButton = sender as! UIButton
-    //            
-    //            
-    //            case "filterSegue":
-    //                let btnAdd : UIButton = sender as! UIButton
-    //            
-    //            case "searchSegue":
-    //                let btnAdd : UIButton = sender as! UIButton
-    //            
-    //            case "settingsSegue":
-    //                let btnAdd : UIButton = sender as! UIButton
-    //            
+
             default:
                 print("Default")
             

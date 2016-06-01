@@ -13,32 +13,19 @@ class SettingsViewController: UITableViewController, MBProgressHUDDelegate
 {
     
     var selfHUD: MBProgressHUD?
-    
-    @IBAction func Done(sender: UIBarButtonItem) {
-        self.navigationController?.popViewControllerAnimated(true)
-    }
-    
-    @IBAction func TaskTiming(sender: UISwitch) {
-        Session.TaskTiming = sender.on
-        let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.setBool(Session.TaskTiming, forKey: "TaskTiming")
-    }
-    
-    @IBAction func TemperatureProfile(sender: UISwitch) {
-        Session.TemperatureProfile = sender.on
-        let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.setBool(Session.TemperatureProfile, forKey: "TemperatureProfile")
-    }
-    
+    var eac: EAController?
+
+    @IBOutlet var SelectedProbeName: UILabel!
     @IBOutlet var CompletedTasks: UILabel!
     
     override func viewDidLoad() {
-        
+        super.viewDidLoad()
         CompletedTasks.text = String(ModelUtility.getInstance().GetCompletedTaskCount())
         
     }
-    
+   
     override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
         
         if let currentView: UIView = self.navigationController!.view
         {
@@ -52,10 +39,39 @@ class SettingsViewController: UITableViewController, MBProgressHUDDelegate
             // Register for HUD callbacks so we can remove it from the window at the right time
             selfHUD!.delegate = self
         }
-
+        
+        if Session.BluetoothProbeConnected
+        {
+            print("Connected")
+            
+        }
+        
     }
     
-    // MARK - UItable
+    // MARK: - User preferences
+    @IBAction func SelectProbe(sender: UIButton) {
+        EAController.sharedController().showBlueThermDeviceList()
+    }
+    
+    @IBAction func TaskTiming(sender: UISwitch) {
+        Session.TaskTiming = sender.on
+        let defaults = NSUserDefaults.standardUserDefaults()
+        defaults.setBool(Session.TaskTiming, forKey: "TaskTiming")
+    }
+    
+    @IBAction func TemperatureProfile(sender: UISwitch) {
+        Session.TemperatureProfile = sender.on
+        let defaults = NSUserDefaults.standardUserDefaults()
+        defaults.setBool(Session.TemperatureProfile, forKey: "TemperatureProfile")
+    }
+   
+    // MARK: - Navigation
+    
+    @IBAction func Done(sender: UIBarButtonItem) {
+        self.navigationController?.popViewControllerAnimated(true)
+    }
+    
+    // MARK: - UITableView
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
@@ -171,6 +187,8 @@ class SettingsViewController: UITableViewController, MBProgressHUDDelegate
     }
     
 
+    // MARK: - Action Handlers
+
     func UploadHandler (actionTarget: UIAlertAction) {
 
         selfHUD!.labelText = "Uploading"
@@ -227,6 +245,4 @@ class SettingsViewController: UITableViewController, MBProgressHUDDelegate
         Session.OrganisationId = "00000000-0000-0000-0000-000000000000"
         self.navigationController?.popViewControllerAnimated(true)
     }
-    
-
 }

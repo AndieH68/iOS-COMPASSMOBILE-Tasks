@@ -25,7 +25,6 @@
 		A40FC1BE1CF28038003B1413 /* TaskTemplateParameterCellDropdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = A40FC1BD1CF28038003B1413 /* TaskTemplateParameterCellDropdown.swift */; };
 		A420ACE31C7F64D0003D4CA3 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A420ACE21C7F64D0003D4CA3 /* SearchViewController.swift */; };
 		A420ACE71C7F6507003D4CA3 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A420ACE61C7F6507003D4CA3 /* FilterViewController.swift */; };
-		A420ACE91C7F6562003D4CA3 /* UploadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A420ACE81C7F6562003D4CA3 /* UploadViewController.swift */; };
 		A420ACEB1C7F656E003D4CA3 /* AddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A420ACEA1C7F656E003D4CA3 /* AddViewController.swift */; };
 		A43AFD8C1CEB694E00C67FAE /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43AFD8B1CEB694E00C67FAE /* SettingsViewController.swift */; };
 		A43C140B1C514478001162ED /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43C140A1C514478001162ED /* WebService.swift */; };
@@ -42,6 +41,7 @@
 		A45CD6EB1C577D9E00C17BD7 /* TaskParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A45CD6EA1C577D9E00C17BD7 /* TaskParameter.swift */; };
 		A45CD6ED1C577DA800C17BD7 /* TaskTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A45CD6EC1C577DA800C17BD7 /* TaskTemplate.swift */; };
 		A45CD6EF1C577DB600C17BD7 /* TaskTemplateParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A45CD6EE1C577DB600C17BD7 /* TaskTemplateParameter.swift */; };
+		A490C1C11CFED99600FB13B3 /* TaskTemplateParameterCellTemperature.swift in Sources */ = {isa = PBXBuildFile; fileRef = A490C1C01CFED99600FB13B3 /* TaskTemplateParameterCellTemperature.swift */; };
 		A49455E91C7CBED600BE6247 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49455E81C7CBED600BE6247 /* MainViewController.swift */; };
 		A49455EC1C7CBF2300BE6247 /* ModelUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49455EB1C7CBF2300BE6247 /* ModelUtility.swift */; };
 		A49455EE1C7CBF7500BE6247 /* TaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49455ED1C7CBF7500BE6247 /* TaskCell.swift */; };
@@ -54,6 +54,8 @@
 		A4EDA3961C4EA55500667987 /* ReferenceData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4EDA3951C4EA55500667987 /* ReferenceData.swift */; };
 		A4F16F9D1CE4716200270AFE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A4F16F9C1CE4716200270AFE /* Assets.xcassets */; };
 		A4F16F9F1CE4B9B200270AFE /* MBProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4F16F9E1CE4B9B200270AFE /* MBProgressHUD.swift */; };
+		A4FAB4E01CF700E500766F3D /* MainNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4FAB4DF1CF700E500766F3D /* MainNavigationController.swift */; };
+		A4FAB4EF1CF74AFF00766F3D /* blueThermLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A4FAB4EA1CF74AFF00766F3D /* blueThermLibrary.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -82,7 +84,6 @@
 		A40FC1BD1CF28038003B1413 /* TaskTemplateParameterCellDropdown.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskTemplateParameterCellDropdown.swift; sourceTree = "<group>"; };
 		A420ACE21C7F64D0003D4CA3 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		A420ACE61C7F6507003D4CA3 /* FilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
-		A420ACE81C7F6562003D4CA3 /* UploadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadViewController.swift; sourceTree = "<group>"; };
 		A420ACEA1C7F656E003D4CA3 /* AddViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddViewController.swift; sourceTree = "<group>"; };
 		A43AFD8B1CEB694E00C67FAE /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = ../SettingsViewController.swift; sourceTree = "<group>"; };
 		A43C140A1C514478001162ED /* WebService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
@@ -99,6 +100,7 @@
 		A45CD6EA1C577D9E00C17BD7 /* TaskParameter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskParameter.swift; sourceTree = "<group>"; };
 		A45CD6EC1C577DA800C17BD7 /* TaskTemplate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskTemplate.swift; sourceTree = "<group>"; };
 		A45CD6EE1C577DB600C17BD7 /* TaskTemplateParameter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskTemplateParameter.swift; sourceTree = "<group>"; };
+		A490C1C01CFED99600FB13B3 /* TaskTemplateParameterCellTemperature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskTemplateParameterCellTemperature.swift; sourceTree = "<group>"; };
 		A49455E81C7CBED600BE6247 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		A49455EB1C7CBF2300BE6247 /* ModelUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelUtility.swift; sourceTree = "<group>"; };
 		A49455ED1C7CBF7500BE6247 /* TaskCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskCell.swift; sourceTree = "<group>"; };
@@ -113,6 +115,14 @@
 		A4EDA3951C4EA55500667987 /* ReferenceData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferenceData.swift; sourceTree = "<group>"; };
 		A4F16F9C1CE4716200270AFE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A4F16F9E1CE4B9B200270AFE /* MBProgressHUD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBProgressHUD.swift; sourceTree = "<group>"; };
+		A4FAB4DF1CF700E500766F3D /* MainNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainNavigationController.swift; sourceTree = "<group>"; };
+		A4FAB4EA1CF74AFF00766F3D /* blueThermLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = blueThermLibrary.a; path = Bluetooth/blueThermLibrary.a; sourceTree = "<group>"; };
+		A4FAB4EB1CF74AFF00766F3D /* BlueThermObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BlueThermObject.h; path = Bluetooth/BlueThermObject.h; sourceTree = "<group>"; };
+		A4FAB4EC1CF74AFF00766F3D /* ETIPassingData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ETIPassingData.h; path = Bluetooth/ETIPassingData.h; sourceTree = "<group>"; };
+		A4FAB4ED1CF74AFF00766F3D /* ProbeProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProbeProperties.h; path = Bluetooth/ProbeProperties.h; sourceTree = "<group>"; };
+		A4FAB4EE1CF74AFF00766F3D /* ProbeSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProbeSettings.h; path = Bluetooth/ProbeSettings.h; sourceTree = "<group>"; };
+		A4FAB4F01CF74BB800766F3D /* AlertMessageDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AlertMessageDelegate.h; path = Bluetooth/AlertMessageDelegate.h; sourceTree = "<group>"; };
+		A4FAB4F11CF74BB800766F3D /* AlertMessages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AlertMessages.h; path = Bluetooth/AlertMessages.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +130,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A4FAB4EF1CF74AFF00766F3D /* blueThermLibrary.a in Frameworks */,
 				A40BB55E1C4FE9D7005C2AE6 /* libsqlite3.0.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -184,6 +195,7 @@
 		A49455E71C7CBEB600BE6247 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				A4FAB4DF1CF700E500766F3D /* MainNavigationController.swift */,
 				A4DC551C1CEF0C9700833910 /* TaskViewController.swift */,
 				A49455E81C7CBED600BE6247 /* MainViewController.swift */,
 				A407DA7F1C44105700251228 /* LoginViewController.swift */,
@@ -191,7 +203,6 @@
 				A420ACE61C7F6507003D4CA3 /* FilterViewController.swift */,
 				A420ACE21C7F64D0003D4CA3 /* SearchViewController.swift */,
 				A43AFD8B1CEB694E00C67FAE /* SettingsViewController.swift */,
-				A420ACE81C7F6562003D4CA3 /* UploadViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -225,6 +236,7 @@
 		A4A522EE1C43F4A500D16A9A /* COMPASSMOBILE */ = {
 			isa = PBXGroup;
 			children = (
+				A4FAB4E31CF748F600766F3D /* Bluetooth */,
 				A40BB55F1C4FED18005C2AE6 /* FMDB */,
 				A49455EA1C7CBEDE00BE6247 /* Storyboards */,
 				A49455E71C7CBEB600BE6247 /* ViewControllers */,
@@ -234,6 +246,7 @@
 				A40FC1B91CF27FFF003B1413 /* TaskTemplateParameterCellFreetext.swift */,
 				A4E56D881CF334C800E520A7 /* TaskTemplateParameterCellTextArea.swift */,
 				A40FC1BB1CF28023003B1413 /* TaskTemplateParameterCellNumber.swift */,
+				A490C1C01CFED99600FB13B3 /* TaskTemplateParameterCellTemperature.swift */,
 				A40FC1BD1CF28038003B1413 /* TaskTemplateParameterCellDropdown.swift */,
 				A40BB54C1C4FE958005C2AE6 /* COMPASSMOBILE-Bridging-Header.h */,
 				A4F16F9C1CE4716200270AFE /* Assets.xcassets */,
@@ -251,6 +264,20 @@
 				A40BB5641C4FF0A7005C2AE6 /* ModelManager.swift */,
 			);
 			name = models;
+			sourceTree = "<group>";
+		};
+		A4FAB4E31CF748F600766F3D /* Bluetooth */ = {
+			isa = PBXGroup;
+			children = (
+				A4FAB4F01CF74BB800766F3D /* AlertMessageDelegate.h */,
+				A4FAB4F11CF74BB800766F3D /* AlertMessages.h */,
+				A4FAB4EA1CF74AFF00766F3D /* blueThermLibrary.a */,
+				A4FAB4EB1CF74AFF00766F3D /* BlueThermObject.h */,
+				A4FAB4EC1CF74AFF00766F3D /* ETIPassingData.h */,
+				A4FAB4ED1CF74AFF00766F3D /* ProbeProperties.h */,
+				A4FAB4EE1CF74AFF00766F3D /* ProbeSettings.h */,
+			);
+			name = Bluetooth;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -325,9 +352,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				A40BB54B1C4FDFC0005C2AE6 /* Reachability.swift in Sources */,
-				A420ACE91C7F6562003D4CA3 /* UploadViewController.swift in Sources */,
 				A420ACEB1C7F656E003D4CA3 /* AddViewController.swift in Sources */,
 				A45CD6DF1C577D5100C17BD7 /* LocationGroup.swift in Sources */,
+				A490C1C11CFED99600FB13B3 /* TaskTemplateParameterCellTemperature.swift in Sources */,
 				A4EDA3931C4E98C900667987 /* AEXML.swift in Sources */,
 				A43AFD8C1CEB694E00C67FAE /* SettingsViewController.swift in Sources */,
 				A4E56D891CF334C800E520A7 /* TaskTemplateParameterCellTextArea.swift in Sources */,
@@ -338,6 +365,7 @@
 				A4EDA3961C4EA55500667987 /* ReferenceData.swift in Sources */,
 				A45CD6E71C577D8E00C17BD7 /* Property.swift in Sources */,
 				A4DC551D1CEF0C9700833910 /* TaskViewController.swift in Sources */,
+				A4FAB4E01CF700E500766F3D /* MainNavigationController.swift in Sources */,
 				A45CD6EF1C577DB600C17BD7 /* TaskTemplateParameter.swift in Sources */,
 				A45CD6EB1C577D9E00C17BD7 /* TaskParameter.swift in Sources */,
 				A49455E91C7CBED600BE6247 /* MainViewController.swift in Sources */,
@@ -404,6 +432,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Andie Harper (G55Q7ECT79)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -446,7 +475,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Hydrop Enviromental Consultancy Services (H889T663QH)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -474,6 +503,10 @@
 				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = COMPASSMOBILE/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/COMPASSMOBILE/Bluetooth",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = COM.HYDROP.COMPASSMOBILE;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "COMPASSMOBILE/COMPASSMOBILE-Bridging-Header.h";
@@ -488,6 +521,10 @@
 				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = COMPASSMOBILE/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/COMPASSMOBILE/Bluetooth",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = COM.HYDROP.COMPASSMOBILE;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "COMPASSMOBILE/COMPASSMOBILE-Bridging-Header.h";

@@ -1,18 +1,18 @@
 //
-//  TaskTemplateParameterCellTextArea.swift
+//  TaskTemplateParameterCellTemperature.swift
 //  COMPASSMOBILE
 //
-//  Created by Andrew Harper on 23/05/2016.
+//  Created by Andrew Harper on 01/06/2016.
 //  Copyright © 2016 HYDOP E.C.S. All rights reserved.
 //
 
 import UIKit
 
-class TaskTemplateParameterCellTextArea: UITableViewCell {
-
+class TaskTemplateParameterCellTemperature: UITableViewCell {
+    
     @IBOutlet var Question: UILabel!
-    @IBOutlet var Answer: UITextView!
-          
+    @IBOutlet var Answer: UITextField!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -22,4 +22,4 @@ class TaskTemplateParameterCellTextArea: UITableViewCell {
         super.setSelected(selected, animated: animated)
         // Configure the view for the selected state
     }
-}
+ }

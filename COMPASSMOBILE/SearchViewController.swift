@@ -11,13 +11,14 @@ import UIKit
 
 class SearchViewController: UIViewController , AVCaptureMetadataOutputObjectsDelegate {
 
-    @IBOutlet weak var CaptureView: UIView!
-    
     var captureSession: AVCaptureSession!
     var previewLayer: AVCaptureVideoPreviewLayer!
    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        Session.CodeScanned = nil
+        Session.FilterAssetNumber = nil
         
         view.backgroundColor = UIColor.blackColor()
         captureSession = AVCaptureSession()
@@ -53,8 +54,8 @@ class SearchViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
         previewLayer = AVCaptureVideoPreviewLayer(session: captureSession);
         previewLayer.frame = view.layer.bounds;
         previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-        CaptureView.layer.addSublayer(previewLayer);
-        
+        view.layer.addSublayer(previewLayer);
+
         captureSession.startRunning();
     }
     
@@ -67,12 +68,16 @@ class SearchViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         if (captureSession?.running == false) {
             captureSession.startRunning();
         }
     }
     
+    override func shouldAutorotate() -> Bool {
+        return false
+    }
+   
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         
@@ -80,7 +85,7 @@ class SearchViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
             captureSession.stopRunning();
         }
     }
-    
+
     func captureOutput(captureOutput: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [AnyObject]!, fromConnection connection: AVCaptureConnection!) {
         captureSession.stopRunning()
         
@@ -95,6 +100,7 @@ class SearchViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
     }
     
     func foundCode(code: String) {
+        Session.CodeScanned = code
         Session.FilterAssetNumber = "(%" + code + ")%"
         self.navigationController?.popViewControllerAnimated(true)
     }

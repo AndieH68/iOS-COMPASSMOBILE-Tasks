@@ -15,13 +15,20 @@ class Descendant{
     var Control: AnyObject? = AnyObject?()
 }
 
-class TaskViewController: UITableViewController, UITextFieldDelegate, MBProgressHUDDelegate {
+class TaskViewController: UITableViewController, UITextFieldDelegate, UITextViewDelegate, MBProgressHUDDelegate, ETIPassingData, AlertMessageDelegate {
 
     var task: Task = Task()
-    var taskParameters: [TaskParameter] = [TaskParameter]()
+    var taskParameters: Dictionary<String, TaskParameter> = Dictionary<String, TaskParameter>()
     var taskTemplateParameters: [TaskTemplateParameter] = [TaskTemplateParameter]()
     
     var descendants: Dictionary<String, [Descendant]> = Dictionary<String, [Descendant]>()
+    
+    var cells: Dictionary<String, UITableViewCell> = Dictionary<String, UITableViewCell>()
+    
+    var probeTimer: NSTimer = NSTimer()
+    var currentReading: String? = nil
+    
+    var currentTemperatureControl: UITextField? = nil
     
     //parameter table
     @IBOutlet var taskParameterTable: UITableView!
@@ -37,10 +44,11 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, MBProgress
     @IBOutlet var AdditionalNotes: UITextView!
     @IBOutlet var RemoveAsset: UISwitch!
     @IBOutlet var AlternateAssetCode: UITextField!
-    
+
     //standard actions
     override func viewDidLoad() {
-    
+        super.viewDidLoad()
+        
         task = ModelManager.getInstance().getTask(Session.TaskId!)!
         
         AssetType.text = ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMAssetGroup", key: task.PPMGroup!)
@@ -57,26 +65,40 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, MBProgress
         TaskReference.text = task.TaskRef
         
         //get the the parameters for the table
-        let taskTemplateId = task.TaskTemplateId
+        if (TaskName.text != RemedialTask)
+        {
+            let taskTemplateId = task.TaskTemplateId
+            
+            var criteria: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
+            criteria["TaskTemplateId"] = taskTemplateId
+            
+            taskTemplateParameters = ModelManager.getInstance().findTaskTemplateParameterList(criteria)
+            
+            if (taskTemplateParameters.count > 3)
+            {
+                //additional notes will always be the last record
+                taskTemplateParameters.removeLast()
+                
+                //remove alternate asset code and remove asset
+                taskTemplateParameters.removeAtIndex(1)
+                taskTemplateParameters.removeAtIndex(0)
+            }
+        }
         
-        var criteria: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
-        criteria["TaskTemplateId"] = taskTemplateId
-        
-        taskTemplateParameters = ModelManager.getInstance().findTaskTemplateParameterList(criteria)
-        
-        //additional notes will always be the last record
-        taskTemplateParameters.removeLast()
-        
-        //remove alternate asset code and remove asset
-        taskTemplateParameters.removeAtIndex(1)
-        taskTemplateParameters.removeAtIndex(0)
+        AdditionalNotes.delegate = self
+        AlternateAssetCode.delegate = self
         
         //reload the table
         taskParameterTable.reloadData()
     }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        NewScancode()
+    }
 
     @IBAction func AnswerPopupChanged(sender: KFPopupSelector) {
-        print(sender.restorationIdentifier)
+        //print(sender.restorationIdentifier)
         if let currentBody: String = sender.restorationIdentifier
         {
             if(descendants[currentBody] != nil)
@@ -140,8 +162,25 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, MBProgress
         return true
     }
     
+    func textFieldDidBeginEditing(textField: UITextField) {
+        if textField.tag == 1
+        {
+            currentTemperatureControl = textField
+            startProbeTimer(1)
+        }
+    }
+    
     func textFieldDidEndEditing(textField: UITextField) {
+        if textField.tag == 1
+        {
+            stopProbeTimer()
+        }
         textField.resignFirstResponder()
+    }
+    
+    
+    func textViewDidEndEditing(textView: UITextView) {
+        textView.resignFirstResponder()
     }
     
     //MARK: UITableView delegate methods
@@ -152,133 +191,197 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, MBProgress
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
     {
-        var predecessor: String? = String?()
-        let descendant: Descendant = Descendant()
         let taskTemplateParameter: TaskTemplateParameter = taskTemplateParameters[indexPath.row]
         
-        if (taskTemplateParameter.Predecessor != nil)
+        if (cells[taskTemplateParameter.RowId] == nil )
         {
-            predecessor = taskTemplateParameter.Predecessor!
-        }
         
-        if (predecessor != nil)
-        {
-            descendant.Id = taskTemplateParameter.RowId
-            descendant.TrueValue = taskTemplateParameter.PredecessorTrueValue!
-        }
-    
+            var predecessor: String? = String?()
+            let descendant: Descendant = Descendant()
+            
+            if taskParameters[taskTemplateParameters[indexPath.row].RowId] == nil
+            {
+                let currentParameter: TaskParameter = TaskParameter()
+                currentParameter.RowId = String(NSUUID())
+                currentParameter.TaskId = Session.TaskId!
+                currentParameter.TaskTemplateParameterId = taskTemplateParameter.RowId
+                currentParameter.ParameterName = taskTemplateParameter.ParameterName
+                currentParameter.ParameterType = taskTemplateParameter.ParameterType
+                currentParameter.ParameterDisplay = taskTemplateParameter.ParameterDisplay
+                currentParameter.Collect = taskTemplateParameter.Collect
+                taskParameters[taskTemplateParameters[indexPath.row].RowId] = currentParameter
+            }
+            
+            if (taskTemplateParameter.Predecessor != nil)
+            {
+                predecessor = taskTemplateParameter.Predecessor!
+            }
+            
+            if (predecessor != nil)
+            {
+                descendant.Id = taskTemplateParameter.RowId
+                descendant.TrueValue = taskTemplateParameter.PredecessorTrueValue!
+            }
         
-        switch taskTemplateParameter.ParameterType
+            if taskTemplateParameter.ParameterName.hasPrefix("Temperature") && !taskTemplateParameter.ParameterName.hasSuffix("Set")
+            {
+                let cell = tableView.dequeueReusableCellWithIdentifier("TemperatureCell", forIndexPath: indexPath) as! TaskTemplateParameterCellTemperature
+                cell.restorationIdentifier = taskTemplateParameter.RowId
+                cell.Question.text = taskTemplateParameter.ParameterDisplay
+                cell.Answer.delegate = self
+                
+                if (taskParameters[taskTemplateParameters[indexPath.row].RowId] != nil)
+                {
+                    cell.Answer.text =  taskParameters[taskTemplateParameters[indexPath.row].RowId]!.ParameterValue
+                }
+                cell.Answer.tag = 1
+                
+                if (predecessor != nil)
+                {
+                    descendant.Control = cell.Answer
+                    
+                    if (descendants[predecessor!] == nil)
+                    {
+                        descendants[predecessor!] = [Descendant]()
+                    }
+                    descendants[predecessor!]?.append(descendant)
+                }
+                cells[taskTemplateParameter.RowId] = cell
+                return cell
+            }
+            else
+            {
+                switch taskTemplateParameter.ParameterType
+                {
+                case "Freetext":
+                    let cell = tableView.dequeueReusableCellWithIdentifier("FreetextCell", forIndexPath: indexPath) as! TaskTemplateParameterCellFreetext
+                    cell.restorationIdentifier = taskTemplateParameter.RowId
+                    cell.Question.text = taskTemplateParameter.ParameterDisplay
+                    cell.Answer.delegate = self
+                    if (taskParameters[taskTemplateParameters[indexPath.row].RowId] != nil)
+                    {
+                        cell.Answer.text =  taskParameters[taskTemplateParameters[indexPath.row].RowId]!.ParameterValue
+                    }
+                
+                    if (predecessor != nil)
+                    {
+                        descendant.Control = cell.Answer
+
+                        if (descendants[predecessor!] == nil)
+                        {
+                            descendants[predecessor!] = [Descendant]()
+                        }
+                        descendants[predecessor!]?.append(descendant)
+                    }
+                
+                    cells[taskTemplateParameter.RowId] = cell
+                    return cell
+                    
+                case "Number":
+                    let cell = tableView.dequeueReusableCellWithIdentifier("NumberCell", forIndexPath: indexPath) as! TaskTemplateParameterCellNumber
+                    cell.restorationIdentifier = taskTemplateParameter.RowId
+                    cell.Question.text = taskTemplateParameter.ParameterDisplay
+                    cell.Answer.delegate = self
+                    if (taskParameters[taskTemplateParameters[indexPath.row].RowId] != nil)
+                    {
+                        cell.Answer.text =  taskParameters[taskTemplateParameters[indexPath.row].RowId]!.ParameterValue
+                    }
+                   
+                    if (predecessor != nil)
+                    {
+                        descendant.Control = cell.Answer
+                        
+                        if (descendants[predecessor!] == nil)
+                        {
+                            descendants[predecessor!] = [Descendant]()
+                        }
+                        descendants[predecessor!]?.append(descendant)
+                    }
+                    
+                    cells[taskTemplateParameter.RowId] = cell
+                    return cell
+                    
+                case "Reference Data":
+                    let cell = tableView .dequeueReusableCellWithIdentifier("DropdownCell", forIndexPath: indexPath) as! TaskTemplateParameterCellDropdown
+                    cell.restorationIdentifier = taskTemplateParameter.RowId
+                    cell.Question.text = taskTemplateParameter.ParameterDisplay
+                    
+                    var dropdownData: [String] = []
+                    
+                    dropdownData.append("Please select")
+                    dropdownData.appendContentsOf( ModelUtility.getInstance().GetLookupList(taskTemplateParameter.ReferenceDataType!, ExtendedReferenceDataType: taskTemplateParameter.ReferenceDataExtendedType))
+
+                    var selectedIndex: Int? = 0
+                    if (taskParameters[taskTemplateParameters[indexPath.row].RowId] != nil)
+                    {
+                        var count: Int = 1 //we already have the blank row
+                        for dropdownData: String in dropdownData
+                        {
+                            let currentAnswer: String =  taskParameters[taskTemplateParameters[indexPath.row].RowId]!.ParameterValue
+                            if (dropdownData == currentAnswer) { selectedIndex = count }
+                            count += 1
+                        }
+                    }
+                    
+                    cell.AnswerSelector.restorationIdentifier = taskTemplateParameter.RowId
+                    cell.AnswerSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
+                    cell.AnswerSelector.setLabelFont(UIFont.systemFontOfSize(17))
+                    cell.AnswerSelector.setTableFont(UIFont.systemFontOfSize(17))
+                    cell.AnswerSelector.options = dropdownData.map { KFPopupSelector.Option.Text(text: $0) }
+                    cell.AnswerSelector.selectedIndex = selectedIndex
+                    cell.AnswerSelector.unselectedLabelText = "Please select"
+                    cell.AnswerSelector.displaySelectedValueInLabel = true
+
+                    if (predecessor != nil)
+                    {
+                        descendant.Control = cell.AnswerSelector
+                        
+                        if (descendants[predecessor!] == nil)
+                        {
+                            descendants[predecessor!] = [Descendant]()
+                        }
+                        descendants[predecessor!]?.append(descendant)
+                    }
+                    
+                    cells[taskTemplateParameter.RowId] = cell
+                    return cell
+
+                default:
+                    let cell = tableView.dequeueReusableCellWithIdentifier("FreetextCell", forIndexPath: indexPath) as! TaskTemplateParameterCellFreetext
+                    cell.restorationIdentifier = taskTemplateParameter.RowId
+                    cell.Question.text = taskTemplateParameter.ParameterDisplay
+
+                    if (predecessor != nil)
+                    {
+                        descendant.Control = cell.Answer
+                        
+                        if (descendants[predecessor!] == nil)
+                        {
+                            descendants[predecessor!] = [Descendant]()
+                        }
+                        descendants[predecessor!]?.append(descendant)
+                    }
+                    
+                    cells[taskTemplateParameter.RowId] = cell
+                    return cell
+                }
+            }
+        }
+        else
         {
-        case "Freetext":
-            let cell = tableView.dequeueReusableCellWithIdentifier("FreetextCell", forIndexPath: indexPath) as! TaskTemplateParameterCellFreetext
-            cell.Question.text = taskTemplateParameter.ParameterDisplay
-            cell.Answer.delegate = self
-            
-            if (predecessor != nil)
-            {
-                descendant.Control = cell.Answer
-
-                if (descendants[predecessor!] == nil)
-                {
-                    descendants[predecessor!] = [Descendant]()
-                }
-                descendants[predecessor!]?.append(descendant)
-            }
- 
-            return cell
-            
-        case "Number":
-            let cell = tableView.dequeueReusableCellWithIdentifier("NumberCell", forIndexPath: indexPath) as! TaskTemplateParameterCellNumber
-            cell.Question.text = taskTemplateParameter.ParameterDisplay
-            cell.Answer.delegate = self
-            
-            if (predecessor != nil)
-            {
-                descendant.Control = cell.Answer
-                
-                if (descendants[predecessor!] == nil)
-                {
-                    descendants[predecessor!] = [Descendant]()
-                }
-                descendants[predecessor!]?.append(descendant)
-            }
-
-            return cell
-            
-        case "Reference Data":
-            let cell = tableView .dequeueReusableCellWithIdentifier("DropdownCell", forIndexPath: indexPath) as! TaskTemplateParameterCellDropdown
-            cell.Question.text = taskTemplateParameter.ParameterDisplay
-            
-            var dropdownData: [String] = []
-            dropdownData.append("Please select")
-            dropdownData.appendContentsOf( ModelUtility.getInstance().GetLookupList(taskTemplateParameter.ReferenceDataType!, ExtendedReferenceDataType: taskTemplateParameter.ReferenceDataExtendedType))
-
-            cell.AnswerSelector.restorationIdentifier = taskTemplateParameter.RowId
-            cell.AnswerSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
-            cell.AnswerSelector.setLabelFont(UIFont.systemFontOfSize(17))
-            cell.AnswerSelector.setTableFont(UIFont.systemFontOfSize(17))
-            cell.AnswerSelector.options = dropdownData.map { KFPopupSelector.Option.Text(text: $0) }
-            cell.AnswerSelector.selectedIndex = nil
-            cell.AnswerSelector.unselectedLabelText = "Please select"
-            cell.AnswerSelector.displaySelectedValueInLabel = true
-
-            if (predecessor != nil)
-            {
-                descendant.Control = cell.AnswerSelector
-                
-                if (descendants[predecessor!] == nil)
-                {
-                    descendants[predecessor!] = [Descendant]()
-                }
-                descendants[predecessor!]?.append(descendant)
-            }
-
-            return cell
-
-        case "TextArea":
-            let cell = tableView.dequeueReusableCellWithIdentifier("TextAreaCell", forIndexPath: indexPath) as! TaskTemplateParameterCellNumber
-            cell.Question.text = taskTemplateParameter.ParameterDisplay
-            //cell.Answer.text = taskParameter.ParameterValue
-
-            if (predecessor != nil)
-            {
-                descendant.Control = cell.Answer
-                
-                if (descendants[predecessor!] == nil)
-                {
-                    descendants[predecessor!] = [Descendant]()
-                }
-                descendants[predecessor!]?.append(descendant)
-            }
-
-            return cell
-            
-        default:
-            let cell = tableView.dequeueReusableCellWithIdentifier("FreetextCell", forIndexPath: indexPath) as! TaskTemplateParameterCellFreetext
-            cell.Question.text = taskTemplateParameter.ParameterDisplay
-
-            if (predecessor != nil)
-            {
-                descendant.Control = cell.Answer
-                
-                if (descendants[predecessor!] == nil)
-                {
-                    descendants[predecessor!] = [Descendant]()
-                }
-                descendants[predecessor!]?.append(descendant)
-            }
-
-            return cell
+            return cells[taskTemplateParameter.RowId]!
         }
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         //need to work out here what type of cell so that we can return the correct height
+        //nope all are fixed height now
         return 68
     }
     
+    @IBOutlet var BluetoothButton: UIBarButtonItem!
     //MARK: Actions
+    
     
     @IBAction func CancelPressed(sender: UIBarButtonItem) {
         self.navigationController?.popViewControllerAnimated(true)
@@ -287,20 +390,148 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, MBProgress
     @IBAction func DonePressed(sender: UIBarButtonItem) {
         //do all the vlaidation
         
+        let now = NSDate()
+       
         //commit the vales
+        for (_,currentTaskParameter) in taskParameters
+        {
+            currentTaskParameter.CreatedBy = Session.OperativeId!
+            currentTaskParameter.CreatedOn = now
+            ModelManager.getInstance().addTaskParameter(currentTaskParameter)
+        }
         
         //update the task
+
+        task.LastUpdatedBy = Session.OperativeId!
+        task.LastUpdatedOn = now
+        task.CompletedDate = now
+        task.Status = "Complete"
+
+        ModelManager.getInstance().updateTask(task)
         
         //close the view
         self.navigationController?.popViewControllerAnimated(true)
     }
     
-    @IBAction func AlternateAssetCodeLaunchScan(sender: UITextField) {
-        
+    //MARK: - Scancode
+    
+    func NewScancode(){
+        if (Session.CodeScanned != nil)
+        {
+            AlternateAssetCode.text = Session.CodeScanned!
+        }
     }
     
+    //MARK: - Probe
     
+    func readingAndDisplaying()
+    {
+        if ProbeProperties.isBlueThermConnected()
+        {
+            currentReading = ProbeProperties.sensor1Reading()
+        }
+        else
+        {
+            currentReading = nil
+        }
+        
+        //set the value on the control with focus
+        currentTemperatureControl?.text = currentReading
+    }
     
+    func startProbeTimer(interval: Int)
+    {
+        let timerInterval: NSTimeInterval = NSTimeInterval(interval)
+        probeTimer.invalidate()
+        probeTimer = NSTimer.scheduledTimerWithTimeInterval(timerInterval, target: self, selector: #selector(TaskViewController.doSend), userInfo: nil, repeats: true)
+    }
     
+    func stopProbeTimer()
+    {
+        probeTimer.invalidate()
+    }
+    
+    func doSend()
+    {
+        if EAController.sharedController().callBack == nil
+        {
+            let eac: EAController =  EAController.sharedController()
+            eac.notificationCallBack = self
+            
+            if !(eac.selectedAccessory.isAwaitingUI || eac.selectedAccessory.isNoneAvailable)
+            {
+                if (eac.selectedAccessory == nil || !(eac.openSession()))
+                {
+                    NSLog("No BlueTherm Connected")
+                    readingAndDisplaying()
+                }
+                else
+                {
+                    NSLog("BlueThermConnected")
+                    eac.callBack = self
+                }
+            }
+            else
+            {
+                readingAndDisplaying()
+                return
+            }
+        }
+        EAController.doSend()
+    }
+    
+    // MARK: Probe functions
+    func settingTheProbe() {
+        print("Set reply")
+    }
+    
+    func probeButtonHasBeenPressed() {
+        print("BlueTherm button has been pressed")
+        stopProbeTimer()
+        currentTemperatureControl?.resignFirstResponder()
+    }
+    
+    func soundtheAlarmInBackground() {
+        //displayAlarm
+    }
+    
+    func blueThermConnected() {
+        print("BlueTherm has connected")
+    }
+    
+    func bluethermDisconnected() {
+        print("BlueTherm has disconnected")
+        readingAndDisplaying()
+    }
+    
+    func newBlueThermFound() {
+        print("New BlueTherm found")
+    }
+    
+    func displayEmissivity() {
+        print("Display emissivity")
+        
+        let emissivity: String = ProbeProperties.getEmissivityValue()
+        
+        print("Emissivity value: %@",emissivity)
+    }
+    
+
+    //MARK: Alert Messages Delegate
+    func alertMessagesCreateAlertViewNoConnectionFoundSHOW() {
+        Session.BluetoothProbeConnected = false
+    }
+    
+    func alertMessagesCreateAlertViewNoConnectionFoundDISMISS() {
+        Session.BluetoothProbeConnected = true
+    }
+    
+    func alertViewConnectionHasBeenLostSHOW() {
+        Session.BluetoothProbeConnected = false
+    }
+    
+    func alertViewConnectionHasBeenLostDISMISS() {
+        Session.BluetoothProbeConnected = true
+    }
 }
 

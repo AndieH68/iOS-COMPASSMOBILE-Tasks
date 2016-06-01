@@ -3,3 +3,5 @@
 //
 
 #import "FMDatabase.h"
+#import "ProbeProperties.h"
+#import "ProbeSettings.h"

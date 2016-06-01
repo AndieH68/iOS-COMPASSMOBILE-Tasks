@@ -27,6 +27,7 @@ class Session : NSObject
     static var ReferenceLists: Dictionary<String, Dictionary<String, String>> = Dictionary<String, Dictionary<String, String>>()
     static var ReverseReferenceLists: Dictionary<String, Dictionary<String, String>> = Dictionary<String, Dictionary<String, String>>()
   
+    static var CodeScanned: String? = String?()
     static var NoRequery: Bool = false
     
     static var FilterSiteId: String? = String?()
@@ -51,6 +52,8 @@ class Session : NSObject
     static var PageNumber: Int32 = 1
     static var PageSize: Int32 = 1000
     static var MaxPage: Int32 = 1
+    
+    static var BluetoothProbeConnected: Bool = false
     
     static var TaskId: String? = nil
     

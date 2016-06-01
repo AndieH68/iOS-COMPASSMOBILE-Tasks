@@ -9,7 +9,7 @@
 import UIKit
 
 class TaskTemplateParameterCellNumber: UITableViewCell {
-    
+   
     @IBOutlet var Question: UILabel!
     @IBOutlet var Answer: UITextField!
         
@@ -20,7 +20,6 @@ class TaskTemplateParameterCellNumber: UITableViewCell {
     
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-        
         // Configure the view for the selected state
     }
 }
