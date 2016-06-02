@@ -207,7 +207,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "509"
             endingLineNumber = "509"
-            landmarkName = "alertMessagesCreateAlertViewNoConnectionFoundSHOW()"
+            landmarkName = "newBlueThermFound()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -223,7 +223,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "513"
             endingLineNumber = "513"
-            landmarkName = "alertMessagesCreateAlertViewNoConnectionFoundDISMISS()"
+            landmarkName = "displayEmissivity()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -239,7 +239,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "517"
             endingLineNumber = "517"
-            landmarkName = "alertViewConnectionHasBeenLostSHOW()"
+            landmarkName = "displayEmissivity()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -255,7 +255,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "521"
             endingLineNumber = "521"
-            landmarkName = "alertViewConnectionHasBeenLostDISMISS()"
+            landmarkName = "alertMessagesCreateAlertViewNoConnectionFoundSHOW()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -282,22 +282,6 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "COMPASSMOBILE/TaskViewController.swift"
-            timestampString = "486484150.147737"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "266"
-            endingLineNumber = "266"
-            landmarkName = "tableView(_:cellForRowAtIndexPath:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "COMPASSMOBILE/TaskViewController.swift"
             timestampString = "486484156.942133"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
@@ -313,13 +297,29 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "COMPASSMOBILE/TaskViewController.swift"
-            timestampString = "486484261.059684"
+            filePath = "COMPASSMOBILE/Utility.swift"
+            timestampString = "486490902.235503"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "320"
-            endingLineNumber = "320"
-            landmarkName = "tableView(_:cellForRowAtIndexPath:)"
+            startingLineNumber = "1091"
+            endingLineNumber = "1091"
+            landmarkName = "SendTaskDetails(_:HUD:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "COMPASSMOBILE/Utility.swift"
+            timestampString = "486490970.496403"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1172"
+            endingLineNumber = "1172"
+            landmarkName = "SendTaskDetails(_:HUD:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

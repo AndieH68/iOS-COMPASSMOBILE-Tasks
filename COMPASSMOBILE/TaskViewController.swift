@@ -202,7 +202,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
             if taskParameters[taskTemplateParameters[indexPath.row].RowId] == nil
             {
                 let currentParameter: TaskParameter = TaskParameter()
-                currentParameter.RowId = String(NSUUID())
+                currentParameter.RowId = NSUUID().UUIDString
                 currentParameter.TaskId = Session.TaskId!
                 currentParameter.TaskTemplateParameterId = taskTemplateParameter.RowId
                 currentParameter.ParameterName = taskTemplateParameter.ParameterName
