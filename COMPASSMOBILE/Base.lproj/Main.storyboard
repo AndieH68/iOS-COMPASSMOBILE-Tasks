@@ -234,7 +234,6 @@
                                                             <outlet property="taskName" destination="lXN-M2-8Ne" id="z9K-sI-gPw"/>
                                                             <outlet property="taskRef" destination="kh9-lD-AIw" id="Fig-8U-Npx"/>
                                                             <outlet property="type" destination="E0N-Ix-33I" id="dX9-WT-zkf"/>
-                                                            <segue destination="N2I-qG-Bsb" kind="show" identifier="TaskSegue" id="lRd-7x-w8c"/>
                                                         </connections>
                                                     </tableViewCell>
                                                 </prototypes>
@@ -306,6 +305,7 @@
                         <outlet property="SelectedSite" destination="NkT-uv-FHB" id="nwv-cj-ADV"/>
                         <outlet property="taskTable" destination="IK6-qP-aXb" id="1je-gh-isa"/>
                         <segue destination="sXA-cZ-8Zi" kind="presentation" identifier="loginView" id="CAB-zJ-VtT"/>
+                        <segue destination="N2I-qG-Bsb" kind="show" identifier="TaskSegue" id="Qju-WR-VXh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -1063,7 +1063,7 @@
                         <viewControllerLayoutGuide type="bottom" id="dXm-hn-LT0"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="LcB-Dt-Vag">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="1200"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -1539,7 +1539,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sTG-zR-2ZJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-58" y="1032"/>
+            <point key="canvasLocation" x="-80" y="1041"/>
         </scene>
         <!--AddView-->
         <scene sceneID="V4Y-Uf-zQg">
@@ -2044,6 +2044,6 @@
         <image name="Upload" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="nE1-QS-cpL"/>
+        <segue reference="vc5-Gq-nSn"/>
     </inferredMetricsTieBreakers>
 </document>

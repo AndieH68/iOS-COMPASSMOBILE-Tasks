@@ -155,6 +155,18 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         return cell
     }
     
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        let cell: TaskCell = tableView.cellForRowAtIndexPath(indexPath) as! TaskCell
+        switch (cell.taskName)
+        {
+        case RemedialTask:
+            self.performSegueWithIdentifier("RemedialTaskSegue", sender: cell)
+        default:
+            self.performSegueWithIdentifier("TaskSegue", sender: cell)
+        }
+        
+    }
     
     //MARK: Navigation Methods
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
