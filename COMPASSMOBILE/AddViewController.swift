@@ -66,25 +66,25 @@ class AddViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        PropertyPopupSelector.unselectedLabelText = "not applicable"
+        PropertyPopupSelector.unselectedLabelText = NotApplicable
         PropertyPopupSelector.enabled = false
         
-        LocationGroupPopupSelector.unselectedLabelText = "not applicable"
+        LocationGroupPopupSelector.unselectedLabelText = NotApplicable
         LocationGroupPopupSelector.enabled = false
         
-        LocationPopupSelector.unselectedLabelText = "not applicable"
+        LocationPopupSelector.unselectedLabelText = NotApplicable
         LocationPopupSelector.enabled = false
         
-        AssetTypePopupSelector.unselectedLabelText = "not applicable"
+        AssetTypePopupSelector.unselectedLabelText = NotApplicable
         AssetTypePopupSelector.enabled = false
         
-        AssetGroupPopupSelector.unselectedLabelText = "not applicable"
+        AssetGroupPopupSelector.unselectedLabelText = NotApplicable
         AssetGroupPopupSelector.enabled = false
         
-        TaskNamePopupSelector.unselectedLabelText = "not applicable"
+        TaskNamePopupSelector.unselectedLabelText = NotApplicable
         TaskNamePopupSelector.enabled = false
         
-        AssetNumberPopupSelector.unselectedLabelText = "not applicable"
+        AssetNumberPopupSelector.unselectedLabelText = NotApplicable
         AssetNumberPopupSelector.enabled = false
         
         PopulateSiteSelector()
@@ -401,7 +401,7 @@ class AddViewController: UIViewController {
         {
             if (SitePopupSelector.selectedIndex != nil) { SitePopupSelector.selectedIndex = nil }
             SiteId = nil
-            PropertyPopupSelector.unselectedLabelText = "not applicable"
+            PropertyPopupSelector.unselectedLabelText = NotApplicable
             PropertyPopupSelector.enabled = false
         }
     }
@@ -420,7 +420,7 @@ class AddViewController: UIViewController {
         {
             if (PropertyPopupSelector.selectedIndex != nil) { PropertyPopupSelector.selectedIndex = nil }
             PropertyId = nil
-            LocationGroupPopupSelector.unselectedLabelText = "not applicable"
+            LocationGroupPopupSelector.unselectedLabelText = NotApplicable
             LocationGroupPopupSelector.enabled = false
         }
     }
@@ -441,7 +441,7 @@ class AddViewController: UIViewController {
             if (LocationGroupPopupSelector.selectedIndex != nil) { LocationGroupPopupSelector.selectedIndex = nil }
             LocationGroupId = nil
             LocationGroupName = nil
-            LocationPopupSelector.unselectedLabelText = "not applicable"
+            LocationPopupSelector.unselectedLabelText = NotApplicable
             LocationPopupSelector.enabled = false
         }
     }
@@ -461,7 +461,7 @@ class AddViewController: UIViewController {
             if (LocationPopupSelector.selectedIndex != nil) { LocationPopupSelector.selectedIndex = nil }
             LocationId = nil
             LocationName = nil
-            AssetTypePopupSelector.unselectedLabelText = "not applicable"
+            AssetTypePopupSelector.unselectedLabelText = NotApplicable
             AssetTypePopupSelector.enabled = false
         }
     }
@@ -480,7 +480,7 @@ class AddViewController: UIViewController {
         {
             if (AssetTypePopupSelector.selectedIndex != nil) { AssetTypePopupSelector.selectedIndex = nil }
             AssetType = nil
-            AssetGroupPopupSelector.unselectedLabelText = "not applicable"
+            AssetGroupPopupSelector.unselectedLabelText = NotApplicable
             AssetGroupPopupSelector.enabled = false
         }
     }
@@ -499,7 +499,7 @@ class AddViewController: UIViewController {
         {
             if (AssetGroupPopupSelector.selectedIndex != nil) { AssetGroupPopupSelector.selectedIndex = nil }
             AssetGroup = nil
-            TaskNamePopupSelector.unselectedLabelText = "not applicable"
+            TaskNamePopupSelector.unselectedLabelText = NotApplicable
             TaskNamePopupSelector.enabled = false
         }
     }
@@ -518,7 +518,7 @@ class AddViewController: UIViewController {
         {
             if (TaskNamePopupSelector.selectedIndex != nil) { TaskNamePopupSelector.selectedIndex = nil }
             TaskName = nil
-            AssetNumberPopupSelector.unselectedLabelText = "not applicable"
+            AssetNumberPopupSelector.unselectedLabelText = NotApplicable
             AssetNumberPopupSelector.enabled = false
         }
     }

@@ -18,7 +18,7 @@ class KFPopupSelector: UIControl, UIPopoverPresentationControllerDelegate {
             case Text(let t): return NSString(string:t).boundingRectWithSize(CGSize(width:1000, height:1000), options:[], attributes:[NSFontAttributeName: font], context:nil).width
             }
         }
-    }
+     }
     
     /** The options the user has to choose from */
     var options: [Option] = [] {

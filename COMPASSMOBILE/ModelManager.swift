@@ -2718,21 +2718,27 @@ class ModelManager: NSObject {
             SQLParameterPlaceholders += ", ?"
             SQLParameterValues.append(task.PPMGroup!)
         }
-        SQLParameterNames += ", [AssetType]"
-        SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(task.AssetType)
+        if task.AssetType != nil {
+            SQLParameterNames += ", [AssetType]"
+            SQLParameterPlaceholders += ", ?"
+            SQLParameterValues.append(task.AssetType!)
+        }
         SQLParameterNames += ", [TaskName]"
         SQLParameterPlaceholders += ", ?"
         SQLParameterValues.append(task.TaskName)
         SQLParameterNames += ", [Frequency]"
         SQLParameterPlaceholders += ", ?"
         SQLParameterValues.append(task.Frequency)
-        SQLParameterNames += ", [AssetId]"
-        SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(task.AssetId)
-        SQLParameterNames += ", [AssetNumber]"
-        SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(task.AssetNumber)
+        if task.AssetId != nil {
+            SQLParameterNames += ", [AssetId]"
+            SQLParameterPlaceholders += ", ?"
+            SQLParameterValues.append(task.AssetId!)
+        }
+        if task.AssetNumber != nil {
+            SQLParameterNames += ", [AssetNumber]"
+            SQLParameterPlaceholders += ", ?"
+            SQLParameterValues.append(task.AssetNumber!)
+        }
         SQLParameterNames += ", [ScheduledDate]"
         SQLParameterPlaceholders += ", ?"
         SQLParameterValues.append(task.ScheduledDate)
@@ -2838,16 +2844,22 @@ class ModelManager: NSObject {
             SQLParameterNames += ", [PPMGroup]=?"
             SQLParameterValues.append(task.PPMGroup!)
         }
-        SQLParameterNames += ", [AssetType]=?"
-        SQLParameterValues.append(task.AssetType)
+        if task.AssetType != nil {
+            SQLParameterNames += ", [AssetType]=?"
+            SQLParameterValues.append(task.AssetType!)
+        }
         SQLParameterNames += ", [TaskName]=?"
         SQLParameterValues.append(task.TaskName)
         SQLParameterNames += ", [Frequency]=?"
         SQLParameterValues.append(task.Frequency)
-        SQLParameterNames += ", [AssetId]=?"
-        SQLParameterValues.append(task.AssetId)
-        SQLParameterNames += ", [AssetNumber]=?"
-        SQLParameterValues.append(task.AssetNumber)
+        if task.AssetId != nil {
+            SQLParameterNames += ", [AssetId]=?"
+            SQLParameterValues.append(task.AssetId!)
+        }
+        if task.AssetNumber != nil {
+            SQLParameterNames += ", [AssetNumber]=?"
+            SQLParameterValues.append(task.AssetNumber!)
+        }
         SQLParameterNames += ", [ScheduledDate]=?"
         SQLParameterValues.append(task.ScheduledDate)
         if task.CompletedDate != nil {
@@ -2941,11 +2953,17 @@ class ModelManager: NSObject {
                 if !resultSet.columnIsNull("PPMGroup") {
                     resultTask.PPMGroup = resultSet.stringForColumn("PPMGroup")
                 }
-                resultTask.AssetType = resultSet.stringForColumn("AssetType")
+                if !resultSet.columnIsNull("AssetType") {
+                    resultTask.AssetType = resultSet.stringForColumn("AssetType")
+                }
                 resultTask.TaskName = resultSet.stringForColumn("TaskName")
                 resultTask.Frequency = resultSet.stringForColumn("Frequency")
-                resultTask.AssetId = resultSet.stringForColumn("AssetId")
-                resultTask.AssetNumber = resultSet.stringForColumn("AssetNumber")
+                if !resultSet.columnIsNull("AssetId") {
+                    resultTask.AssetId = resultSet.stringForColumn("AssetId")
+                }
+                if !resultSet.columnIsNull("AssetNumber") {
+                    resultTask.AssetNumber = resultSet.stringForColumn("AssetNumber")
+                }
                 resultTask.ScheduledDate = resultSet.dateForColumn("ScheduledDate")
                 if !resultSet.columnIsNull("CompletedDate") {
                     resultTask.CompletedDate = resultSet.dateForColumn("CompletedDate")
@@ -3016,11 +3034,17 @@ class ModelManager: NSObject {
                 if !resultSet.columnIsNull("PPMGroup") {
                     task.PPMGroup = resultSet.stringForColumn("PPMGroup")
                 }
-                task.AssetType = resultSet.stringForColumn("AssetType")
+                if !resultSet.columnIsNull("AssetType") {
+                    task.AssetType = resultSet.stringForColumn("AssetType")
+                }
                 task.TaskName = resultSet.stringForColumn("TaskName")
                 task.Frequency = resultSet.stringForColumn("Frequency")
-                task.AssetId = resultSet.stringForColumn("AssetId")
-                task.AssetNumber = resultSet.stringForColumn("AssetNumber")
+                if !resultSet.columnIsNull("AssetId") {
+                    task.AssetId = resultSet.stringForColumn("AssetId")
+                }
+                if !resultSet.columnIsNull("AssetNumber") {
+                    task.AssetNumber = resultSet.stringForColumn("AssetNumber")
+                }
                 task.ScheduledDate = resultSet.dateForColumn("ScheduledDate")
                 if !resultSet.columnIsNull("CompletedDate") {
                     task.CompletedDate = resultSet.dateForColumn("CompletedDate")
@@ -3151,6 +3175,9 @@ class ModelManager: NSObject {
             }
         }
         
+        whereClause += " AND [TaskName] != ? "
+        whereValues.append(RemedialTask)
+        
         var whereClausePredicate: String = String()
         if (onlyPending)
         {
@@ -3217,11 +3244,17 @@ class ModelManager: NSObject {
                     if !resultSet.columnIsNull("PPMGroup") {
                         task.PPMGroup = resultSet.stringForColumn("PPMGroup")
                     }
-                    task.AssetType = resultSet.stringForColumn("AssetType")
+                    if !resultSet.columnIsNull("AssetType") {
+                        task.AssetType = resultSet.stringForColumn("AssetType")
+                    }
                     task.TaskName = resultSet.stringForColumn("TaskName")
                     task.Frequency = resultSet.stringForColumn("Frequency")
-                    task.AssetId = resultSet.stringForColumn("AssetId")
-                    task.AssetNumber = resultSet.stringForColumn("AssetNumber")
+                    if !resultSet.columnIsNull("AssetId") {
+                        task.AssetId = resultSet.stringForColumn("AssetId")
+                    }
+                    if !resultSet.columnIsNull("AssetNumber") {
+                        task.AssetNumber = resultSet.stringForColumn("AssetNumber")
+                    }
                     task.ScheduledDate = resultSet.dateForColumn("ScheduledDate")
                     if !resultSet.columnIsNull("CompletedDate") {
                         task.CompletedDate = resultSet.dateForColumn("CompletedDate")

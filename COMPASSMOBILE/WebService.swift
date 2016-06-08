@@ -12,7 +12,7 @@ class WebService : NSObject {
     
     class func validateOperative (username: String, password: String) -> NSData? {
         
-        let urlString = "http://" + Session.Server + "/services/servicepdautility2.asmx"
+        let urlString = "http://" + Session.Server + "/services/servicepdautility2osx.asmx"
         let url = NSURL(string: urlString)
         
         let theSession = NSURLSession.sharedSession()
@@ -56,7 +56,7 @@ class WebService : NSObject {
         var data: NSData?
         
         //autoreleasepool{
-            let urlString = "http://" + Session.Server + "/services/servicepdautility2.asmx"
+            let urlString = "http://" + Session.Server + "/services/servicepdautility2osx.asmx"
             let url = NSURL(string: urlString)
         
             let theSession = NSURLSession.sharedSession()
@@ -103,7 +103,7 @@ class WebService : NSObject {
         var data: NSData?
         
         //autoreleasepool{
-            let urlString = "http://" + Session.Server + "/services/servicepdautility2.asmx"
+            let urlString = "http://" + Session.Server + "/services/servicepdautility2osx.asmx"
             let url = NSURL(string: urlString)
             
             let theSession = NSURLSession.sharedSession()

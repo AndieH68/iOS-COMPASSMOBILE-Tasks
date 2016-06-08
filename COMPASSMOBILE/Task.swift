@@ -28,11 +28,11 @@ class Task: NSObject {
     var TaskTemplateId: String? = nil
     var TaskRef: String = String()
     var PPMGroup: String? = nil
-    var AssetType: String = String()
+    var AssetType: String? = nil
     var TaskName: String = String()
     var Frequency: String = String()
-    var AssetId: String = String()
-    var AssetNumber: String = String()
+    var AssetId: String? = nil
+    var AssetNumber: String? = nil
     var ScheduledDate: NSDate = NSDate()
     var CompletedDate: NSDate? = nil
     var Status: String = String()
@@ -47,7 +47,7 @@ class Task: NSObject {
     // MARK: - Contructors
     
     convenience
-    init(rowId: String, createdBy: String, createdOn: NSDate, lastUpdatedBy: String?, lastUpdatedOn: NSDate?, deleted: NSDate?, organisationId: String, siteId: String, propertyId: String, locationId: String, locationGroupName: String, locationName: String, room: String?, taskTemplateId: String?, taskRef: String, PPMGroup: String?, assetType: String, taskName: String, frequency: String, assetId: String, assetNumber: String, scheduledDate: NSDate, completedDate: NSDate?, status: String, priority: Int, estimatedDuration: Int?, operativeId: String?, actualDuration: Int?, travelDuration: Int?, comments: String?, alternateAssetCode: String?) {
+    init(rowId: String, createdBy: String, createdOn: NSDate, lastUpdatedBy: String?, lastUpdatedOn: NSDate?, deleted: NSDate?, organisationId: String, siteId: String, propertyId: String, locationId: String, locationGroupName: String, locationName: String, room: String?, taskTemplateId: String?, taskRef: String, PPMGroup: String?, assetType: String?, taskName: String, frequency: String, assetId: String?, assetNumber: String?, scheduledDate: NSDate, completedDate: NSDate?, status: String, priority: Int, estimatedDuration: Int?, operativeId: String?, actualDuration: Int?, travelDuration: Int?, comments: String?, alternateAssetCode: String?) {
         self.init()
         self.RowId = rowId
         self.CreatedBy = createdBy
@@ -126,11 +126,17 @@ class Task: NSObject {
         if XMLElement.attributes.keys.contains("PPMGroup") {
             if XMLElement.attributes["PPMGroup"] != "" {
                 self.PPMGroup = XMLElement.attributes["PPMGroup"]!}}
-        self.AssetType = XMLElement.attributes["AssetType"]!
+        if XMLElement.attributes.keys.contains("AssetType") {
+            if XMLElement.attributes["AssetType"] != "" {
+                self.AssetType = XMLElement.attributes["AssetType"]!}}
         self.TaskName = XMLElement.attributes["TaskName"]!
         self.Frequency = XMLElement.attributes["Frequency"]!
-        self.AssetId = XMLElement.attributes["AssetId"]!
-        self.AssetNumber = XMLElement.attributes["AssetNumber"]!
+        if XMLElement.attributes.keys.contains("AssetId") {
+            if XMLElement.attributes["AssetId"] != "" {
+                self.AssetId = XMLElement.attributes["AssetId"]!}}
+        if XMLElement.attributes.keys.contains("AssetNumber") {
+            if XMLElement.attributes["AssetNumber"] != "" {
+                self.AssetNumber = XMLElement.attributes["AssetNumber"]!}}
         self.ScheduledDate = NSDate(dateString: XMLElement.attributes["ScheduledDate"]!)
         if XMLElement.attributes.keys.contains("CompletedDate") {
             if XMLElement.attributes["CompletedDate"] != "" {

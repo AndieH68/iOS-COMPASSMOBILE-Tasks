@@ -12,41 +12,43 @@ import UIKit
 class SettingsViewController: UITableViewController, MBProgressHUDDelegate
 {
     
-    var selfHUD: MBProgressHUD?
+    var headsUpDisplay: MBProgressHUD?
     var eac: EAController?
 
     @IBOutlet var SelectedProbeName: UILabel!
+    @IBOutlet var TaskTiming: UISwitch!
+    @IBOutlet var TemperatureProfile: UISwitch!
     @IBOutlet var CompletedTasks: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         CompletedTasks.text = String(ModelUtility.getInstance().GetCompletedTaskCount())
         
+        TaskTiming.on = Session.TaskTiming
+        TemperatureProfile.on = Session.TemperatureProfile
+        
     }
-   
-    override func viewDidAppear(animated: Bool) {
+    
+    override func viewWillAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
         if let currentView: UIView = self.navigationController!.view
         {
-            selfHUD = MBProgressHUD(view: currentView)
-        
-            currentView.addSubview(selfHUD!)
-        
+            headsUpDisplay = MBProgressHUD(view: currentView)
+            
+            currentView.addSubview(headsUpDisplay!)
+            
             //set the HUD mode
-            selfHUD!.mode = .DeterminateHorizontalBar;
+            headsUpDisplay!.mode = .DeterminateHorizontalBar;
             
             // Register for HUD callbacks so we can remove it from the window at the right time
-            selfHUD!.delegate = self
+            headsUpDisplay!.delegate = self
         }
-        
-        if Session.BluetoothProbeConnected
-        {
-            print("Connected")
-            
-        }
-        
     }
+   
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+      }
     
     // MARK: - User preferences
     @IBAction func SelectProbe(sender: UIButton) {
@@ -175,45 +177,44 @@ class SettingsViewController: UITableViewController, MBProgressHUDDelegate
                 print("default")
             }
             
-        case 3:
-            //Logout
-            Session.OperativeId = nil
-            Session.OrganisationId = "00000000-0000-0000-0000-000000000000"
-            self.navigationController?.popViewControllerAnimated(true)
-            
         default:
             print("default")
         }
     }
     
+    @IBAction func Logout(sender: UIBarButtonItem) {
+        Session.OperativeId = nil
+        Session.OrganisationId = "00000000-0000-0000-0000-000000000000"
+        self.navigationController?.popViewControllerAnimated(true)
+    }
 
     // MARK: - Action Handlers
 
     func UploadHandler (actionTarget: UIAlertAction) {
 
-        selfHUD!.labelText = "Uploading"
-        selfHUD!.showWhileExecuting({Utility.SendTasks(self, HUD: self.selfHUD)}, animated: true)
+        headsUpDisplay!.labelText = "Uploading"
+        headsUpDisplay!.showWhileExecuting({Utility.SendTasks(self, HUD: self.headsUpDisplay)}, animated: true)
 
     }
     
     func ResynchroniseHandler (actionTarget: UIAlertAction) {
 
-        selfHUD!.labelText = "Downloading"
-        selfHUD!.showWhileExecuting({Utility.DownloadAll(self, HUD: self.selfHUD)}, animated: true)
+        headsUpDisplay!.labelText = "Downloading"
+        headsUpDisplay!.showWhileExecuting({Utility.DownloadAll(self, HUD: self.headsUpDisplay)}, animated: true)
 
     }
     
     func ResetSynchronisationHandler (actionTarget: UIAlertAction) {
 
-        selfHUD!.labelText = "Resetting"
-        selfHUD!.showWhileExecuting({Utility.ResetSynchronisationDates(self, HUD: self.selfHUD)}, animated: true)
+        headsUpDisplay!.labelText = "Resetting"
+        headsUpDisplay!.showWhileExecuting({Utility.ResetSynchronisationDates(self, HUD: self.headsUpDisplay)}, animated: true)
 
     }
     
     func ResetTaskHandler (actionTarget: UIAlertAction) {
 
-        selfHUD!.labelText = "Resetting"
-        selfHUD!.showWhileExecuting({Utility.ResetTasks(self, HUD: self.selfHUD)}, animated: true)
+        headsUpDisplay!.labelText = "Resetting"
+        headsUpDisplay!.showWhileExecuting({Utility.ResetTasks(self, HUD: self.headsUpDisplay)}, animated: true)
 
     }
     
@@ -237,8 +238,8 @@ class SettingsViewController: UITableViewController, MBProgressHUDDelegate
     
     func ResetAllDataHandler (actionTarget: UIAlertAction) {
 
-        selfHUD!.labelText = "Resetting"
-        selfHUD!.showWhileExecuting({Utility.ResetAllData(self, HUD: self.selfHUD)}, animated: true)
+        headsUpDisplay!.labelText = "Resetting"
+        headsUpDisplay!.showWhileExecuting({Utility.ResetAllData(self, HUD: self.headsUpDisplay)}, animated: true)
         
         //Logout
         Session.OperativeId = nil

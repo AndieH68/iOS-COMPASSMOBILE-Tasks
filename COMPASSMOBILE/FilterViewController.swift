@@ -82,25 +82,25 @@ class FilterViewController: UIViewController {
      
         JustMyTasks.on = Session.FilterJustMyTasks
  
-        PropertyPopupSelector.unselectedLabelText = "not applicable"
+        PropertyPopupSelector.unselectedLabelText = NotApplicable
         PropertyPopupSelector.enabled = false
         
-        AssetGroupPopupSelector.unselectedLabelText = "not applicable"
+        AssetGroupPopupSelector.unselectedLabelText = NotApplicable
         AssetGroupPopupSelector.enabled = false
         
-        TaskNamePopupSelector.unselectedLabelText = "not applicable"
+        TaskNamePopupSelector.unselectedLabelText = NotApplicable
         TaskNamePopupSelector.enabled = false
         
-        AssetTypePopupSelector.unselectedLabelText = "not applicable"
+        AssetTypePopupSelector.unselectedLabelText = NotApplicable
         AssetTypePopupSelector.enabled = false
         
-        LocationGroupPopupSelector.unselectedLabelText = "not applicable"
+        LocationGroupPopupSelector.unselectedLabelText = NotApplicable
         LocationGroupPopupSelector.enabled = false
         
-        LocationPopupSelector.unselectedLabelText = "not applicable"
+        LocationPopupSelector.unselectedLabelText = NotApplicable
         LocationPopupSelector.enabled = false
         
-        AssetNumberPopupSelector.unselectedLabelText = "not applicable"
+        AssetNumberPopupSelector.unselectedLabelText = NotApplicable
         AssetNumberPopupSelector.enabled = false
         
         PopulateSiteSelector()
@@ -496,7 +496,7 @@ class FilterViewController: UIViewController {
             if (SitePopupSelector.selectedIndex != nil) { SitePopupSelector.selectedIndex = nil }
             Session.FilterSiteId = nil
             Session.FilterSiteName = nil
-            PropertyPopupSelector.unselectedLabelText = "not applicable"
+            PropertyPopupSelector.unselectedLabelText = NotApplicable
             PropertyPopupSelector.enabled = false
         }
     }
@@ -521,10 +521,10 @@ class FilterViewController: UIViewController {
             if (PropertyPopupSelector.selectedIndex != nil) { PropertyPopupSelector.selectedIndex = nil }
             Session.FilterPropertyId = nil
             Session.FilterPropertyName = nil
-            AssetGroupPopupSelector.unselectedLabelText = "not applicable"
+            AssetGroupPopupSelector.unselectedLabelText = NotApplicable
             AssetGroupPopupSelector.enabled = false
             
-            LocationGroupPopupSelector.unselectedLabelText = "not applicable"
+            LocationGroupPopupSelector.unselectedLabelText = NotApplicable
             LocationGroupPopupSelector.enabled = false
         }
     }
@@ -570,7 +570,7 @@ class FilterViewController: UIViewController {
         {
             if (AssetGroupPopupSelector.selectedIndex != nil) { AssetGroupPopupSelector.selectedIndex = nil }
             Session.FilterAssetGroup = nil
-            TaskNamePopupSelector.unselectedLabelText = "not applicable"
+            TaskNamePopupSelector.unselectedLabelText = NotApplicable
             TaskNamePopupSelector.enabled = false
         }
     }
@@ -596,7 +596,7 @@ class FilterViewController: UIViewController {
         {
             if (TaskNamePopupSelector.selectedIndex != nil) { TaskNamePopupSelector.selectedIndex = nil }
             Session.FilterTaskName = nil
-            AssetTypePopupSelector.unselectedLabelText = "not applicable"
+            AssetTypePopupSelector.unselectedLabelText = NotApplicable
             AssetTypePopupSelector.enabled = false
         }
     }
@@ -628,7 +628,7 @@ class FilterViewController: UIViewController {
         {
             if (LocationGroupPopupSelector.selectedIndex != nil) { LocationGroupPopupSelector.selectedIndex = nil }
             Session.FilterLocationGroup = nil
-            LocationPopupSelector.unselectedLabelText = "not applicable"
+            LocationPopupSelector.unselectedLabelText = NotApplicable
             LocationPopupSelector.enabled = false
         }
     }
@@ -647,7 +647,7 @@ class FilterViewController: UIViewController {
         {
             if (LocationPopupSelector.selectedIndex != nil) { LocationPopupSelector.selectedIndex = nil }
             Session.FilterLocation = nil
-            AssetNumberPopupSelector.unselectedLabelText = "not applicable"
+            AssetNumberPopupSelector.unselectedLabelText = NotApplicable
             AssetNumberPopupSelector.enabled = false
         }
     }

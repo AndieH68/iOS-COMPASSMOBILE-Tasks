@@ -29,6 +29,7 @@ let DateFormatNoNano: String = "yyyy-MM-dd'T'HH:mm:ss"
 let DateFormatNoTime: String = "yyyy-MM-dd"
 let DateFormatStartOfDay: String = "yyyy-MM-dd'T'00:00:00.000"
 let DateFormatStartOfMonth: String = "yyyy-MM-01'T'00:00:00.000"
+let DateFormatForTaskName: String = "yyMMddhhmm"
 
 let BaseDate: NSDate = NSDate(dateString: "2000-01-01T00:00:00.000")
 
@@ -36,3 +37,5 @@ let EmptyGuid: String = "00000000-0000-0000-0000-000000000000"
 
 let RemedialTask: String = "Remedial Task"
 let Accessible: String = "Accessible"
+let NotApplicable: String = "Not applicable"
+let PleaseSelect: String = "Please select"

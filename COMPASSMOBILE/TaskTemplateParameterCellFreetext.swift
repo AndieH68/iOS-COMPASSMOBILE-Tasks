@@ -12,7 +12,6 @@ class TaskTemplateParameterCellFreetext: UITableViewCell {
 
     @IBOutlet var Question: UILabel!
     @IBOutlet var Answer: UITextField!
-    
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -20,7 +19,14 @@ class TaskTemplateParameterCellFreetext: UITableViewCell {
     }
     
     override func setSelected(selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
+        //super.setSelected(selected, animated: animated)
         // Configure the view for the selected state
+    }
+    
+    
+    
+    func value() -> String?
+    {
+        return Answer.text
     }
 }
