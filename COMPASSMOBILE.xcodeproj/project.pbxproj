@@ -49,6 +49,7 @@
 		A4A522F51C43F4A500D16A9A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4A522F31C43F4A500D16A9A /* Main.storyboard */; };
 		A4A522F81C43F4A500D16A9A /* COMPASSMOBILE.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A4A522F61C43F4A500D16A9A /* COMPASSMOBILE.xcdatamodeld */; };
 		A4D326581D07011D00EDEC7F /* TaskTemplateParameterFormItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D326571D07011D00EDEC7F /* TaskTemplateParameterFormItem.swift */; };
+		A4D3265A1D08726700EDEC7F /* RemedialTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D326591D08726700EDEC7F /* RemedialTaskViewController.swift */; };
 		A4DC551D1CEF0C9700833910 /* TaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4DC551C1CEF0C9700833910 /* TaskViewController.swift */; };
 		A4E56D891CF334C800E520A7 /* TaskTemplateParameterCellTextArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4E56D881CF334C800E520A7 /* TaskTemplateParameterCellTextArea.swift */; };
 		A4EDA3931C4E98C900667987 /* AEXML.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4EDA3921C4E98C900667987 /* AEXML.swift */; };
@@ -111,6 +112,7 @@
 		A4A522F71C43F4A500D16A9A /* COMPASSMOBILE.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = COMPASSMOBILE.xcdatamodel; sourceTree = "<group>"; };
 		A4A522FE1C43F4A500D16A9A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A4D326571D07011D00EDEC7F /* TaskTemplateParameterFormItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskTemplateParameterFormItem.swift; sourceTree = "<group>"; };
+		A4D326591D08726700EDEC7F /* RemedialTaskViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemedialTaskViewController.swift; sourceTree = "<group>"; };
 		A4DC551C1CEF0C9700833910 /* TaskViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskViewController.swift; sourceTree = "<group>"; };
 		A4E56D881CF334C800E520A7 /* TaskTemplateParameterCellTextArea.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskTemplateParameterCellTextArea.swift; sourceTree = "<group>"; };
 		A4EDA3921C4E98C900667987 /* AEXML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AEXML.swift; path = ../AEXML.swift; sourceTree = "<group>"; };
@@ -200,6 +202,7 @@
 			children = (
 				A4FAB4DF1CF700E500766F3D /* MainNavigationController.swift */,
 				A4DC551C1CEF0C9700833910 /* TaskViewController.swift */,
+				A4D326591D08726700EDEC7F /* RemedialTaskViewController.swift */,
 				A49455E81C7CBED600BE6247 /* MainViewController.swift */,
 				A407DA7F1C44105700251228 /* LoginViewController.swift */,
 				A420ACEA1C7F656E003D4CA3 /* AddViewController.swift */,
@@ -395,6 +398,7 @@
 				A45CD6E31C577D7600C17BD7 /* Organisation.swift in Sources */,
 				A40BB5591C4FE958005C2AE6 /* FMDatabaseAdditions.m in Sources */,
 				A45CD6DB1C577D3000C17BD7 /* Asset.swift in Sources */,
+				A4D3265A1D08726700EDEC7F /* RemedialTaskViewController.swift in Sources */,
 				A40BB55C1C4FE958005C2AE6 /* FMResultSet.m in Sources */,
 				A40FC1BE1CF28038003B1413 /* TaskTemplateParameterCellDropdown.swift in Sources */,
 				A40FC1BC1CF28023003B1413 /* TaskTemplateParameterCellNumber.swift in Sources */,

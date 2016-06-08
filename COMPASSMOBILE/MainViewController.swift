@@ -158,7 +158,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
         let cell: TaskCell = tableView.cellForRowAtIndexPath(indexPath) as! TaskCell
-        switch (cell.taskName)
+        switch (cell.taskName.text!)
         {
         case RemedialTask:
             self.performSegueWithIdentifier("RemedialTaskSegue", sender: cell)
@@ -172,17 +172,17 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier != nil)
         {
-
-           switch segue.identifier!
+            switch segue.identifier!
             {
                 case "TaskSegue":
                     Session.TaskId = (sender as! TaskCell).taskId
-
-            default:
-                print("Default")
-            
+                
+                case "RemedialTaskSegue":
+                    Session.TaskId = (sender as! TaskCell).taskId
+                
+                default:
+                    print("Default")
             }
-        
         }
     }
 }

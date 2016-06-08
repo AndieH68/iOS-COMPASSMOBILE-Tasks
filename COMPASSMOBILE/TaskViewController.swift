@@ -47,6 +47,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
     //standard actions
     override func viewDidLoad() {
         super.viewDidLoad()
+        Session.CodeScanned = nil
         
         task = ModelManager.getInstance().getTask(Session.TaskId!)!
         
@@ -387,6 +388,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
     }
     
     func LeaveTask (actionTarget: UIAlertAction) {
+        Session.CodeScanned = nil
         self.navigationController?.popViewControllerAnimated(true)
     }
 
@@ -603,7 +605,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
         currentTaskParameter.ParameterType = removeAssetParameter.ParameterType
         currentTaskParameter.ParameterDisplay = removeAssetParameter.ParameterDisplay
         currentTaskParameter.Collect = removeAssetParameter.Collect
-        currentTaskParameter.ParameterValue = RemoveAsset.on ? "true" : "false"
+        currentTaskParameter.ParameterValue = (RemoveAsset.on ? "true" : "false")
         ModelManager.getInstance().addTaskParameter(currentTaskParameter)
 
         currentTaskParameter = TaskParameter()
@@ -660,6 +662,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
         ModelManager.getInstance().updateTask(task)
         
         Utility.SendTasks(self.navigationController!, HUD: nil)
+        Session.CodeScanned = nil
         
         //close the view
         self.navigationController?.popViewControllerAnimated(true)

@@ -3175,8 +3175,8 @@ class ModelManager: NSObject {
             }
         }
         
-        whereClause += " AND [TaskName] != ? "
-        whereValues.append(RemedialTask)
+//        whereClause += " AND [TaskName] != ? "
+//        whereValues.append(RemedialTask)
         
         var whereClausePredicate: String = String()
         if (onlyPending)
