@@ -230,7 +230,6 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
 
                 var selectedItem: Int = 0
                 
-                print(taskTemplateParameterFormItem.TemplateParameter.ParameterName)
                 if taskTemplateParameterFormItem.SelectedItem != nil
                 {
                     var count: Int = 0
@@ -389,6 +388,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
     
     func LeaveTask (actionTarget: UIAlertAction) {
         Session.CodeScanned = nil
+        EAController.sharedController().callBack = nil
         self.navigationController?.popViewControllerAnimated(true)
     }
 
@@ -398,7 +398,6 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
         for (_,taskTemplateParameterFormItem) in taskTemplateParameterFormItems
         {
             let taskTemplateParameter: TaskTemplateParameter = taskTemplateParameterFormItem.TemplateParameter
-            print(taskTemplateParameter.ParameterName)
             if !( (taskTemplateParameter.ParameterName == "TemperatureHot" && HotType == "None")
                 || (taskTemplateParameter.ParameterName == "TemperatureCold" && ColdType == "None")
                 || (taskTemplateParameter.ParameterName == "RemoveAsset")
@@ -663,6 +662,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
         
         Utility.SendTasks(self.navigationController!, HUD: nil)
         Session.CodeScanned = nil
+        EAController.sharedController().callBack = nil
         
         //close the view
         self.navigationController?.popViewControllerAnimated(true)
@@ -708,8 +708,6 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
     
     func doSend()
     {
-        if ProbeProperties.isBlueThermConnected()
-        {
        if EAController.sharedController().callBack == nil
         {
             let eac: EAController =  EAController.sharedController()
@@ -735,7 +733,6 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
             }
         }
         EAController.doSend()
-        }
     }
     
     // MARK: Probe functions
