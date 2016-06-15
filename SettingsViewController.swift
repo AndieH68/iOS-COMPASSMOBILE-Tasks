@@ -24,9 +24,6 @@ class SettingsViewController: UITableViewController, MBProgressHUDDelegate
         super.viewDidLoad()
         CompletedTasks.text = String(ModelUtility.getInstance().GetCompletedTaskCount())
         
-        TaskTiming.on = Session.TaskTiming
-        TemperatureProfile.on = Session.TemperatureProfile
-        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -55,18 +52,7 @@ class SettingsViewController: UITableViewController, MBProgressHUDDelegate
         EAController.sharedController().showBlueThermDeviceList()
     }
     
-    @IBAction func TaskTiming(sender: UISwitch) {
-        Session.TaskTiming = sender.on
-        let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.setBool(Session.TaskTiming, forKey: "TaskTiming")
-    }
-    
-    @IBAction func TemperatureProfile(sender: UISwitch) {
-        Session.TemperatureProfile = sender.on
-        let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.setBool(Session.TemperatureProfile, forKey: "TemperatureProfile")
-    }
-   
+  
     // MARK: - Navigation
     
     @IBAction func Done(sender: UIBarButtonItem) {
@@ -79,7 +65,7 @@ class SettingsViewController: UITableViewController, MBProgressHUDDelegate
         
         switch indexPath.section
         {
-        case 2:
+        case 1:
             
             switch indexPath.row
             {
@@ -177,6 +163,12 @@ class SettingsViewController: UITableViewController, MBProgressHUDDelegate
                 print("default")
             }
             
+        case 2:
+            let urlString = "http://" + Session.Server + "/HelpDocuments/COMPASSMOBILE/COMPASS%20MOBILE%20User%20Guide.pdf"
+            let url = NSURL(string: urlString)
+            let application = UIApplication.sharedApplication()
+            application.openURL(url!)
+        
         default:
             print("default")
         }

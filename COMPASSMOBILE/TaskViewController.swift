@@ -112,6 +112,32 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         NewScancode()
+        if EAController.sharedController().callBack == nil
+        {
+            let eac: EAController =  EAController.sharedController()
+            eac.notificationCallBack = self
+            
+            if !(eac.selectedAccessory.isAwaitingUI || eac.selectedAccessory.isNoneAvailable)
+            {
+                if (eac.selectedAccessory == nil || !(eac.openSession()))
+                {
+                    NSLog("No BlueTherm Connected")
+                    Session.BluetoothProbeConnected = false
+                    readingAndDisplaying()
+                }
+                else
+                {
+                    NSLog("BlueThermConnected")
+                    Session.BluetoothProbeConnected = true
+                    eac.callBack = self
+                }
+            }
+            else
+            {
+                //readingAndDisplaying()
+                return
+            }
+        }
     }
 
     //MARK: UITableView delegate methods
@@ -329,22 +355,27 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
     }
     
     func textFieldDidBeginEditing(textField: UITextField) {
-        if textField.tag == 1
+        if (textField.tag == 1 && Session.BluetoothProbeConnected)
         {
             currentTemperatureControl = textField
-            startProbeTimer(1)
+            currentTemperatureControl!.enabled = false
+            startProbeTimer(0.25)
         }
         self.addDoneButtonOnKeyboard(textField)
     }
     
     func textFieldDidEndEditing(textField: UITextField) {
-        if textField.tag == 1
+        if (textField.tag == 1 && Session.BluetoothProbeConnected)
         {
             stopProbeTimer()
+            currentTemperatureControl!.enabled = true
         }
-        if let currentTaskTemplateParameterFormItem: TaskTemplateParameterFormItem = taskTemplateParameterFormItems[textField.restorationIdentifier!]
+        if (textField.restorationIdentifier != nil)
         {
-            currentTaskTemplateParameterFormItem.SelectedItem = textField.text
+            if let currentTaskTemplateParameterFormItem: TaskTemplateParameterFormItem = taskTemplateParameterFormItems[textField.restorationIdentifier!]
+            {
+                currentTaskTemplateParameterFormItem.SelectedItem = textField.text
+            }
         }
         textField.resignFirstResponder()
     }
@@ -357,9 +388,12 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
     }
     
     func textViewDidEndEditing(textView: UITextView) {
-        if let currentTaskTemplateParameterFormItem: TaskTemplateParameterFormItem = taskTemplateParameterFormItems[textView.restorationIdentifier!]
+        if (textView.restorationIdentifier != nil)
         {
-            currentTaskTemplateParameterFormItem.SelectedItem = textView.text
+            if let currentTaskTemplateParameterFormItem: TaskTemplateParameterFormItem = taskTemplateParameterFormItems[textView.restorationIdentifier!]
+            {
+                currentTaskTemplateParameterFormItem.SelectedItem = textView.text
+            }
         }
         textView.resignFirstResponder()
     }
@@ -694,7 +728,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
         currentTemperatureControl?.text = currentReading
     }
     
-    func startProbeTimer(interval: Int)
+    func startProbeTimer(interval: Double)
     {
         let timerInterval: NSTimeInterval = NSTimeInterval(interval)
         probeTimer.invalidate()
@@ -708,30 +742,6 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
     
     func doSend()
     {
-       if EAController.sharedController().callBack == nil
-        {
-            let eac: EAController =  EAController.sharedController()
-            eac.notificationCallBack = self
-            
-            if !(eac.selectedAccessory.isAwaitingUI || eac.selectedAccessory.isNoneAvailable)
-            {
-                if (eac.selectedAccessory == nil || !(eac.openSession()))
-                {
-                    NSLog("No BlueTherm Connected")
-                    readingAndDisplaying()
-                }
-                else
-                {
-                    NSLog("BlueThermConnected")
-                    eac.callBack = self
-                }
-            }
-            else
-            {
-                readingAndDisplaying()
-                return
-            }
-        }
         EAController.doSend()
     }
     
@@ -743,7 +753,18 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
     func probeButtonHasBeenPressed() {
         print("BlueTherm button has been pressed")
         stopProbeTimer()
-        currentTemperatureControl?.resignFirstResponder()
+        if currentTemperatureControl != nil
+        {
+            currentTemperatureControl!.enabled = true
+            if (currentTemperatureControl!.restorationIdentifier != nil)
+            {
+                if let currentTaskTemplateParameterFormItem: TaskTemplateParameterFormItem = taskTemplateParameterFormItems[currentTemperatureControl!.restorationIdentifier!]
+                {
+                    currentTaskTemplateParameterFormItem.SelectedItem = currentTemperatureControl!.text
+                }
+            }
+            currentTemperatureControl!.resignFirstResponder()
+        }
     }
     
     func soundtheAlarmInBackground() {
@@ -752,10 +773,12 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
     
     func blueThermConnected() {
         print("BlueTherm has connected")
+        Session.BluetoothProbeConnected = true
     }
     
     func bluethermDisconnected() {
         print("BlueTherm has disconnected")
+        Session.BluetoothProbeConnected = false
         readingAndDisplaying()
     }
     

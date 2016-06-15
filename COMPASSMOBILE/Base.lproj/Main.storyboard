@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="PEr-qw-l05">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -1142,94 +1141,10 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="Preferences" id="z1e-pr-mab" userLabel="Preferences">
-                                <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="9Nz-9n-sUS">
-                                        <rect key="frame" x="0.0" y="164" width="600" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9Nz-9n-sUS" id="0iJ-1P-UZs">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Wsm-fs-kfN">
-                                                    <rect key="frame" x="8" y="8" width="26" height="26"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="26" id="wjO-8j-WOc"/>
-                                                    </constraints>
-                                                </imageView>
-                                                <switch opaque="NO" contentMode="scaleToFill" semanticContentAttribute="spatial" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="right" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="0K3-aE-FVV">
-                                                    <rect key="frame" x="543" y="6" width="51" height="31"/>
-                                                    <connections>
-                                                        <action selector="TaskTiming:" destination="XUJ-aM-MUt" eventType="valueChanged" id="MPc-TW-a8c"/>
-                                                    </connections>
-                                                </switch>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Use Task Timings" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6aJ-zh-pfn">
-                                                    <rect key="frame" x="42" y="11" width="145" height="21"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="145" id="A2o-5l-d3L"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="Wsm-fs-kfN" firstAttribute="centerY" secondItem="0iJ-1P-UZs" secondAttribute="centerY" id="7gj-ue-aVc"/>
-                                                <constraint firstItem="Wsm-fs-kfN" firstAttribute="top" secondItem="0iJ-1P-UZs" secondAttribute="topMargin" id="BXT-BP-ght"/>
-                                                <constraint firstItem="0K3-aE-FVV" firstAttribute="trailing" secondItem="0iJ-1P-UZs" secondAttribute="trailingMargin" id="UAA-e1-Kcf"/>
-                                                <constraint firstItem="Wsm-fs-kfN" firstAttribute="centerY" secondItem="6aJ-zh-pfn" secondAttribute="centerY" id="VQi-ic-Uav"/>
-                                                <constraint firstItem="Wsm-fs-kfN" firstAttribute="leading" secondItem="0iJ-1P-UZs" secondAttribute="leadingMargin" id="WaR-r7-aIe"/>
-                                                <constraint firstItem="6aJ-zh-pfn" firstAttribute="leading" secondItem="Wsm-fs-kfN" secondAttribute="trailing" constant="8" symbolic="YES" id="cQo-53-Npl"/>
-                                                <constraint firstItem="6aJ-zh-pfn" firstAttribute="centerY" secondItem="0K3-aE-FVV" secondAttribute="centerY" id="n9Q-NS-xg3"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="Waq-gf-WQc">
-                                        <rect key="frame" x="0.0" y="208" width="600" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Waq-gf-WQc" id="SWf-BR-WEm">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="TOI-VT-s15">
-                                                    <rect key="frame" x="8" y="8" width="26" height="26"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="26" id="as0-WJ-GxX"/>
-                                                    </constraints>
-                                                </imageView>
-                                                <switch opaque="NO" contentMode="scaleToFill" semanticContentAttribute="playback" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="right" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="MS8-cb-OCX">
-                                                    <rect key="frame" x="543" y="6" width="51" height="31"/>
-                                                    <connections>
-                                                        <action selector="TemperatureProfile:" destination="XUJ-aM-MUt" eventType="valueChanged" id="4XR-Pa-bxm"/>
-                                                    </connections>
-                                                </switch>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Use Temperature Profile" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l6e-KM-YOa">
-                                                    <rect key="frame" x="42" y="11" width="191" height="21"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="191" id="jLk-IV-fR9"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="l6e-KM-YOa" firstAttribute="centerY" secondItem="MS8-cb-OCX" secondAttribute="centerY" id="5fW-jl-mic"/>
-                                                <constraint firstItem="TOI-VT-s15" firstAttribute="leading" secondItem="SWf-BR-WEm" secondAttribute="leadingMargin" id="Ny9-gd-dSa"/>
-                                                <constraint firstItem="l6e-KM-YOa" firstAttribute="leading" secondItem="TOI-VT-s15" secondAttribute="trailing" constant="8" symbolic="YES" id="fzD-du-6eb"/>
-                                                <constraint firstItem="TOI-VT-s15" firstAttribute="centerY" secondItem="l6e-KM-YOa" secondAttribute="centerY" id="j7K-BX-X2g"/>
-                                                <constraint firstItem="MS8-cb-OCX" firstAttribute="trailing" secondItem="SWf-BR-WEm" secondAttribute="trailingMargin" id="tXy-vz-QHP"/>
-                                                <constraint firstItem="TOI-VT-s15" firstAttribute="top" secondItem="SWf-BR-WEm" secondAttribute="topMargin" id="uea-tG-qOu"/>
-                                                <constraint firstItem="TOI-VT-s15" firstAttribute="centerY" secondItem="SWf-BR-WEm" secondAttribute="centerY" id="wh4-1S-0UP"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </cells>
-                            </tableViewSection>
                             <tableViewSection headerTitle="Synchronisation" id="eRG-RE-a6a" userLabel="Synchronisation">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="rlo-oy-S9W" userLabel="Upload Tasks Table View Cell">
-                                        <rect key="frame" x="0.0" y="280" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="164" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rlo-oy-S9W" id="NsS-gR-WCH">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
@@ -1272,7 +1187,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="HVy-o3-qDO" userLabel="Synchronise Data Table View Cell">
-                                        <rect key="frame" x="0.0" y="324" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="208" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="HVy-o3-qDO" id="4ze-dP-OdS">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
@@ -1304,7 +1219,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="Wdw-q4-IQM" userLabel="Reset Synchronisation Dates Table View Cell">
-                                        <rect key="frame" x="0.0" y="368" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="252" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Wdw-q4-IQM" id="RxK-M3-Tse">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
@@ -1336,7 +1251,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="s8O-l9-uKu" userLabel="Reset Task Data Table View Cell">
-                                        <rect key="frame" x="0.0" y="412" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="296" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="s8O-l9-uKu" id="TdK-oL-N20">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
@@ -1368,7 +1283,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="nmL-yN-PpG" userLabel="Reset All Data Table View Cell">
-                                        <rect key="frame" x="0.0" y="456" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="340" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nmL-yN-PpG" id="mXW-Gi-4Bs">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
@@ -1401,6 +1316,40 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection headerTitle="Help" id="Kki-II-QUl" userLabel="Synchronisation">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="Jim-Zs-E24" userLabel="Upload Tasks Table View Cell">
+                                        <rect key="frame" x="0.0" y="412" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Jim-Zs-E24" id="64d-f0-wpX">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="View COMPASSMOBILE help" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fSP-i9-tE0">
+                                                    <rect key="frame" x="42" y="11" width="550" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="eBa-Yl-mJR">
+                                                    <rect key="frame" x="8" y="8" width="26" height="26"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="26" id="TxX-ie-1e8"/>
+                                                    </constraints>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="fSP-i9-tE0" firstAttribute="leading" secondItem="eBa-Yl-mJR" secondAttribute="trailing" constant="8" id="1u2-hy-Vpt"/>
+                                                <constraint firstItem="eBa-Yl-mJR" firstAttribute="leading" secondItem="64d-f0-wpX" secondAttribute="leadingMargin" id="9TS-ew-pJa"/>
+                                                <constraint firstItem="fSP-i9-tE0" firstAttribute="leading" secondItem="eBa-Yl-mJR" secondAttribute="trailing" constant="8" symbolic="YES" id="DlI-f0-EjY"/>
+                                                <constraint firstItem="eBa-Yl-mJR" firstAttribute="centerY" secondItem="64d-f0-wpX" secondAttribute="centerY" id="VsV-EL-5Vg"/>
+                                                <constraint firstItem="eBa-Yl-mJR" firstAttribute="centerY" secondItem="fSP-i9-tE0" secondAttribute="centerY" id="cQe-47-qSB"/>
+                                                <constraint firstItem="fSP-i9-tE0" firstAttribute="trailing" secondItem="64d-f0-wpX" secondAttribute="trailingMargin" id="gL5-8p-YRZ"/>
+                                                <constraint firstItem="eBa-Yl-mJR" firstAttribute="top" secondItem="64d-f0-wpX" secondAttribute="topMargin" id="hsN-f6-cnm"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                         </sections>
                         <connections>
                             <outlet property="dataSource" destination="XUJ-aM-MUt" id="xwf-mS-pCc"/>
@@ -1422,8 +1371,6 @@
                     <connections>
                         <outlet property="CompletedTasks" destination="beK-5w-9Vq" id="HpT-si-P5Y"/>
                         <outlet property="SelectedProbeName" destination="Pkm-yH-ghq" id="Uke-nC-7Ib"/>
-                        <outlet property="TaskTiming" destination="0K3-aE-FVV" id="WSE-gV-24r"/>
-                        <outlet property="TemperatureProfile" destination="MS8-cb-OCX" id="tmI-ZS-6M2"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TnV-s6-iZi" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1439,7 +1386,7 @@
                         <viewControllerLayoutGuide type="bottom" id="dXm-hn-LT0"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="LcB-Dt-Vag">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="1200"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -2413,12 +2360,13 @@
         <image name="Brand" width="250" height="44"/>
         <image name="Download" width="30" height="30"/>
         <image name="Filter" width="30" height="30"/>
+        <image name="Logo" width="40" height="40"/>
         <image name="Logout" width="30" height="30"/>
         <image name="Search" width="30" height="30"/>
         <image name="Settings" width="30" height="30"/>
         <image name="Upload" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="nE1-QS-cpL"/>
+        <segue reference="gBG-Cj-Y6h"/>
     </inferredMetricsTieBreakers>
 </document>

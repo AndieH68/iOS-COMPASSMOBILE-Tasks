@@ -16,12 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
-//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//        let rootView = storyboard.instantiateViewControllerWithIdentifier("MainViewController")
-//        
-//        if self.window != nil {
-//            Session.RootViewController = rootView
-//        }
+        Crittercism.enableWithAppID("75f852fe22aa4932bf4f09db905f288400555300")
         
         Utility.copyFile((self.window?.rootViewController)!, fileName: "COMPASSDB.sqlite")
         

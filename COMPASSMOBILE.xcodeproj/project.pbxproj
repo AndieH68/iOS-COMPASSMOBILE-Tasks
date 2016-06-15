@@ -41,6 +41,10 @@
 		A45CD6EB1C577D9E00C17BD7 /* TaskParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A45CD6EA1C577D9E00C17BD7 /* TaskParameter.swift */; };
 		A45CD6ED1C577DA800C17BD7 /* TaskTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A45CD6EC1C577DA800C17BD7 /* TaskTemplate.swift */; };
 		A45CD6EF1C577DB600C17BD7 /* TaskTemplateParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A45CD6EE1C577DB600C17BD7 /* TaskTemplateParameter.swift */; };
+		A486A4F01D11748700FE4642 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A486A4EF1D11748700FE4642 /* SystemConfiguration.framework */; };
+		A486A4F21D11748E00FE4642 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A486A4F11D11748E00FE4642 /* CoreData.framework */; };
+		A486A4F71D11828000FE4642 /* Crittercism.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A486A4F61D11828000FE4642 /* Crittercism.framework */; };
+		A486A4F91D11A1E300FE4642 /* BlueTherm.swift in Sources */ = {isa = PBXBuildFile; fileRef = A486A4F81D11A1E300FE4642 /* BlueTherm.swift */; };
 		A490C1C11CFED99600FB13B3 /* TaskTemplateParameterCellTemperature.swift in Sources */ = {isa = PBXBuildFile; fileRef = A490C1C01CFED99600FB13B3 /* TaskTemplateParameterCellTemperature.swift */; };
 		A49455E91C7CBED600BE6247 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49455E81C7CBED600BE6247 /* MainViewController.swift */; };
 		A49455EC1C7CBF2300BE6247 /* ModelUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49455EB1C7CBF2300BE6247 /* ModelUtility.swift */; };
@@ -102,6 +106,10 @@
 		A45CD6EA1C577D9E00C17BD7 /* TaskParameter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskParameter.swift; sourceTree = "<group>"; };
 		A45CD6EC1C577DA800C17BD7 /* TaskTemplate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskTemplate.swift; sourceTree = "<group>"; };
 		A45CD6EE1C577DB600C17BD7 /* TaskTemplateParameter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskTemplateParameter.swift; sourceTree = "<group>"; };
+		A486A4EF1D11748700FE4642 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		A486A4F11D11748E00FE4642 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		A486A4F61D11828000FE4642 /* Crittercism.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crittercism.framework; path = CrittercismSDK/Crittercism.framework; sourceTree = "<group>"; };
+		A486A4F81D11A1E300FE4642 /* BlueTherm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlueTherm.swift; sourceTree = "<group>"; };
 		A490C1C01CFED99600FB13B3 /* TaskTemplateParameterCellTemperature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskTemplateParameterCellTemperature.swift; sourceTree = "<group>"; };
 		A49455E81C7CBED600BE6247 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		A49455EB1C7CBF2300BE6247 /* ModelUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelUtility.swift; sourceTree = "<group>"; };
@@ -134,7 +142,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A486A4F21D11748E00FE4642 /* CoreData.framework in Frameworks */,
+				A486A4F01D11748700FE4642 /* SystemConfiguration.framework in Frameworks */,
 				A4FAB4EF1CF74AFF00766F3D /* blueThermLibrary.a in Frameworks */,
+				A486A4F71D11828000FE4642 /* Crittercism.framework in Frameworks */,
 				A40BB55E1C4FE9D7005C2AE6 /* libsqlite3.0.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -173,6 +184,7 @@
 				A4EDA3921C4E98C900667987 /* AEXML.swift */,
 				A4A522FE1C43F4A500D16A9A /* Info.plist */,
 				A4F16F9E1CE4B9B200270AFE /* MBProgressHUD.swift */,
+				A486A4F81D11A1E300FE4642 /* BlueTherm.swift */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -195,6 +207,14 @@
 				A45CD6EE1C577DB600C17BD7 /* TaskTemplateParameter.swift */,
 			);
 			name = Entity;
+			sourceTree = "<group>";
+		};
+		A486A4F51D1181C200FE4642 /* CrittercismSDK */ = {
+			isa = PBXGroup;
+			children = (
+				A486A4F61D11828000FE4642 /* Crittercism.framework */,
+			);
+			name = CrittercismSDK;
 			sourceTree = "<group>";
 		};
 		A49455E71C7CBEB600BE6247 /* ViewControllers */ = {
@@ -224,6 +244,9 @@
 		A4A522E31C43F4A500D16A9A = {
 			isa = PBXGroup;
 			children = (
+				A486A4F51D1181C200FE4642 /* CrittercismSDK */,
+				A486A4F11D11748E00FE4642 /* CoreData.framework */,
+				A486A4EF1D11748700FE4642 /* SystemConfiguration.framework */,
 				A40BB55D1C4FE9D7005C2AE6 /* libsqlite3.0.tbd */,
 				A4A522F61C43F4A500D16A9A /* COMPASSMOBILE.xcdatamodeld */,
 				A4A522EE1C43F4A500D16A9A /* COMPASSMOBILE */,
@@ -326,7 +349,7 @@
 				TargetAttributes = {
 					A4A522EB1C43F4A500D16A9A = {
 						CreatedOnToolsVersion = 7.2;
-						DevelopmentTeam = Q8WA5K6289;
+						DevelopmentTeam = H889T663QH;
 					};
 				};
 			};
@@ -378,6 +401,7 @@
 				A45CD6ED1C577DA800C17BD7 /* TaskTemplate.swift in Sources */,
 				A40FC1BA1CF27FFF003B1413 /* TaskTemplateParameterCellFreetext.swift in Sources */,
 				A4EDA3961C4EA55500667987 /* ReferenceData.swift in Sources */,
+				A486A4F91D11A1E300FE4642 /* BlueTherm.swift in Sources */,
 				A45CD6E71C577D8E00C17BD7 /* Property.swift in Sources */,
 				A4DC551D1CEF0C9700833910 /* TaskViewController.swift in Sources */,
 				A4FAB4E01CF700E500766F3D /* MainNavigationController.swift in Sources */,
@@ -449,7 +473,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Hydrop Enviromental Consultancy Services (H889T663QH)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Hydrop Enviromental Consultancy Services (H889T663QH)";
 				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -525,7 +549,13 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/COMPASSMOBILE",
+					"$(PROJECT_DIR)/CrittercismSDK",
+				);
 				INFOPLIST_FILE = COMPASSMOBILE/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -546,7 +576,13 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/COMPASSMOBILE",
+					"$(PROJECT_DIR)/CrittercismSDK",
+				);
 				INFOPLIST_FILE = COMPASSMOBILE/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
