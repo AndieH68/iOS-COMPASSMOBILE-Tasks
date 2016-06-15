@@ -2390,7 +2390,7 @@
         <scene sceneID="WVx-cb-3l7">
             <objects>
                 <navigationController title="Task Navigator" automaticallyAdjustsScrollViewInsets="NO" id="PEr-qw-l05" customClass="MainNavigationController" customModule="COMPASSMOBILE" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Tasks" image="Tasks" id="2y2-z5-Ufb"/>
+                    <tabBarItem key="tabBarItem" title="Tasks" id="2y2-z5-Ufb"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Wml-xW-eYT">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -2416,7 +2416,6 @@
         <image name="Logout" width="30" height="30"/>
         <image name="Search" width="30" height="30"/>
         <image name="Settings" width="30" height="30"/>
-        <image name="Tasks" width="30" height="30"/>
         <image name="Upload" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>

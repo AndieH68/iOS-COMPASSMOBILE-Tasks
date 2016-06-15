@@ -92,8 +92,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         let username: String = UsernameTextField.text!
         let password: String = PasswordTextField.text!
         
+        var remoteValidation: Bool = false
         isRemoteAvailable = Reachability().connectedToNetwork()
- 
        
         if isRemoteAvailable {
             let data: NSData? = WebService.validateOperative(username, password: password)
@@ -101,34 +101,38 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             if data == nil{
                 ValidationLabel.hidden = false
                 ValidationLabel.text = "error with web service"
-                return
-            }
-           
-            let response: AEXMLElement = Utility.openSoapEnvelope(data)!
-        
-            if response.name == "soap:Fault"
-            {
-                //fault code here
-                ValidationLabel.text = "Network error"
-                ValidationLabel.hidden = false
-                return
-            }
-        
-            let operativeId = response["ValidateOperativeResult"].value
-        
-            if operativeId == nil || operativeId!.containsString("not found")
-            {
-                ValidationLabel.hidden = false
-                return
+                //return
             }
             else
             {
-                Session.OperativeId = operativeId!
+                let response: AEXMLElement = Utility.openSoapEnvelope(data)!
+            
+                if response.name == "soap:Fault"
+                {
+                    //fault code here
+                    ValidationLabel.text = "Network error"
+                    ValidationLabel.hidden = false
+                }
+                else
+                {
+                    let operativeId = response["ValidateOperativeResult"].value
+                
+                    if operativeId == nil || operativeId!.containsString("not found")
+                    {
+                        ValidationLabel.hidden = false
+                        //return
+                    }
+                    else
+                    {
+                        remoteValidation = true
+                        Session.OperativeId = operativeId!
+                    }
+                }
             }
         }
         
         //initialise local database connection
-        
+        var localValidation: Bool = false
         var newOperative: Bool = false
         
         var criteria: Dictionary<String,AnyObject> = Dictionary<String,AnyObject>()
@@ -141,13 +145,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         if count == 1
         {
+            localValidation = true
             let operative: Operative = operatives[0]
             Session.OperativeId = operative.RowId
             Session.OrganisationId = operative.OrganisationId
             
-            if !isRemoteAvailable
+            if (!isRemoteAvailable || !remoteValidation)
             {
-                Utility.invokeAlertMethod(self, title: "No remote", message: "Logged in locally", delegate: nil)
+                Session.LocalLoginOnly = true
             }
         }
         else
@@ -155,7 +160,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
            newOperative = true
         }
         
-        if Session.OperativeId == nil
+        if (!(remoteValidation || localValidation) || Session.OperativeId == nil)
         {
             ValidationLabel.hidden = false
             return

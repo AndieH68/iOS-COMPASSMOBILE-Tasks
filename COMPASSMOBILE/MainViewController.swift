@@ -60,8 +60,14 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
             self.performSegueWithIdentifier("loginView", sender: self)
         }
         
+//        if (Session.LocalLoginOnly)
+//        {
+//            Utility.invokeAlertMethod(self, title: "No remote", message: "Logged in locally", delegate: nil)
+//        }
+        
         if Session.CheckDatabase == true
         {
+            
             let userPrompt: UIAlertController = UIAlertController(title: "Synchronising", message: "The application is downloading data from COMPASS.  This process may take some time if this is the first time you have attempted to synchronise", preferredStyle: UIAlertControllerStyle.Alert)
             
             //the default action

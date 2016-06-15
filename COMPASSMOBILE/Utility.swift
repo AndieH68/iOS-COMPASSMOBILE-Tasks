@@ -1022,7 +1022,8 @@ class Utility: NSObject {
             let data: NSData? = WebService.getSynchronisationPackageSync(Session.OperativeId!, synchronisationDate: synchronisationDate, lastRowId: lastRowId, stage: stage)
             
             if data == nil{
-                invokeAlertMethod(viewController, title: "Error", message: "error with web service", delegate: nil)
+                Session.AlertTitle = "Error"
+                Session.AlertMessage =  "Error with web service"
                 return (false, nil)
             }
             
@@ -1030,7 +1031,8 @@ class Utility: NSObject {
             
             if response.name == "soap:Fault"
             {
-                //fault code here
+                Session.AlertTitle = "Error"
+                Session.AlertMessage =  "Error with web service"
                 return (false, nil)
             }
             
@@ -1171,14 +1173,14 @@ class Utility: NSObject {
                 }
                     
                 var PDASynchronisationPackage: String = "<PDASynchronisation>" + taskData + taskParameterData + "</PDASynchronisation>"
-                //let PDASynchronisationPackage: String = "&lt;PDASynchronisation&gt;&lt;Tasks /&gt;&lt;TaskParameters /&gt;&lt;/PDASynchronisation&gt;"
                 
                 PDASynchronisationPackage = PDASynchronisationPackage.xmlSimpleEscape()
                 
                 let data: NSData? = WebService.sendSyncronisationPackageSync(Session.OperativeId!, sysnchronisationPackage: PDASynchronisationPackage)
                 
                 if data == nil{
-                    invokeAlertMethod(viewController, title: "Error", message: "error with web service", delegate: nil)
+                    Session.AlertTitle = "Error"
+                    Session.AlertMessage =  "Error with web service"
                     return (false, 0)
                 }
                 
@@ -1186,7 +1188,8 @@ class Utility: NSObject {
                 
                 if response.name == "soap:Fault"
                 {
-                    //fault code here
+                    Session.AlertTitle = "Error"
+                    Session.AlertMessage =  "Error with web service"
                     return (false, 0)
                 }
                 

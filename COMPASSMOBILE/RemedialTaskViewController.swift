@@ -67,7 +67,7 @@ class RemedialTaskViewController: UIViewController, UITextFieldDelegate, UITextV
         }
         else
         {
-            WorkInstruction.text = "no instuctions"
+            WorkInstruction.text = "no instructions"
             WorkInstruction.editable = false
         }
         

@@ -19,7 +19,11 @@ class Session : NSObject
     
     static var OperativeId: String? = String?()
     static var OrganisationId: String? = String?()
-    
+    static var LocalLoginOnly: Bool = false;
+ 
+    static var AlertTitle: String? = String?()
+    static var AlertMessage: String? = String?()
+
     static var PropertyList: Dictionary<String, Property> = Dictionary<String, Property>()
  
     static var LookupLists: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
