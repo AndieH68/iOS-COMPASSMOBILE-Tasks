@@ -52,6 +52,7 @@
 		A4A522F01C43F4A500D16A9A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A522EF1C43F4A500D16A9A /* AppDelegate.swift */; };
 		A4A522F51C43F4A500D16A9A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4A522F31C43F4A500D16A9A /* Main.storyboard */; };
 		A4A522F81C43F4A500D16A9A /* COMPASSMOBILE.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A4A522F61C43F4A500D16A9A /* COMPASSMOBILE.xcdatamodeld */; };
+		A4B1AEA81D22AC9300114CFA /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4B1AEA71D22AC9300114CFA /* Launch Screen.storyboard */; };
 		A4D326581D07011D00EDEC7F /* TaskTemplateParameterFormItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D326571D07011D00EDEC7F /* TaskTemplateParameterFormItem.swift */; };
 		A4D3265A1D08726700EDEC7F /* RemedialTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D326591D08726700EDEC7F /* RemedialTaskViewController.swift */; };
 		A4DC551D1CEF0C9700833910 /* TaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4DC551C1CEF0C9700833910 /* TaskViewController.swift */; };
@@ -119,6 +120,7 @@
 		A4A522F41C43F4A500D16A9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A4A522F71C43F4A500D16A9A /* COMPASSMOBILE.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = COMPASSMOBILE.xcdatamodel; sourceTree = "<group>"; };
 		A4A522FE1C43F4A500D16A9A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A4B1AEA71D22AC9300114CFA /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = "Launch Screen.storyboard"; path = "../Launch Screen.storyboard"; sourceTree = "<group>"; };
 		A4D326571D07011D00EDEC7F /* TaskTemplateParameterFormItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskTemplateParameterFormItem.swift; sourceTree = "<group>"; };
 		A4D326591D08726700EDEC7F /* RemedialTaskViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemedialTaskViewController.swift; sourceTree = "<group>"; };
 		A4DC551C1CEF0C9700833910 /* TaskViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskViewController.swift; sourceTree = "<group>"; };
@@ -236,6 +238,7 @@
 		A49455EA1C7CBEDE00BE6247 /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
+				A4B1AEA71D22AC9300114CFA /* Launch Screen.storyboard */,
 				A4A522F31C43F4A500D16A9A /* Main.storyboard */,
 			);
 			name = Storyboards;
@@ -378,6 +381,7 @@
 			files = (
 				A4034A861C5132EE00615D95 /* COMPASSDB.sqlite in Resources */,
 				A4F16F9D1CE4716200270AFE /* Assets.xcassets in Resources */,
+				A4B1AEA81D22AC9300114CFA /* Launch Screen.storyboard in Resources */,
 				A4A522F51C43F4A500D16A9A /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -560,6 +564,7 @@
 					"$(PROJECT_DIR)/CrittercismSDK",
 				);
 				INFOPLIST_FILE = COMPASSMOBILE/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -588,6 +593,7 @@
 					"$(PROJECT_DIR)/CrittercismSDK",
 				);
 				INFOPLIST_FILE = COMPASSMOBILE/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
