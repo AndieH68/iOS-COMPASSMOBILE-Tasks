@@ -13,6 +13,7 @@ internal class Reachability {
     
     func connectedToNetwork() -> Bool {
     
+        NSLog("Reachability started")
         var zeroAddress = sockaddr_in()
         zeroAddress.sin_len = UInt8(sizeofValue(zeroAddress))
         zeroAddress.sin_family = sa_family_t(AF_INET)
@@ -30,6 +31,7 @@ internal class Reachability {
         
         let isReachable = flags.contains(.Reachable)
         let needsConnection = flags.contains(.ConnectionRequired)
+        NSLog("Reachability ended")
         return (isReachable && !needsConnection)
     }
 }

@@ -80,828 +80,854 @@ class Utility: NSObject {
     }
     
     // MARK: - Global
-    class func importData(packageData: AEXMLElement, entityType: EntityType) -> (String, NSDate) {
-        return importData(packageData, entityType: entityType, progressBar: nil)
+    class func importData(packageData: AEXMLElement, entityType: EntityType) -> (String, NSDate, Int32, Int32) {
+        let count: Int32 = 0
+        let maxCount: Int32 = 0
+        return importData(packageData, entityType: entityType, progressBar: nil, count: count, maxCount: maxCount)
     }
     
-    class func importData(packageData: AEXMLElement, entityType: EntityType, progressBar: MBProgressHUD?) -> (String, NSDate) {
+    class func importData(packageData: AEXMLElement, entityType: EntityType, progressBar: MBProgressHUD?, count: Int32, maxCount: Int32) -> (String, NSDate, Int32, Int32) {
         
         var lastDateInPackage: NSDate = BaseDate
         var lastRowId: String = EmptyGuid
         
-        var current: Int = 0
-        var total: Int = 0
+        var current: Int32 = 0
+        var total: Int32 = 0
         
-        switch entityType {
-        
-        case .Asset:
-            
-            //get the data nodes
-            let dataNode: AEXMLElement = packageData["Asset"]
-            
-            total = dataNode.children.count
-            
-            for childNode in dataNode.children
+        if (maxCount <= 0)
+        {
+            var countNode: AEXMLElement = packageData["Process"]
+            countNode = countNode["Relevant"]
+            if (countNode.attributes["Count"] != nil)
             {
-                autoreleasepool{
-                current += 1
-                
-                //get the first child
-                let asset: Asset = Asset(XMLElement: childNode)
-                
-                var currentSynchDate: NSDate
-                if asset.LastUpdatedOn == nil {
-                    currentSynchDate = asset.CreatedOn
-                }
-                else {
-                    currentSynchDate = asset.LastUpdatedOn!
-                }
-                
-                lastDateInPackage = lastDateInPackage.laterDate(currentSynchDate)
-                lastRowId = asset.RowId
-                
-                //does the record exists
-                let currentAsset: Asset? = ModelManager.getInstance().getAsset(asset.RowId)
-                if currentAsset == nil
-                {
-                    //is the current record deleted
-                    if (asset.Deleted == nil)
-                    {
-                        //no insert it
-                        ModelManager.getInstance().addAsset(asset)
-                    }
-                }
-                else
-                {
-                    //yes
-                    
-                    //is the current record deleted
-                    if (asset.Deleted != nil)
-                    {
-                        //yes  - delete the asset
-                        ModelManager.getInstance().deleteAsset(asset)
-                    }
-                    else
-                    {
-                        //no  - update the asset
-                        ModelManager.getInstance().updateAsset(asset)
-                    }
-                    
-                }
-                
-                if (progressBar != nil)
-                {
-                    dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Asset"; progressBar!.progress = (Float(current) / Float(total))})
-                }
-                }
+                total = Int32(countNode.attributes["Count"]!)!
+                current = 0
             }
-            
-        case .Location:
-            
-            //get the data nodes
-            let dataNode: AEXMLElement = packageData["Location"]
-
-            total = dataNode.children.count
-            
-            for childNode in dataNode.children
-            {
-                autoreleasepool{
-                current += 1
-                
-                //get the first child
-                let location: Location = Location(XMLElement: childNode)
-                
-                var currentSynchDate: NSDate
-                if location.LastUpdatedOn == nil {
-                    currentSynchDate = location.CreatedOn
-                }
-                else {
-                    currentSynchDate = location.LastUpdatedOn!
-                }
-                
-                lastDateInPackage = lastDateInPackage.laterDate(currentSynchDate)
-                lastRowId = location.RowId
-                
-                //does the record exists
-                let currentLocation: Location? = ModelManager.getInstance().getLocation(location.RowId)
-                if currentLocation == nil
-                {
-                    //is the current record deleted
-                    if (location.Deleted == nil)
-                    {
-                        //no insert it
-                        ModelManager.getInstance().addLocation(location)
-                    }
-                }
-                else
-                {
-                    //yes
-                    
-                    //is the current record deleted
-                    if (location.Deleted != nil)
-                    {
-                        //yes  - delete the Location
-                        ModelManager.getInstance().deleteLocation(location)
-                    }
-                    else
-                    {
-                        //no  - update the Location
-                        ModelManager.getInstance().updateLocation(location)
-                    }
-                    
-                }
-                
-                if (progressBar != nil)
-                {
-                    dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Location"; progressBar!.progress = (Float(current) / Float(total))})
-                }
-                }
-            }
-
-        case .LocationGroup:
-            
-            //get the data nodes
-            let dataNode: AEXMLElement = packageData["LocationGroup"]
-            
-            total = dataNode.children.count
-            
-            for childNode in dataNode.children
-            {
-                autoreleasepool{
-                current += 1
-                
-                //get the first child
-                let locationGroup: LocationGroup = LocationGroup(XMLElement: childNode)
-                
-                var currentSynchDate: NSDate
-                if locationGroup.LastUpdatedOn == nil {
-                    currentSynchDate = locationGroup.CreatedOn
-                }
-                else {
-                    currentSynchDate = locationGroup.LastUpdatedOn!
-                }
-                
-                lastDateInPackage = lastDateInPackage.laterDate(currentSynchDate)
-                lastRowId = locationGroup.RowId
-                
-                //does the record exists
-                let currentLocationGroup: LocationGroup? = ModelManager.getInstance().getLocationGroup(locationGroup.RowId)
-                if currentLocationGroup == nil
-                {
-                    //is the current record deleted
-                    if (locationGroup.Deleted == nil)
-                    {
-                        //no insert it
-                        ModelManager.getInstance().addLocationGroup(locationGroup)
-                    }
-                }
-                else
-                {
-                    //yes
-                    
-                    //is the current record deleted
-                    if (locationGroup.Deleted != nil)
-                    {
-                        //yes  - delete the LocationGroup
-                        ModelManager.getInstance().deleteLocationGroup(locationGroup)
-                    }
-                    else
-                    {
-                        //no  - update the LocationGroup
-                        ModelManager.getInstance().updateLocationGroup(locationGroup)
-                    }
-                    
-                }
-                
-                if (progressBar != nil)
-                {
-                    dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Area"; progressBar!.progress = (Float(current) / Float(total))})
-                }
-                }
-            }
-
-        case .LocationGroupMembership:
-            
-            //get the data nodes
-            let dataNode: AEXMLElement = packageData["LocationGroupMembership"]
-            
-            total = dataNode.children.count
-            
-            for childNode in dataNode.children
-            {
-                autoreleasepool{
-                current += 1
-                
-                //get the first child
-                let locationGroupMembership: LocationGroupMembership = LocationGroupMembership(XMLElement: childNode)
-                
-                var currentSynchDate: NSDate
-                if locationGroupMembership.LastUpdatedOn == nil {
-                    currentSynchDate = locationGroupMembership.CreatedOn
-                }
-                else {
-                    currentSynchDate = locationGroupMembership.LastUpdatedOn!
-                }
-                
-                lastDateInPackage = lastDateInPackage.laterDate(currentSynchDate)
-                lastRowId = locationGroupMembership.RowId
-                
-                //does the record exists
-                let currentLocationGroupMembership: LocationGroupMembership? = ModelManager.getInstance().getLocationGroupMembership(locationGroupMembership.RowId)
-                if currentLocationGroupMembership == nil
-                {
-                    //is the current record deleted
-                    if (locationGroupMembership.Deleted == nil)
-                    {
-                        //no insert it
-                        ModelManager.getInstance().addLocationGroupMembership(locationGroupMembership)
-                    }
-                }
-                else
-                {
-                    //yes
-                    
-                    //is the current record deleted
-                    if (locationGroupMembership.Deleted != nil)
-                    {
-                        //yes  - delete the LocationGroupMembership
-                        ModelManager.getInstance().deleteLocationGroupMembership(locationGroupMembership)
-                    }
-                    else
-                    {
-                        //no  - update the LocationGroupMembership
-                        ModelManager.getInstance().updateLocationGroupMembership(locationGroupMembership)
-                    }
-                    
-                }
-                
-                if (progressBar != nil)
-                {
-                    dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Area Link"; progressBar!.progress = (Float(current) / Float(total))})
-                }
-                }
-            }
-            
-        case .Operative:
-            
-            //get the data nodes
-            let dataNode: AEXMLElement = packageData["Operative"]
-            
-            total = dataNode.children.count
-            
-            for childNode in dataNode.children
-            {
-                autoreleasepool{
-                current += 1
-                
-                //get the first child
-                let operative: Operative = Operative(XMLElement: childNode)
-                
-                var currentSynchDate: NSDate
-                if operative.LastUpdatedOn == nil {
-                    currentSynchDate = operative.CreatedOn
-                }
-                else {
-                    currentSynchDate = operative.LastUpdatedOn!
-                }
-                
-                lastDateInPackage = lastDateInPackage.laterDate(currentSynchDate)
-                lastRowId = operative.RowId
-                
-                //does the record exists
-                let currentOperative: Operative? = ModelManager.getInstance().getOperative(operative.RowId)
-                if currentOperative == nil
-                {
-                    //is the current record deleted
-                    if (operative.Deleted == nil)
-                    {
-                        //no insert it
-                        ModelManager.getInstance().addOperative(operative)
-                    }
-                }
-                else
-                {
-                    //yes
-                    
-                    //is the current record deleted
-                    if (operative.Deleted != nil)
-                    {
-                        //yes  - delete the Operative
-                        ModelManager.getInstance().deleteOperative(operative)
-                    }
-                    else
-                    {
-                        //no  - update the Operative
-                        ModelManager.getInstance().updateOperative(operative)
-                    }
-                    
-                }
-                
-                if (progressBar != nil)
-                {
-                    dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Operative"; progressBar!.progress = (Float(current) / Float(total))})
-                }
-                }
-            }
-            
-        case .Organisation:
-            
-            //get the data nodes
-            let dataNode: AEXMLElement = packageData["Organisation"]
-            
-            total = dataNode.children.count
-            
-            for childNode in dataNode.children
-            {
-                autoreleasepool{
-                current += 1
-                
-                //get the first child
-                let organisation: Organisation = Organisation(XMLElement: childNode)
-                
-                var currentSynchDate: NSDate
-                if organisation.LastUpdatedOn == nil {
-                    currentSynchDate = organisation.CreatedOn
-                }
-                else {
-                    currentSynchDate = organisation.LastUpdatedOn!
-                }
-                
-                lastDateInPackage = lastDateInPackage.laterDate(currentSynchDate)
-                lastRowId = organisation.RowId
-                
-                //does the record exists
-                let currentOrganisation: Organisation? = ModelManager.getInstance().getOrganisation(organisation.RowId)
-                if currentOrganisation == nil
-                {
-                    //is the current record deleted
-                    if (organisation.Deleted == nil)
-                    {
-                        //no insert it
-                        ModelManager.getInstance().addOrganisation(organisation)
-                    }
-                }
-                else
-                {
-                    //yes
-                    
-                    //is the current record deleted
-                    if (organisation.Deleted != nil)
-                    {
-                        //yes  - delete the Organisation
-                        ModelManager.getInstance().deleteOrganisation(organisation)
-                    }
-                    else
-                    {
-                        //no  - update the Organisation
-                        ModelManager.getInstance().updateOrganisation(organisation)
-                    }
-                    
-                }
-                
-                if (progressBar != nil)
-                {
-                    dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Organisation"; progressBar!.progress = (Float(current) / Float(total))})
-                }
-                }
-            }
-
-        case .Site:
-            
-            //get the data nodes
-            let dataNode: AEXMLElement = packageData["Site"]
-            
-            total = dataNode.children.count
-            
-            for childNode in dataNode.children
-            {
-                autoreleasepool{
-                current += 1
-                
-                //get the first child
-                let site: Site = Site(XMLElement: childNode)
-                
-                var currentSynchDate: NSDate
-                if site.LastUpdatedOn == nil {
-                    currentSynchDate = site.CreatedOn
-                }
-                else {
-                    currentSynchDate = site.LastUpdatedOn!
-                }
-                
-                lastDateInPackage = lastDateInPackage.laterDate(currentSynchDate)
-                lastRowId = site.RowId
-                
-                //does the record exists
-                let currentSite: Site? = ModelManager.getInstance().getSite(site.RowId)
-                if currentSite == nil
-                {
-                    //is the current record deleted
-                    if (site.Deleted == nil)
-                    {
-                        //no insert it
-                        ModelManager.getInstance().addSite(site)
-                    }
-                }
-                else
-                {
-                    //yes
-                    
-                    //is the current record deleted
-                    if (site.Deleted != nil)
-                    {
-                        //yes  - delete the Site
-                        ModelManager.getInstance().deleteSite(site)
-                    }
-                    else
-                    {
-                        //no  - update the Site
-                        ModelManager.getInstance().updateSite(site)
-                    }
-                    
-                }
-                
-                if (progressBar != nil)
-                {
-                    dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Site"; progressBar!.progress = (Float(current) / Float(total))})
-                }
-                }
-            }
-            
-        case .Property:
-            
-            //get the data nodes
-            let dataNode: AEXMLElement = packageData["Property"]
-            
-            total = dataNode.children.count
-            
-            for childNode in dataNode.children
-            {
-                autoreleasepool{
-                current += 1
-                
-                //get the first child
-                let property: Property = Property(XMLElement: childNode)
-                
-                var currentSynchDate: NSDate
-                if property.LastUpdatedOn == nil {
-                    currentSynchDate = property.CreatedOn
-                }
-                else {
-                    currentSynchDate = property.LastUpdatedOn!
-                }
-                
-                lastDateInPackage = lastDateInPackage.laterDate(currentSynchDate)
-                lastRowId = property.RowId
-                
-                //does the record exists
-                let currentProperty: Property? = ModelManager.getInstance().getProperty(property.RowId)
-                if currentProperty == nil
-                {
-                    //is the current record deleted
-                    if (property.Deleted == nil)
-                    {
-                        //no insert it
-                        ModelManager.getInstance().addProperty(property)
-                    }
-                }
-                else
-                {
-                    //yes
-                    
-                    //is the current record deleted
-                    if (property.Deleted != nil)
-                    {
-                        //yes  - delete the Property
-                        ModelManager.getInstance().deleteProperty(property)
-                    }
-                    else
-                    {
-                        //no  - update the Property
-                        ModelManager.getInstance().updateProperty(property)
-                    }
-                    
-                }
-                
-                if (progressBar != nil)
-                {
-                    dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Property"; progressBar!.progress = (Float(current) / Float(total))})
-                }
-                }
-            }
-
-        case .ReferenceData:
-            
-            //get the data nodes
-            let dataNode: AEXMLElement = packageData["ReferenceData"]
-            
-            total = dataNode.children.count
-            
-            for childNode in dataNode.children
-            {
-                autoreleasepool{
-                current += 1
-                
-                //get the first child
-                let referenceData: ReferenceData = ReferenceData(XMLElement: childNode)
-                
-                var currentSynchDate: NSDate
-                if referenceData.LastUpdatedOn == nil {
-                    currentSynchDate = referenceData.CreatedOn
-                }
-                else {
-                    currentSynchDate = referenceData.LastUpdatedOn!
-                }
-                
-                lastDateInPackage = lastDateInPackage.laterDate(currentSynchDate)
-                lastRowId = referenceData.RowId
-                
-                //does the record exists
-                let currentReferenceData: ReferenceData? = ModelManager.getInstance().getReferenceData(referenceData.RowId)
-                if currentReferenceData == nil
-                {
-                    //is the current record deleted
-                    if (referenceData.Deleted == nil)
-                    {
-                        //no insert it
-                        ModelManager.getInstance().addReferenceData(referenceData)
-                    }
-                }
-                else
-                {
-                    //yes
-                    
-                    //is the current record deleted
-                    if (referenceData.Deleted != nil)
-                    {
-                        //yes  - delete the ReferenceData
-                        ModelManager.getInstance().deleteReferenceData(referenceData)
-                    }
-                    else
-                    {
-                        //no  - update the ReferenceData
-                        ModelManager.getInstance().updateReferenceData(referenceData)
-                    }
-                }
-                
-                if (progressBar != nil)
-                {
-                    dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Reference"; progressBar!.progress = (Float(current) / Float(total))})
-                }
-                }
-            }
-            
-        case .Task:
-            
-            //get the data nodes
-            let dataNode: AEXMLElement = packageData["Task"]
-            
-            total = dataNode.children.count
-            
-            for childNode in dataNode.children
-            {
-                autoreleasepool{
-                current += 1
-                
-                //get the first child
-                let task: Task = Task(XMLElement: childNode)
-                
-                var currentSynchDate: NSDate
-                if task.LastUpdatedOn == nil {
-                    currentSynchDate = task.CreatedOn
-                }
-                else {
-                    currentSynchDate = task.LastUpdatedOn!
-                }
-                
-                lastDateInPackage = lastDateInPackage.laterDate(currentSynchDate)
-                lastRowId = task.RowId
-                
-                //does the record exists
-                let currentTask: Task? = ModelManager.getInstance().getTask(task.RowId)
-                if currentTask == nil
-                {
-                    //is the current record deleted
-                    if (task.Deleted == nil)
-                    {
-                        //no insert it
-                        ModelManager.getInstance().addTask(task)
-                    }
-                }
-                else
-                {
-                    //yes
-                    
-                    //is the current record deleted
-                    if (task.Deleted != nil)
-                    {
-                        //yes  - delete the Task
-                        ModelManager.getInstance().deleteTask(task)
-                    }
-                    else
-                    {
-                        //no  - update the Task
-                        ModelManager.getInstance().updateTask(task)
-                    }
-                    
-                }
-                
-                if (progressBar != nil)
-                {
-                    dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Task"; progressBar!.progress = (Float(current) / Float(total))})
-                }
-                }
-            }
-
-        case .TaskParameter:
-            
-            //get the data nodes
-            let dataNode: AEXMLElement = packageData["TaskParameter"]
-            
-            total = dataNode.children.count
-            
-            for childNode in dataNode.children
-            {
-                autoreleasepool{
-                current += 1
-                
-                //get the first child
-                let taskParameter: TaskParameter = TaskParameter(XMLElement: childNode)
-                
-                var currentSynchDate: NSDate
-                if taskParameter.LastUpdatedOn == nil {
-                    currentSynchDate = taskParameter.CreatedOn
-                }
-                else {
-                    currentSynchDate = taskParameter.LastUpdatedOn!
-                }
-                
-                lastDateInPackage = lastDateInPackage.laterDate(currentSynchDate)
-                lastRowId = taskParameter.RowId
-                
-                //does the record exists
-                let currentTaskParameter: TaskParameter? = ModelManager.getInstance().getTaskParameter(taskParameter.RowId)
-                if currentTaskParameter == nil
-                {
-                    //is the current record deleted
-                    if (taskParameter.Deleted == nil)
-                    {
-                        //no insert it
-                        ModelManager.getInstance().addTaskParameter(taskParameter)
-                    }
-                }
-                else
-                {
-                    //yes
-                    
-                    //is the current record deleted
-                    if (taskParameter.Deleted != nil)
-                    {
-                        //yes  - delete the TaskParameter
-                        ModelManager.getInstance().deleteTaskParameter(taskParameter)
-                    }
-                    else
-                    {
-                        //no  - update the TaskParameter
-                        ModelManager.getInstance().updateTaskParameter(taskParameter)
-                    }
-                    
-                }
-                
-                if (progressBar != nil)
-                {
-                    dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Task Parameters"; progressBar!.progress = (Float(current) / Float(total))})
-                }
-                }
-            }
-
-        case .TaskTemplate:
-            
-            //get the data nodes
-            let dataNode: AEXMLElement = packageData["TaskTemplate"]
-            
-            total = dataNode.children.count
-            
-            for childNode in dataNode.children
-            {
-                autoreleasepool{
-                current += 1
-                
-                //get the first child
-                let taskTemplate: TaskTemplate = TaskTemplate(XMLElement: childNode)
-                
-                var currentSynchDate: NSDate
-                if taskTemplate.LastUpdatedOn == nil {
-                    currentSynchDate = taskTemplate.CreatedOn
-                }
-                else {
-                    currentSynchDate = taskTemplate.LastUpdatedOn!
-                }
-                
-                lastDateInPackage = lastDateInPackage.laterDate(currentSynchDate)
-                lastRowId = taskTemplate.RowId
-                
-                //does the record exists
-                let currentTaskTemplate: TaskTemplate? = ModelManager.getInstance().getTaskTemplate(taskTemplate.RowId)
-                if currentTaskTemplate == nil
-                {
-                    //is the current record deleted
-                    if (taskTemplate.Deleted == nil)
-                    {
-                        //no insert it
-                        ModelManager.getInstance().addTaskTemplate(taskTemplate)
-                    }
-                }
-                else
-                {
-                    //yes
-                    
-                    //is the current record deleted
-                    if (taskTemplate.Deleted != nil)
-                    {
-                        //yes  - delete the TaskTemplate
-                        ModelManager.getInstance().deleteTaskTemplate(taskTemplate)
-                    }
-                    else
-                    {
-                        //no  - update the TaskTemplate
-                        ModelManager.getInstance().updateTaskTemplate(taskTemplate)
-                    }
-                    
-                }
-                
-                if (progressBar != nil)
-                {
-                    dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Templates"; progressBar!.progress = (Float(current) / Float(total))})
-                }
-                }
-            }
-
-        case .TaskTemplateParameter:
-            
-            //get the data nodes
-            let dataNode: AEXMLElement = packageData["TaskTemplateParameter"]
-            
-            total = dataNode.children.count
-            
-            for childNode in dataNode.children
-            {
-                autoreleasepool{
-                current += 1
-                
-                //get the first child
-                let taskTemplateParameter: TaskTemplateParameter = TaskTemplateParameter(XMLElement: childNode)
-                
-                var currentSynchDate: NSDate
-                if taskTemplateParameter.LastUpdatedOn == nil {
-                    currentSynchDate = taskTemplateParameter.CreatedOn
-                }
-                else {
-                    currentSynchDate = taskTemplateParameter.LastUpdatedOn!
-                }
-                
-                lastDateInPackage = lastDateInPackage.laterDate(currentSynchDate)
-                lastRowId = taskTemplateParameter.RowId
-                
-                //does the record exists
-                let currentTaskTemplateParameter: TaskTemplateParameter? = ModelManager.getInstance().getTaskTemplateParameter(taskTemplateParameter.RowId)
-                if currentTaskTemplateParameter == nil
-                {
-                    //is the current record deleted
-                    if (taskTemplateParameter.Deleted == nil)
-                    {
-                        //no insert it
-                        ModelManager.getInstance().addTaskTemplateParameter(taskTemplateParameter)
-                    }
-                }
-                else
-                {
-                    //yes
-                    
-                    //is the current record deleted
-                    if (taskTemplateParameter.Deleted != nil)
-                    {
-                        //yes  - delete the TaskTemplateParameter
-                        ModelManager.getInstance().deleteTaskTemplateParameter(taskTemplateParameter)
-                    }
-                    else
-                    {
-                        //no  - update the TaskTemplateParameter
-                        ModelManager.getInstance().updateTaskTemplateParameter(taskTemplateParameter)
-                    }
-                    
-                }
-                
-                if (progressBar != nil)
-                {
-                    dispatch_async(dispatch_get_main_queue(), {progressBar!.labelText = "Template Parameters"; progressBar!.progress = (Float(current) / Float(total))})
-                }
-                }
-            }
-
+        }
+        else
+        {
+            total = maxCount
+            current = count
         }
         
-        return (lastRowId, lastDateInPackage)
+        if (maxCount > 0 || total > 0)
+        {
+            switch entityType {
+            
+            case .Asset:
+                
+                //get the data nodes
+                let dataNode: AEXMLElement = packageData["Asset"]
+                
+                for childNode in dataNode.children
+                {
+
+                    
+                    autoreleasepool{
+                        current += 1
+                        
+                        //get the first child
+                        let asset: Asset = Asset(XMLElement: childNode)
+                        
+                        var currentSynchDate: NSDate
+                        if asset.LastUpdatedOn == nil {
+                            currentSynchDate = asset.CreatedOn
+                        }
+                        else {
+                            currentSynchDate = asset.LastUpdatedOn!
+                        }
+                        
+                        lastDateInPackage = lastDateInPackage.laterDate(currentSynchDate)
+                        lastRowId = asset.RowId
+                        
+                        //does the record exists
+                        let currentAsset: Asset? = ModelManager.getInstance().getAsset(asset.RowId)
+                        if currentAsset == nil
+                        {
+                            //is the current record deleted
+                            if (asset.Deleted == nil)
+                            {
+                                //no insert it
+                                ModelManager.getInstance().addAsset(asset)
+                            }
+                        }
+                        else
+                        {
+                            //yes
+                            
+                            //is the current record deleted
+                            if (asset.Deleted != nil)
+                            {
+                                //yes  - delete the asset
+                                ModelManager.getInstance().deleteAsset(asset)
+                            }
+                            else
+                            {
+                                //no  - update the asset
+                                ModelManager.getInstance().updateAsset(asset)
+                            }
+                            
+                        }
+                        
+                        if (progressBar != nil)
+                        {
+                            dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Asset"; progressBar!.progress = (Float(current) / Float(total))})
+                        }
+                    }
+                }
+                
+            case .Location:
+                
+                //get the data nodes
+                let dataNode: AEXMLElement = packageData["Location"]
+
+                //total = dataNode.children.count
+                
+                for childNode in dataNode.children
+                {
+                    autoreleasepool{
+                    current += 1
+                    
+                    //get the first child
+                    let location: Location = Location(XMLElement: childNode)
+                    
+                    var currentSynchDate: NSDate
+                    if location.LastUpdatedOn == nil {
+                        currentSynchDate = location.CreatedOn
+                    }
+                    else {
+                        currentSynchDate = location.LastUpdatedOn!
+                    }
+                    
+                    lastDateInPackage = lastDateInPackage.laterDate(currentSynchDate)
+                    lastRowId = location.RowId
+                    
+                    //does the record exists
+                    let currentLocation: Location? = ModelManager.getInstance().getLocation(location.RowId)
+                    if currentLocation == nil
+                    {
+                        //is the current record deleted
+                        if (location.Deleted == nil)
+                        {
+                            //no insert it
+                            ModelManager.getInstance().addLocation(location)
+                        }
+                    }
+                    else
+                    {
+                        //yes
+                        
+                        //is the current record deleted
+                        if (location.Deleted != nil)
+                        {
+                            //yes  - delete the Location
+                            ModelManager.getInstance().deleteLocation(location)
+                        }
+                        else
+                        {
+                            //no  - update the Location
+                            ModelManager.getInstance().updateLocation(location)
+                        }
+                        
+                    }
+                    
+                    if (progressBar != nil)
+                    {
+                        dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Location"; progressBar!.progress = (Float(current) / Float(total))})
+                    }
+                    }
+                }
+
+            case .LocationGroup:
+                
+                //get the data nodes
+                let dataNode: AEXMLElement = packageData["LocationGroup"]
+                
+                //total = dataNode.children.count
+                
+                for childNode in dataNode.children
+                {
+                    autoreleasepool{
+                    current += 1
+                    
+                    //get the first child
+                    let locationGroup: LocationGroup = LocationGroup(XMLElement: childNode)
+                    
+                    var currentSynchDate: NSDate
+                    if locationGroup.LastUpdatedOn == nil {
+                        currentSynchDate = locationGroup.CreatedOn
+                    }
+                    else {
+                        currentSynchDate = locationGroup.LastUpdatedOn!
+                    }
+                    
+                    lastDateInPackage = lastDateInPackage.laterDate(currentSynchDate)
+                    lastRowId = locationGroup.RowId
+                    
+                    //does the record exists
+                    let currentLocationGroup: LocationGroup? = ModelManager.getInstance().getLocationGroup(locationGroup.RowId)
+                    if currentLocationGroup == nil
+                    {
+                        //is the current record deleted
+                        if (locationGroup.Deleted == nil)
+                        {
+                            //no insert it
+                            ModelManager.getInstance().addLocationGroup(locationGroup)
+                        }
+                    }
+                    else
+                    {
+                        //yes
+                        
+                        //is the current record deleted
+                        if (locationGroup.Deleted != nil)
+                        {
+                            //yes  - delete the LocationGroup
+                            ModelManager.getInstance().deleteLocationGroup(locationGroup)
+                        }
+                        else
+                        {
+                            //no  - update the LocationGroup
+                            ModelManager.getInstance().updateLocationGroup(locationGroup)
+                        }
+                        
+                    }
+                    
+                    if (progressBar != nil)
+                    {
+                        dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Area"; progressBar!.progress = (Float(current) / Float(total))})
+                    }
+                    }
+                }
+
+            case .LocationGroupMembership:
+                
+                //get the data nodes
+                let dataNode: AEXMLElement = packageData["LocationGroupMembership"]
+                
+                //total = dataNode.children.count
+                
+                for childNode in dataNode.children
+                {
+                    autoreleasepool{
+                    current += 1
+                    
+                    //get the first child
+                    let locationGroupMembership: LocationGroupMembership = LocationGroupMembership(XMLElement: childNode)
+                    
+                    var currentSynchDate: NSDate
+                    if locationGroupMembership.LastUpdatedOn == nil {
+                        currentSynchDate = locationGroupMembership.CreatedOn
+                    }
+                    else {
+                        currentSynchDate = locationGroupMembership.LastUpdatedOn!
+                    }
+                    
+                    lastDateInPackage = lastDateInPackage.laterDate(currentSynchDate)
+                    lastRowId = locationGroupMembership.RowId
+                    
+                    //does the record exists
+                    let currentLocationGroupMembership: LocationGroupMembership? = ModelManager.getInstance().getLocationGroupMembership(locationGroupMembership.RowId)
+                    if currentLocationGroupMembership == nil
+                    {
+                        //is the current record deleted
+                        if (locationGroupMembership.Deleted == nil)
+                        {
+                            //no insert it
+                            ModelManager.getInstance().addLocationGroupMembership(locationGroupMembership)
+                        }
+                    }
+                    else
+                    {
+                        //yes
+                        
+                        //is the current record deleted
+                        if (locationGroupMembership.Deleted != nil)
+                        {
+                            //yes  - delete the LocationGroupMembership
+                            ModelManager.getInstance().deleteLocationGroupMembership(locationGroupMembership)
+                        }
+                        else
+                        {
+                            //no  - update the LocationGroupMembership
+                            ModelManager.getInstance().updateLocationGroupMembership(locationGroupMembership)
+                        }
+                        
+                    }
+                    
+                    if (progressBar != nil)
+                    {
+                        dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Area Link"; progressBar!.progress = (Float(current) / Float(total))})
+                    }
+                    }
+                }
+                
+            case .Operative:
+                
+                //get the data nodes
+                let dataNode: AEXMLElement = packageData["Operative"]
+                
+                //total = dataNode.children.count
+                
+                for childNode in dataNode.children
+                {
+                    autoreleasepool{
+                    current += 1
+                    
+                    //get the first child
+                    let operative: Operative = Operative(XMLElement: childNode)
+                    
+                    var currentSynchDate: NSDate
+                    if operative.LastUpdatedOn == nil {
+                        currentSynchDate = operative.CreatedOn
+                    }
+                    else {
+                        currentSynchDate = operative.LastUpdatedOn!
+                    }
+                    
+                    lastDateInPackage = lastDateInPackage.laterDate(currentSynchDate)
+                    lastRowId = operative.RowId
+                    
+                    //does the record exists
+                    let currentOperative: Operative? = ModelManager.getInstance().getOperative(operative.RowId)
+                    if currentOperative == nil
+                    {
+                        //is the current record deleted
+                        if (operative.Deleted == nil)
+                        {
+                            //no insert it
+                            ModelManager.getInstance().addOperative(operative)
+                        }
+                    }
+                    else
+                    {
+                        //yes
+                        
+                        //is the current record deleted
+                        if (operative.Deleted != nil)
+                        {
+                            //yes  - delete the Operative
+                            ModelManager.getInstance().deleteOperative(operative)
+                        }
+                        else
+                        {
+                            //no  - update the Operative
+                            ModelManager.getInstance().updateOperative(operative)
+                        }
+                        
+                    }
+                    
+                    if (progressBar != nil)
+                    {
+                        dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Operative"; progressBar!.progress = (Float(current) / Float(total))})
+                    }
+                    }
+                }
+                
+            case .Organisation:
+                
+                //get the data nodes
+                let dataNode: AEXMLElement = packageData["Organisation"]
+                
+                //total = dataNode.children.count
+                
+                for childNode in dataNode.children
+                {
+                    autoreleasepool{
+                    current += 1
+                    
+                    //get the first child
+                    let organisation: Organisation = Organisation(XMLElement: childNode)
+                    
+                    var currentSynchDate: NSDate
+                    if organisation.LastUpdatedOn == nil {
+                        currentSynchDate = organisation.CreatedOn
+                    }
+                    else {
+                        currentSynchDate = organisation.LastUpdatedOn!
+                    }
+                    
+                    lastDateInPackage = lastDateInPackage.laterDate(currentSynchDate)
+                    lastRowId = organisation.RowId
+                    
+                    //does the record exists
+                    let currentOrganisation: Organisation? = ModelManager.getInstance().getOrganisation(organisation.RowId)
+                    if currentOrganisation == nil
+                    {
+                        //is the current record deleted
+                        if (organisation.Deleted == nil)
+                        {
+                            //no insert it
+                            ModelManager.getInstance().addOrganisation(organisation)
+                        }
+                    }
+                    else
+                    {
+                        //yes
+                        
+                        //is the current record deleted
+                        if (organisation.Deleted != nil)
+                        {
+                            //yes  - delete the Organisation
+                            ModelManager.getInstance().deleteOrganisation(organisation)
+                        }
+                        else
+                        {
+                            //no  - update the Organisation
+                            ModelManager.getInstance().updateOrganisation(organisation)
+                        }
+                        
+                    }
+                    
+                    if (progressBar != nil)
+                    {
+                        dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Organisation"; progressBar!.progress = (Float(current) / Float(total))})
+                    }
+                    }
+                }
+
+            case .Site:
+                
+                //get the data nodes
+                let dataNode: AEXMLElement = packageData["Site"]
+                
+                //total = dataNode.children.count
+                
+                for childNode in dataNode.children
+                {
+                    autoreleasepool{
+                    current += 1
+                    
+                    //get the first child
+                    let site: Site = Site(XMLElement: childNode)
+                    
+                    var currentSynchDate: NSDate
+                    if site.LastUpdatedOn == nil {
+                        currentSynchDate = site.CreatedOn
+                    }
+                    else {
+                        currentSynchDate = site.LastUpdatedOn!
+                    }
+                    
+                    lastDateInPackage = lastDateInPackage.laterDate(currentSynchDate)
+                    lastRowId = site.RowId
+                    
+                    //does the record exists
+                    let currentSite: Site? = ModelManager.getInstance().getSite(site.RowId)
+                    if currentSite == nil
+                    {
+                        //is the current record deleted
+                        if (site.Deleted == nil)
+                        {
+                            //no insert it
+                            ModelManager.getInstance().addSite(site)
+                        }
+                    }
+                    else
+                    {
+                        //yes
+                        
+                        //is the current record deleted
+                        if (site.Deleted != nil)
+                        {
+                            //yes  - delete the Site
+                            ModelManager.getInstance().deleteSite(site)
+                        }
+                        else
+                        {
+                            //no  - update the Site
+                            ModelManager.getInstance().updateSite(site)
+                        }
+                        
+                    }
+                    
+                    if (progressBar != nil)
+                    {
+                        dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Site"; progressBar!.progress = (Float(current) / Float(total))})
+                    }
+                    }
+                }
+                
+            case .Property:
+                
+                //get the data nodes
+                let dataNode: AEXMLElement = packageData["Property"]
+                
+                //total = dataNode.children.count
+                
+                for childNode in dataNode.children
+                {
+                    autoreleasepool{
+                    current += 1
+                    
+                    //get the first child
+                    let property: Property = Property(XMLElement: childNode)
+                    
+                    var currentSynchDate: NSDate
+                    if property.LastUpdatedOn == nil {
+                        currentSynchDate = property.CreatedOn
+                    }
+                    else {
+                        currentSynchDate = property.LastUpdatedOn!
+                    }
+                    
+                    lastDateInPackage = lastDateInPackage.laterDate(currentSynchDate)
+                    lastRowId = property.RowId
+                    
+                    //does the record exists
+                    let currentProperty: Property? = ModelManager.getInstance().getProperty(property.RowId)
+                    if currentProperty == nil
+                    {
+                        //is the current record deleted
+                        if (property.Deleted == nil)
+                        {
+                            //no insert it
+                            ModelManager.getInstance().addProperty(property)
+                        }
+                    }
+                    else
+                    {
+                        //yes
+                        
+                        //is the current record deleted
+                        if (property.Deleted != nil)
+                        {
+                            //yes  - delete the Property
+                            ModelManager.getInstance().deleteProperty(property)
+                        }
+                        else
+                        {
+                            //no  - update the Property
+                            ModelManager.getInstance().updateProperty(property)
+                        }
+                        
+                    }
+                    
+                    if (progressBar != nil)
+                    {
+                        dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Property"; progressBar!.progress = (Float(current) / Float(total))})
+                    }
+                    }
+                }
+
+            case .ReferenceData:
+                
+                //get the data nodes
+                let dataNode: AEXMLElement = packageData["ReferenceData"]
+                
+                //total = dataNode.children.count
+                
+                for childNode in dataNode.children
+                {
+                    autoreleasepool{
+                    current += 1
+                    
+                    //get the first child
+                    let referenceData: ReferenceData = ReferenceData(XMLElement: childNode)
+                    
+                    var currentSynchDate: NSDate
+                    if referenceData.LastUpdatedOn == nil {
+                        currentSynchDate = referenceData.CreatedOn
+                    }
+                    else {
+                        currentSynchDate = referenceData.LastUpdatedOn!
+                    }
+                    
+                    lastDateInPackage = lastDateInPackage.laterDate(currentSynchDate)
+                    lastRowId = referenceData.RowId
+                    
+                    //does the record exists
+                    let currentReferenceData: ReferenceData? = ModelManager.getInstance().getReferenceData(referenceData.RowId)
+                    if currentReferenceData == nil
+                    {
+                        //is the current record deleted
+                        if (referenceData.Deleted == nil)
+                        {
+                            //no insert it
+                            ModelManager.getInstance().addReferenceData(referenceData)
+                        }
+                    }
+                    else
+                    {
+                        //yes
+                        
+                        //is the current record deleted
+                        if (referenceData.Deleted != nil)
+                        {
+                            //yes  - delete the ReferenceData
+                            ModelManager.getInstance().deleteReferenceData(referenceData)
+                        }
+                        else
+                        {
+                            //no  - update the ReferenceData
+                            ModelManager.getInstance().updateReferenceData(referenceData)
+                        }
+                    }
+                    
+                    if (progressBar != nil)
+                    {
+                        dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Reference"; progressBar!.progress = (Float(current) / Float(total))})
+                    }
+                    }
+                }
+                
+            case .Task:
+                
+                //get the data nodes
+                let dataNode: AEXMLElement = packageData["Task"]
+                
+                //total = dataNode.children.count
+                
+                for childNode in dataNode.children
+                {
+                    autoreleasepool{
+                    current += 1
+                    
+                    //get the first child
+                    let task: Task = Task(XMLElement: childNode)
+                    
+                    var currentSynchDate: NSDate
+                    if task.LastUpdatedOn == nil {
+                        currentSynchDate = task.CreatedOn
+                    }
+                    else {
+                        currentSynchDate = task.LastUpdatedOn!
+                    }
+                    
+                    lastDateInPackage = lastDateInPackage.laterDate(currentSynchDate)
+                    lastRowId = task.RowId
+                    
+                    //does the record exists
+                    let currentTask: Task? = ModelManager.getInstance().getTask(task.RowId)
+                    if currentTask == nil
+                    {
+                        //is the current record deleted
+                        if (task.Deleted == nil)
+                        {
+                            //no insert it
+                            ModelManager.getInstance().addTask(task)
+                        }
+                    }
+                    else
+                    {
+                        //yes
+                        
+                        //is the current record deleted
+                        if (task.Deleted != nil)
+                        {
+                            //yes  - delete the Task
+                            ModelManager.getInstance().deleteTask(task)
+                        }
+                        else
+                        {
+                            //no  - update the Task
+                            ModelManager.getInstance().updateTask(task)
+                        }
+                        
+                    }
+                    
+                    if (progressBar != nil)
+                    {
+                        dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Task"; progressBar!.progress = (Float(current) / Float(total))})
+                    }
+                    }
+                }
+
+            case .TaskParameter:
+                
+                //get the data nodes
+                let dataNode: AEXMLElement = packageData["TaskParameter"]
+                
+                //total = dataNode.children.count
+                
+                for childNode in dataNode.children
+                {
+                    autoreleasepool{
+                    current += 1
+                    
+                    //get the first child
+                    let taskParameter: TaskParameter = TaskParameter(XMLElement: childNode)
+                    
+                    var currentSynchDate: NSDate
+                    if taskParameter.LastUpdatedOn == nil {
+                        currentSynchDate = taskParameter.CreatedOn
+                    }
+                    else {
+                        currentSynchDate = taskParameter.LastUpdatedOn!
+                    }
+                    
+                    lastDateInPackage = lastDateInPackage.laterDate(currentSynchDate)
+                    lastRowId = taskParameter.RowId
+                    
+                    //does the record exists
+                    let currentTaskParameter: TaskParameter? = ModelManager.getInstance().getTaskParameter(taskParameter.RowId)
+                    if currentTaskParameter == nil
+                    {
+                        //is the current record deleted
+                        if (taskParameter.Deleted == nil)
+                        {
+                            //no insert it
+                            ModelManager.getInstance().addTaskParameter(taskParameter)
+                        }
+                    }
+                    else
+                    {
+                        //yes
+                        
+                        //is the current record deleted
+                        if (taskParameter.Deleted != nil)
+                        {
+                            //yes  - delete the TaskParameter
+                            ModelManager.getInstance().deleteTaskParameter(taskParameter)
+                        }
+                        else
+                        {
+                            //no  - update the TaskParameter
+                            ModelManager.getInstance().updateTaskParameter(taskParameter)
+                        }
+                        
+                    }
+                    
+                    if (progressBar != nil)
+                    {
+                        dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Task Parameters"; progressBar!.progress = (Float(current) / Float(total))})
+                    }
+                    }
+                }
+
+            case .TaskTemplate:
+                
+                //get the data nodes
+                let dataNode: AEXMLElement = packageData["TaskTemplate"]
+                
+                //total = dataNode.children.count
+                
+                for childNode in dataNode.children
+                {
+                    autoreleasepool{
+                    current += 1
+                    
+                    //get the first child
+                    let taskTemplate: TaskTemplate = TaskTemplate(XMLElement: childNode)
+                    
+                    var currentSynchDate: NSDate
+                    if taskTemplate.LastUpdatedOn == nil {
+                        currentSynchDate = taskTemplate.CreatedOn
+                    }
+                    else {
+                        currentSynchDate = taskTemplate.LastUpdatedOn!
+                    }
+                    
+                    lastDateInPackage = lastDateInPackage.laterDate(currentSynchDate)
+                    lastRowId = taskTemplate.RowId
+                    
+                    //does the record exists
+                    let currentTaskTemplate: TaskTemplate? = ModelManager.getInstance().getTaskTemplate(taskTemplate.RowId)
+                    if currentTaskTemplate == nil
+                    {
+                        //is the current record deleted
+                        if (taskTemplate.Deleted == nil)
+                        {
+                            //no insert it
+                            ModelManager.getInstance().addTaskTemplate(taskTemplate)
+                        }
+                    }
+                    else
+                    {
+                        //yes
+                        
+                        //is the current record deleted
+                        if (taskTemplate.Deleted != nil)
+                        {
+                            //yes  - delete the TaskTemplate
+                            ModelManager.getInstance().deleteTaskTemplate(taskTemplate)
+                        }
+                        else
+                        {
+                            //no  - update the TaskTemplate
+                            ModelManager.getInstance().updateTaskTemplate(taskTemplate)
+                        }
+                        
+                    }
+                    
+                    if (progressBar != nil)
+                    {
+                        dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Templates"; progressBar!.progress = (Float(current) / Float(total))})
+                    }
+                    }
+                }
+
+            case .TaskTemplateParameter:
+                
+                //get the data nodes
+                let dataNode: AEXMLElement = packageData["TaskTemplateParameter"]
+                
+                //total = dataNode.children.count
+                
+                for childNode in dataNode.children
+                {
+                    autoreleasepool{
+                    current += 1
+                    
+                    //get the first child
+                    let taskTemplateParameter: TaskTemplateParameter = TaskTemplateParameter(XMLElement: childNode)
+                    
+                    var currentSynchDate: NSDate
+                    if taskTemplateParameter.LastUpdatedOn == nil {
+                        currentSynchDate = taskTemplateParameter.CreatedOn
+                    }
+                    else {
+                        currentSynchDate = taskTemplateParameter.LastUpdatedOn!
+                    }
+                    
+                    lastDateInPackage = lastDateInPackage.laterDate(currentSynchDate)
+                    lastRowId = taskTemplateParameter.RowId
+                    
+                    //does the record exists
+                    let currentTaskTemplateParameter: TaskTemplateParameter? = ModelManager.getInstance().getTaskTemplateParameter(taskTemplateParameter.RowId)
+                    if currentTaskTemplateParameter == nil
+                    {
+                        //is the current record deleted
+                        if (taskTemplateParameter.Deleted == nil)
+                        {
+                            //no insert it
+                            ModelManager.getInstance().addTaskTemplateParameter(taskTemplateParameter)
+                        }
+                    }
+                    else
+                    {
+                        //yes
+                        
+                        //is the current record deleted
+                        if (taskTemplateParameter.Deleted != nil)
+                        {
+                            //yes  - delete the TaskTemplateParameter
+                            ModelManager.getInstance().deleteTaskTemplateParameter(taskTemplateParameter)
+                        }
+                        else
+                        {
+                            //no  - update the TaskTemplateParameter
+                            ModelManager.getInstance().updateTaskTemplateParameter(taskTemplateParameter)
+                        }
+                        
+                    }
+                    
+                    if (progressBar != nil)
+                    {
+                        dispatch_async(dispatch_get_main_queue(), {progressBar!.labelText = "Template Parameters"; progressBar!.progress = (Float(current) / Float(total))})
+                    }
+                    }
+                }
+
+            }
+        }
+        else
+        {
+            current = 1
+            lastDateInPackage = NSDate()
+        }
+        
+        return (lastRowId, lastDateInPackage, current, total)
     }
     
     class func SynchroniseAllData(viewController: UIViewController, stage: Int32, progressBar: MBProgressHUD?) -> Bool
@@ -1011,57 +1037,76 @@ class Utility: NSObject {
         var lastDate: NSDate = NSDate()
         var lastRowId: String = EmptyGuid
         var count: Int32 = 0
+        var maxCount: Int32 = 0
+        var failed: Bool = false
         
-        while (lastRowId != EmptyGuid || count == 0) {
-            count += 1
-            if (progressBar != nil)
-            {
-                progressBar!.progress = (Float(count) / Float(count + 1));
-            }
-            
-            let data: NSData? = WebService.getSynchronisationPackageSync(Session.OperativeId!, synchronisationDate: synchronisationDate, lastRowId: lastRowId, stage: stage)
-            
-            if data == nil{
-                Session.AlertTitle = "Error"
-                Session.AlertMessage =  "Error with web service"
-                return (false, nil)
-            }
-            
-            let response: AEXMLElement = Utility.openSoapEnvelope(data)!
-            
-            if response.name == "soap:Fault"
-            {
-                Session.AlertTitle = "Error"
-                Session.AlertMessage =  "Error with web service"
-                return (false, nil)
-            }
-            
-            let SynchronisationPackageData: NSData = (response["GetSynchronisationPackageResult"].value! as NSString).dataUsingEncoding(NSUTF8StringEncoding)!
-            
-            var SynchronisationPackageDocument: AEXMLDocument?
-            do {
-                SynchronisationPackageDocument = try AEXMLDocument(xmlData: SynchronisationPackageData)
-            }
-            catch {
-                SynchronisationPackageDocument = nil
-            }
-            
-            if (SynchronisationPackageDocument != nil)
-            {
-                (lastRowId,lastDate) = Utility.importData(SynchronisationPackageDocument!.children[0], entityType: entityType, progressBar: progressBar)
-            }
+        while ((lastRowId != EmptyGuid || count == 0) && !failed) {
+            autoreleasepool{
+                count += 1
+//                if (progressBar != nil)
+//                {
+//                    progressBar!.progress = (Float(count) / Float(count + 1));
+//                }
+                
+                let data: NSData? = WebService.getSynchronisationPackageSync(Session.OperativeId!, synchronisationDate: synchronisationDate, lastRowId: lastRowId, stage: stage)
+                
+                if data == nil{
+                    Session.AlertTitle = "Error"
+                    Session.AlertMessage =  "Error with web service"
+                    failed = true
+                }
+                
+                if (!failed)
+                {
+                    let response: AEXMLElement = Utility.openSoapEnvelope(data)!
+                    
+                    if response.name == "soap:Fault"
+                    {
+                        Session.AlertTitle = "Error"
+                        Session.AlertMessage =  "Error with web service"
+                        failed = true
+                    }
 
-            SynchronisationPackageDocument = nil
+                    if (!failed)
+                    {
+                        let SynchronisationPackageData: NSData = (response["GetSynchronisationPackageResult"].value! as NSString).dataUsingEncoding(NSUTF8StringEncoding)!
+                        
+                        var SynchronisationPackageDocument: AEXMLDocument?
+                        do {
+                            SynchronisationPackageDocument = try AEXMLDocument(xmlData: SynchronisationPackageData)
+                        }
+                        catch {
+                            SynchronisationPackageDocument = nil
+                        }
+                        
+                        if (SynchronisationPackageDocument != nil)
+                        {
+                            (lastRowId, lastDate, count, maxCount) = Utility.importData(SynchronisationPackageDocument!.children[0], entityType: entityType, progressBar: progressBar, count: count, maxCount: maxCount)
+                        }
+
+                        SynchronisationPackageDocument = nil
+                    }
+                }
+            }
         }
-        return (true, lastDate)
+        if (!failed)
+        {
+            return (true, lastDate)
+        }
+        else
+        {
+            return (false, nil)
+        }
     }
     
 
     class func CheckSynchronisation(viewController: UIViewController, HUD: MBProgressHUD?)
     {
+        NSLog("CheckSynchronisation - started")
         self.SendTasks(viewController, HUD: HUD)
         
         self.DownloadAllDetails(viewController, HUD: HUD)
+        NSLog("CheckSynchronisation - ended")
     }
     
     class func SendTasks(viewController: UIViewController, HUD: MBProgressHUD?)
@@ -1090,7 +1135,7 @@ class Utility: NSObject {
     }
     
     class func SendTaskDetails(viewController: UIViewController, HUD: MBProgressHUD?) -> (Bool, Int32) {
-        
+        NSLog("SendTaskDetails - started")
         let isRemoteAvailable = Reachability().connectedToNetwork()
         var taskCounter: Int32 = 0;
         
@@ -1112,6 +1157,7 @@ class Utility: NSObject {
 
             let taskParameterQuery: String = "SELECT '<TaskParameter Id=\"' || CAST(TaskParameter.RowId AS VARCHAR(40)) || '\">' || COALESCE('<CreatedBy>' || CAST(TaskParameter.CreatedBy AS VARCHAR(40)) || '</CreatedBy>','<CreatedBy />') || COALESCE('<CreatedOn>' || DATETIME(TaskParameter.CreatedOn,'unixepoch') || '</CreatedOn>','<CreatedOn />') || COALESCE('<LastUpdatedBy>' || CAST(TaskParameter.LastUpdatedBy AS VARCHAR(40)) || '</LastUpdatedBy>','<LastUpdatedBy />') || COALESCE('<LastUpdatedOn>' || DATETIME(TaskParameter.LastUpdatedOn,'unixepoch') || '</LastUpdatedOn>','<LastUpdatedOn />') || COALESCE('<Deleted>' || CAST(TaskParameter.Deleted AS VARCHAR(20)) || '</Deleted>','<Deleted />') || COALESCE('<TaskTemplateParameterId>' || CAST(TaskParameter.TaskTemplateParameterId AS VARCHAR(40)) || '</TaskTemplateParameterId>','<TaskTemplateParameterId />') || COALESCE('<TaskId>' || CAST(TaskParameter.TaskId AS VARCHAR(40)) || '</TaskId>','<TaskId />') || COALESCE('<ParameterName>' || TaskParameter.ParameterName || '</ParameterName>','<ParameterName />') || COALESCE('<ParameterType>' || TaskParameter.ParameterType || '</ParameterType>','<ParameterType />') || COALESCE('<ParameterDisplay>' || TaskParameter.ParameterDisplay || '</ParameterDisplay>','<ParameterDisplay />') || COALESCE('<Collect>' || CASE WHEN TaskParameter.Collect = 1 THEN 'True' ELSE 'False' END || '</Collect>','<Collect />') || COALESCE('<ParameterValue>' || TaskParameter.ParameterValue || '</ParameterValue>','<ParameterValue />') || '</TaskParameter>' FROM TaskParameter WHERE TaskParameter.TaskId = ? "
             
+            NSLog("SendTaskDetails - get tasks")
             var noMore: Bool = false
             
             while (!noMore)
@@ -1145,7 +1191,7 @@ class Utility: NSObject {
                     noMore = true;
                 }
                 
-                
+                NSLog("SendTaskDetails - get parameters")
                 var taskParameterData: String = "<TaskParameters>"
                         
                 for taskId in taskList
@@ -1171,13 +1217,15 @@ class Utility: NSObject {
                 {
                     taskParameterData = "<TaskParameters />"
                 }
-                    
+                
+                NSLog("SendTaskDetails - send package")
                 var PDASynchronisationPackage: String = "<PDASynchronisation>" + taskData + taskParameterData + "</PDASynchronisation>"
                 
                 PDASynchronisationPackage = PDASynchronisationPackage.xmlSimpleEscape()
                 
                 let data: NSData? = WebService.sendSyncronisationPackageSync(Session.OperativeId!, sysnchronisationPackage: PDASynchronisationPackage)
                 
+                NSLog("SendTaskDetails - process response")
                 if data == nil{
                     Session.AlertTitle = "Error"
                     Session.AlertMessage =  "Error with web service"
@@ -1193,6 +1241,7 @@ class Utility: NSObject {
                     return (false, 0)
                 }
                 
+                NSLog("SendTaskDetails - update tasks")
                 let updateStatement = "UPDATE Task SET LastUpdatedBy = ?,LastUpdatedOn = ?, Status = 'Docked' WHERE RowId = ?";
                 
                 //set the status of all the tsks to docked
@@ -1206,6 +1255,7 @@ class Utility: NSObject {
                     sharedModelManager.database!.executeUpdate(updateStatement, withArgumentsInArray: taskUpdateParameters)
                 }
                 
+                NSLog("SendTaskDetails - update synchronisation status")
                 SQLStatement = "DELETE FROM [Synchronisation] WHERE [Type] = ?"
                 SQLParameterValues = [NSObject]()
                 SQLParameterValues.append(synchronisationType)
@@ -1230,6 +1280,7 @@ class Utility: NSObject {
                 
             }
         }
+        NSLog("SendTaskDetails - ended")
         return (isRemoteAvailable, taskCounter)
     }
  
@@ -1334,19 +1385,19 @@ class Utility: NSObject {
         var SQLStatement: String
         var SQLParameterValues: [NSObject]  = [NSObject]()
 
-        ModelManager.getInstance().executeDirect("DELETE FROM [ReferenceData]", SQLParameterValues: SQLParameterValues)
-        ModelManager.getInstance().executeDirect("DELETE FROM [TaskTemplate]", SQLParameterValues: SQLParameterValues)
-        ModelManager.getInstance().executeDirect("DELETE FROM [TaskTemplateParameter]", SQLParameterValues: SQLParameterValues)
-        ModelManager.getInstance().executeDirect("DELETE FROM [Operative]", SQLParameterValues: SQLParameterValues)
-        ModelManager.getInstance().executeDirect("DELETE FROM [Organisation]", SQLParameterValues: SQLParameterValues)
-        ModelManager.getInstance().executeDirect("DELETE FROM [Site]", SQLParameterValues: SQLParameterValues)
-        ModelManager.getInstance().executeDirect("DELETE FROM [Property]", SQLParameterValues: SQLParameterValues)
-        ModelManager.getInstance().executeDirect("DELETE FROM [LocationGroup]", SQLParameterValues: SQLParameterValues)
-        ModelManager.getInstance().executeDirect("DELETE FROM [LocationGroupMembership]", SQLParameterValues: SQLParameterValues)
-        ModelManager.getInstance().executeDirect("DELETE FROM [Location]", SQLParameterValues: SQLParameterValues)
-        ModelManager.getInstance().executeDirect("DELETE FROM [Asset]", SQLParameterValues: SQLParameterValues)
-        ModelManager.getInstance().executeDirect("DELETE FROM [Task]", SQLParameterValues: SQLParameterValues)
-        ModelManager.getInstance().executeDirect("DELETE FROM [TaskParameter]", SQLParameterValues: SQLParameterValues)
+        ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [ReferenceData]")
+        ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [TaskTemplate]")
+        ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [TaskTemplateParameter]")
+        ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [Operative]")
+        ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [Organisation]")
+        ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [Site]")
+        ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [Property]")
+        ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [LocationGroup]")
+        ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [LocationGroupMembership]")
+        ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [Location]")
+        ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [Asset]")
+        ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [Task]")
+        ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [TaskParameter]")
 
         var synchronisationType: String = Session.OrganisationId! + ":Receive%"
         SQLStatement = "DELETE FROM [Synchronisation] WHERE [Type] LIKE ?"

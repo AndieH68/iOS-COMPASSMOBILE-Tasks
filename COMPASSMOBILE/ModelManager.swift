@@ -25,9 +25,16 @@ class ModelManager: NSObject {
         return sharedModelManager
     }
     
+    func executeDirectNoParameters(SQLStatement: String) -> Bool{
+        sharedModelManager.database!.open()
+        let isExecuted: Bool = sharedModelManager.database!.executeStatements(SQLStatement)
+        sharedModelManager.database!.close()
+        return isExecuted
+    }
+    
     func executeDirect(SQLStatement: String, SQLParameterValues: [NSObject]?) -> Bool{
         sharedModelManager.database!.open()
-        let isExecuted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        let isExecuted: Bool = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
         sharedModelManager.database!.close()
         return isExecuted
     }

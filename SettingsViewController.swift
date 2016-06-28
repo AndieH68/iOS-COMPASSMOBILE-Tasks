@@ -234,8 +234,8 @@ class SettingsViewController: UITableViewController, MBProgressHUDDelegate
         headsUpDisplay!.showWhileExecuting({Utility.ResetAllData(self, HUD: self.headsUpDisplay)}, animated: true)
         
         //Logout
-        Session.OperativeId = nil
-        Session.OrganisationId = "00000000-0000-0000-0000-000000000000"
-        self.navigationController?.popViewControllerAnimated(true)
+//        Session.OperativeId = nil
+//        Session.OrganisationId = "00000000-0000-0000-0000-000000000000"
+//        self.navigationController?.popViewControllerAnimated(true)
     }
 }

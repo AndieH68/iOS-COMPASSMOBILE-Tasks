@@ -324,10 +324,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nSc-1T-OFr">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nSc-1T-OFr">
                                 <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kNB-K4-OeK" userLabel="Content View">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kNB-K4-OeK" userLabel="Content View">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="616"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="j6Y-st-p5j" userLabel="Asset Type Stack View">
@@ -630,6 +630,7 @@
                                             <constraint firstItem="BKa-CX-AdY" firstAttribute="trailing" secondItem="kNB-K4-OeK" secondAttribute="trailingMargin" id="gS3-ss-biu"/>
                                             <constraint firstItem="BKa-CX-AdY" firstAttribute="leading" secondItem="kNB-K4-OeK" secondAttribute="leadingMargin" id="gxL-5T-A9I"/>
                                             <constraint firstItem="CGy-He-94u" firstAttribute="top" secondItem="RD2-CA-8LE" secondAttribute="bottom" constant="8" id="n6l-FQ-9wW"/>
+                                            <constraint firstAttribute="height" constant="616" id="nGO-mN-1uY"/>
                                             <constraint firstItem="fs5-8P-fU8" firstAttribute="top" secondItem="13u-Ny-eG3" secondAttribute="bottom" id="qvc-Qn-h9x"/>
                                             <constraint firstAttribute="trailingMargin" secondItem="CGy-He-94u" secondAttribute="trailing" id="rwm-hB-32Q"/>
                                             <constraint firstAttribute="trailingMargin" secondItem="EJS-sk-4yq" secondAttribute="trailing" id="tUh-rv-eRP"/>

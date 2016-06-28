@@ -42,7 +42,10 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         // Get the filtered list of tasks to populate the table
         if(Session.FilterSiteName == nil) { SelectedSite.text = "All" } else { SelectedSite.text = Session.FilterSiteName }
         if(Session.FilterPropertyName == nil) { SelectedProperty.text = "All" } else { SelectedProperty.text = Session.FilterPropertyName }
-        self.getTaskData()
+        if(Session.OperativeId != nil)
+        {
+            self.getTaskData()
+        }
     }
 
     override func didReceiveMemoryWarning() {
