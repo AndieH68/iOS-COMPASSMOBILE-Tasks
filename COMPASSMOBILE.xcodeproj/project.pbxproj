@@ -44,15 +44,15 @@
 		A486A4F01D11748700FE4642 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A486A4EF1D11748700FE4642 /* SystemConfiguration.framework */; };
 		A486A4F21D11748E00FE4642 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A486A4F11D11748E00FE4642 /* CoreData.framework */; };
 		A486A4F71D11828000FE4642 /* Crittercism.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A486A4F61D11828000FE4642 /* Crittercism.framework */; };
-		A486A4F91D11A1E300FE4642 /* BlueTherm.swift in Sources */ = {isa = PBXBuildFile; fileRef = A486A4F81D11A1E300FE4642 /* BlueTherm.swift */; };
 		A490C1C11CFED99600FB13B3 /* TaskTemplateParameterCellTemperature.swift in Sources */ = {isa = PBXBuildFile; fileRef = A490C1C01CFED99600FB13B3 /* TaskTemplateParameterCellTemperature.swift */; };
 		A49455E91C7CBED600BE6247 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49455E81C7CBED600BE6247 /* MainViewController.swift */; };
 		A49455EC1C7CBF2300BE6247 /* ModelUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49455EB1C7CBF2300BE6247 /* ModelUtility.swift */; };
 		A49455EE1C7CBF7500BE6247 /* TaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49455ED1C7CBF7500BE6247 /* TaskCell.swift */; };
+		A4A25F5F1D22D63A00027FA6 /* Default-568.png in Resources */ = {isa = PBXBuildFile; fileRef = A4A25F5E1D22D63A00027FA6 /* Default-568.png */; };
 		A4A522F01C43F4A500D16A9A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A522EF1C43F4A500D16A9A /* AppDelegate.swift */; };
 		A4A522F51C43F4A500D16A9A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4A522F31C43F4A500D16A9A /* Main.storyboard */; };
 		A4A522F81C43F4A500D16A9A /* COMPASSMOBILE.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A4A522F61C43F4A500D16A9A /* COMPASSMOBILE.xcdatamodeld */; };
-		A4B1AEA81D22AC9300114CFA /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4B1AEA71D22AC9300114CFA /* Launch Screen.storyboard */; };
+		A4B1AEA81D22AC9300114CFA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4B1AEA71D22AC9300114CFA /* LaunchScreen.storyboard */; };
 		A4D326581D07011D00EDEC7F /* TaskTemplateParameterFormItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D326571D07011D00EDEC7F /* TaskTemplateParameterFormItem.swift */; };
 		A4D3265A1D08726700EDEC7F /* RemedialTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D326591D08726700EDEC7F /* RemedialTaskViewController.swift */; };
 		A4DC551D1CEF0C9700833910 /* TaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4DC551C1CEF0C9700833910 /* TaskViewController.swift */; };
@@ -110,17 +110,17 @@
 		A486A4EF1D11748700FE4642 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		A486A4F11D11748E00FE4642 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		A486A4F61D11828000FE4642 /* Crittercism.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crittercism.framework; path = CrittercismSDK/Crittercism.framework; sourceTree = "<group>"; };
-		A486A4F81D11A1E300FE4642 /* BlueTherm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlueTherm.swift; sourceTree = "<group>"; };
 		A490C1C01CFED99600FB13B3 /* TaskTemplateParameterCellTemperature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskTemplateParameterCellTemperature.swift; sourceTree = "<group>"; };
 		A49455E81C7CBED600BE6247 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		A49455EB1C7CBF2300BE6247 /* ModelUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelUtility.swift; sourceTree = "<group>"; };
 		A49455ED1C7CBF7500BE6247 /* TaskCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskCell.swift; sourceTree = "<group>"; };
+		A4A25F5E1D22D63A00027FA6 /* Default-568.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568.png"; sourceTree = SOURCE_ROOT; };
 		A4A522EC1C43F4A500D16A9A /* COMPASSMOBILE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = COMPASSMOBILE.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4A522EF1C43F4A500D16A9A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A4A522F41C43F4A500D16A9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A4A522F71C43F4A500D16A9A /* COMPASSMOBILE.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = COMPASSMOBILE.xcdatamodel; sourceTree = "<group>"; };
 		A4A522FE1C43F4A500D16A9A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A4B1AEA71D22AC9300114CFA /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = "Launch Screen.storyboard"; path = "../Launch Screen.storyboard"; sourceTree = "<group>"; };
+		A4B1AEA71D22AC9300114CFA /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = ../LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A4D326571D07011D00EDEC7F /* TaskTemplateParameterFormItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskTemplateParameterFormItem.swift; sourceTree = "<group>"; };
 		A4D326591D08726700EDEC7F /* RemedialTaskViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemedialTaskViewController.swift; sourceTree = "<group>"; };
 		A4DC551C1CEF0C9700833910 /* TaskViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskViewController.swift; sourceTree = "<group>"; };
@@ -186,7 +186,6 @@
 				A4EDA3921C4E98C900667987 /* AEXML.swift */,
 				A4A522FE1C43F4A500D16A9A /* Info.plist */,
 				A4F16F9E1CE4B9B200270AFE /* MBProgressHUD.swift */,
-				A486A4F81D11A1E300FE4642 /* BlueTherm.swift */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -238,7 +237,7 @@
 		A49455EA1C7CBEDE00BE6247 /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
-				A4B1AEA71D22AC9300114CFA /* Launch Screen.storyboard */,
+				A4B1AEA71D22AC9300114CFA /* LaunchScreen.storyboard */,
 				A4A522F31C43F4A500D16A9A /* Main.storyboard */,
 			);
 			name = Storyboards;
@@ -247,6 +246,7 @@
 		A4A522E31C43F4A500D16A9A = {
 			isa = PBXGroup;
 			children = (
+				A4A25F5E1D22D63A00027FA6 /* Default-568.png */,
 				A486A4F51D1181C200FE4642 /* CrittercismSDK */,
 				A486A4F11D11748E00FE4642 /* CoreData.framework */,
 				A486A4EF1D11748700FE4642 /* SystemConfiguration.framework */,
@@ -381,7 +381,8 @@
 			files = (
 				A4034A861C5132EE00615D95 /* COMPASSDB.sqlite in Resources */,
 				A4F16F9D1CE4716200270AFE /* Assets.xcassets in Resources */,
-				A4B1AEA81D22AC9300114CFA /* Launch Screen.storyboard in Resources */,
+				A4B1AEA81D22AC9300114CFA /* LaunchScreen.storyboard in Resources */,
+				A4A25F5F1D22D63A00027FA6 /* Default-568.png in Resources */,
 				A4A522F51C43F4A500D16A9A /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -405,7 +406,6 @@
 				A45CD6ED1C577DA800C17BD7 /* TaskTemplate.swift in Sources */,
 				A40FC1BA1CF27FFF003B1413 /* TaskTemplateParameterCellFreetext.swift in Sources */,
 				A4EDA3961C4EA55500667987 /* ReferenceData.swift in Sources */,
-				A486A4F91D11A1E300FE4642 /* BlueTherm.swift in Sources */,
 				A45CD6E71C577D8E00C17BD7 /* Property.swift in Sources */,
 				A4DC551D1CEF0C9700833910 /* TaskViewController.swift in Sources */,
 				A4FAB4E01CF700E500766F3D /* MainNavigationController.swift in Sources */,
@@ -554,6 +554,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -583,6 +584,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";

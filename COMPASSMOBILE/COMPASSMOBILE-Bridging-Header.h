@@ -5,4 +5,8 @@
 #import "FMDatabase.h"
 #import "ProbeProperties.h"
 #import "ProbeSettings.h"
+#import "AlertMessageDelegate.h"
+#import "AlertMessages.h"
+#import "BlueThermObject.h"
+#import "ETIPassingData.h"
 #import <Crittercism/Crittercism.h>
