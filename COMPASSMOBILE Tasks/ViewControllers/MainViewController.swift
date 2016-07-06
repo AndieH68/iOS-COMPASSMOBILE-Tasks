@@ -68,6 +68,11 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
 //            Utility.invokeAlertMethod(self, title: "No remote", message: "Logged in locally", delegate: nil)
 //        }
         
+        if Session.TaskId != nil
+        {
+            self.performSegueWithIdentifier("TaskSegue", sender: self)
+        }
+        
         if Session.CheckDatabase == true
         {
             
@@ -184,11 +189,16 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
             switch segue.identifier!
             {
                 case "TaskSegue":
-                    Session.TaskId = (sender as! TaskCell).taskId
+                    if (sender is TaskCell)
+                    {
+                        Session.TaskId = (sender as! TaskCell).taskId
+                    }
                 
                 case "RemedialTaskSegue":
-                    Session.TaskId = (sender as! TaskCell).taskId
-                
+                    if (sender is TaskCell)
+                    {
+                        Session.TaskId = (sender as! TaskCell).taskId
+                    }
                 default:
                     print("Default")
             }

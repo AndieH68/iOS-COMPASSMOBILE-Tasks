@@ -123,12 +123,13 @@ class RemedialTaskViewController: UIViewController, UITextFieldDelegate, UITextV
             title: "OK",
             style: UIAlertActionStyle.Destructive,
             handler: self.LeaveTask))
-        
+       
         presentViewController(userPrompt, animated: true, completion: nil)
     }
     
     func LeaveTask (actionTarget: UIAlertAction) {
         Session.CodeScanned = nil
+        Session.TaskId = nil
         self.navigationController?.popViewControllerAnimated(true)
     }
     
@@ -240,6 +241,7 @@ class RemedialTaskViewController: UIViewController, UITextFieldDelegate, UITextV
         Session.CodeScanned = nil
         
         //close the view
+        Session.TaskId = nil
         self.navigationController?.popViewControllerAnimated(true)
     }
     

@@ -422,6 +422,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
     
     func LeaveTask (actionTarget: UIAlertAction) {
         Session.CodeScanned = nil
+        Session.TaskId = nil
         EAController.sharedController().callBack = nil
         self.navigationController?.popViewControllerAnimated(true)
     }
@@ -699,6 +700,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
         EAController.sharedController().callBack = nil
         
         //close the view
+        Session.TaskId = nil
         self.navigationController?.popViewControllerAnimated(true)
     }
     

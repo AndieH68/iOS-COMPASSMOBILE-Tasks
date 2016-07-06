@@ -1,5 +1,5 @@
 //
-//  Asset.swift
+//  Location.swift
 //  COMPASSMOBILE
 //
 //  Created by Andrew Harper on 26/01/2016.
@@ -8,8 +8,8 @@
 
 import UIKit
 
-class Asset: NSObject {
-
+class Location: NSObject {
+    
     // MARK: - Properties
     
     var RowId: String = String()
@@ -18,19 +18,19 @@ class Asset: NSObject {
     var LastUpdatedBy: String? = nil
     var LastUpdatedOn: NSDate? = nil
     var Deleted: NSDate? = nil
-    var AssetType: String = String()
     var PropertyId: String = String()
-    var LocationId: String = String()
-    var HydropName: String? = nil
-    var ClientName: String? = nil
-    var ScanCode: String? = nil
-    var HotType: String? = nil
-    var ColdType: String? = nil
+    var Name: String = String()
+    var Description: String? = nil
+    var Level: String? = nil
+    var Number: String? = nil
+    var SubNumber: String? = nil
+    var Use: String? = nil
+    var ClientLocationName: String? = nil
     
     // MARK: - Contructors
     
     convenience
-    init(rowId:String, createdBy: String, createdOn: NSDate, lastUpdatedBy: String?, lastUpdatedOn: NSDate?, deleted: NSDate?, assetType: String, propertyId: String, locationId: String, hydropName: String?, clientName: String?, scanCode: String?, hotType: String?, coldType: String?) {
+    init(rowId:String, createdBy: String, createdOn: NSDate, lastUpdatedBy: String?, lastUpdatedOn: NSDate?, deleted: NSDate?, propertyId: String, name: String, description: String?, level: String?, number: String?, subNumber: String?, use: String?, clientLocationName: String?) {
         self.init()
         self.RowId = rowId
         self.CreatedBy = createdBy
@@ -38,14 +38,14 @@ class Asset: NSObject {
         self.LastUpdatedBy = lastUpdatedBy
         self.LastUpdatedOn = lastUpdatedOn
         self.Deleted = deleted
-        self.AssetType = assetType
         self.PropertyId = propertyId
-        self.LocationId = locationId
-        self.HydropName = hydropName
-        self.ClientName = clientName
-        self.ScanCode = scanCode
-        self.HotType = hotType
-        self.ColdType = coldType
+        self.Name = name
+        self.Description = description
+        self.Level = level
+        self.Number = number
+        self.SubNumber = subNumber
+        self.Use = use
+        self.ClientLocationName = clientLocationName
     }
     
     convenience
@@ -72,37 +72,42 @@ class Asset: NSObject {
                 self.Deleted = NSDate(dateString: XMLElement.attributes["Deleted"]!)
             }
         }
-        self.AssetType = XMLElement.attributes["AssetType"]!
         self.PropertyId = XMLElement.attributes["PropertyId"]!
-        self.LocationId = XMLElement.attributes["LocationId"]!
-        if XMLElement.attributes.keys.contains("HydropName") {
-            if XMLElement.attributes["HydropName"] != ""
+        self.Name = XMLElement.attributes["Name"]!
+        if XMLElement.attributes.keys.contains("Description") {
+            if XMLElement.attributes["Description"] != ""
             {
-                self.LastUpdatedBy = XMLElement.attributes["HydropName"]!
+                self.Description = XMLElement.attributes["Description"]!
             }
         }
-        if XMLElement.attributes.keys.contains("ClientName") {
-            if XMLElement.attributes["ClientName"] != ""
+        if XMLElement.attributes.keys.contains("Level") {
+            if XMLElement.attributes["Level"] != ""
             {
-                self.LastUpdatedBy = XMLElement.attributes["ClientName"]!
+                self.Level = XMLElement.attributes["Level"]!
             }
         }
-        if XMLElement.attributes.keys.contains("ScanCode") {
-            if XMLElement.attributes["ScanCode"] != ""
+        if XMLElement.attributes.keys.contains("Number") {
+            if XMLElement.attributes["Number"] != ""
             {
-                self.LastUpdatedBy = XMLElement.attributes["ScanCode"]!
+                self.Number = XMLElement.attributes["Number"]!
             }
         }
-        if XMLElement.attributes.keys.contains("HotType") {
-            if XMLElement.attributes["HotType"] != ""
+        if XMLElement.attributes.keys.contains("SubNumber") {
+            if XMLElement.attributes["SubNumber"] != ""
             {
-                self.LastUpdatedBy = XMLElement.attributes["HotType"]!
+                self.SubNumber = XMLElement.attributes["SubNumber"]!
             }
         }
-        if XMLElement.attributes.keys.contains("ColdType") {
-            if XMLElement.attributes["ColdType"] != ""
+        if XMLElement.attributes.keys.contains("Use") {
+            if XMLElement.attributes["Use"] != ""
             {
-                self.LastUpdatedBy = XMLElement.attributes["ColdType"]!
+                self.Use = XMLElement.attributes["Use"]!
+            }
+        }
+        if XMLElement.attributes.keys.contains("ClientLocationName") {
+            if XMLElement.attributes["ClientLocationName"] != ""
+            {
+                self.ClientLocationName = XMLElement.attributes["ClientLocationName"]!
             }
         }
     }

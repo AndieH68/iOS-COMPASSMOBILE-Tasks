@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A4A522EB1C43F4A500D16A9A"
-               BuildableName = "COMPASSMOBILE.app"
-               BlueprintName = "COMPASSMOBILE"
-               ReferencedContainer = "container:COMPASSMOBILE.xcodeproj">
+               BuildableName = "COMPASSMOBILE Tasks.app"
+               BlueprintName = "COMPASSMOBILE Tasks"
+               ReferencedContainer = "container:COMPASSMOBILE Tasks.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -35,7 +35,7 @@
                BlueprintIdentifier = "A4A523021C43F4A500D16A9A"
                BuildableName = "COMPASSMOBILETests.xctest"
                BlueprintName = "COMPASSMOBILETests"
-               ReferencedContainer = "container:COMPASSMOBILE.xcodeproj">
+               ReferencedContainer = "container:COMPASSMOBILE Tasks.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -43,9 +43,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A4A522EB1C43F4A500D16A9A"
-            BuildableName = "COMPASSMOBILE.app"
-            BlueprintName = "COMPASSMOBILE"
-            ReferencedContainer = "container:COMPASSMOBILE.xcodeproj">
+            BuildableName = "COMPASSMOBILE Tasks.app"
+            BlueprintName = "COMPASSMOBILE Tasks"
+            ReferencedContainer = "container:COMPASSMOBILE Tasks.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -66,9 +66,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A4A522EB1C43F4A500D16A9A"
-            BuildableName = "COMPASSMOBILE.app"
-            BlueprintName = "COMPASSMOBILE"
-            ReferencedContainer = "container:COMPASSMOBILE.xcodeproj">
+            BuildableName = "COMPASSMOBILE Tasks.app"
+            BlueprintName = "COMPASSMOBILE Tasks"
+            ReferencedContainer = "container:COMPASSMOBILE Tasks.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -85,9 +85,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A4A522EB1C43F4A500D16A9A"
-            BuildableName = "COMPASSMOBILE.app"
-            BlueprintName = "COMPASSMOBILE"
-            ReferencedContainer = "container:COMPASSMOBILE.xcodeproj">
+            BuildableName = "COMPASSMOBILE Tasks.app"
+            BlueprintName = "COMPASSMOBILE Tasks"
+            ReferencedContainer = "container:COMPASSMOBILE Tasks.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

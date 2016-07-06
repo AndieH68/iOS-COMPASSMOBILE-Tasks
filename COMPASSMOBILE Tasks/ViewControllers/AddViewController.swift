@@ -102,12 +102,31 @@ class AddViewController: UIViewController {
             return
         }
         
+        var criteria: Dictionary<String, String> = [:]
+        criteria["OrganisationId"] = Session.OrganisationId!
+        criteria["AssetType"] = AssetGroup!
+        criteria["TaskName"] = TaskName!
+        
+        var TaskTemplateData: [TaskTemplate] = []
+
+        TaskTemplateData = ModelManager.getInstance().findTaskTemplateList(criteria)
+        
+        for currentTaskTemplate: TaskTemplate in TaskTemplateData
+        {
+            TaskTemplateId = currentTaskTemplate.RowId
+            break;
+        }
+        
+        TaskRef = "CMi" + NSDate().toStringForTaskRef()
+    
         //create the task and go to the task form
         let rowId: String = NSUUID().UUIDString
         let now: NSDate = NSDate()
         let newTask: Task = Task(rowId: rowId, createdBy: Session.OperativeId!, createdOn: now, lastUpdatedBy: nil, lastUpdatedOn: nil, deleted: nil, organisationId: Session.OrganisationId!, siteId: SiteId!, propertyId: PropertyId!, locationId: LocationId!, locationGroupName: LocationGroupName!, locationName: LocationName!, room: Room, taskTemplateId: TaskTemplateId, taskRef: TaskRef, PPMGroup: AssetGroup, assetType: AssetType!, taskName: TaskName!, frequency: "Ad-hoc", assetId: AssetId!, assetNumber: AssetNumber!, scheduledDate: now, completedDate: nil, status: "Pending", priority: 30, estimatedDuration: EstimatedDuration, operativeId: Session.OperativeId, actualDuration: nil, travelDuration: nil, comments: nil, alternateAssetCode: nil)
         
         ModelManager.getInstance().addTask(newTask)
+        
+        Session.TaskId = newTask.RowId
             
         self.navigationController?.popViewControllerAnimated(true)
     }
@@ -528,6 +547,7 @@ class AddViewController: UIViewController {
         if (AssetNumberPopupSelector.selectedIndex != nil && AssetNumbers[AssetNumberPopupSelector.selectedIndex!] != "")
         {
             AssetId = AssetNumberDictionary[AssetNumbers[AssetNumberPopupSelector.selectedIndex!]]
+            AssetNumber = AssetNumberPopupSelector.selectedValue
         }
         else
         {

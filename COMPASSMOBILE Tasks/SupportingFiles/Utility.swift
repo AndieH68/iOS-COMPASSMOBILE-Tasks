@@ -1470,6 +1470,13 @@ extension NSDate
         return dateStringFormatter.stringFromDate(self)
     }
     
+    func toStringForTaskRef() -> String {
+        let dateStringFormatter = NSDateFormatter()
+        dateStringFormatter.dateFormat = "yyMMddHHmm"
+        dateStringFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
+        return dateStringFormatter.stringFromDate(self)
+    }
+    
     func startOfDay() -> NSDate {
         let dateStringFormatter = NSDateFormatter()
         dateStringFormatter.dateFormat = DateFormatStartOfDay

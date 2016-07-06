@@ -67,7 +67,7 @@ class Site: NSObject {
         if XMLElement.attributes.keys.contains("Type") {
             if XMLElement.attributes["Type"] != ""
             {
-                self.LastUpdatedBy = XMLElement.attributes["Type"]!
+                self.Type = XMLElement.attributes["Type"]!
             }
         }
     }
