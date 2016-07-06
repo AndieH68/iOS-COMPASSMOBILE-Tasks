@@ -26,7 +26,6 @@
 		A432E9571D2D1A4E002FE138 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A432E94F1D2D1A4E002FE138 /* SettingsViewController.swift */; };
 		A432E9581D2D1A4E002FE138 /* TaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A432E9501D2D1A4E002FE138 /* TaskViewController.swift */; };
 		A432E95A1D2D1AF0002FE138 /* AddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A432E9591D2D1AF0002FE138 /* AddViewController.swift */; };
-		A43919681D2D1D0100C31CA0 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A43919671D2D1D0100C31CA0 /* Info.plist */; };
 		A439196A1D2D1D2100C31CA0 /* MBProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43919691D2D1D2100C31CA0 /* MBProgressHUD.swift */; };
 		A439196C1D2D1D2E00C31CA0 /* KFPopupSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A439196B1D2D1D2E00C31CA0 /* KFPopupSelector.swift */; };
 		A439196E1D2D1D7F00C31CA0 /* TaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A439196D1D2D1D7F00C31CA0 /* TaskCell.swift */; };
@@ -415,7 +414,6 @@
 				A4A25F5F1D22D63A00027FA6 /* Default-568.png in Resources */,
 				A432E9481D2D1A18002FE138 /* LaunchScreen.storyboard in Resources */,
 				A4E425431D2D22870088EF64 /* Main.storyboard in Resources */,
-				A43919681D2D1D0100C31CA0 /* Info.plist in Resources */,
 				A432E92E1D2D1809002FE138 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -594,18 +592,12 @@
 				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/COMPASSMOBILE",
 					"$(PROJECT_DIR)/CrittercismSDK",
 				);
 				INFOPLIST_FILE = "COMPASSMOBILE Tasks/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/COMPASSMOBILE/Bluetooth",
-					"$(PROJECT_DIR)/COMPASSMOBILE",
-					Tasks/Bluetooth,
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = COM.HYDROP.COMPASSMOBILE.TASKS;
 				PRODUCT_NAME = "COMPASSMOBILE Tasks";
 				PROVISIONING_PROFILE = "";
@@ -626,18 +618,12 @@
 				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/COMPASSMOBILE",
 					"$(PROJECT_DIR)/CrittercismSDK",
 				);
 				INFOPLIST_FILE = "COMPASSMOBILE Tasks/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/COMPASSMOBILE/Bluetooth",
-					"$(PROJECT_DIR)/COMPASSMOBILE",
-					Tasks/Bluetooth,
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = COM.HYDROP.COMPASSMOBILE.TASKS;
 				PRODUCT_NAME = "COMPASSMOBILE Tasks";
