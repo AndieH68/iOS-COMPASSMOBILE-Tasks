@@ -63,7 +63,7 @@ class Session : NSObject
     
     class func BuildCriteriaFromSession() -> Dictionary<String, AnyObject> {
         var criteria: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
-        criteria["OrganisationId"] = Session.OrganisationId!
+        if (Session.OrganisationId != nil) { criteria["OrganisationId"] = Session.OrganisationId! }
         if (Session.FilterSiteId != nil) { criteria["SiteId"] = Session.FilterSiteId! }
         if (Session.FilterPropertyId != nil) { criteria["PropertyId"] = Session.FilterPropertyId! }
         if (Session.FilterFrequency != nil) { criteria["Frequency"] = Session.FilterFrequency! }
