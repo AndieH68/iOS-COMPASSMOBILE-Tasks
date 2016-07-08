@@ -35,11 +35,12 @@ class Utility: NSObject {
             if (error != nil) {
                 return(false, (error?.localizedDescription)!)
             }
+            
+            if !fileManager.fileExistsAtPath(dbPath) {
+                return(false, "Missing Database file")
+            }
         }
-        else
-        {
-            return(false, "Missing Database file")
-        }
+
         return (true, String())
     }
     

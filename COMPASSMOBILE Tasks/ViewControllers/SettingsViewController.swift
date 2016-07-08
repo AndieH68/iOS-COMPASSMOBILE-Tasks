@@ -164,7 +164,7 @@ class SettingsViewController: UITableViewController, MBProgressHUDDelegate
             }
             
         case 2:
-            let urlString = "http://" + Session.Server + "/HelpDocuments/COMPASSMOBILE/COMPASS%20MOBILE%20User%20Guide.pdf"
+            let urlString = "http://" + Session.Server + "/HelpDocuments/COMPASSMOBILE/COMPASSMOBILE-Tasks-User-Guide-for-iOS.pdf"
             let url = NSURL(string: urlString)
             let application = UIApplication.sharedApplication()
             application.openURL(url!)
