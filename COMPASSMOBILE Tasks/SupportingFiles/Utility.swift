@@ -18,7 +18,7 @@ class Utility: NSObject {
         return fileURL.path!
     }
     
-    class func copyFile(viewController: UIViewController, fileName: NSString) {
+    class func copyFile(viewController: UIViewController, fileName: NSString) -> (Bool, String){
         let dbPath: String = getPath(fileName as String)
         let fileManager = NSFileManager.defaultManager()
         if !fileManager.fileExistsAtPath(dbPath) {
@@ -33,29 +33,36 @@ class Utility: NSObject {
                 error = error1
             }
             if (error != nil) {
-                dispatch_async(dispatch_get_main_queue(), {
-                    self.invokeAlertMethod(viewController, title: "Error Occured", message: (error?.localizedDescription)!, delegate: nil)
-                })
-
+                return(false, (error?.localizedDescription)!)
             }
         }
+        else
+        {
+            return(false, "Missing Database file")
+        }
+        return (true, String())
     }
     
     class func invokeAlertMethod(viewController: UIViewController, title: String, message: String, delegate: AnyObject?) {
-//        let alert: UIAlertView = UIAlertView()
-//        alert.message = strBody as String
-//        alert.title = strTitle as String
-//        alert.delegate = delegate
-//        alert.addButtonWithTitle("Ok")
-//        alert.show()
-//        
+
         let userPrompt: UIAlertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
         
         //the default action
         let addAction = UIAlertAction( title: "Ok", style: UIAlertActionStyle.Default) {UIAlertAction in delegate}
         userPrompt.addAction(addAction)
         
-        dispatch_async(dispatch_get_main_queue(),{viewController.presentViewController(userPrompt, animated: true, completion: nil)})
+        dispatch_async(dispatch_get_main_queue(), {viewController.presentViewController(userPrompt, animated: true, completion: nil)})
+    }
+
+    class func invokeAlertMethodDirect(viewController: UIViewController, title: String, message: String, delegate: AnyObject?) {
+
+        let userPrompt: UIAlertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
+        
+        //the default action
+        let addAction = UIAlertAction( title: "Ok", style: UIAlertActionStyle.Default) {UIAlertAction in delegate}
+        userPrompt.addAction(addAction)
+        
+        viewController.presentViewController(userPrompt, animated: true, completion: nil)
     }
     
     class func openSoapEnvelope(data: NSData?) -> AEXMLElement?{
@@ -371,7 +378,7 @@ class Utility: NSObject {
                 
                 for childNode in dataNode.children
                 {
-                    autoreleasepool{
+                    //autoreleasepool{
                     current += 1
                     
                     //get the first child
@@ -421,7 +428,7 @@ class Utility: NSObject {
                     {
                         dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Operative"; progressBar!.progress = (Float(current) / Float(total))})
                     }
-                    }
+                    //}
                 }
                 
             case .Organisation:

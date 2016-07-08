@@ -59,6 +59,7 @@
 		A486A4F01D11748700FE4642 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A486A4EF1D11748700FE4642 /* SystemConfiguration.framework */; };
 		A486A4F21D11748E00FE4642 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A486A4F11D11748E00FE4642 /* CoreData.framework */; };
 		A486A4F71D11828000FE4642 /* Crittercism.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A486A4F61D11828000FE4642 /* Crittercism.framework */; };
+		A49A746A1D2FBE580006F220 /* COMPASSDB.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = A4CBC52F1D2FB94500E1D3CE /* COMPASSDB.sqlite */; };
 		A4A25F5F1D22D63A00027FA6 /* Default-568.png in Resources */ = {isa = PBXBuildFile; fileRef = A4A25F5E1D22D63A00027FA6 /* Default-568.png */; };
 		A4D4A2D61D2D2097009287F8 /* COMPASSMOBILE Tasks.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A4D4A2D41D2D2097009287F8 /* COMPASSMOBILE Tasks.xcdatamodeld */; };
 		A4E425431D2D22870088EF64 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4E425411D2D22870088EF64 /* Main.storyboard */; };
@@ -66,7 +67,6 @@
 
 /* Begin PBXFileReference section */
 		A40BB55D1C4FE9D7005C2AE6 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
-		A432E9281D2D135D002FE138 /* COMPASSDB.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = COMPASSDB.sqlite; path = "COMPASSMOBILE Tasks/COMPASSDB.sqlite"; sourceTree = SOURCE_ROOT; };
 		A432E92A1D2D1809002FE138 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = "COMPASSMOBILE Tasks/AppDelegate.swift"; sourceTree = SOURCE_ROOT; };
 		A432E92B1D2D1809002FE138 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "COMPASSMOBILE Tasks/Assets.xcassets"; sourceTree = SOURCE_ROOT; };
 		A432E92F1D2D19D5002FE138 /* AlertMessageDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AlertMessageDelegate.h; path = "COMPASSMOBILE Tasks/Bluetooth/AlertMessageDelegate.h"; sourceTree = SOURCE_ROOT; };
@@ -134,6 +134,7 @@
 		A486A4F61D11828000FE4642 /* Crittercism.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crittercism.framework; path = CrittercismSDK/Crittercism.framework; sourceTree = "<group>"; };
 		A4A25F5E1D22D63A00027FA6 /* Default-568.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568.png"; sourceTree = SOURCE_ROOT; };
 		A4A522EC1C43F4A500D16A9A /* COMPASSMOBILE Tasks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "COMPASSMOBILE Tasks.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A4CBC52F1D2FB94500E1D3CE /* COMPASSDB.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = COMPASSDB.sqlite; path = "COMPASSMOBILE Tasks/COMPASSDB.sqlite"; sourceTree = SOURCE_ROOT; };
 		A4D4A2D51D2D2097009287F8 /* COMPASSMOBILE Tasks.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "COMPASSMOBILE Tasks.xcdatamodel"; sourceTree = "<group>"; };
 		A4E425421D2D22870088EF64 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "COMPASSMOBILE Tasks/Base.lproj/Main.storyboard"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -294,7 +295,7 @@
 		A4A522EE1C43F4A500D16A9A /* COMPASSMOBILE Tasks */ = {
 			isa = PBXGroup;
 			children = (
-				A432E9281D2D135D002FE138 /* COMPASSDB.sqlite */,
+				A4CBC52F1D2FB94500E1D3CE /* COMPASSDB.sqlite */,
 				A43919661D2D1D0100C31CA0 /* COMPASSMOBILE-Tasks-Bridging-Header.h */,
 				A4D4A2D41D2D2097009287F8 /* COMPASSMOBILE Tasks.xcdatamodeld */,
 				A43919671D2D1D0100C31CA0 /* Info.plist */,
@@ -412,6 +413,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A4A25F5F1D22D63A00027FA6 /* Default-568.png in Resources */,
+				A49A746A1D2FBE580006F220 /* COMPASSDB.sqlite in Resources */,
 				A432E9481D2D1A18002FE138 /* LaunchScreen.storyboard in Resources */,
 				A4E425431D2D22870088EF64 /* Main.storyboard in Resources */,
 				A432E92E1D2D1809002FE138 /* Assets.xcassets in Resources */,

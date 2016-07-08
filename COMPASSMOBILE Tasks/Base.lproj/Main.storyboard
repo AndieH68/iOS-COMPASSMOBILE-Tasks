@@ -10,7 +10,7 @@
         <!--Tasks-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController storyboardIdentifier="MainViewController" title="Tasks" automaticallyAdjustsScrollViewInsets="NO" id="BYZ-38-t0r" userLabel="Tasks" customClass="MainViewController" customModule="COMPASSMOBILE" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MainViewController" title="Tasks" automaticallyAdjustsScrollViewInsets="NO" id="BYZ-38-t0r" userLabel="Tasks" customClass="MainViewController" customModule="COMPASSMOBILE_Tasks" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -85,7 +85,7 @@
                                                 <rect key="frame" x="0.0" y="72" width="600" height="464"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <prototypes>
-                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TaskCell" rowHeight="154" id="3jQ-1i-HSy" customClass="TaskCell" customModule="COMPASSMOBILE" customModuleProvider="target">
+                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TaskCell" rowHeight="154" id="3jQ-1i-HSy" customClass="TaskCell" customModule="COMPASSMOBILE_Tasks" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="1" width="600" height="154"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3jQ-1i-HSy" id="bpe-34-oj9">
@@ -315,7 +315,7 @@
         <!--Remedial Task Scene-->
         <scene sceneID="JtJ-rs-AtU">
             <objects>
-                <viewController title="Remedial Task" automaticallyAdjustsScrollViewInsets="NO" id="sM0-2K-j2x" userLabel="Remedial Task Scene" customClass="RemedialTaskViewController" customModule="COMPASSMOBILE" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Remedial Task" automaticallyAdjustsScrollViewInsets="NO" id="sM0-2K-j2x" userLabel="Remedial Task Scene" customClass="RemedialTaskViewController" customModule="COMPASSMOBILE_Tasks" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="hNw-XR-JjM"/>
                         <viewControllerLayoutGuide type="bottom" id="Wcs-Qo-Zy2"/>
@@ -691,7 +691,7 @@
         <!--Filter-->
         <scene sceneID="XvG-rC-hXK">
             <objects>
-                <viewController title="Filter" automaticallyAdjustsScrollViewInsets="NO" id="4hd-cQ-A8L" userLabel="Filter" customClass="FilterViewController" customModule="COMPASSMOBILE" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Filter" automaticallyAdjustsScrollViewInsets="NO" id="4hd-cQ-A8L" userLabel="Filter" customClass="FilterViewController" customModule="COMPASSMOBILE_Tasks" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="JxQ-4w-gND"/>
                         <viewControllerLayoutGuide type="bottom" id="deR-Np-NpO"/>
@@ -748,7 +748,7 @@
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eLh-7k-EOg" userLabel="Site Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eLh-7k-EOg" userLabel="Site Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE_Tasks" customModuleProvider="target">
                                                         <rect key="frame" x="120" y="0.0" width="440" height="30"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <connections>
@@ -772,7 +772,7 @@
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DfE-Tn-2H3" userLabel="Property Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DfE-Tn-2H3" userLabel="Property Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE_Tasks" customModuleProvider="target">
                                                         <rect key="frame" x="120" y="0.0" width="440" height="30"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <connections>
@@ -796,7 +796,7 @@
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0aM-nz-FtU" userLabel="Frequency Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0aM-nz-FtU" userLabel="Frequency Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE_Tasks" customModuleProvider="target">
                                                         <rect key="frame" x="120" y="0.0" width="440" height="30"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <connections>
@@ -820,7 +820,7 @@
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="McX-on-fk4" userLabel="Period Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="McX-on-fk4" userLabel="Period Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE_Tasks" customModuleProvider="target">
                                                         <rect key="frame" x="120" y="0.0" width="440" height="30"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <connections>
@@ -864,7 +864,7 @@
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ptj-NB-Q2k" userLabel="Asset Group Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ptj-NB-Q2k" userLabel="Asset Group Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE_Tasks" customModuleProvider="target">
                                                         <rect key="frame" x="120" y="0.0" width="440" height="30"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <connections>
@@ -888,7 +888,7 @@
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o4c-pU-And" userLabel="Task Name Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o4c-pU-And" userLabel="Task Name Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE_Tasks" customModuleProvider="target">
                                                         <rect key="frame" x="120" y="0.0" width="440" height="30"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <connections>
@@ -912,7 +912,7 @@
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fEe-R7-gT3" userLabel="Asset Type Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fEe-R7-gT3" userLabel="Asset Type Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE_Tasks" customModuleProvider="target">
                                                         <rect key="frame" x="120" y="0.0" width="440" height="30"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <connections>
@@ -936,7 +936,7 @@
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AsR-4b-RQa" userLabel="Area Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AsR-4b-RQa" userLabel="Area Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE_Tasks" customModuleProvider="target">
                                                         <rect key="frame" x="120" y="0.0" width="440" height="30"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <connections>
@@ -960,7 +960,7 @@
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nG5-uN-Vcq" userLabel="Location Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nG5-uN-Vcq" userLabel="Location Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE_Tasks" customModuleProvider="target">
                                                         <rect key="frame" x="120" y="0.0" width="440" height="30"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <connections>
@@ -984,7 +984,7 @@
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="q6b-mc-UIN" userLabel="Asset Number Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="q6b-mc-UIN" userLabel="Asset Number Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE_Tasks" customModuleProvider="target">
                                                         <rect key="frame" x="120" y="0.0" width="440" height="30"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <connections>
@@ -1090,7 +1090,7 @@
         <!--Settings-->
         <scene sceneID="vea-Uc-GbX">
             <objects>
-                <tableViewController id="XUJ-aM-MUt" customClass="SettingsViewController" customModule="COMPASSMOBILE" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="XUJ-aM-MUt" customClass="SettingsViewController" customModule="COMPASSMOBILE_Tasks" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="bo6-4c-fsV">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1381,13 +1381,13 @@
         <!--Search-->
         <scene sceneID="eSy-LW-I3n">
             <objects>
-                <viewController title="Search" id="K3w-J7-VaR" userLabel="Search" customClass="SearchViewController" customModule="COMPASSMOBILE" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Search" id="K3w-J7-VaR" userLabel="Search" customClass="SearchViewController" customModule="COMPASSMOBILE_Tasks" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="92B-ET-08H"/>
                         <viewControllerLayoutGuide type="bottom" id="dXm-hn-LT0"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="LcB-Dt-Vag">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="1200"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -1406,7 +1406,7 @@
         <!--Task-->
         <scene sceneID="R8B-1q-WwW">
             <objects>
-                <tableViewController id="N2I-qG-Bsb" customClass="TaskViewController" customModule="COMPASSMOBILE" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="N2I-qG-Bsb" customClass="TaskViewController" customModule="COMPASSMOBILE_Tasks" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="lzv-h5-zN3">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="1200"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1662,14 +1662,14 @@
                             </constraints>
                         </view>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="DropDownCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="DropdownCell" rowHeight="68" id="5xr-w0-3lI" userLabel="Dropdown Cell" customClass="TaskTemplateParameterCellDropdown" customModule="COMPASSMOBILE" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="DropDownCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="DropdownCell" rowHeight="68" id="5xr-w0-3lI" userLabel="Dropdown Cell" customClass="TaskTemplateParameterCellDropdown" customModule="COMPASSMOBILE_Tasks" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="307" width="600" height="68"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5xr-w0-3lI" id="dwS-NP-w7O">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="68"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pWZ-HB-JBe" userLabel="AnswerPopup" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pWZ-HB-JBe" userLabel="AnswerPopup" customClass="KFPopupSelector" customModule="COMPASSMOBILE_Tasks" customModuleProvider="target">
                                             <rect key="frame" x="8" y="30" width="584" height="30"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
@@ -1705,7 +1705,7 @@
                                     <outlet property="Question" destination="H3H-8k-DZx" id="GBG-l7-8pN"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="FreetextCell" rowHeight="68" id="wAa-Ms-2sQ" userLabel="Freetext Cell" customClass="TaskTemplateParameterCellFreetext" customModule="COMPASSMOBILE" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="FreetextCell" rowHeight="68" id="wAa-Ms-2sQ" userLabel="Freetext Cell" customClass="TaskTemplateParameterCellFreetext" customModule="COMPASSMOBILE_Tasks" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="375" width="600" height="68"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wAa-Ms-2sQ" id="oJo-mS-h3a">
@@ -1746,7 +1746,7 @@
                                     <outlet property="Question" destination="fty-mw-p2k" id="fSO-iM-Ozb"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NumberCell" rowHeight="68" id="Qeo-2u-G9U" userLabel="Number Cell" customClass="TaskTemplateParameterCellNumber" customModule="COMPASSMOBILE" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NumberCell" rowHeight="68" id="Qeo-2u-G9U" userLabel="Number Cell" customClass="TaskTemplateParameterCellNumber" customModule="COMPASSMOBILE_Tasks" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="443" width="600" height="68"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Qeo-2u-G9U" id="2UQ-CR-kLM">
@@ -1787,7 +1787,7 @@
                                     <outlet property="Question" destination="t9s-uX-iox" id="dcA-GO-WEZ"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TemperatureCell" rowHeight="68" id="VVP-12-Sso" userLabel="Temperature Cell" customClass="TaskTemplateParameterCellTemperature" customModule="COMPASSMOBILE" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TemperatureCell" rowHeight="68" id="VVP-12-Sso" userLabel="Temperature Cell" customClass="TaskTemplateParameterCellTemperature" customModule="COMPASSMOBILE_Tasks" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="511" width="600" height="68"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="VVP-12-Sso" id="5O2-1E-qZU">
@@ -1868,7 +1868,7 @@
         <!--AddView-->
         <scene sceneID="V4Y-Uf-zQg">
             <objects>
-                <viewController title="Add" automaticallyAdjustsScrollViewInsets="NO" id="yMV-AF-Apa" userLabel="AddView" customClass="AddViewController" customModule="COMPASSMOBILE" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Add" automaticallyAdjustsScrollViewInsets="NO" id="yMV-AF-Apa" userLabel="AddView" customClass="AddViewController" customModule="COMPASSMOBILE_Tasks" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="W74-dI-sAb"/>
                         <viewControllerLayoutGuide type="bottom" id="gc1-n8-aMv"/>
@@ -1895,7 +1895,7 @@
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Tl-cr-F3W" userLabel="Site Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Tl-cr-F3W" userLabel="Site Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE_Tasks" customModuleProvider="target">
                                                         <rect key="frame" x="120" y="0.0" width="440" height="30"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <connections>
@@ -1919,7 +1919,7 @@
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ria-Qe-2lZ" userLabel="Property Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ria-Qe-2lZ" userLabel="Property Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE_Tasks" customModuleProvider="target">
                                                         <rect key="frame" x="120" y="0.0" width="440" height="30"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <connections>
@@ -1943,7 +1943,7 @@
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R4q-cD-aI6" userLabel="Area Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R4q-cD-aI6" userLabel="Area Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE_Tasks" customModuleProvider="target">
                                                         <rect key="frame" x="120" y="0.0" width="440" height="30"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <connections>
@@ -1967,7 +1967,7 @@
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="izM-mM-Im5" userLabel="Location Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="izM-mM-Im5" userLabel="Location Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE_Tasks" customModuleProvider="target">
                                                         <rect key="frame" x="120" y="0.0" width="440" height="30"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <connections>
@@ -1991,7 +1991,7 @@
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y6w-Ko-pfQ" userLabel="Asset Type Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y6w-Ko-pfQ" userLabel="Asset Type Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE_Tasks" customModuleProvider="target">
                                                         <rect key="frame" x="120" y="0.0" width="440" height="30"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <connections>
@@ -2016,7 +2016,7 @@
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WYn-a4-GxS" userLabel="Task Name Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WYn-a4-GxS" userLabel="Task Name Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE_Tasks" customModuleProvider="target">
                                                         <rect key="frame" x="120" y="0.0" width="440" height="30"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <connections>
@@ -2040,7 +2040,7 @@
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DnJ-Vz-AU2" userLabel="Asset Number Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DnJ-Vz-AU2" userLabel="Asset Number Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE_Tasks" customModuleProvider="target">
                                                         <rect key="frame" x="120" y="0.0" width="440" height="30"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <connections>
@@ -2064,7 +2064,7 @@
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ekl-Wi-AWW" userLabel="Asset Group Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE" customModuleProvider="target">
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ekl-Wi-AWW" userLabel="Asset Group Popup Selector" customClass="KFPopupSelector" customModule="COMPASSMOBILE_Tasks" customModuleProvider="target">
                                                         <rect key="frame" x="120" y="0.0" width="440" height="30"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <connections>
@@ -2154,7 +2154,7 @@
         <!--COMPASS Login-->
         <scene sceneID="rOS-cN-wnN">
             <objects>
-                <viewController title="COMPASS Login" id="sXA-cZ-8Zi" customClass="LoginViewController" customModule="COMPASSMOBILE" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="COMPASS Login" id="sXA-cZ-8Zi" customClass="LoginViewController" customModule="COMPASSMOBILE_Tasks" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="u38-m0-Hpc"/>
                         <viewControllerLayoutGuide type="bottom" id="DGs-QQ-KyF"/>
@@ -2297,33 +2297,118 @@
                                 <nil key="highlightedColor"/>
                                 <color key="shadowColor" red="0.94901961089999998" green="0.94901961089999998" blue="0.94901961089999998" alpha="1" colorSpace="calibratedRGB"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Support options" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6kG-t1-JbS">
+                                <rect key="frame" x="270" y="508" width="310" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="3dX-yd-61b"/>
+                                    <constraint firstAttribute="width" constant="310" id="pZ7-Qi-dq7"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="IT-Support@Hydrop.com" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="46T-7n-HHK">
+                                <rect key="frame" x="350" y="550" width="230" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="230" id="7ZY-Oe-wjC"/>
+                                    <constraint firstAttribute="height" constant="21" id="s5T-2K-cEX"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="hydropsupport.freshdesk.com" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u4T-Ul-Jbq">
+                                <rect key="frame" x="350" y="529" width="230" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="Nj4-Xi-wEo"/>
+                                    <constraint firstAttribute="width" constant="230" id="bNg-dv-aVc"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+44 (0)121 354 2030" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Soe-bK-1el">
+                                <rect key="frame" x="350" y="571" width="230" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="uZm-Gc-N2B"/>
+                                    <constraint firstAttribute="width" constant="230" id="xOq-fd-UCm"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="email:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8pf-IC-d3O">
+                                <rect key="frame" x="270" y="550" width="80" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="FBE-Rp-Zzq"/>
+                                    <constraint firstAttribute="width" constant="80" id="tUw-KX-tv6"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="phone:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L3C-y0-2x9">
+                                <rect key="frame" x="270" y="571" width="80" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="80" id="ETd-P2-TUE"/>
+                                    <constraint firstAttribute="height" constant="21" id="gTo-0R-xNf"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="helpdesk:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="65r-tz-EWr">
+                                <rect key="frame" x="270" y="529" width="80" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="9Bs-wf-RfH"/>
+                                    <constraint firstAttribute="width" constant="80" id="euJ-oV-Rbr"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstItem="Soe-bK-1el" firstAttribute="top" secondItem="46T-7n-HHK" secondAttribute="bottom" id="01H-k0-sID"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="u4T-Ul-Jbq" secondAttribute="trailing" id="0Fz-sr-DDQ"/>
                             <constraint firstItem="uMk-0R-RVF" firstAttribute="leading" secondItem="tOh-td-sRP" secondAttribute="leading" id="0SY-lU-shi"/>
                             <constraint firstItem="AkY-Xg-zDW" firstAttribute="top" secondItem="hyn-Ac-AUf" secondAttribute="bottom" constant="8" id="3a5-iz-AQJ"/>
                             <constraint firstItem="L5x-2J-LeM" firstAttribute="leading" secondItem="tOh-td-sRP" secondAttribute="leadingMargin" id="621-sd-nR1"/>
                             <constraint firstItem="hyn-Ac-AUf" firstAttribute="leading" secondItem="tOh-td-sRP" secondAttribute="leadingMargin" id="7aj-LR-WHO"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="46T-7n-HHK" secondAttribute="trailing" id="AOb-Af-aKB"/>
+                            <constraint firstItem="8pf-IC-d3O" firstAttribute="top" secondItem="65r-tz-EWr" secondAttribute="bottom" id="BRd-yq-lUA"/>
+                            <constraint firstItem="u4T-Ul-Jbq" firstAttribute="top" secondItem="6kG-t1-JbS" secondAttribute="bottom" id="DH8-gB-oyG"/>
+                            <constraint firstItem="46T-7n-HHK" firstAttribute="leading" secondItem="8pf-IC-d3O" secondAttribute="trailing" id="DVv-F2-G54"/>
                             <constraint firstItem="a6u-aC-nML" firstAttribute="top" secondItem="AkY-Xg-zDW" secondAttribute="bottom" constant="8" id="GAc-cU-Q2s"/>
                             <constraint firstItem="uMk-0R-RVF" firstAttribute="trailing" secondItem="tOh-td-sRP" secondAttribute="trailing" id="HBZ-Or-eyp"/>
+                            <constraint firstItem="L3C-y0-2x9" firstAttribute="top" secondItem="8pf-IC-d3O" secondAttribute="bottom" id="KKv-uZ-mfQ"/>
                             <constraint firstItem="e55-XF-Nzv" firstAttribute="leading" secondItem="tOh-td-sRP" secondAttribute="leadingMargin" id="OC6-K5-s9c"/>
                             <constraint firstItem="G3C-hG-UKf" firstAttribute="top" secondItem="L5x-2J-LeM" secondAttribute="bottom" constant="16" id="RKf-jF-bv7"/>
                             <constraint firstItem="uMk-0R-RVF" firstAttribute="top" secondItem="u38-m0-Hpc" secondAttribute="bottom" id="Rp0-Ms-q64"/>
+                            <constraint firstItem="Soe-bK-1el" firstAttribute="leading" secondItem="L3C-y0-2x9" secondAttribute="trailing" id="TF4-LS-k73"/>
                             <constraint firstItem="hyn-Ac-AUf" firstAttribute="trailing" secondItem="tOh-td-sRP" secondAttribute="trailingMargin" id="YdD-tg-Njr"/>
                             <constraint firstItem="a6u-aC-nML" firstAttribute="leading" secondItem="tOh-td-sRP" secondAttribute="leadingMargin" id="b5r-ZK-ea9"/>
                             <constraint firstItem="e55-XF-Nzv" firstAttribute="top" secondItem="a6u-aC-nML" secondAttribute="bottom" constant="8" id="dfE-yP-zPB"/>
                             <constraint firstItem="AkY-Xg-zDW" firstAttribute="leading" secondItem="tOh-td-sRP" secondAttribute="leadingMargin" id="ekZ-6v-waD"/>
                             <constraint firstItem="L5x-2J-LeM" firstAttribute="trailing" secondItem="tOh-td-sRP" secondAttribute="trailingMargin" id="gGi-b0-f8o"/>
+                            <constraint firstItem="DGs-QQ-KyF" firstAttribute="top" secondItem="Soe-bK-1el" secondAttribute="bottom" constant="8" id="gbx-Yd-tXD"/>
+                            <constraint firstItem="u4T-Ul-Jbq" firstAttribute="leading" secondItem="65r-tz-EWr" secondAttribute="trailing" id="iJZ-dh-urh"/>
                             <constraint firstItem="G3C-hG-UKf" firstAttribute="centerX" secondItem="L5x-2J-LeM" secondAttribute="centerX" id="kbf-ga-aAD"/>
+                            <constraint firstItem="65r-tz-EWr" firstAttribute="top" secondItem="6kG-t1-JbS" secondAttribute="bottom" id="kzB-Ku-jPx"/>
+                            <constraint firstItem="DGs-QQ-KyF" firstAttribute="top" secondItem="L3C-y0-2x9" secondAttribute="bottom" constant="8" id="m0Y-3J-ubQ"/>
                             <constraint firstItem="hyn-Ac-AUf" firstAttribute="top" secondItem="u38-m0-Hpc" secondAttribute="bottom" constant="40" id="mRB-Cj-v37"/>
                             <constraint firstItem="e55-XF-Nzv" firstAttribute="trailing" secondItem="tOh-td-sRP" secondAttribute="trailingMargin" id="ouA-XV-jTx"/>
                             <constraint firstItem="L5x-2J-LeM" firstAttribute="top" secondItem="e55-XF-Nzv" secondAttribute="bottom" constant="16" id="sNp-6U-3mm"/>
                             <constraint firstItem="AkY-Xg-zDW" firstAttribute="trailing" secondItem="tOh-td-sRP" secondAttribute="trailingMargin" id="sqm-yb-UzC"/>
                             <constraint firstItem="a6u-aC-nML" firstAttribute="trailing" secondItem="tOh-td-sRP" secondAttribute="trailingMargin" id="uXz-hx-yAq"/>
                             <constraint firstItem="DGs-QQ-KyF" firstAttribute="top" secondItem="uMk-0R-RVF" secondAttribute="bottom" id="uwn-Us-wCc"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="6kG-t1-JbS" secondAttribute="trailing" id="uzD-3D-W4d"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Soe-bK-1el" secondAttribute="trailing" id="xM5-8X-hJu"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="LoginButton" destination="G3C-hG-UKf" id="kIP-ib-7c9"/>
                         <outlet property="PasswordTextField" destination="dRO-Iq-9wP" id="7B5-gP-lAS"/>
                         <outlet property="ServerTextField" destination="CGd-Xq-A1A" id="sRX-D9-KBN"/>
                         <outlet property="UsernameTextField" destination="2an-eW-vlj" id="1fd-ts-oL5"/>
@@ -2332,12 +2417,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BhU-Lu-v35" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-890" y="496"/>
+            <point key="canvasLocation" x="-1121" y="471"/>
         </scene>
         <!--Task Navigator-->
         <scene sceneID="WVx-cb-3l7">
             <objects>
-                <navigationController title="Task Navigator" automaticallyAdjustsScrollViewInsets="NO" id="PEr-qw-l05" customClass="MainNavigationController" customModule="COMPASSMOBILE" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController title="Task Navigator" automaticallyAdjustsScrollViewInsets="NO" id="PEr-qw-l05" customClass="MainNavigationController" customModule="COMPASSMOBILE_Tasks" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Tasks" id="2y2-z5-Ufb"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Wml-xW-eYT">
@@ -2368,6 +2453,6 @@
         <image name="Upload" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="gBG-Cj-Y6h"/>
+        <segue reference="nE1-QS-cpL"/>
     </inferredMetricsTieBreakers>
 </document>

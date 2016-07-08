@@ -18,15 +18,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         Crittercism.enableWithAppID("75f852fe22aa4932bf4f09db905f288400555300")
         
-        Utility.copyFile((self.window?.rootViewController)!, fileName: "COMPASSDB.sqlite")
+        var result: Bool = false
+        var message: String = String()
         
-        let defaults = NSUserDefaults.standardUserDefaults()
-        Session.Server = defaults.objectForKey("Server") as? String ?? String()
-        Session.TaskTiming = defaults.boolForKey("TaskTimng")
-        Session.TemperatureProfile = defaults.boolForKey("TemperatureProfile")
- 
-        Session.OrganisationId = "00000000-0000-0000-0000-000000000000"
+        (result, message) = Utility.copyFile((self.window?.rootViewController)!, fileName: "COMPASSDB.sqlite")
         
+        if(!result)
+        {
+            Session.DatabasePresent = false
+            Session.DatabaseMessage = message
+         
+            return false
+        }
+        else
+        {
+            Session.DatabasePresent = true
+            Session.DatabaseMessage = String()
+            
+            let defaults = NSUserDefaults.standardUserDefaults()
+            Session.Server = defaults.objectForKey("Server") as? String ?? String()
+            Session.TaskTiming = defaults.boolForKey("TaskTimng")
+            Session.TemperatureProfile = defaults.boolForKey("TemperatureProfile")
+     
+            Session.OrganisationId = "00000000-0000-0000-0000-000000000000"
+        }
         return true
     }
 

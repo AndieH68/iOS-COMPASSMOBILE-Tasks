@@ -55,6 +55,12 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     override func viewDidAppear(animated: Bool) {
         
+        if !Session.DatabasePresent
+        {
+            Utility.invokeAlertMethod(self, title: "Fatal Exception", message: Session.DatabaseMessage, delegate: nil)
+            Session.OperativeId = nil
+        }
+        
         //check that we have already populated the operativeid for the session.
         if Session.OperativeId == nil
         {
@@ -62,11 +68,6 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
             // take the user to the login screen
             self.performSegueWithIdentifier("loginView", sender: self)
         }
-        
-//        if (Session.LocalLoginOnly)
-//        {
-//            Utility.invokeAlertMethod(self, title: "No remote", message: "Logged in locally", delegate: nil)
-//        }
         
         if Session.TaskId != nil
         {

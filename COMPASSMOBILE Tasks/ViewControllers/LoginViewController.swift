@@ -17,6 +17,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var PasswordTextField: UITextField!
     @IBOutlet weak var ValidationLabel: UILabel!
     @IBOutlet weak var MessageLabel: UILabel!
+    @IBOutlet var LoginButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,6 +31,19 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         let defaults = NSUserDefaults.standardUserDefaults()
         UsernameTextField.text = defaults.objectForKey("Username") as? String
+        
+        if !Session.DatabasePresent
+        {
+            Utility.invokeAlertMethod(self, title: "Fatal Exception", message: Session.DatabaseMessage, delegate: nil)
+            Session.OperativeId = nil
+
+            ValidationLabel.text = "Database not present - contact support"
+            ValidationLabel.hidden = false
+            LoginButton.enabled = false
+            ServerTextField.enabled = false
+            UsernameTextField.enabled = false
+            PasswordTextField.enabled = false
+        }
         
     }
 

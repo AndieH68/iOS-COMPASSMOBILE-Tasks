@@ -14,6 +14,9 @@ class Session : NSObject
     static var Server: String = String()
     static var CheckDatabase: Bool = false
     
+    static var DatabasePresent: Bool = false
+    static var DatabaseMessage: String = String()
+    
     static var TaskTiming: Bool = false
     static var TemperatureProfile: Bool = false
     
