@@ -1,4 +1,4 @@
-//
+                                                                       //
 //  Utility.swift
 //  COMPASSMOBILE
 //
@@ -81,9 +81,22 @@ class Utility: NSObject {
         
         if result == nil
         {
-            return nil
+            return AEXMLElement("soap:Fault", value: "invalid URL")
         }
-        let response: AEXMLElement = result!["soap:Envelope"]["soap:Body"].children[0]
+        
+        var response: AEXMLElement?
+        let SOAPEnvelope: AEXMLElement = result!["soap:Envelope"]
+        
+        if !(SOAPEnvelope.value == "element <soap:Envelope> not found" || SOAPEnvelope.children.count == 0)
+        {
+            let SOAPBody: AEXMLElement = SOAPEnvelope["soap:Body"]
+        
+            response = SOAPBody.children[0]
+        }
+        else{
+            response = AEXMLElement("soap:Fault", value: "invalid URL")
+        }
+      
         return response
     }
     

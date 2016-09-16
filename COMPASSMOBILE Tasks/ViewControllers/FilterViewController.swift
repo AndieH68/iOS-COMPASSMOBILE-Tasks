@@ -143,22 +143,43 @@ class FilterViewController: UIViewController {
         var criteria: Dictionary<String, String> = [:]
         criteria["OrganisationId"] = Session.OrganisationId
         
-        var siteData: [Site] = [] //NSMutableArray!
+//        var siteData: [Site] = [] //NSMutableArray!
+//        var selectedIndex: Int? = 0
+//        Sites.append("")
+//        
+//        // go and get the site data based on the criteria built
+//        siteData = ModelManager.getInstance().findSiteList(criteria)
+//        
+//        var count: Int = 1 //we already have the blank row
+//        for currentSite: Site in siteData
+//        {
+//            Sites.append(currentSite.Name)
+//            SiteDictionary[currentSite.Name] = currentSite.RowId
+//            if( Session.FilterSiteId != nil)
+//            {
+//                if (currentSite.RowId == Session.FilterSiteId!) { selectedIndex = count }
+//            }
+//            count += 1
+//        }
+//        if (selectedIndex == 0) { Session.FilterSiteId = nil }
+        
+        
+        // go and get the search/filter criteria from the values selected in the session
+        var SiteIds: [String] = [] //NSMutableArray!
         var selectedIndex: Int? = 0
         Sites.append("")
         
-        // go and get the site data based on the criteria built
-        siteData = ModelManager.getInstance().findSiteList(criteria)
+        // go and get the AssetGroup data based on the criteria built
+        SiteIds = ModelUtility.getInstance().GetFilterSiteList(Session.OrganisationId!)
         
         var count: Int = 1 //we already have the blank row
-        for currentSite: Site in siteData
+        for currentSiteId: String in SiteIds
         {
-            Sites.append(currentSite.Name)
-            SiteDictionary[currentSite.Name] = currentSite.RowId
-            if( Session.FilterSiteId != nil)
-            {
-                if (currentSite.RowId == Session.FilterSiteId!) { selectedIndex = count }
-            }
+            let site: Site = ModelManager.getInstance().getSite(currentSiteId)!
+
+            Sites.append(site.Name)
+            SiteDictionary[site.Name] = currentSiteId
+            if (currentSiteId == Session.FilterSiteId) { selectedIndex = count}
             count += 1
         }
         if (selectedIndex == 0) { Session.FilterSiteId = nil }
@@ -179,22 +200,41 @@ class FilterViewController: UIViewController {
         PropertyDictionary = [:]
         
         // go and get the search/filter criteria from the values selected in the session
-        var criteria: Dictionary<String, String> = [:]
-        criteria["SiteId"] = Session.FilterSiteId
+//        var criteria: Dictionary<String, String> = [:]
+//        criteria["SiteId"] = Session.FilterSiteId
+//        
+//        var PropertyData: [Property] = [] //NSMutableArray!
+//        var selectedIndex: Int? = 0
+//        Properties.append("")
+//        
+//        // go and get the Property data based on the criteria built
+//        PropertyData = ModelManager.getInstance().findPropertyList(criteria)
+//        
+//        var count: Int = 1 //we already have the blank row
+//        for currentProperty: Property in PropertyData
+//        {
+//            Properties.append(currentProperty.Name)
+//            PropertyDictionary[currentProperty.Name] = currentProperty.RowId
+//            if (currentProperty.RowId == Session.FilterPropertyId) { selectedIndex = count }
+//            count += 1
+//        }
+//        if (selectedIndex == 0) { Session.FilterPropertyId = nil }
         
-        var PropertyData: [Property] = [] //NSMutableArray!
+        var PropertyIds: [String] = [] //NSMutableArray!
         var selectedIndex: Int? = 0
         Properties.append("")
         
-        // go and get the Property data based on the criteria built
-        PropertyData = ModelManager.getInstance().findPropertyList(criteria)
+        // go and get the AssetGroup data based on the criteria built
+        PropertyIds = ModelUtility.getInstance().GetFilterPropertyList(Session.FilterSiteId!)
         
         var count: Int = 1 //we already have the blank row
-        for currentProperty: Property in PropertyData
+        for currentPropertyId: String in PropertyIds
         {
-            Properties.append(currentProperty.Name)
-            PropertyDictionary[currentProperty.Name] = currentProperty.RowId
-            if (currentProperty.RowId == Session.FilterPropertyId) { selectedIndex = count }
+            let property: Property = ModelManager.getInstance().getProperty(currentPropertyId)!
+            
+            Properties.append(property.Name)
+            PropertyDictionary[property.Name] = currentPropertyId
+            if (currentPropertyId == Session.FilterPropertyId) { selectedIndex = count}
             count += 1
         }
         if (selectedIndex == 0) { Session.FilterPropertyId = nil }

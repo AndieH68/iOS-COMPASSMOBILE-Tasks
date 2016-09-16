@@ -203,7 +203,42 @@ class ModelUtility: NSObject {
     }
     
     //MARK: Filter functions
+    func GetFilterSiteList(OrganisationId: String) -> [String]
+    {
+        var Sites: [String] = [String]()
+        
+        var Query: String = "SELECT DISTINCT [Site].[RowId] FROM [Task] INNER JOIN [Site] ON [Task].[SiteId] = [Site].[RowId] WHERE [Task].[Deleted] IS NULL AND [Site].[Deleted] IS NULL AND [Task].[OrganisationId] = '" + OrganisationId + "'"
 
+        Query +=  " ORDER BY [Site].[Name]"
+        sharedModelManager.database!.open()
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsInArray: nil)
+        if (resultSet != nil) {
+            while resultSet.next()
+            {
+                Sites.append(resultSet.stringForColumn("RowId"))
+            }
+        }
+        return Sites
+    }
+    
+    func GetFilterPropertyList(SiteId: String) -> [String]
+    {
+        var Properties: [String] = [String]()
+        
+        var Query: String = "SELECT DISTINCT [Property].[RowId] FROM [Task] INNER JOIN [Property] ON [Task].[PropertyId] = [Property].[RowId] WHERE [Task].[Deleted] IS NULL AND [Property].[Deleted] IS NULL AND [Task].[SiteId] = '" + SiteId + "'"
+        Query +=  " ORDER BY [Property].[Name]"
+    
+        sharedModelManager.database!.open()
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsInArray: nil)
+        if (resultSet != nil) {
+            while resultSet.next()
+            {
+                Properties.append(resultSet.stringForColumn("RowId"))
+            }
+        }
+        return Properties
+    }
+    
     func GetFilterAssetGroupList(PropertyId: String, LocationGroupName: String?, Location: String?) -> [String]
     {
         var AssetGroups: [String] = [String]()

@@ -124,7 +124,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 if response.name == "soap:Fault"
                 {
                     //fault code here
-                    ValidationLabel.text = "Network error"
+                    let errorText: String = response.value!
+                    ValidationLabel.text = errorText
                     ValidationLabel.hidden = false
                 }
                 else
@@ -202,7 +203,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 
                 if response.name == "soap:Fault"
                 {
-                    ValidationLabel.text = "Network error"
+                    let errorText: String = response.value!
+                    ValidationLabel.text = errorText
                     ValidationLabel.hidden = false
                     return                }
                 

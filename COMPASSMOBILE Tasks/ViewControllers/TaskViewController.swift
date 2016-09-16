@@ -158,12 +158,21 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
         {
             predecessor = taskTemplateParameter.Predecessor!
         }
+        else
+        {
+            taskTemplateParameterFormItem.Enabled = true
+        }
         
         if (predecessor != nil)
         {
             if let currentTaskTemplateParameterFormItem: TaskTemplateParameterFormItem = taskTemplateParameterFormItems[predecessor!]!
             {
                 currentTaskTemplateParameterFormItem.Dependencies.append(taskTemplateParameterFormItem)
+                
+                if (currentTaskTemplateParameterFormItem.SelectedItem == taskTemplateParameter.PredecessorTrueValue)
+                {
+                    taskTemplateParameterFormItem.Enabled = true
+                }
             }
         }
         
