@@ -12,6 +12,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 
     // MARK: - Properties
    
+    @IBOutlet var VersionNumber: UILabel!
     @IBOutlet weak var ServerTextField: UITextField!
     @IBOutlet weak var UsernameTextField: UITextField!
     @IBOutlet weak var PasswordTextField: UITextField!
@@ -21,6 +22,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if let version = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"] as? String
+        {
+            VersionNumber.text = version
+        }
         
         ServerTextField.delegate = self
         UsernameTextField.delegate = self
@@ -203,10 +209,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 
                 if response.name == "soap:Fault"
                 {
-                    let errorText: String = response.value!
+                    let errorText: String = response.children[1].value!
                     ValidationLabel.text = errorText
                     ValidationLabel.hidden = false
-                    return                }
+                    return
+                }
                 
                 let SynchronisationPackageData: NSData = (response["GetSynchronisationPackageResult"].value! as NSString).dataUsingEncoding(NSUTF8StringEncoding)!
                 

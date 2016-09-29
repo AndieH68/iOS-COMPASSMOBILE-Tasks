@@ -54,9 +54,25 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
         if (task.AssetId != nil)
         {
            //get the hot cold details for the task
-            let asset: Asset = ModelManager.getInstance().getAsset(task.AssetId!)!
-            HotType = asset.HotType
-            ColdType = asset.ColdType
+            let asset: Asset? = ModelManager.getInstance().getAsset(task.AssetId!)
+            if (asset != nil)
+            {
+                HotType = asset!.HotType
+                ColdType = asset!.ColdType
+            }
+            else
+            {
+                //asset is missing - need to notify user to resync assets
+                let userPrompt: UIAlertController = UIAlertController(title: "Missing asset", message: "The asset record for this task is missing", preferredStyle: UIAlertControllerStyle.Alert)
+                
+                //the destructive option
+                userPrompt.addAction(UIAlertAction(
+                    title: "OK",
+                    style: UIAlertActionStyle.Destructive,
+                    handler: self.LeaveTask))
+                
+                presentViewController(userPrompt, animated: true, completion: nil)
+            }
         }
         
         AssetType.text = ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMAssetGroup", key: task.PPMGroup!)

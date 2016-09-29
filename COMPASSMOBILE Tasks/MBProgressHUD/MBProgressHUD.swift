@@ -621,7 +621,7 @@ class MBProgressHUD: UIView {
             let gradLocationsNum: size_t = 2
             let gradLocations: [CGFloat] = [0.0, 1.0]
             let gradColors: [CGFloat] = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.75]
-            let colorSpace: CGColorSpaceRef = CGColorSpaceCreateDeviceRGB()!
+            let colorSpace: CGColorSpaceRef = CGColorSpaceCreateDeviceRGB()
             let gradient: CGGradientRef = CGGradientCreateWithColorComponents(colorSpace, gradColors, gradLocations, gradLocationsNum)!
             //Gradient center
             let gradCenter: CGPoint = CGPointMake(self.bounds.size.width / 2, self.bounds.size.height / 2)

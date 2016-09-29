@@ -19,11 +19,15 @@ class SettingsViewController: UITableViewController, MBProgressHUDDelegate
     @IBOutlet var TaskTiming: UISwitch!
     @IBOutlet var TemperatureProfile: UISwitch!
     @IBOutlet var CompletedTasks: UILabel!
+    @IBOutlet var VersionNumber: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         CompletedTasks.text = String(ModelUtility.getInstance().GetCompletedTaskCount())
-        
+        if let version = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"] as? String
+        {
+            VersionNumber.text = version
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -89,7 +93,7 @@ class SettingsViewController: UITableViewController, MBProgressHUDDelegate
 
             case 1:
                 //download data
-                let userPrompt: UIAlertController = UIAlertController(title: "Download Tasks", message: "Are you sure you want to download tasks from COMPASS?", preferredStyle: UIAlertControllerStyle.Alert)
+                let userPrompt: UIAlertController = UIAlertController(title: "Synchronise Data", message: "Are you sure you want to synchronise data with COMPASS?", preferredStyle: UIAlertControllerStyle.Alert)
                 
                 //the cancel action
                 userPrompt.addAction(UIAlertAction(

@@ -15,7 +15,7 @@ class Utility: NSObject {
         let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
         let fileURL = documentsURL.URLByAppendingPathComponent(fileName)
         
-        return fileURL.path!
+        return fileURL!.path!
     }
     
     class func copyFile(viewController: UIViewController, fileName: NSString) -> (Bool, String){
@@ -28,7 +28,7 @@ class Utility: NSObject {
             
             var error : NSError?
             do {
-                try fileManager.copyItemAtPath(fromPath.path!, toPath: dbPath)
+                try fileManager.copyItemAtPath(fromPath!.path!, toPath: dbPath)
             } catch let error1 as NSError {
                 error = error1
             }
@@ -1072,8 +1072,9 @@ class Utility: NSObject {
                 let data: NSData? = WebService.getSynchronisationPackageSync(Session.OperativeId!, synchronisationDate: synchronisationDate, lastRowId: lastRowId, stage: stage)
                 
                 if data == nil{
+                    NSLog("data  is nil")
                     Session.AlertTitle = "Error"
-                    Session.AlertMessage =  "Error with web service"
+                    Session.AlertMessage =  "Error with web service - no data"
                     failed = true
                 }
                 
@@ -1083,8 +1084,9 @@ class Utility: NSObject {
                     
                     if response.name == "soap:Fault"
                     {
+                        NSLog("Soap fault")
                         Session.AlertTitle = "Error"
-                        Session.AlertMessage =  "Error with web service"
+                        Session.AlertMessage =  response.children[1].value //"Error with web service - invalid data"
                         failed = true
                     }
 
@@ -1103,6 +1105,9 @@ class Utility: NSObject {
                         if (SynchronisationPackageDocument != nil)
                         {
                             (lastRowId, lastDate, count, maxCount) = Utility.importData(SynchronisationPackageDocument!.children[0], entityType: entityType, progressBar: progressBar, count: count, maxCount: maxCount)
+                        }
+                        else{
+                            NSLog("Empty packet")
                         }
 
                         SynchronisationPackageDocument = nil
@@ -1315,31 +1320,105 @@ class Utility: NSObject {
     
     class func DownloadAllDetails(viewController: UIViewController, HUD: MBProgressHUD?)
     {
+        var success: Bool = false
         
         // Show the HUD while the provide method  executes in a new thread
-        Utility.SynchroniseAllData(viewController, stage: 1, progressBar: HUD)
-        Utility.SynchroniseAllData(viewController, stage: 10, progressBar: HUD)
-        Utility.SynchroniseAllData(viewController, stage: 11, progressBar: HUD)
-        Utility.SynchroniseAllData(viewController, stage: 9, progressBar: HUD)
-        Utility.SynchroniseAllData(viewController, stage: 2, progressBar: HUD)
-        Utility.SynchroniseAllData(viewController, stage: 3, progressBar: HUD)
-        Utility.SynchroniseAllData(viewController, stage: 4, progressBar: HUD)
-        Utility.SynchroniseAllData(viewController, stage: 6, progressBar: HUD)
-        Utility.SynchroniseAllData(viewController, stage: 5, progressBar: HUD)
-        Utility.SynchroniseAllData(viewController, stage: 7, progressBar: HUD)
-        Utility.SynchroniseAllData(viewController, stage: 8, progressBar: HUD)
+        success = Utility.SynchroniseAllData(viewController, stage: 1, progressBar: HUD)
+        if(!success)
+        {
+            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Reference Data", message: Session.AlertMessage!, delegate: nil)
+        }
+            
+        success = Utility.SynchroniseAllData(viewController, stage: 10, progressBar: HUD)
+        if(!success)
+        {
+            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Task Templates", message: Session.AlertMessage!, delegate: nil)
+        }
         
-        Utility.SynchroniseAllData(viewController, stage: 12, progressBar: HUD)
-        Utility.SynchroniseAllData(viewController, stage: 13, progressBar: HUD)
+        success = Utility.SynchroniseAllData(viewController, stage: 11, progressBar: HUD)
+        if(!success)
+        {
+            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Task Template Parameters", message: Session.AlertMessage!, delegate: nil)
+        }
         
-        var SQLStatement: String
-        var SQLParameterValues: [NSObject]
+        success = Utility.SynchroniseAllData(viewController, stage: 9, progressBar: HUD)
+        if(!success)
+        {
+            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Operatives", message: Session.AlertMessage!, delegate: nil)
+        }
         
-        SQLStatement = "DELETE FROM [Task] WHERE [OrganisationId] = ? AND [Status] IN ('Complete','Incomplete','Rescheduled')"
-        SQLParameterValues = [NSObject]()
-        SQLParameterValues.append(Session.OrganisationId!)
-        ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
+        success = Utility.SynchroniseAllData(viewController, stage: 2, progressBar: HUD)
+        if(!success)
+        {
+            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Organisations", message: Session.AlertMessage!, delegate: nil)
+        }
         
+        success = Utility.SynchroniseAllData(viewController, stage: 3, progressBar: HUD)
+        if(!success)
+        {
+            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Sites", message: Session.AlertMessage!, delegate: nil)
+        }
+        
+        success = Utility.SynchroniseAllData(viewController, stage: 4, progressBar: HUD)
+        if(!success)
+        {
+            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Properties", message: Session.AlertMessage!, delegate: nil)
+        }
+        
+        success = Utility.SynchroniseAllData(viewController, stage: 6, progressBar: HUD)
+        if(!success)
+        {
+            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Areas", message: Session.AlertMessage!, delegate: nil)
+        }
+        
+        success = Utility.SynchroniseAllData(viewController, stage: 5, progressBar: HUD)
+        if(!success)
+        {
+            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Locations", message: Session.AlertMessage!, delegate: nil)
+        }
+        
+        success = Utility.SynchroniseAllData(viewController, stage: 7, progressBar: HUD)
+        if(!success)
+        {
+            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Area Links", message: Session.AlertMessage!, delegate: nil)
+        }
+        
+        success = Utility.SynchroniseAllData(viewController, stage: 8, progressBar: HUD)
+        if(!success)
+        {
+            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Assets", message: Session.AlertMessage!, delegate: nil)
+        }
+        
+        success = Utility.SynchroniseAllData(viewController, stage: 12, progressBar: HUD)
+        if(!success)
+        {
+            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Tasks", message: Session.AlertMessage!, delegate: nil)
+        }
+        else
+        {
+            var SQLStatement: String
+            var SQLParameterValues: [NSObject]
+            
+            SQLStatement = "DELETE FROM [Task] WHERE [OrganisationId] = ? AND [Status] IN ('Complete','Incomplete','Rescheduled')"
+            SQLParameterValues = [NSObject]()
+            SQLParameterValues.append(Session.OrganisationId!)
+            ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
+        }
+
+        success = Utility.SynchroniseAllData(viewController, stage: 13, progressBar: HUD)
+        if(!success)
+        {
+            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Task Parameters", message: Session.AlertMessage!, delegate: nil)
+        }
+        else
+        {
+            var SQLStatement: String
+            var SQLParameterValues: [NSObject]
+            
+            SQLStatement = "DELETE FROM [TaskParameter] WHERE [TaskId] NOT IN (SELECT [RowId] FROM [Task])"
+            SQLParameterValues = [NSObject]()
+            ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
+        }
     }
    
     class func ResetSynchronisationDates(viewController: UIViewController, HUD: MBProgressHUD?)
