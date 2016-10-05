@@ -259,7 +259,10 @@ class ModelUtility: NSObject {
         if (resultSet != nil) {
             while resultSet.next()
             {
-                AssetGroups.append(resultSet.stringForColumn("PPMGroup"))
+                if (resultSet.stringForColumn("PPMGroup") != nil)
+                {
+                    AssetGroups.append(resultSet.stringForColumn("PPMGroup"))
+                }
             }
         }
         return AssetGroups
@@ -287,7 +290,10 @@ class ModelUtility: NSObject {
         if (resultSet != nil) {
             while resultSet.next()
             {
-                TaskNames.append(resultSet.stringForColumn("TaskName"))
+                if (resultSet.stringForColumn("TaskName") != nil)
+                {
+                    TaskNames.append(resultSet.stringForColumn("TaskName"))
+                }
             }
         }
         return TaskNames
@@ -315,7 +321,10 @@ class ModelUtility: NSObject {
         if (resultSet != nil) {
             while resultSet.next()
             {
-                AssetTypes.append(resultSet.stringForColumn("AssetType"))
+                if (resultSet.stringForColumn("AssetType") != nil)
+                {
+                    AssetTypes.append(resultSet.stringForColumn("AssetType"))
+                }
             }
         }
         return AssetTypes
@@ -343,7 +352,10 @@ class ModelUtility: NSObject {
         if (resultSet != nil) {
             while resultSet.next()
             {
-                LocationGroups.append(resultSet.stringForColumn("LocationGroupName"))
+                if (resultSet.stringForColumn("LocationGroupName") != nil)
+                {
+                    LocationGroups.append(resultSet.stringForColumn("LocationGroupName"))
+                }
             }
         }
         return LocationGroups
@@ -374,7 +386,10 @@ class ModelUtility: NSObject {
         if (resultSet != nil) {
             while resultSet.next()
             {
-                Locations.append(resultSet.stringForColumn("LocationName"))
+                if (resultSet.stringForColumn("LocationName") != nil)
+                {
+                    Locations.append(resultSet.stringForColumn("LocationName"))
+                }
             }
         }
         return Locations
@@ -414,7 +429,10 @@ class ModelUtility: NSObject {
         if (resultSet != nil) {
             while resultSet.next()
             {
-                AssetNumbers.append(resultSet.stringForColumn("AssetNumber"))
+                if (resultSet.stringForColumn("AssetNumber") != nil)
+                {
+                    AssetNumbers.append(resultSet.stringForColumn("AssetNumber"))
+                }
             }
         }
         return AssetNumbers

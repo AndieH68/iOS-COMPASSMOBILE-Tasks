@@ -60,9 +60,9 @@ class RemedialTaskViewController: UIViewController, UITextFieldDelegate, UITextV
         if (taskParameters.count > 0)
         {
             for taskParameter: TaskParameter in taskParameters
-        {
-            WorkInstruction.text = taskParameter.ParameterValue
-            WorkInstruction.editable = false
+            {
+                WorkInstruction.text = taskParameter.ParameterValue
+                WorkInstruction.editable = false
             }
         }
         else

@@ -162,7 +162,14 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         cell.taskName.text = TaskName
         let PropertyName: String = (Session.FilterPropertyName != nil ? String() : ModelUtility.getInstance().GetPropertyName(task.PropertyId) + ", ")
         cell.location.text = PropertyName + task.LocationName
-        cell.type.text = ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMAssetGroup", key: task.PPMGroup!)
+        if(task.PPMGroup != nil)
+        {
+            cell.type.text = ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMAssetGroup", key: task.PPMGroup!)
+        }
+        else
+        {
+            cell.type.text = "Missing PPM Group"
+        }
         cell.asset.text = task.AssetNumber
         cell.dateDue.text = task.ScheduledDate.toStringForView()
         cell.taskId = task.RowId

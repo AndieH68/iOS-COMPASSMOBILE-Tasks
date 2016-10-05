@@ -3513,7 +3513,7 @@ class ModelManager: NSObject {
         var taskParameterList: [TaskParameter] = [TaskParameter]()
         
         //build the order clause
-        let orderByClause: String = " ORDER BY [Ordinal]"
+        let orderByClause: String = " ORDER BY [CreatedOn]"
         
         //build the where clause
         var whereClause: String = String()
