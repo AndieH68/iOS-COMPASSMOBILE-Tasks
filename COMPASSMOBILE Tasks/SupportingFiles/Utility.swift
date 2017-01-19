@@ -1513,6 +1513,30 @@ class Utility: NSObject {
         ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
     }
 
+    class func DateToStringForXML(dateToFormat: NSDate) -> String {
+        //this doesn't work in 12 hour locale
+        let dateStringFormatter = NSDateFormatter()
+        dateStringFormatter.locale = NSLocale.init(localeIdentifier: "en_US_POSIX")
+        dateStringFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS"
+        dateStringFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
+        return dateStringFormatter.stringFromDate(dateToFormat)
+    }
+    
+    class func DateToStringForView(dateToFormat: NSDate) -> String {
+        let dateStringFormatter = NSDateFormatter()
+        dateStringFormatter.locale = NSLocale.init(localeIdentifier: "en_US_POSIX")
+        dateStringFormatter.dateFormat = "dd/MM/yyyy"
+        dateStringFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
+        return dateStringFormatter.stringFromDate(dateToFormat)
+    }
+    
+    class func DateToStringForTaskRef(dateToFormat: NSDate) -> String {
+        let dateStringFormatter = NSDateFormatter()
+        dateStringFormatter.locale = NSLocale.init(localeIdentifier: "en_US_POSIX")
+        dateStringFormatter.dateFormat = "yyMMddHHmm"
+        dateStringFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
+        return dateStringFormatter.stringFromDate(dateToFormat)
+    }
     
     func findKeyForValue(value: String, dictionary: [String: [String]]) ->String?
     {
@@ -1534,13 +1558,13 @@ extension NSDate
     init(dateString:String) {
         let dateStringFormatter = NSDateFormatter()
         dateStringFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
-        dateStringFormatter.dateFormat = DateFormat
+        dateStringFormatter.dateFormat = hasAMPM ? DateFormat12 : DateFormat24
         if let d = dateStringFormatter.dateFromString(dateString)
         {
             self.init(timeInterval:0, sinceDate:d)
             return
         }
-        dateStringFormatter.dateFormat = DateFormatNoNano
+        dateStringFormatter.dateFormat = hasAMPM ? DateFormat12NoNano : DateFormat24NoNano
         if let d = dateStringFormatter.dateFromString(dateString)
         {
             self.init(timeInterval:0, sinceDate:d)
@@ -1555,31 +1579,10 @@ extension NSDate
         let d = dateStringFormatter.dateFromString(dateString)
         self.init(timeInterval:0, sinceDate:d!)
     }
-    
-    func toString() -> String {
-        let dateStringFormatter = NSDateFormatter()
-        dateStringFormatter.dateFormat = DateFormat
-        dateStringFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
-        return dateStringFormatter.stringFromDate(self)
-    }
-    
-    func toStringForView() -> String {
-        let dateStringFormatter = NSDateFormatter()
-        dateStringFormatter.dateFormat = "dd/MM/yyyy"
-        dateStringFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
-        return dateStringFormatter.stringFromDate(self)
-    }
-    
-    func toStringForTaskRef() -> String {
-        let dateStringFormatter = NSDateFormatter()
-        dateStringFormatter.dateFormat = "yyMMddHHmm"
-        dateStringFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
-        return dateStringFormatter.stringFromDate(self)
-    }
-    
+   
     func startOfDay() -> NSDate {
         let dateStringFormatter = NSDateFormatter()
-        dateStringFormatter.dateFormat = DateFormatStartOfDay
+        dateStringFormatter.dateFormat = hasAMPM ? DateFormat12StartOfDay : DateFormat24StartOfDay
         dateStringFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
         let startOfDay: NSDate =  NSDate(dateString: dateStringFormatter.stringFromDate(self))
         return startOfDay
@@ -1613,14 +1616,14 @@ extension NSDate
     
     func startOfMonth() -> NSDate {
         let dateStringFormatter = NSDateFormatter()
-        dateStringFormatter.dateFormat = DateFormatStartOfMonth
+        dateStringFormatter.dateFormat = hasAMPM ? DateFormat12StartOfMonth : DateFormat24StartOfMonth
         dateStringFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
         return NSDate(dateString: dateStringFormatter.stringFromDate(self))
     }
  
     func endOfMonth() -> NSDate {
         let dateStringFormatter = NSDateFormatter()
-        dateStringFormatter.dateFormat = DateFormatStartOfMonth
+        dateStringFormatter.dateFormat = hasAMPM ? DateFormat12StartOfMonth : DateFormat24StartOfMonth
         dateStringFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
         var startOfMonth : NSDate?
         startOfMonth =  NSDate(dateString: dateStringFormatter.stringFromDate(self))
@@ -1634,7 +1637,7 @@ extension NSDate
     
     func startOfNextMonth() -> NSDate {
         let dateStringFormatter = NSDateFormatter()
-        dateStringFormatter.dateFormat = DateFormatStartOfMonth
+        dateStringFormatter.dateFormat = hasAMPM ? DateFormat12StartOfMonth : DateFormat24StartOfMonth
         dateStringFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
         var startOfMonth : NSDate?
         startOfMonth =  NSDate(dateString: dateStringFormatter.stringFromDate(self))
@@ -1646,7 +1649,7 @@ extension NSDate
     
     func endOfNextMonth() -> NSDate {
         let dateStringFormatter = NSDateFormatter()
-        dateStringFormatter.dateFormat = DateFormatStartOfMonth
+        dateStringFormatter.dateFormat = hasAMPM ? DateFormat12StartOfMonth : DateFormat24StartOfMonth
         dateStringFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
         var startOfMonth : NSDate?
         startOfMonth =  NSDate(dateString: dateStringFormatter.stringFromDate(self))

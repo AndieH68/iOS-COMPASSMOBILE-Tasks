@@ -24,14 +24,24 @@ enum TaskPeriod: Int32 {
     case All = 0, DueToday = 1, DueNext7Days = 2, DueNext30Days = 3, DueThisMonth = 4
 }
 
-let DateFormat: String = "yyyy-MM-dd'T'HH:mm:ss.SSS"
-let DateFormatNoNano: String = "yyyy-MM-dd'T'HH:mm:ss"
+let formatString: NSString = NSDateFormatter.dateFormatFromTemplate("j", options: 0, locale: NSLocale.currentLocale())!
+let hasAMPM = formatString.containsString("a")
+
+let DateFormat24: String = "yyyy-MM-dd'T'HH:mm:ss.SSS"
+let DateFormat24NoNano: String = "yyyy-MM-dd'T'HH:mm:ss"
+let DateFormat24StartOfDay: String = "yyyy-MM-dd'T'00:00:00.000"
+let DateFormat24StartOfMonth: String = "yyyy-MM-01'T'00:00:00.000"
+
+let DateFormat12: String = "yyyy-MM-dd'T'hh:mm:ss a"
+let DateFormat12NoNano: String = "yyyy-MM-dd'T'hh:mm:ss a"
+let DateFormat12StartOfDay: String = "yyyy-MM-dd'T'12:00:00 a"
+let DateFormat12StartOfMonth: String = "yyyy-MM-01'T'12:00:00 a"
+
 let DateFormatNoTime: String = "yyyy-MM-dd"
-let DateFormatStartOfDay: String = "yyyy-MM-dd'T'00:00:00.000"
-let DateFormatStartOfMonth: String = "yyyy-MM-01'T'00:00:00.000"
+let DateFormatForView: String = "dd/MM/yyyy"
 let DateFormatForTaskName: String = "yyMMddhhmm"
 
-let BaseDate: NSDate = NSDate(dateString: "2000-01-01T00:00:00.000")
+let BaseDate: NSDate = NSDate(dateString: hasAMPM ? "2000-01-01T12:00:00 PM" : "2000-01-01T00:00:00.000")
 
 let EmptyGuid: String = "00000000-0000-0000-0000-000000000000"
 

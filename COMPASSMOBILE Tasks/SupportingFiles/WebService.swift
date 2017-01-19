@@ -73,7 +73,7 @@ class WebService : NSObject {
             var soapBody: String = "<soap:Body>"
             soapBody += "<GetSynchronisationPackage xmlns=\"http://compass.hydrop.com/services/\">"
             soapBody += "<OperativeId>" + operativeId + "</OperativeId>"
-            soapBody += "<LastSynchonisationDateTime>" + synchronisationDate.toString() + "</LastSynchonisationDateTime>"
+            soapBody += "<LastSynchonisationDateTime>" + Utility.DateToStringForXML(synchronisationDate) + "</LastSynchonisationDateTime>"
             soapBody += "<LastRowId>" + lastRowId + "</LastRowId>"
             soapBody += "<Stage>" + String(stage) + "</Stage>"
             soapBody += "</GetSynchronisationPackage>"

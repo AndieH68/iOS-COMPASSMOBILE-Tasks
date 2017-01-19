@@ -171,7 +171,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
             cell.type.text = "Missing PPM Group"
         }
         cell.asset.text = task.AssetNumber
-        cell.dateDue.text = task.ScheduledDate.toStringForView()
+        cell.dateDue.text = Utility.DateToStringForView(task.ScheduledDate)
         cell.taskId = task.RowId
         
         return cell

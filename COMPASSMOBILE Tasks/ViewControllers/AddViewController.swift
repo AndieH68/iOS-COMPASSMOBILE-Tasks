@@ -117,7 +117,7 @@ class AddViewController: UIViewController {
             break;
         }
         
-        TaskRef = "CMi" + NSDate().toStringForTaskRef()
+        TaskRef = "CMi" + Utility.DateToStringForTaskRef(NSDate())
     
         //create the task and go to the task form
         let rowId: String = NSUUID().UUIDString

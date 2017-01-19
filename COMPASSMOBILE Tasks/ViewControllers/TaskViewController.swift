@@ -353,6 +353,8 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
                     for currentTaskTemplateParameterFormItem in thisTaskTemplateParameterFormItem.Dependencies
                     {
                         if (currentTaskTemplateParameterFormItem.TemplateParameter.PredecessorTrueValue == sender.selectedValue)
+                        &&
+                        (!((currentTaskTemplateParameterFormItem.TemplateParameter.ParameterName == "TemperatureHot" && HotType == "None") || (currentTaskTemplateParameterFormItem.TemplateParameter.ParameterName == "TemperatureCold" && ColdType == "None")))
                         {
                             currentTaskTemplateParameterFormItem.Enabled = true
                             EnableControl(currentTaskTemplateParameterFormItem.TemplateParameter.RowId, enabled: true)
