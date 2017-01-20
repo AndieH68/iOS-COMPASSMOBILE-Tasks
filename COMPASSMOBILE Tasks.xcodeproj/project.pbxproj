@@ -61,6 +61,7 @@
 		A486A4F71D11828000FE4642 /* Crittercism.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A486A4F61D11828000FE4642 /* Crittercism.framework */; };
 		A49A746A1D2FBE580006F220 /* COMPASSDB.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = A4CBC52F1D2FB94500E1D3CE /* COMPASSDB.sqlite */; };
 		A4A25F5F1D22D63A00027FA6 /* Default-568.png in Resources */ = {isa = PBXBuildFile; fileRef = A4A25F5E1D22D63A00027FA6 /* Default-568.png */; };
+		A4AF07661E326A6E00D09CA8 /* TemperatureProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4AF07651E326A6E00D09CA8 /* TemperatureProfile.swift */; };
 		A4D4A2D61D2D2097009287F8 /* COMPASSMOBILE Tasks.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A4D4A2D41D2D2097009287F8 /* COMPASSMOBILE Tasks.xcdatamodeld */; };
 		A4E425431D2D22870088EF64 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4E425411D2D22870088EF64 /* Main.storyboard */; };
 /* End PBXBuildFile section */
@@ -134,6 +135,7 @@
 		A486A4F61D11828000FE4642 /* Crittercism.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crittercism.framework; path = CrittercismSDK/Crittercism.framework; sourceTree = "<group>"; };
 		A4A25F5E1D22D63A00027FA6 /* Default-568.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568.png"; sourceTree = SOURCE_ROOT; };
 		A4A522EC1C43F4A500D16A9A /* COMPASSMOBILE Tasks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "COMPASSMOBILE Tasks.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A4AF07651E326A6E00D09CA8 /* TemperatureProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TemperatureProfile.swift; path = "COMPASSMOBILE Tasks/SupportingFiles/TemperatureProfile.swift"; sourceTree = SOURCE_ROOT; };
 		A4CBC52F1D2FB94500E1D3CE /* COMPASSDB.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = COMPASSDB.sqlite; path = "COMPASSMOBILE Tasks/COMPASSDB.sqlite"; sourceTree = SOURCE_ROOT; };
 		A4D4A2D51D2D2097009287F8 /* COMPASSMOBILE Tasks.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "COMPASSMOBILE Tasks.xcdatamodel"; sourceTree = "<group>"; };
 		A4E425421D2D22870088EF64 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "COMPASSMOBILE Tasks/Base.lproj/Main.storyboard"; sourceTree = "<group>"; };
@@ -214,6 +216,7 @@
 				A439199D1D2D1E7900C31CA0 /* TaskTemplateParameterFormItem.swift */,
 				A439199E1D2D1E7900C31CA0 /* Utility.swift */,
 				A439199F1D2D1E7900C31CA0 /* WebService.swift */,
+				A4AF07651E326A6E00D09CA8 /* TemperatureProfile.swift */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -438,6 +441,7 @@
 				A43919941D2D1DB500C31CA0 /* TaskParameter.swift in Sources */,
 				A432E9511D2D1A4E002FE138 /* FilterViewController.swift in Sources */,
 				A432E9531D2D1A4E002FE138 /* MainNavigationController.swift in Sources */,
+				A4AF07661E326A6E00D09CA8 /* TemperatureProfile.swift in Sources */,
 				A43919771D2D1D8C00C31CA0 /* TaskTemplateParameterCellTemperature.swift in Sources */,
 				A432E9431D2D19F8002FE138 /* FMDatabaseAdditions.m in Sources */,
 				A43919951D2D1DB500C31CA0 /* TaskTemplate.swift in Sources */,

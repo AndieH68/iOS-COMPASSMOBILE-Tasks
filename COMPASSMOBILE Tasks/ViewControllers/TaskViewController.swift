@@ -40,6 +40,12 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
     @IBOutlet var AdditionalNotes: UITextView!
     @IBOutlet var RemoveAsset: UISwitch!
     @IBOutlet var AlternateAssetCode: UITextField!
+    @IBOutlet var TaskTimeTakenStack: UIStackView!
+    @IBOutlet var TaskTravelTimeStack: UIStackView!
+    @IBOutlet var TaskTimeLabel: UILabel!
+    @IBOutlet var TaskTime: UITextField!
+    @IBOutlet var TravelTimeLabel: UILabel!
+    @IBOutlet var TravelTime: UITextField!
 
     var HotType: String? = nil
     var ColdType: String? = nil
@@ -73,9 +79,14 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
                 
                 presentViewController(userPrompt, animated: true, completion: nil)
             }
+            
+            //are we recording task times
+            TaskTimeTakenStack.hidden = !Session.UseTaskTiming
+            TaskTravelTimeStack.hidden = !Session.UseTaskTiming
+            
         }
         
-        AssetType.text = ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMAssetGroup", key: task.PPMGroup!)
+        AssetType.text = ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMAssetGroup", key: task.PPMGroup!) + " - " + ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMAssetType", key: task.AssetType!)
         if (task.TaskName == RemedialTask)
         {
             TaskName.text = RemedialTask
@@ -120,6 +131,8 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
         
         AdditionalNotes.delegate = self
         AlternateAssetCode.delegate = self
+        TaskTime.delegate = self
+        TravelTime.delegate = self
         
         //reload the table
         taskParameterTable.reloadData()
@@ -480,6 +493,32 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
                 }
             }
         }
+        
+        if Session.UseTaskTiming
+        {
+            let value: String? = TaskTime.text
+            if (value == nil || value == String())
+            {
+                TaskTimeLabel.textColor = UIColor.redColor()
+                valid = false
+            }
+            else
+            {
+                TaskTimeLabel.textColor = UIColor.whiteColor()
+            }
+            
+            let value2: String? = TravelTime.text
+            if (value2 == nil || value2 == String())
+            {
+                TravelTimeLabel.textColor = UIColor.redColor()
+                valid = false
+            }
+            else
+            {
+                TravelTimeLabel.textColor = UIColor.whiteColor()
+            }
+        }
+        
         return valid
     }
    
@@ -718,6 +757,11 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
         task.LastUpdatedBy = Session.OperativeId!
         task.LastUpdatedOn = now
         task.CompletedDate = now
+        if Session.UseTaskTiming
+        {
+            task.ActualDuration = Int(TaskTime.text!)
+            task.TravelDuration = Int(TravelTime.text!)
+        }
         task.Status = "Complete"
 
         ModelManager.getInstance().updateTask(task)

@@ -16,9 +16,9 @@ class SettingsViewController: UITableViewController, MBProgressHUDDelegate
     var eac: EAController?
 
     @IBOutlet var SelectedProbeName: UILabel!
-    @IBOutlet var TaskTiming: UISwitch!
-    @IBOutlet var TemperatureProfile: UISwitch!
     @IBOutlet var CompletedTasks: UILabel!
+    @IBOutlet var TaskTimingsSwitch: UISwitch!
+    @IBOutlet var TemperatureProfileSwitch: UISwitch!
     @IBOutlet var VersionNumber: UILabel!
     
     override func viewDidLoad() {
@@ -28,6 +28,9 @@ class SettingsViewController: UITableViewController, MBProgressHUDDelegate
         {
             VersionNumber.text = version
         }
+        
+        TaskTimingsSwitch.on = Session.UseTaskTiming
+        TemperatureProfileSwitch.on = Session.UseTemperatureProfile
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -167,7 +170,7 @@ class SettingsViewController: UITableViewController, MBProgressHUDDelegate
                 print("default")
             }
             
-        case 2:
+        case 3:
             let urlString = "http://" + Session.Server + "/HelpDocuments/COMPASSMOBILE/COMPASSMOBILE-Tasks-User-Guide-for-iOS.pdf"
             let url = NSURL(string: urlString)
             let application = UIApplication.sharedApplication()
@@ -238,8 +241,20 @@ class SettingsViewController: UITableViewController, MBProgressHUDDelegate
         headsUpDisplay!.showWhileExecuting({Utility.ResetAllData(self, HUD: self.headsUpDisplay)}, animated: true)
         
         //Logout
-//        Session.OperativeId = nil
-//        Session.OrganisationId = "00000000-0000-0000-0000-000000000000"
-//        self.navigationController?.popViewControllerAnimated(true)
+        Session.OperativeId = nil
+        Session.OrganisationId = "00000000-0000-0000-0000-000000000000"
+        self.navigationController?.popViewControllerAnimated(true)
+    }
+    
+    @IBAction func TaskTimingsSwitchValueChanged(sender: UISwitch) {
+        Session.UseTaskTiming = TaskTimingsSwitch.on
+        let defaults = NSUserDefaults.standardUserDefaults()
+        defaults.setObject(Session.UseTaskTiming, forKey: "TaskTimings")
+    }
+    
+    @IBAction func TemperatureProfileSwitchValueChanged(sender: UISwitch) {
+        Session.UseTemperatureProfile = TemperatureProfileSwitch.on
+        let defaults = NSUserDefaults.standardUserDefaults()
+        defaults.setObject(Session.UseTemperatureProfile, forKey: "TemperatureProfile")
     }
 }

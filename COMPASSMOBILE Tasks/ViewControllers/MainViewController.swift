@@ -164,7 +164,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         cell.location.text = PropertyName + task.LocationName
         if(task.PPMGroup != nil)
         {
-            cell.type.text = ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMAssetGroup", key: task.PPMGroup!)
+            cell.type.text = ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMAssetGroup", key: task.PPMGroup!) + " - " + ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMAssetType", key: task.AssetType!)
         }
         else
         {
@@ -173,6 +173,15 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         cell.asset.text = task.AssetNumber
         cell.dateDue.text = Utility.DateToStringForView(task.ScheduledDate)
         cell.taskId = task.RowId
+        
+        if (indexPath.row % 2 == 1)
+        {
+            cell.backgroundColor = UIColor.whiteColor()
+        }
+        else
+        {
+            cell.backgroundColor = UIColor(red: 228/255, green: 228/255, blue: 228/255, alpha: 0.75)
+        }
         
         return cell
     }

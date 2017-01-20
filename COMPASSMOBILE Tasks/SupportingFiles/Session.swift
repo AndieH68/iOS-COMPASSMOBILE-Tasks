@@ -17,8 +17,8 @@ class Session : NSObject
     static var DatabasePresent: Bool = false
     static var DatabaseMessage: String = String()
     
-    static var TaskTiming: Bool = false
-    static var TemperatureProfile: Bool = false
+    static var UseTaskTiming: Bool = false
+    static var UseTemperatureProfile: Bool = false
     
     static var OperativeId: String? = String?()
     static var OrganisationId: String? = String?()

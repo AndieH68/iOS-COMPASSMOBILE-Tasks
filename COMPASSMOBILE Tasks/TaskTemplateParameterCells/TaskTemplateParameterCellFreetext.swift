@@ -23,8 +23,6 @@ class TaskTemplateParameterCellFreetext: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    
-    
     func value() -> String?
     {
         return Answer.text

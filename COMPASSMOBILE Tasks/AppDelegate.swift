@@ -37,8 +37,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             let defaults = NSUserDefaults.standardUserDefaults()
             Session.Server = defaults.objectForKey("Server") as? String ?? String()
-            Session.TaskTiming = defaults.boolForKey("TaskTimng")
-            Session.TemperatureProfile = defaults.boolForKey("TemperatureProfile")
+            Session.UseTaskTiming = defaults.boolForKey("TaskTimng")
+            Session.UseTemperatureProfile = defaults.boolForKey("TemperatureProfile")
      
             Session.OrganisationId = "00000000-0000-0000-0000-000000000000"
         }
