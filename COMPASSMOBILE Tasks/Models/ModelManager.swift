@@ -3182,9 +3182,6 @@ class ModelManager: NSObject {
             }
         }
         
-//        whereClause += " AND [TaskName] != ? "
-//        whereValues.append(RemedialTask)
-        
         var whereClausePredicate: String = String()
         if (onlyPending)
         {
@@ -3198,6 +3195,11 @@ class ModelManager: NSObject {
         if (whereClause != "")
         {
             whereClause = whereClausePredicate + whereClause
+        }
+         
+        if (!whereClause.containsString("OperativeId"))
+        {
+            whereClause += " AND (OperativeId IS NULL OR OperativeId = '00000000-0000-0000-0000-000000000000' OR OperativeId = '" + Session.OperativeId! + "')"
         }
         
         sharedModelManager.database!.open()
