@@ -276,28 +276,31 @@ class KFPopupSelector: UIControl, UIPopoverPresentationControllerDelegate {
     }
     
     func buttonPressed(sender: AnyObject?) {
-        willOpenPopup?()
-        if options.count > 0 {
-            let pvc = PopupViewController(style: UITableViewStyle.Plain)
-            pvc.tableViewFont = tableFont
-            pvc.minWidth = self.bounds.width
-            pvc.options = options
-            pvc.itemSelected = { (index:Int) -> () in
-                pvc.dismissViewControllerAnimated(true) { 
-                    self.currentlyPresentedPopup = nil 
-                    self.selectedIndex = index
+        if(!Session.TimerRunning)
+        {
+            willOpenPopup?()
+            if options.count > 0 {
+                let pvc = PopupViewController(style: UITableViewStyle.Plain)
+                pvc.tableViewFont = tableFont
+                pvc.minWidth = self.bounds.width
+                pvc.options = options
+                pvc.itemSelected = { (index:Int) -> () in
+                    pvc.dismissViewControllerAnimated(true) { 
+                        self.currentlyPresentedPopup = nil 
+                        self.selectedIndex = index
+                    }
                 }
+                pvc.modalPresentationStyle = .Popover
+                currentlyPresentedPopup = pvc
+                
+                let pc = pvc.popoverPresentationController
+                pc?.sourceView = self
+                pc?.sourceRect = button.frame
+                pc?.permittedArrowDirections = .Any
+                pc?.delegate = self
+                
+                viewController!.presentViewController(pvc, animated: true) {}
             }
-            pvc.modalPresentationStyle = .Popover
-            currentlyPresentedPopup = pvc
-            
-            let pc = pvc.popoverPresentationController
-            pc?.sourceView = self
-            pc?.sourceRect = button.frame
-            pc?.permittedArrowDirections = .Any
-            pc?.delegate = self
-            
-            viewController!.presentViewController(pvc, animated: true) {}
         }
     }
     

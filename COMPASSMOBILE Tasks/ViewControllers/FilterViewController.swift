@@ -35,7 +35,7 @@ class FilterViewController: UIViewController {
     var Frequencies: [String] = []
     var FrequencyDictionary: Dictionary<String, String> = [:]
     
-    var Periods: [String] = ["Due Today", "Due This Week", "Due This Month", "Due By the End of Next Month", "All"]
+    var Periods: [String] = [DueTodayText, DueNext7DaysText, DueCalendarMonthText, DueThisMonthText, "All"]
 
     var AssetGroups: [String] = []
     var AssetGroupDictionary: Dictionary<String, String> = [:]
@@ -117,7 +117,7 @@ class FilterViewController: UIViewController {
         self.navigationController?.popViewControllerAnimated(true)
     }
     
-    @IBAction func TaskSort(sender: UISegmentedControl) {
+    @IBAction func TaskFilterSort(sender: UISegmentedControl) {
         switch sender.selectedSegmentIndex
         {
         case 0:

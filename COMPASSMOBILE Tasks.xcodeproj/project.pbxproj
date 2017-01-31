@@ -62,6 +62,7 @@
 		A49A746A1D2FBE580006F220 /* COMPASSDB.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = A4CBC52F1D2FB94500E1D3CE /* COMPASSDB.sqlite */; };
 		A4A25F5F1D22D63A00027FA6 /* Default-568.png in Resources */ = {isa = PBXBuildFile; fileRef = A4A25F5E1D22D63A00027FA6 /* Default-568.png */; };
 		A4AF07661E326A6E00D09CA8 /* TemperatureProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4AF07651E326A6E00D09CA8 /* TemperatureProfile.swift */; };
+		A4D2E4C01E362A4100B71AA8 /* TemperatureProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D2E4BF1E362A4100B71AA8 /* TemperatureProfileViewController.swift */; };
 		A4D4A2D61D2D2097009287F8 /* COMPASSMOBILE Tasks.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A4D4A2D41D2D2097009287F8 /* COMPASSMOBILE Tasks.xcdatamodeld */; };
 		A4E425431D2D22870088EF64 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4E425411D2D22870088EF64 /* Main.storyboard */; };
 /* End PBXBuildFile section */
@@ -89,7 +90,7 @@
 		A432E9401D2D19F8002FE138 /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMResultSet.h; path = "COMPASSMOBILE Tasks/FMDB/FMResultSet.h"; sourceTree = SOURCE_ROOT; };
 		A432E9411D2D19F8002FE138 /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMResultSet.m; path = "COMPASSMOBILE Tasks/FMDB/FMResultSet.m"; sourceTree = SOURCE_ROOT; };
 		A432E9471D2D1A18002FE138 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = "COMPASSMOBILE Tasks/Storyboards/LaunchScreen.storyboard"; sourceTree = SOURCE_ROOT; };
-		A432E9491D2D1A4E002FE138 /* FilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilterViewController.swift; path = "COMPASSMOBILE Tasks/ViewControllers/FilterViewController.swift"; sourceTree = SOURCE_ROOT; };
+		A432E9491D2D1A4E002FE138 /* FilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = FilterViewController.swift; path = "COMPASSMOBILE Tasks/ViewControllers/FilterViewController.swift"; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		A432E94A1D2D1A4E002FE138 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginViewController.swift; path = "COMPASSMOBILE Tasks/ViewControllers/LoginViewController.swift"; sourceTree = SOURCE_ROOT; };
 		A432E94B1D2D1A4E002FE138 /* MainNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainNavigationController.swift; path = "COMPASSMOBILE Tasks/ViewControllers/MainNavigationController.swift"; sourceTree = SOURCE_ROOT; };
 		A432E94C1D2D1A4E002FE138 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainViewController.swift; path = "COMPASSMOBILE Tasks/ViewControllers/MainViewController.swift"; sourceTree = SOURCE_ROOT; };
@@ -108,7 +109,7 @@
 		A43919711D2D1D8C00C31CA0 /* TaskTemplateParameterCellNumber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TaskTemplateParameterCellNumber.swift; path = "COMPASSMOBILE Tasks/TaskTemplateParameterCells/TaskTemplateParameterCellNumber.swift"; sourceTree = SOURCE_ROOT; };
 		A43919721D2D1D8C00C31CA0 /* TaskTemplateParameterCellTemperature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TaskTemplateParameterCellTemperature.swift; path = "COMPASSMOBILE Tasks/TaskTemplateParameterCells/TaskTemplateParameterCellTemperature.swift"; sourceTree = SOURCE_ROOT; };
 		A43919731D2D1D8C00C31CA0 /* TaskTemplateParameterCellTextArea.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TaskTemplateParameterCellTextArea.swift; path = "COMPASSMOBILE Tasks/TaskTemplateParameterCells/TaskTemplateParameterCellTextArea.swift"; sourceTree = SOURCE_ROOT; };
-		A43919791D2D1D9D00C31CA0 /* ModelManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ModelManager.swift; path = "COMPASSMOBILE Tasks/Models/ModelManager.swift"; sourceTree = SOURCE_ROOT; };
+		A43919791D2D1D9D00C31CA0 /* ModelManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = ModelManager.swift; path = "COMPASSMOBILE Tasks/Models/ModelManager.swift"; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		A439197A1D2D1D9D00C31CA0 /* ModelUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ModelUtility.swift; path = "COMPASSMOBILE Tasks/Models/ModelUtility.swift"; sourceTree = SOURCE_ROOT; };
 		A439197D1D2D1DB500C31CA0 /* Asset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Asset.swift; path = "COMPASSMOBILE Tasks/Models/Entity/Asset.swift"; sourceTree = SOURCE_ROOT; };
 		A439197E1D2D1DB500C31CA0 /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Location.swift; path = "COMPASSMOBILE Tasks/Models/Entity/Location.swift"; sourceTree = SOURCE_ROOT; };
@@ -124,9 +125,9 @@
 		A43919881D2D1DB500C31CA0 /* TaskTemplate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TaskTemplate.swift; path = "COMPASSMOBILE Tasks/Models/Entity/TaskTemplate.swift"; sourceTree = SOURCE_ROOT; };
 		A43919891D2D1DB500C31CA0 /* TaskTemplateParameter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TaskTemplateParameter.swift; path = "COMPASSMOBILE Tasks/Models/Entity/TaskTemplateParameter.swift"; sourceTree = SOURCE_ROOT; };
 		A43919981D2D1E5200C31CA0 /* AEXML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AEXML.swift; path = "COMPASSMOBILE Tasks/AEXML/AEXML.swift"; sourceTree = SOURCE_ROOT; };
-		A439199A1D2D1E7900C31CA0 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = "COMPASSMOBILE Tasks/SupportingFiles/Constants.swift"; sourceTree = SOURCE_ROOT; };
+		A439199A1D2D1E7900C31CA0 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = Constants.swift; path = "COMPASSMOBILE Tasks/SupportingFiles/Constants.swift"; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		A439199B1D2D1E7900C31CA0 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Reachability.swift; path = "COMPASSMOBILE Tasks/SupportingFiles/Reachability.swift"; sourceTree = SOURCE_ROOT; };
-		A439199C1D2D1E7900C31CA0 /* Session.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Session.swift; path = "COMPASSMOBILE Tasks/SupportingFiles/Session.swift"; sourceTree = SOURCE_ROOT; };
+		A439199C1D2D1E7900C31CA0 /* Session.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = Session.swift; path = "COMPASSMOBILE Tasks/SupportingFiles/Session.swift"; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		A439199D1D2D1E7900C31CA0 /* TaskTemplateParameterFormItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TaskTemplateParameterFormItem.swift; path = "COMPASSMOBILE Tasks/SupportingFiles/TaskTemplateParameterFormItem.swift"; sourceTree = SOURCE_ROOT; };
 		A439199E1D2D1E7900C31CA0 /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Utility.swift; path = "COMPASSMOBILE Tasks/SupportingFiles/Utility.swift"; sourceTree = SOURCE_ROOT; };
 		A439199F1D2D1E7900C31CA0 /* WebService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebService.swift; path = "COMPASSMOBILE Tasks/SupportingFiles/WebService.swift"; sourceTree = SOURCE_ROOT; };
@@ -137,6 +138,7 @@
 		A4A522EC1C43F4A500D16A9A /* COMPASSMOBILE Tasks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "COMPASSMOBILE Tasks.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4AF07651E326A6E00D09CA8 /* TemperatureProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TemperatureProfile.swift; path = "COMPASSMOBILE Tasks/SupportingFiles/TemperatureProfile.swift"; sourceTree = SOURCE_ROOT; };
 		A4CBC52F1D2FB94500E1D3CE /* COMPASSDB.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = COMPASSDB.sqlite; path = "COMPASSMOBILE Tasks/COMPASSDB.sqlite"; sourceTree = SOURCE_ROOT; };
+		A4D2E4BF1E362A4100B71AA8 /* TemperatureProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemperatureProfileViewController.swift; sourceTree = SOURCE_ROOT; };
 		A4D4A2D51D2D2097009287F8 /* COMPASSMOBILE Tasks.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "COMPASSMOBILE Tasks.xcdatamodel"; sourceTree = "<group>"; };
 		A4E425421D2D22870088EF64 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "COMPASSMOBILE Tasks/Base.lproj/Main.storyboard"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -261,6 +263,7 @@
 				A432E94E1D2D1A4E002FE138 /* SearchViewController.swift */,
 				A432E94F1D2D1A4E002FE138 /* SettingsViewController.swift */,
 				A432E9501D2D1A4E002FE138 /* TaskViewController.swift */,
+				A4D2E4BF1E362A4100B71AA8 /* TemperatureProfileViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -477,6 +480,7 @@
 				A439196C1D2D1D2E00C31CA0 /* KFPopupSelector.swift in Sources */,
 				A439198F1D2D1DB500C31CA0 /* Organisation.swift in Sources */,
 				A43919A41D2D1E7900C31CA0 /* Utility.swift in Sources */,
+				A4D2E4C01E362A4100B71AA8 /* TemperatureProfileViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

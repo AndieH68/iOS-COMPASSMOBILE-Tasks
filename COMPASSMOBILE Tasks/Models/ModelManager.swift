@@ -3096,8 +3096,7 @@ class ModelManager: NSObject {
         var count: Int32 = 0
         (list, count) = findTaskList(criteria, onlyPending: true, pageSize: nil, pageNumber: nil, sortOrder: TaskSortOrder.Date)
         return (list, count)
-    }
-        
+    }          
     func findTaskList(criteria: Dictionary<String, AnyObject>, onlyPending: Bool, pageSize: Int32?, pageNumber: Int32?, sortOrder: TaskSortOrder) -> (List: [Task], Count: Int32) {
        //return variables
         var count: Int32 = 0
@@ -3138,7 +3137,7 @@ class ModelManager: NSObject {
         {
             switch criteria["Period"] as! String
             {
-            case "Due Today":
+            case DueTodayText:
                  
                 let endOfToday: NSDate = NSDate().endOfDay()
                 
@@ -3146,7 +3145,7 @@ class ModelManager: NSObject {
                 whereClause += " [ScheduledDate] <= ? "
                 whereValues.append(endOfToday)
                 
-            case "Due This Week":
+            case DueNext7DaysText:
                 
                 let endOfThisWeek: NSDate = NSDate().endOfWeek()
             
@@ -3154,7 +3153,7 @@ class ModelManager: NSObject {
                 whereClause += " [ScheduledDate] <= ? "
                 whereValues.append(endOfThisWeek)
                 
-            case "Due This Month":
+            case DueCalendarMonthText:
                 
                 let endOfThisMonth: NSDate = NSDate().endOfMonth()
                 
@@ -3162,7 +3161,7 @@ class ModelManager: NSObject {
                 whereClause += " [ScheduledDate] <= ? "
                 whereValues.append(endOfThisMonth)
                 
-            case "Due By the End of Next Month":
+            case DueThisMonthText:
   
                 let startOfNextMonth: NSDate = NSDate().startOfNextMonth()
                 let endOfNextMonth: NSDate = NSDate().endOfNextMonth()

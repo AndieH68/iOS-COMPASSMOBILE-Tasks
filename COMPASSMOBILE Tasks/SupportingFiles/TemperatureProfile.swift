@@ -42,12 +42,12 @@ class TemperatureProfile
         }
     }
     
-    internal func AddnextTemperature(temperature: String, time: String) throws
+    internal func AddNextTemperature(temperature: String, time: String)
     {
         if Count < 5
         {
-            _Temperatures[Count] = temperature
-            _Times[Count] = time
+            _Temperatures.append(temperature)
+            _Times.append(time)
             _Count += 1
         }
     }
@@ -55,11 +55,29 @@ class TemperatureProfile
     internal func ToString()-> String
     {
         var returnValue: String = String()
-        for loop: Int in 0..._Count
+        if(_Count > 0)
         {
-            returnValue += loop > 0 ? ":" : ""
-            returnValue += _Temperatures[loop] + "[" + _Times[loop] + "]"
+            for loop: Int in 0..._Count-1
+            {
+                returnValue += loop > 0 ? ":" : ""
+                returnValue += _Temperatures[loop] + "[" + _Times[loop] + "]"
+            }
         }
         return returnValue
     }
+    
+    internal func ToStringForDisplay()-> String
+    {
+        var returnValue: String = String()
+        if(_Count > 0)
+        {
+            for loop: Int in 0..._Count-1
+            {
+                returnValue += loop > 0 ? ", " : ""
+                returnValue += _Temperatures[loop] + " @ " + _Times[loop] + "mins"
+            }
+        }
+        return returnValue
+    }
+    
 }

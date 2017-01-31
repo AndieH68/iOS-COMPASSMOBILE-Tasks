@@ -1710,4 +1710,3 @@ extension String
         return self.simpleReplace(mapList)
     }
 }
-

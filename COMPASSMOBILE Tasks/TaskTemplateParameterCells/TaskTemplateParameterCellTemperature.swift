@@ -12,6 +12,7 @@ class TaskTemplateParameterCellTemperature: UITableViewCell {
     
     @IBOutlet var Question: UILabel!
     @IBOutlet var Answer: UITextField!
+    @IBOutlet var ProfileButton: UIButton!
     
     override func awakeFromNib() {
         super.awakeFromNib()

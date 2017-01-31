@@ -21,8 +21,14 @@ enum TaskSortOrder: Int32 {
 }
 
 enum TaskPeriod: Int32 {
-    case All = 0, DueToday = 1, DueNext7Days = 2, DueNext30Days = 3, DueThisMonth = 4
+    case All = 0, DueToday = 1, DueNext7Days = 2, DueCalendarMonth = 3, DueThisMonth = 4
 }
+
+let All: String = "All"
+let DueTodayText: String = "Due Today"
+let DueNext7DaysText: String = "Due This Week"
+let DueCalendarMonthText: String = "Due This Month"
+let DueThisMonthText: String = "Due by the End of Next Month"
 
 let formatString: NSString = NSDateFormatter.dateFormatFromTemplate("j", options: 0, locale: NSLocale.currentLocale())!
 let hasAMPM = formatString.containsString("a")
@@ -49,3 +55,7 @@ let RemedialTask: String = "Remedial Task"
 let Accessible: String = "Accessible"
 let NotApplicable: String = "Not applicable"
 let PleaseSelect: String = "Please select"
+
+let TemperatureCell: Int = 1
+let TemperatureProfileCellHot: Int = 2
+let TemperatureProfileCellCold: Int = 3

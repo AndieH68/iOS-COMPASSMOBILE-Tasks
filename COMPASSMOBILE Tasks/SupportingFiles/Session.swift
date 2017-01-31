@@ -42,7 +42,7 @@ class Session : NSObject
     static var FilterPropertyId: String? = String?()
     static var FilterPropertyName: String? = String?()
     static var FilterFrequency: String? = String?()
-    static var FilterPeriod: String? = String?("Due Today")
+    static var FilterPeriod: String? = String?(DueCalendarMonthText)
     
     static var FilterJustMyTasks: Bool = false
     
@@ -91,7 +91,7 @@ class Session : NSObject
         FilterPropertyId = String?()
         FilterPropertyName = String?()
         FilterFrequency = String?()
-        FilterPeriod = String?("Due Today")
+        FilterPeriod = String?(DueCalendarMonthText)
         
         FilterJustMyTasks = false
         
@@ -102,4 +102,12 @@ class Session : NSObject
         FilterLocation = String?()
         FilterAssetNumber = String?()
     }
+    
+    static var CurrentReading: String? = nil
+    static var CurrentTemperatureControl: UITextField? = nil
+    static var TimerRunning: Bool = false
+    
+    static var CurrentProfileControl: UITextField? = nil
+    static var Profile: TemperatureProfile? = nil
+    static var GettingProfile: Bool = false
 }
