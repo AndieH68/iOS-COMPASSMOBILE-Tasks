@@ -14,10 +14,10 @@ class TaskTemplate: NSObject {
     
     var RowId: String = String()
     var CreatedBy: String = String()
-    var CreatedOn: NSDate = NSDate()
+    var CreatedOn: Date = Date()
     var LastUpdatedBy: String? = nil
-    var LastUpdatedOn: NSDate? = nil
-    var Deleted: NSDate? = nil
+    var LastUpdatedOn: Date? = nil
+    var Deleted: Date? = nil
     var OrganisationId: String = String()
     var AssetType: String = String()
     var TaskName: String = String()
@@ -27,7 +27,7 @@ class TaskTemplate: NSObject {
     // MARK: - Contructors
     
     convenience
-    init(rowId:String, createdBy: String, createdOn: NSDate, lastUpdatedBy: String?, lastUpdatedOn: NSDate?, deleted: NSDate?, organisationId: String, assetType: String, taskName: String, priority: Int, estimatedDuration: Int) {
+    init(rowId:String, createdBy: String, createdOn: Date, lastUpdatedBy: String?, lastUpdatedOn: Date?, deleted: Date?, organisationId: String, assetType: String, taskName: String, priority: Int, estimatedDuration: Int) {
         self.init()
         self.RowId = rowId
         self.CreatedBy = createdBy
@@ -47,7 +47,7 @@ class TaskTemplate: NSObject {
         self.init()
         self.RowId = XMLElement.attributes["RowId"]!
         self.CreatedBy = XMLElement.attributes["CreatedBy"]!
-        self.CreatedOn = NSDate(dateString: XMLElement.attributes["CreatedOn"]!)
+        self.CreatedOn = Date(dateString: XMLElement.attributes["CreatedOn"]!)
         if XMLElement.attributes.keys.contains("LastUpdatedBy") {
             if XMLElement.attributes["LastUpdatedBy"] != ""
             {
@@ -57,13 +57,13 @@ class TaskTemplate: NSObject {
         if XMLElement.attributes.keys.contains("LastUpdatedOn") {
             if XMLElement.attributes["LastUpdatedOn"] != ""
             {
-                self.LastUpdatedOn = NSDate(dateString: XMLElement.attributes["LastUpdatedOn"]!)
+                self.LastUpdatedOn = Date(dateString: XMLElement.attributes["LastUpdatedOn"]!)
             }
         }
         if XMLElement.attributes.keys.contains("Deleted") {
             if XMLElement.attributes["Deleted"] != ""
             {
-                self.Deleted = NSDate(dateString: XMLElement.attributes["Deleted"]!)
+                self.Deleted = Date(dateString: XMLElement.attributes["Deleted"]!)
             }
         }
         self.OrganisationId = XMLElement.attributes["OrganisationId"]!

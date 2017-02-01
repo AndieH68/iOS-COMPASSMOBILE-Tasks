@@ -46,14 +46,14 @@ class RemedialTaskViewController: UIViewController, UITextFieldDelegate, UITextV
         {
             TaskName.text  = ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMTaskType", key: task.TaskName, parentType: "PPMAssetGroup", parentValue: task.PPMGroup)
         }
-        if let locationName: String = task.LocationName {Location.text = locationName} else {Location.text = "no location"}
+        
         if let assetNumber: String = task.AssetNumber {AssetNumber.text = assetNumber} else {AssetNumber.text = "no asset"}
         TaskReference.text = task.TaskRef
         
 
         var criteria: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
-        criteria["TaskId"] = task.RowId
-        criteria["ParameterName"] = "Instruction"
+        criteria["TaskId"] = task.RowId as AnyObject?
+        criteria["ParameterName"] = "Instruction" as AnyObject?
         
         taskParameters = ModelManager.getInstance().findTaskParameterList(criteria)
 
@@ -62,13 +62,13 @@ class RemedialTaskViewController: UIViewController, UITextFieldDelegate, UITextV
             for taskParameter: TaskParameter in taskParameters
             {
                 WorkInstruction.text = taskParameter.ParameterValue
-                WorkInstruction.editable = false
+                WorkInstruction.isEditable = false
             }
         }
         else
         {
             WorkInstruction.text = "no instructions"
-            WorkInstruction.editable = false
+            WorkInstruction.isEditable = false
         }
         
         WorkCarriedOut.delegate = self
@@ -76,61 +76,61 @@ class RemedialTaskViewController: UIViewController, UITextFieldDelegate, UITextV
         
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         NewScancode()
     }
     
     //MARK: - UITextFieldDelegate
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
     
-    func textFieldDidBeginEditing(textField: UITextField) {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
         self.addDoneButtonOnKeyboard(textField)
     }
     
-    func textFieldDidEndEditing(textField: UITextField) {
+    func textFieldDidEndEditing(_ textField: UITextField) {
         textField.resignFirstResponder()
     }
     
     //MARK: UITextViewDelegate
     
-    func textViewShouldBeginEditing(textView: UITextView) -> Bool {
+    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
         self.addDoneButtonOnKeyboard(textView)
         return true
     }
     
-    func textViewDidEndEditing(textView: UITextView) {
+    func textViewDidEndEditing(_ textView: UITextView) {
         textView.resignFirstResponder()
     }
     
     //MARK: Actions
     
-    @IBAction func CancelPressed(sender: UIBarButtonItem) {
-        let userPrompt: UIAlertController = UIAlertController(title: "Leave task?", message: "Are you sure you want to leave this task?  Any unsaved data will be lost.", preferredStyle: UIAlertControllerStyle.Alert)
+    @IBAction func CancelPressed(_ sender: UIBarButtonItem) {
+        let userPrompt: UIAlertController = UIAlertController(title: "Leave task?", message: "Are you sure you want to leave this task?  Any unsaved data will be lost.", preferredStyle: UIAlertControllerStyle.alert)
         
         //the cancel action
         userPrompt.addAction(UIAlertAction(
             title: "Cancel",
-            style: UIAlertActionStyle.Cancel,
+            style: UIAlertActionStyle.cancel,
             handler: nil))
         
         //the destructive option
         userPrompt.addAction(UIAlertAction(
             title: "OK",
-            style: UIAlertActionStyle.Destructive,
+            style: UIAlertActionStyle.destructive,
             handler: self.LeaveTask))
        
-        presentViewController(userPrompt, animated: true, completion: nil)
+        present(userPrompt, animated: true, completion: nil)
     }
     
-    func LeaveTask (actionTarget: UIAlertAction) {
+    func LeaveTask (_ actionTarget: UIAlertAction) {
         Session.CodeScanned = nil
         Session.TaskId = nil
-        self.navigationController?.popViewControllerAnimated(true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     func Validate() -> Bool{
@@ -140,41 +140,41 @@ class RemedialTaskViewController: UIViewController, UITextFieldDelegate, UITextV
         let value: String? = WorkCarriedOut.text
         if (value == nil || value == String() )
         {
-            WorkCarriedOutLabel.textColor = UIColor.redColor()
+            WorkCarriedOutLabel.textColor = UIColor.red
             valid = false
         }
         else
         {
-            WorkCarriedOutLabel.textColor = UIColor.whiteColor()
+            WorkCarriedOutLabel.textColor = UIColor.white
         }
 
         return valid
     }
     
     
-    @IBAction func DonePressed(sender: UIBarButtonItem) {
+    @IBAction func DonePressed(_ sender: UIBarButtonItem) {
         //do all the vlaidation
         if (!Validate())
         {
-            let userPrompt: UIAlertController = UIAlertController(title: "Incomplete task!", message: "Please complete the fields highlighted with red.", preferredStyle: UIAlertControllerStyle.Alert)
+            let userPrompt: UIAlertController = UIAlertController(title: "Incomplete task!", message: "Please complete the fields highlighted with red.", preferredStyle: UIAlertControllerStyle.alert)
             
             //the cancel action
             userPrompt.addAction(UIAlertAction(
                 title: "OK",
-                style: UIAlertActionStyle.Default,
+                style: UIAlertActionStyle.default,
                 handler: nil))
             
-            presentViewController(userPrompt, animated: true, completion: nil)
+            present(userPrompt, animated: true, completion: nil)
             
             return
         }
         
-        let now = NSDate()
+        let now = Date()
         
         
         //add the removea asset and alternate asset code parameters
         var currentTaskParameter: TaskParameter = TaskParameter()
-        currentTaskParameter.RowId = NSUUID().UUIDString
+        currentTaskParameter.RowId = UUID().uuidString
         currentTaskParameter.CreatedBy = Session.OperativeId!
         currentTaskParameter.CreatedOn = now
         currentTaskParameter.TaskId = Session.TaskId!
@@ -184,10 +184,10 @@ class RemedialTaskViewController: UIViewController, UITextFieldDelegate, UITextV
         currentTaskParameter.ParameterDisplay = "Work Carried Out"
         currentTaskParameter.Collect = true
         currentTaskParameter.ParameterValue = WorkCarriedOut.text
-        ModelManager.getInstance().addTaskParameter(currentTaskParameter)
+        _ = ModelManager.getInstance().addTaskParameter(currentTaskParameter)
         
         currentTaskParameter = TaskParameter()
-        currentTaskParameter.RowId = NSUUID().UUIDString
+        currentTaskParameter.RowId = UUID().uuidString
         currentTaskParameter.CreatedBy = Session.OperativeId!
         currentTaskParameter.CreatedOn = now
         currentTaskParameter.TaskId = Session.TaskId!
@@ -196,11 +196,11 @@ class RemedialTaskViewController: UIViewController, UITextFieldDelegate, UITextV
         currentTaskParameter.ParameterType = "Reference Data"
         currentTaskParameter.ParameterDisplay = "Work Completed"
         currentTaskParameter.Collect = true
-        currentTaskParameter.ParameterValue = (WorkCompleted.on ? "Yes" : "No")
-        ModelManager.getInstance().addTaskParameter(currentTaskParameter)
+        currentTaskParameter.ParameterValue = (WorkCompleted.isOn ? "Yes" : "No")
+        _ = ModelManager.getInstance().addTaskParameter(currentTaskParameter)
         
         currentTaskParameter = TaskParameter()
-        currentTaskParameter.RowId = NSUUID().UUIDString
+        currentTaskParameter.RowId = UUID().uuidString
         currentTaskParameter.CreatedBy = Session.OperativeId!
         currentTaskParameter.CreatedOn = now
         currentTaskParameter.TaskId = Session.TaskId!
@@ -209,14 +209,14 @@ class RemedialTaskViewController: UIViewController, UITextFieldDelegate, UITextV
         currentTaskParameter.ParameterType = "Reference Data"
         currentTaskParameter.ParameterDisplay = "Remove Asset"
         currentTaskParameter.Collect = true
-        currentTaskParameter.ParameterValue = (RemoveAsset.on ? "Yes" : "No")
-        ModelManager.getInstance().addTaskParameter(currentTaskParameter)
+        currentTaskParameter.ParameterValue = (RemoveAsset.isOn ? "Yes" : "No")
+        _ = ModelManager.getInstance().addTaskParameter(currentTaskParameter)
         
         
         if (AlternateAssetCode.text != nil)
         {
             currentTaskParameter = TaskParameter()
-            currentTaskParameter.RowId = NSUUID().UUIDString
+            currentTaskParameter.RowId = UUID().uuidString
             currentTaskParameter.CreatedBy = Session.OperativeId!
             currentTaskParameter.CreatedOn = now
             currentTaskParameter.TaskId = Session.TaskId!
@@ -226,7 +226,7 @@ class RemedialTaskViewController: UIViewController, UITextFieldDelegate, UITextV
             currentTaskParameter.ParameterDisplay = "Alternate Asset Code"
             currentTaskParameter.Collect = true
             currentTaskParameter.ParameterValue = AlternateAssetCode.text!
-            ModelManager.getInstance().addTaskParameter(currentTaskParameter)
+            _ = ModelManager.getInstance().addTaskParameter(currentTaskParameter)
         }
         
         //update the task
@@ -235,14 +235,14 @@ class RemedialTaskViewController: UIViewController, UITextFieldDelegate, UITextV
         task.CompletedDate = now
         task.Status = "Complete"
         
-        ModelManager.getInstance().updateTask(task)
+        _ = ModelManager.getInstance().updateTask(task)
         
         Utility.SendTasks(self.navigationController!, HUD: nil)
         Session.CodeScanned = nil
         
         //close the view
         Session.TaskId = nil
-        self.navigationController?.popViewControllerAnimated(true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     //MARK: - Scancode
@@ -254,13 +254,13 @@ class RemedialTaskViewController: UIViewController, UITextFieldDelegate, UITextV
         }
     }
     
-    func addDoneButtonOnKeyboard(view: UIView?)
+    func addDoneButtonOnKeyboard(_ view: UIView?)
     {
         
-        let doneToolbar: UIToolbar = UIToolbar(frame: CGRectMake(0, 0, 320, 50))
-        doneToolbar.barStyle = UIBarStyle.BlackTranslucent
-        let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
-        let done: UIBarButtonItem = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: view, action: #selector(UIResponder.resignFirstResponder))
+        let doneToolbar: UIToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: 320, height: 50))
+        doneToolbar.barStyle = UIBarStyle.blackTranslucent
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+        let done: UIBarButtonItem = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.done, target: view, action: #selector(UIResponder.resignFirstResponder))
         var items: [UIBarButtonItem] = [UIBarButtonItem]()
         items.append(flexSpace)
         items.append(done)

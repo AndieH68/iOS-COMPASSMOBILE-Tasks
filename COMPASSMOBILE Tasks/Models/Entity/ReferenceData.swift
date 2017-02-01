@@ -14,13 +14,13 @@ class ReferenceData: NSObject{
     
     var RowId: String = String()
     var CreatedBy: String = String()
-    var CreatedOn: NSDate = NSDate()
+    var CreatedOn: Date = Date()
     var LastUpdatedBy: String? = nil
-    var LastUpdatedOn: NSDate? = nil
-    var Deleted: NSDate? = nil
-    var StartDate: NSDate = NSDate()
-    var EndDate: NSDate? = nil
-    var Type: String = String()
+    var LastUpdatedOn: Date? = nil
+    var Deleted: Date? = nil
+    var StartDate: Date = Date()
+    var EndDate: Date? = nil
+    var ReferenceType: String = String()
     var Value: String = String()
     var Ordinal: Int = Int()
     var Display: String = String()
@@ -31,7 +31,7 @@ class ReferenceData: NSObject{
     // MARK: - Contructors
     
     convenience
-    init(rowId:String, createdBy: String, createdOn: NSDate, lastUpdatedBy: String?, lastUpdatedOn: NSDate?, deleted: NSDate?, startDate: NSDate, endDate: NSDate?, type: String, value: String, ordinal: Int, display: String, system: Bool, parentType: String?, parentValue: String?) {
+    init(rowId:String, createdBy: String, createdOn: Date, lastUpdatedBy: String?, lastUpdatedOn: Date?, deleted: Date?, startDate: Date, endDate: Date?, referenceType: String, value: String, ordinal: Int, display: String, system: Bool, parentType: String?, parentValue: String?) {
         self.init()
         self.RowId = rowId
         self.CreatedBy = createdBy
@@ -41,7 +41,7 @@ class ReferenceData: NSObject{
         self.Deleted = deleted
         self.StartDate = startDate
         self.EndDate = endDate
-        self.Type = type
+        self.ReferenceType = referenceType
         self.Value = value
         self.Ordinal = ordinal
         self.Display = display
@@ -55,7 +55,7 @@ class ReferenceData: NSObject{
         self.init()
         self.RowId = XMLElement.attributes["RowId"]!
         self.CreatedBy = XMLElement.attributes["CreatedBy"]!
-        self.CreatedOn = NSDate(dateString: XMLElement.attributes["CreatedOn"]!)
+        self.CreatedOn = Date(dateString: XMLElement.attributes["CreatedOn"]!)
         if XMLElement.attributes.keys.contains("LastUpdatedBy") {
             if XMLElement.attributes["LastUpdatedBy"] != ""
             {
@@ -65,23 +65,23 @@ class ReferenceData: NSObject{
         if XMLElement.attributes.keys.contains("LastUpdatedOn") {
             if XMLElement.attributes["LastUpdatedOn"] != ""
             {
-                self.LastUpdatedOn = NSDate(dateString: XMLElement.attributes["LastUpdatedOn"]!)
+                self.LastUpdatedOn = Date(dateString: XMLElement.attributes["LastUpdatedOn"]!)
             }
         }
         if XMLElement.attributes.keys.contains("Deleted") {
             if XMLElement.attributes["Deleted"] != ""
             {
-                self.Deleted = NSDate(dateString: XMLElement.attributes["Deleted"]!)
+                self.Deleted = Date(dateString: XMLElement.attributes["Deleted"]!)
             }
         }
-        self.CreatedOn = NSDate(dateString: XMLElement.attributes["StartDate"]!)
+        self.CreatedOn = Date(dateString: XMLElement.attributes["StartDate"]!)
         if XMLElement.attributes.keys.contains("EndDate") {
             if XMLElement.attributes["EndDate"] != ""
             {
-                self.Deleted = NSDate(dateString: XMLElement.attributes["EndDate"]!)
+                self.Deleted = Date(dateString: XMLElement.attributes["EndDate"]!)
             }
         }
-        self.Type = XMLElement.attributes["Type"]!
+        self.ReferenceType = XMLElement.attributes["Type"]!
         self.Value = XMLElement.attributes["Value"]!
         self.Ordinal = Int(XMLElement.attributes["Ordinal"]!)! //should test for numeric here
         self.Display = XMLElement.attributes["Display"]!

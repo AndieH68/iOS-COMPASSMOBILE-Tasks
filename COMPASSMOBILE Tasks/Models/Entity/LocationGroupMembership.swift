@@ -14,17 +14,17 @@ class LocationGroupMembership: NSObject {
     
     var RowId: String = String()
     var CreatedBy: String = String()
-    var CreatedOn: NSDate = NSDate()
+    var CreatedOn: Date = Date()
     var LastUpdatedBy: String? = nil
-    var LastUpdatedOn: NSDate? = nil
-    var Deleted: NSDate? = nil
+    var LastUpdatedOn: Date? = nil
+    var Deleted: Date? = nil
     var LocationGroupId: String = String()
     var LocationId: String = String()
     
     // MARK: - Contructors
     
     convenience
-    init(rowId:String, createdBy: String, createdOn: NSDate, lastUpdatedBy: String?, lastUpdatedOn: NSDate?, deleted: NSDate?, locationGroupId: String, locationId: String) {
+    init(rowId:String, createdBy: String, createdOn: Date, lastUpdatedBy: String?, lastUpdatedOn: Date?, deleted: Date?, locationGroupId: String, locationId: String) {
         self.init()
         self.RowId = rowId
         self.CreatedBy = createdBy
@@ -41,7 +41,7 @@ class LocationGroupMembership: NSObject {
         self.init()
         self.RowId = XMLElement.attributes["RowId"]!
         self.CreatedBy = XMLElement.attributes["CreatedBy"]!
-        self.CreatedOn = NSDate(dateString: XMLElement.attributes["CreatedOn"]!)
+        self.CreatedOn = Date(dateString: XMLElement.attributes["CreatedOn"]!)
         if XMLElement.attributes.keys.contains("LastUpdatedBy") {
             if XMLElement.attributes["LastUpdatedBy"] != ""
             {
@@ -51,13 +51,13 @@ class LocationGroupMembership: NSObject {
         if XMLElement.attributes.keys.contains("LastUpdatedOn") {
             if XMLElement.attributes["LastUpdatedOn"] != ""
             {
-                self.LastUpdatedOn = NSDate(dateString: XMLElement.attributes["LastUpdatedOn"]!)
+                self.LastUpdatedOn = Date(dateString: XMLElement.attributes["LastUpdatedOn"]!)
             }
         }
         if XMLElement.attributes.keys.contains("Deleted") {
             if XMLElement.attributes["Deleted"] != ""
             {
-                self.Deleted = NSDate(dateString: XMLElement.attributes["Deleted"]!)
+                self.Deleted = Date(dateString: XMLElement.attributes["Deleted"]!)
             }
         }
         self.LocationGroupId = XMLElement.attributes["LocationGroupId"]!

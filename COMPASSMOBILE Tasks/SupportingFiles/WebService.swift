@@ -10,16 +10,16 @@ import UIKit
 
 class WebService : NSObject {
     
-    class func validateOperative (username: String, password: String) -> NSData? {
+    class func validateOperative (_ username: String, password: String) -> Data? {
         
-        var data: NSData?
+        var data: Data?
         NSLog("Validate Operative started")
         autoreleasepool{
             let urlString = "http://" + Session.Server + "/services/servicepdautility2osx.asmx"
-            let url = NSURL(string: urlString)
+            let url = URL(string: urlString)
             
-            let theSession = NSURLSession.sharedSession()
-            let theRequest = NSMutableURLRequest(URL: url!)
+            let theSession = URLSession.shared
+            let theRequest = NSMutableURLRequest(url: url!)
             
             let soapHeader: String = "<?xml version=\"1.0\" encoding=\"utf-8\"?><soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">"
             let soapFooter: String = "</soap:Envelope>"
@@ -34,37 +34,37 @@ class WebService : NSObject {
             
             let soapMessage: String = soapHeader + soapBody + soapFooter
             
-            theRequest.HTTPMethod = "POST"
+            theRequest.httpMethod = "POST"
             theRequest.addValue(Session.Server, forHTTPHeaderField: "Host")
             theRequest.addValue("text/xml; charset=utf-8", forHTTPHeaderField: "Content-Type")
             theRequest.addValue(String(soapMessage.characters.count), forHTTPHeaderField: "Content-Length")
             theRequest.addValue(soapAction, forHTTPHeaderField: "SOAPAction")
-            theRequest.HTTPBody = soapMessage.dataUsingEncoding(NSUTF8StringEncoding)
+            theRequest.httpBody = soapMessage.data(using: String.Encoding.utf8)
             
-            let semaphore = dispatch_semaphore_create(0)
+            let semaphore = DispatchSemaphore(value: 0)
             
-            theSession.dataTaskWithRequest(theRequest) { (responseData: NSData? , _, _) -> Void in
+            theSession.dataTask(with: theRequest as URLRequest, completionHandler: { (responseData: Data? , _, _) -> Void in
                 data = responseData
-                dispatch_semaphore_signal(semaphore)
-                }.resume()
+                semaphore.signal()
+                }) .resume()
             
-            dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+            _ = semaphore.wait(timeout: DispatchTime.distantFuture)
         }
         NSLog("Validate Operative ended")
         return data
     }
 
-    class func getSynchronisationPackageSync (operativeId: String, synchronisationDate: NSDate, lastRowId: String, stage: Int32) -> NSData? {
+    class func getSynchronisationPackageSync (_ operativeId: String, synchronisationDate: Date, lastRowId: String, stage: Int32) -> Data? {
 
-        var data: NSData?
+        var data: Data?
         NSLog("Synch Package download started")
         autoreleasepool{
             let urlString = "http://" + Session.Server + "/services/servicepdautility2osx.asmx"
-            let url = NSURL(string: urlString)
+            let url = URL(string: urlString)
         
-            let theSession = NSURLSession.sharedSession()
+            let theSession = URLSession.shared
             
-            let theRequest = NSMutableURLRequest(URL: url!)
+            let theRequest = NSMutableURLRequest(url: url!)
             
             let soapHeader: String = "<?xml version=\"1.0\" encoding=\"utf-8\"?><soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">"
             let soapFooter: String = "</soap:Envelope>"
@@ -81,37 +81,37 @@ class WebService : NSObject {
             
             let soapMessage: String = soapHeader + soapBody + soapFooter
             
-            theRequest.HTTPMethod = "POST"
+            theRequest.httpMethod = "POST"
             theRequest.addValue(Session.Server, forHTTPHeaderField: "Host")
             theRequest.addValue("text/xml; charset=utf-8", forHTTPHeaderField: "Content-Type")
             theRequest.addValue(String(soapMessage.characters.count), forHTTPHeaderField: "Content-Length")
             theRequest.addValue(soapAction, forHTTPHeaderField: "SOAPAction")
-            theRequest.HTTPBody = soapMessage.dataUsingEncoding(NSUTF8StringEncoding)
+            theRequest.httpBody = soapMessage.data(using: String.Encoding.utf8)
             
-            let semaphore = dispatch_semaphore_create(0)
+            let semaphore = DispatchSemaphore(value: 0)
             
-            theSession.dataTaskWithRequest(theRequest) { (responseData: NSData? , _ , _) -> Void in
+            theSession.dataTask(with: theRequest as URLRequest, completionHandler: { (responseData: Data? , _ , _) -> Void in
                 data = responseData
-                dispatch_semaphore_signal(semaphore)
-                }.resume()
+                semaphore.signal()
+                }) .resume()
             
-            dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+            _ = semaphore.wait(timeout: DispatchTime.distantFuture)
         }
         NSLog("Synch Package download ended")
         return data
     }
 
-    class func sendSyncronisationPackageSync (operativeId: String, sysnchronisationPackage: String) -> NSData? {
+    class func sendSyncronisationPackageSync (_ operativeId: String, sysnchronisationPackage: String) -> Data? {
 
-        var data: NSData?
+        var data: Data?
         NSLog("Synch Package upload started")
         autoreleasepool{
             let urlString = "http://" + Session.Server + "/services/servicepdautility2osx.asmx"
-            let url = NSURL(string: urlString)
+            let url = URL(string: urlString)
             
-            let theSession = NSURLSession.sharedSession()
+            let theSession = URLSession.shared
             
-            let theRequest = NSMutableURLRequest(URL: url!)
+            let theRequest = NSMutableURLRequest(url: url!)
             
             let soapHeader: String = "<?xml version=\"1.0\" encoding=\"utf-8\"?><soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">"
             let soapFooter: String = "</soap:Envelope>"
@@ -126,21 +126,21 @@ class WebService : NSObject {
             
             let soapMessage: String = soapHeader + soapBody + soapFooter
             
-            theRequest.HTTPMethod = "POST"
+            theRequest.httpMethod = "POST"
             theRequest.addValue(Session.Server, forHTTPHeaderField: "Host")
             theRequest.addValue("text/xml; charset=utf-8", forHTTPHeaderField: "Content-Type")
             theRequest.addValue(String(soapMessage.characters.count), forHTTPHeaderField: "Content-Length")
             theRequest.addValue(soapAction, forHTTPHeaderField: "SOAPAction")
-            theRequest.HTTPBody = soapMessage.dataUsingEncoding(NSUTF8StringEncoding)
+            theRequest.httpBody = soapMessage.data(using: String.Encoding.utf8)
             
-            let semaphore = dispatch_semaphore_create(0)
+            let semaphore = DispatchSemaphore(value: 0)
             
-            theSession.dataTaskWithRequest(theRequest) { (responseData: NSData? , _ , _) -> Void in
+            theSession.dataTask(with: theRequest as URLRequest, completionHandler: { (responseData: Data? , _ , _) -> Void in
                 data = responseData
-                dispatch_semaphore_signal(semaphore)
-                }.resume()
+                semaphore.signal()
+                }) .resume()
             
-            dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+            _ = semaphore.wait(timeout: DispatchTime.distantFuture)
         }
         NSLog("Synch Package upload ended")
         return data

@@ -20,12 +20,12 @@ class Session : NSObject
     static var UseTaskTiming: Bool = false
     static var UseTemperatureProfile: Bool = false
     
-    static var OperativeId: String? = String?()
-    static var OrganisationId: String? = String?()
+    static var OperativeId: String? = nil
+    static var OrganisationId: String? = nil
     static var LocalLoginOnly: Bool = false;
  
-    static var AlertTitle: String? = String?()
-    static var AlertMessage: String? = String?()
+    static var AlertTitle: String? = nil
+    static var AlertMessage: String? = nil
 
     static var PropertyList: Dictionary<String, Property> = Dictionary<String, Property>()
  
@@ -34,26 +34,26 @@ class Session : NSObject
     static var ReferenceLists: Dictionary<String, Dictionary<String, String>> = Dictionary<String, Dictionary<String, String>>()
     static var ReverseReferenceLists: Dictionary<String, Dictionary<String, String>> = Dictionary<String, Dictionary<String, String>>()
   
-    static var CodeScanned: String? = String?()
+    static var CodeScanned: String? = nil
     static var NoRequery: Bool = false
     
-    static var FilterSiteId: String? = String?()
-    static var FilterSiteName: String? = String?()
-    static var FilterPropertyId: String? = String?()
-    static var FilterPropertyName: String? = String?()
-    static var FilterFrequency: String? = String?()
+    static var FilterSiteId: String? = nil
+    static var FilterSiteName: String? = nil
+    static var FilterPropertyId: String? = nil
+    static var FilterPropertyName: String? = nil
+    static var FilterFrequency: String? = nil
     static var FilterPeriod: String? = String?(DueCalendarMonthText)
     
     static var FilterJustMyTasks: Bool = false
     
-    static var FilterAssetGroup: String? = String?()
-    static var FilterTaskName: String? = String?()
-    static var FilterAssetType: String? = String?()
-    static var FilterLocationGroup: String? = String?()
-    static var FilterLocation: String? = String?()
-    static var FilterAssetNumber: String? = String?()
+    static var FilterAssetGroup: String? = nil
+    static var FilterTaskName: String? = nil
+    static var FilterAssetType: String? = nil
+    static var FilterLocationGroup: String? = nil
+    static var FilterLocation: String? = nil
+    static var FilterAssetNumber: String? = nil
     
-    static var TaskSort: TaskSortOrder = TaskSortOrder.Date
+    static var TaskSort: TaskSortOrder = TaskSortOrder.date
     static var TaskCount: Int32 = 0
     
     static var PageNumber: Int32 = 1
@@ -66,41 +66,41 @@ class Session : NSObject
     
     class func BuildCriteriaFromSession() -> Dictionary<String, AnyObject> {
         var criteria: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
-        if (Session.OrganisationId != nil) { criteria["OrganisationId"] = Session.OrganisationId! }
-        if (Session.FilterSiteId != nil) { criteria["SiteId"] = Session.FilterSiteId! }
-        if (Session.FilterPropertyId != nil) { criteria["PropertyId"] = Session.FilterPropertyId! }
-        if (Session.FilterFrequency != nil) { criteria["Frequency"] = Session.FilterFrequency! }
-        if (Session.FilterPeriod != nil) { criteria["Period"] = Session.FilterPeriod! }
+        if (Session.OrganisationId != nil) { criteria["OrganisationId"] = Session.OrganisationId! as AnyObject? }
+        if (Session.FilterSiteId != nil) { criteria["SiteId"] = Session.FilterSiteId! as AnyObject? }
+        if (Session.FilterPropertyId != nil) { criteria["PropertyId"] = Session.FilterPropertyId! as AnyObject? }
+        if (Session.FilterFrequency != nil) { criteria["Frequency"] = Session.FilterFrequency! as AnyObject? }
+        if (Session.FilterPeriod != nil) { criteria["Period"] = Session.FilterPeriod! as AnyObject? }
         
-        if (Session.FilterAssetGroup != nil) { criteria["PPMGroup"] = Session.FilterAssetGroup! }
-        if (Session.FilterTaskName != nil) { criteria["TaskName"] = Session.FilterTaskName! }
-        if (Session.FilterAssetType != nil) { criteria["AssetType"] = Session.FilterAssetType! }
-        if (Session.FilterLocationGroup != nil) { criteria["LocationGroupName"] = Session.FilterLocationGroup! }
-        if (Session.FilterLocation != nil) { criteria["LocationName"] = Session.FilterLocation! }
-        if (Session.FilterAssetNumber != nil) { criteria["AssetNumber"] = Session.FilterAssetNumber! }
+        if (Session.FilterAssetGroup != nil) { criteria["PPMGroup"] = Session.FilterAssetGroup! as AnyObject? }
+        if (Session.FilterTaskName != nil) { criteria["TaskName"] = Session.FilterTaskName! as AnyObject? }
+        if (Session.FilterAssetType != nil) { criteria["AssetType"] = Session.FilterAssetType! as AnyObject? }
+        if (Session.FilterLocationGroup != nil) { criteria["LocationGroupName"] = Session.FilterLocationGroup! as AnyObject? }
+        if (Session.FilterLocation != nil) { criteria["LocationName"] = Session.FilterLocation! as AnyObject? }
+        if (Session.FilterAssetNumber != nil) { criteria["AssetNumber"] = Session.FilterAssetNumber! as AnyObject? }
         
-        if (Session.FilterJustMyTasks == true) { criteria["OperativeId"] = Session.OperativeId }
+        if (Session.FilterJustMyTasks == true) { criteria["OperativeId"] = Session.OperativeId as AnyObject? }
         
         return criteria
     }
     
     class func ClearFilter()
     {
-        FilterSiteId = String?()
-        FilterSiteName = String?()
-        FilterPropertyId = String?()
-        FilterPropertyName = String?()
-        FilterFrequency = String?()
+        FilterSiteId = String()
+        FilterSiteName = String()
+        FilterPropertyId = String()
+        FilterPropertyName = String()
+        FilterFrequency = String()
         FilterPeriod = String?(DueCalendarMonthText)
         
         FilterJustMyTasks = false
         
-        FilterAssetGroup = String?()
-        FilterTaskName = String?()
-        FilterAssetType = String?()
-        FilterLocationGroup = String?()
-        FilterLocation = String?()
-        FilterAssetNumber = String?()
+        FilterAssetGroup = String()
+        FilterTaskName = String()
+        FilterAssetType = String()
+        FilterLocationGroup = String()
+        FilterLocation = String()
+        FilterAssetNumber = String()
     }
     
     static var CurrentReading: String? = nil

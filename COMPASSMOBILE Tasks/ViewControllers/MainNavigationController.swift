@@ -10,8 +10,8 @@ import UIKit
 
 class MainNavigationController: UINavigationController
 {
-    override func shouldAutorotate() -> Bool {
-        return (self.topViewController?.shouldAutorotate())!
+    override var shouldAutorotate : Bool {
+        return (self.topViewController?.shouldAutorotate)!
     }
 }
 

@@ -20,7 +20,7 @@ class TemperatureProfileViewController: UITableViewController, UITextFieldDelega
     @IBOutlet var HeaderCell: UITableViewCell!
     
     let HotLabel: String = "Hot Temperatute Profile"
-    let HotLabelColor: UIColor = UIColor.redColor()
+    let HotLabelColor: UIColor = UIColor.red
     let HotReading1Label: String = "Temperature @ 1 min"
     let HotReading2Label: String = "Temperature @ 2 min"
     let HotReading3Label: String = "Temperature @ 3 min"
@@ -28,16 +28,16 @@ class TemperatureProfileViewController: UITableViewController, UITextFieldDelega
     let HotReading5Label: String = "Temperature @ 5 min"
     
     let ColdLabel: String = "Cold Temperatute Profile"
-    let ColdLabelColor: UIColor = UIColor.blueColor()
+    let ColdLabelColor: UIColor = UIColor.blue
     let ColdReading1Label: String = "Temperature @ 2 min"
     let ColdReading2Label: String = "Temperature @ 3 min"
     let ColdReading3Label: String = "Temperature @ 4 min"
     let ColdReading4Label: String = "Temperature @ 5 min"
     let ColdReading5Label: String = "Temperature @ 6 min"
     
-    var profileTimer: NSTimer = NSTimer()
+    var profileTimer: Timer = Timer()
     var processInterval: Int = 0
-    var probeTimer: NSTimer = NSTimer()
+    var probeTimer: Timer = Timer()
 
     var currentControlNumber: Int = 0
     var firstMinute: Bool = false
@@ -68,54 +68,54 @@ class TemperatureProfileViewController: UITableViewController, UITextFieldDelega
     
     //MARK: - Navigation Actions
     
-    @IBAction func CancelPressed(sender: UIBarButtonItem) {
+    @IBAction func CancelPressed(_ sender: UIBarButtonItem) {
         if(Session.TimerRunning)
         {
-            let userPrompt: UIAlertController = UIAlertController(title: "Probe Active", message: "You have an active connection to the probe.  Please close the connection before proceeding", preferredStyle: UIAlertControllerStyle.Alert)
+            let userPrompt: UIAlertController = UIAlertController(title: "Probe Active", message: "You have an active connection to the probe.  Please close the connection before proceeding", preferredStyle: UIAlertControllerStyle.alert)
             
             userPrompt.addAction(UIAlertAction(
                 title: "OK",
-                style: UIAlertActionStyle.Cancel,
+                style: UIAlertActionStyle.cancel,
                 handler: nil))
             
-            presentViewController(userPrompt, animated: true, completion: nil)
+            present(userPrompt, animated: true, completion: nil)
         }
         else
         {
-            let userPrompt: UIAlertController = UIAlertController(title: "Leave Profile?", message: "Are you sure you want to leave this profile?  Any unsaved data will be lost.", preferredStyle: UIAlertControllerStyle.Alert)
+            let userPrompt: UIAlertController = UIAlertController(title: "Leave Profile?", message: "Are you sure you want to leave this profile?  Any unsaved data will be lost.", preferredStyle: UIAlertControllerStyle.alert)
             
             //the cancel action
             userPrompt.addAction(UIAlertAction(
                 title: "Cancel",
-                style: UIAlertActionStyle.Cancel,
+                style: UIAlertActionStyle.cancel,
                 handler: nil))
             
             //the destructive option
             userPrompt.addAction(UIAlertAction(
                 title: "OK",
-                style: UIAlertActionStyle.Destructive,
+                style: UIAlertActionStyle.destructive,
                 handler: self.CancelTask))
             
-            presentViewController(userPrompt, animated: true, completion: nil)
+            present(userPrompt, animated: true, completion: nil)
         }
     }
     
-    func CancelTask (actionTarget: UIAlertAction) {
+    func CancelTask (_ actionTarget: UIAlertAction) {
         Session.CancelFromProfile = true;
-        self.navigationController?.popViewControllerAnimated(true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
 
-    @IBAction func DonePressed(sender: UIBarButtonItem) {
+    @IBAction func DonePressed(_ sender: UIBarButtonItem) {
         if(Session.TimerRunning)
         {
-            let userPrompt: UIAlertController = UIAlertController(title: "Probe Active", message: "You have an active connection to the probe.  Please close the connection before proceeding", preferredStyle: UIAlertControllerStyle.Alert)
+            let userPrompt: UIAlertController = UIAlertController(title: "Probe Active", message: "You have an active connection to the probe.  Please close the connection before proceeding", preferredStyle: UIAlertControllerStyle.alert)
             
             userPrompt.addAction(UIAlertAction(
                 title: "OK",
-                style: UIAlertActionStyle.Cancel,
+                style: UIAlertActionStyle.cancel,
                 handler: nil))
             
-            presentViewController(userPrompt, animated: true, completion: nil)
+            present(userPrompt, animated: true, completion: nil)
         }
         else
         {
@@ -147,68 +147,68 @@ class TemperatureProfileViewController: UITableViewController, UITextFieldDelega
 
             Session.Profile = temperatureProfile
             
-            let userPrompt: UIAlertController = UIAlertController(title: "Profile", message: "Profile saved", preferredStyle: UIAlertControllerStyle.Alert)
+            let userPrompt: UIAlertController = UIAlertController(title: "Profile", message: "Profile saved", preferredStyle: UIAlertControllerStyle.alert)
             
             userPrompt.addAction(UIAlertAction(
                 title: "OK",
-                style: UIAlertActionStyle.Cancel,
+                style: UIAlertActionStyle.cancel,
                 handler: self.LeaveTask))
             
-            presentViewController(userPrompt, animated: true, completion: nil)
+            present(userPrompt, animated: true, completion: nil)
         }
     }
     
-    func LeaveTask (actionTarget: UIAlertAction) {
-        self.navigationController?.popViewControllerAnimated(true)
+    func LeaveTask (_ actionTarget: UIAlertAction) {
+        _ = self.navigationController?.popViewController(animated: true)
     }
   
     //MARK: - Form Actions
     
-    @IBAction func ManualButton(sender: UIButton) {
+    @IBAction func ManualButton(_ sender: UIButton) {
         if (ManualButton.currentTitle == "Man")
         {
-            GoStopButton.enabled = false
-            GoStopButton.backgroundColor = UIColor.darkGrayColor()
-            AutoButton.enabled = false
-            AutoButton.backgroundColor = UIColor.darkGrayColor()
-            ManualButton.setTitle("Stop", forState: UIControlState.Normal)
-            ManualButton.backgroundColor = UIColor.redColor()
+            GoStopButton.isEnabled = false
+            GoStopButton.backgroundColor = UIColor.darkGray
+            AutoButton.isEnabled = false
+            AutoButton.backgroundColor = UIColor.darkGray
+            ManualButton.setTitle("Stop", for: UIControlState())
+            ManualButton.backgroundColor = UIColor.red
             
-            Reading1TextField.enabled = true
-            Reading2TextField.enabled = true
-            Reading3TextField.enabled = true
-            Reading4TextField.enabled = true
-            Reading5TextField.enabled = true
+            Reading1TextField.isEnabled = true
+            Reading2TextField.isEnabled = true
+            Reading3TextField.isEnabled = true
+            Reading4TextField.isEnabled = true
+            Reading5TextField.isEnabled = true
         }
         else
         {
-            GoStopButton.enabled = true
-            GoStopButton.backgroundColor = UIColor.blueColor()
-            AutoButton.enabled = true
-            AutoButton.backgroundColor = UIColor.blueColor()
-            ManualButton.setTitle("Man", forState: UIControlState.Normal)
-            ManualButton.backgroundColor = UIColor.blueColor()
+            GoStopButton.isEnabled = true
+            GoStopButton.backgroundColor = UIColor.blue
+            AutoButton.isEnabled = true
+            AutoButton.backgroundColor = UIColor.blue
+            ManualButton.setTitle("Man", for: UIControlState())
+            ManualButton.backgroundColor = UIColor.blue
             
-            Reading1TextField.enabled = false
-            Reading2TextField.enabled = false
-            Reading3TextField.enabled = false
-            Reading4TextField.enabled = false
-            Reading5TextField.enabled = false
+            Reading1TextField.isEnabled = false
+            Reading2TextField.isEnabled = false
+            Reading3TextField.isEnabled = false
+            Reading4TextField.isEnabled = false
+            Reading5TextField.isEnabled = false
         }
     }
     
-    @IBAction func GoStopButton(sender: UIButton) {
+    @IBAction func GoStopButton(_ sender: UIButton) {
         if (GoStopButton.currentTitle == "Timed")
         {
             auto = false
             Session.CurrentTemperatureControl = nil
             currentControlNumber = 0
-            ManualButton.enabled = false
-            ManualButton.backgroundColor = UIColor.darkGrayColor()
-            AutoButton.enabled = false
-            AutoButton.backgroundColor = UIColor.darkGrayColor()
-            GoStopButton.setTitle("Stop", forState: UIControlState.Normal)
-            GoStopButton.backgroundColor = UIColor.redColor()
+            ManualButton.isEnabled = false
+            ManualButton.backgroundColor = UIColor.darkGray
+            AutoButton.isEnabled = false
+            AutoButton.backgroundColor = UIColor.darkGray
+            GoStopButton.setTitle("Stop", for: UIControlState())
+            GoStopButton.backgroundColor = UIColor.red
             if (!hot) {firstMinute = true}
             startProfileTimer()
             
@@ -218,30 +218,30 @@ class TemperatureProfileViewController: UITableViewController, UITextFieldDelega
             auto = false
             Session.CurrentTemperatureControl = nil
             currentControlNumber = 0
-            ManualButton.enabled = true
-            ManualButton.backgroundColor = UIColor.blueColor()
-            AutoButton.enabled = true
-            AutoButton.backgroundColor = UIColor.blueColor()
-            GoStopButton.setTitle("Timed", forState: UIControlState.Normal)
-            GoStopButton.backgroundColor = UIColor.blueColor()
+            ManualButton.isEnabled = true
+            ManualButton.backgroundColor = UIColor.blue
+            AutoButton.isEnabled = true
+            AutoButton.backgroundColor = UIColor.blue
+            GoStopButton.setTitle("Timed", for: UIControlState())
+            GoStopButton.backgroundColor = UIColor.blue
             stopProfileTimer()
         }
     }
     
-    @IBAction func AutoButton(sender: UIButton) {
+    @IBAction func AutoButton(_ sender: UIButton) {
         if (AutoButton.currentTitle == "Auto")
         {
             auto = true
             Session.CurrentTemperatureControl = Reading1TextField
-            Session.CurrentTemperatureControl!.backgroundColor = UIColor.greenColor()
+            Session.CurrentTemperatureControl!.backgroundColor = UIColor.green
             //Session.CurrentTemperatureControl!.enabled = false
             currentControlNumber = 1
-            ManualButton.enabled = false
-            ManualButton.backgroundColor = UIColor.darkGrayColor()
-            GoStopButton.enabled = false
-            GoStopButton.backgroundColor = UIColor.darkGrayColor()
-            AutoButton.setTitle("Stop", forState: UIControlState.Normal)
-            AutoButton.backgroundColor = UIColor.redColor()
+            ManualButton.isEnabled = false
+            ManualButton.backgroundColor = UIColor.darkGray
+            GoStopButton.isEnabled = false
+            GoStopButton.backgroundColor = UIColor.darkGray
+            AutoButton.setTitle("Stop", for: UIControlState())
+            AutoButton.backgroundColor = UIColor.red
             if (!hot) {firstMinute = true}
             startProfileTimer()
             startProbeTimer(0.25)
@@ -251,16 +251,16 @@ class TemperatureProfileViewController: UITableViewController, UITextFieldDelega
             auto = false
             if(Session.CurrentTemperatureControl != nil)
             {
-                Session.CurrentTemperatureControl!.backgroundColor = UIColor.whiteColor()
+                Session.CurrentTemperatureControl!.backgroundColor = UIColor.white
                 Session.CurrentTemperatureControl = nil
             }
             currentControlNumber = 0
-            ManualButton.enabled = true
-            ManualButton.backgroundColor = UIColor.blueColor()
-            GoStopButton.enabled = true
-            GoStopButton.backgroundColor = UIColor.blueColor()
-            AutoButton.setTitle("Auto", forState: UIControlState.Normal)
-            AutoButton.backgroundColor = UIColor.blueColor()
+            ManualButton.isEnabled = true
+            ManualButton.backgroundColor = UIColor.blue
+            GoStopButton.isEnabled = true
+            GoStopButton.backgroundColor = UIColor.blue
+            AutoButton.setTitle("Auto", for: UIControlState())
+            AutoButton.backgroundColor = UIColor.blue
             stopProfileTimer()
             stopProbeTimer()
         }
@@ -270,21 +270,21 @@ class TemperatureProfileViewController: UITableViewController, UITextFieldDelega
         super.viewDidLoad()
         
         Reading1TextField.delegate = self
-        Reading1TextField.enabled = false
+        Reading1TextField.isEnabled = false
         Reading2TextField.delegate = self
-        Reading2TextField.enabled = false
+        Reading2TextField.isEnabled = false
         Reading3TextField.delegate = self
-        Reading3TextField.enabled = false
+        Reading3TextField.isEnabled = false
         Reading4TextField.delegate = self
-        Reading4TextField.enabled = false
+        Reading4TextField.isEnabled = false
         Reading5TextField.delegate = self
-        Reading5TextField.enabled = false
+        Reading5TextField.isEnabled = false
         
-        AutoButton.enabled = Session.BluetoothProbeConnected
+        AutoButton.isEnabled = Session.BluetoothProbeConnected
     }
     
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         TemperatureProfileTableView.allowsSelection = false
@@ -311,12 +311,12 @@ class TemperatureProfileViewController: UITableViewController, UITextFieldDelega
         }
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        if EAController.sharedController().callBack == nil
+        if EAController.shared().callBack == nil
         {
-            let eac: EAController =  EAController.sharedController()
+            let eac: EAController =  EAController.shared()
             eac.notificationCallBack = self
             
             if !(eac.selectedAccessory.isAwaitingUI || eac.selectedAccessory.isNoneAvailable)
@@ -342,12 +342,12 @@ class TemperatureProfileViewController: UITableViewController, UITextFieldDelega
         }
         else
         {
-            EAController.sharedController().callBack = self
-            EAController.sharedController().notificationCallBack = self
+            EAController.shared().callBack = self
+            EAController.shared().notificationCallBack = self
         }
     }
     
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         //need to work out here what type of cell so that we can return the correct height
         //nope all are fixed height now
         var height: CGFloat = 68
@@ -365,12 +365,12 @@ class TemperatureProfileViewController: UITableViewController, UITextFieldDelega
         startProfileTimer(1)
     }
 
-    func startProfileTimer(interval: Int)
+    func startProfileTimer(_ interval: Int)
     {
         processInterval = 0
-        let timerInterval: NSTimeInterval = NSTimeInterval(interval)
+        let timerInterval: TimeInterval = TimeInterval(interval)
         profileTimer.invalidate()
-        profileTimer = NSTimer.scheduledTimerWithTimeInterval(timerInterval, target: self, selector: #selector(processTimeInterval), userInfo: nil, repeats: true)
+        profileTimer = Timer.scheduledTimer(timeInterval: timerInterval, target: self, selector: #selector(processTimeInterval), userInfo: nil, repeats: true)
     }
     
     func processTimeInterval()
@@ -396,47 +396,47 @@ class TemperatureProfileViewController: UITableViewController, UITextFieldDelega
                     {
                     case 0:
                         currentControlNumber = 1
-                        Session.CurrentTemperatureControl!.backgroundColor = UIColor.whiteColor()
+                        Session.CurrentTemperatureControl!.backgroundColor = UIColor.white
                         Session.CurrentTemperatureControl = Reading1TextField
-                        Session.CurrentTemperatureControl!.backgroundColor = UIColor.greenColor()
+                        Session.CurrentTemperatureControl!.backgroundColor = UIColor.green
                         startProbeTimer(0.25)
                         
                     case 1:
                         currentControlNumber = 2
-                        Session.CurrentTemperatureControl!.backgroundColor = UIColor.whiteColor()
+                        Session.CurrentTemperatureControl!.backgroundColor = UIColor.white
                         Session.CurrentTemperatureControl = Reading2TextField
-                        Session.CurrentTemperatureControl!.backgroundColor = UIColor.greenColor()
+                        Session.CurrentTemperatureControl!.backgroundColor = UIColor.green
                       
                     case 2:
                         currentControlNumber = 3
-                        Session.CurrentTemperatureControl!.backgroundColor = UIColor.whiteColor()
+                        Session.CurrentTemperatureControl!.backgroundColor = UIColor.white
                         Session.CurrentTemperatureControl = Reading3TextField
-                        Session.CurrentTemperatureControl!.backgroundColor = UIColor.greenColor()
+                        Session.CurrentTemperatureControl!.backgroundColor = UIColor.green
 
                     case 3:
-                        Session.CurrentTemperatureControl!.backgroundColor = UIColor.whiteColor()
+                        Session.CurrentTemperatureControl!.backgroundColor = UIColor.white
                         currentControlNumber = 4
                         Session.CurrentTemperatureControl = Reading4TextField
-                        Session.CurrentTemperatureControl!.backgroundColor = UIColor.greenColor()
+                        Session.CurrentTemperatureControl!.backgroundColor = UIColor.green
 
                     case 4:
-                        Session.CurrentTemperatureControl!.backgroundColor = UIColor.whiteColor()
+                        Session.CurrentTemperatureControl!.backgroundColor = UIColor.white
                         currentControlNumber = 5
                         Session.CurrentTemperatureControl = Reading5TextField
-                        Session.CurrentTemperatureControl!.backgroundColor = UIColor.greenColor()
+                        Session.CurrentTemperatureControl!.backgroundColor = UIColor.green
 
                     default:
-                        Session.CurrentTemperatureControl!.backgroundColor = UIColor.whiteColor()
+                        Session.CurrentTemperatureControl!.backgroundColor = UIColor.white
                         Session.CurrentTemperatureControl = nil
                         currentControlNumber = 0
                         auto = false
                         currentControlNumber = 0
-                        ManualButton.enabled = true
-                        ManualButton.backgroundColor = UIColor.blueColor()
-                        GoStopButton.enabled = true
-                        GoStopButton.backgroundColor = UIColor.blueColor()
-                        AutoButton.setTitle("Auto", forState: UIControlState.Normal)
-                        AutoButton.backgroundColor = UIColor.blueColor()
+                        ManualButton.isEnabled = true
+                        ManualButton.backgroundColor = UIColor.blue
+                        GoStopButton.isEnabled = true
+                        GoStopButton.backgroundColor = UIColor.blue
+                        AutoButton.setTitle("Auto", for: UIControlState())
+                        AutoButton.backgroundColor = UIColor.blue
                         stopProfileTimer()
                         stopProbeTimer()
                     }
@@ -454,23 +454,23 @@ class TemperatureProfileViewController: UITableViewController, UITextFieldDelega
                     {
                     case 0:
                         currentControlNumber = 1
-                        Reading1TextField.enabled = true
+                        Reading1TextField.isEnabled = true
                                                 
                     case 1:
                         currentControlNumber = 2
-                        Reading2TextField.enabled = true
+                        Reading2TextField.isEnabled = true
                         
                     case 2:
                         currentControlNumber = 3
-                        Reading3TextField.enabled = true
+                        Reading3TextField.isEnabled = true
                         
                     case 3:
                         currentControlNumber = 4
-                        Reading4TextField.enabled = true
+                        Reading4TextField.isEnabled = true
                         
                     case 4:
                         currentControlNumber = 5
-                        Reading5TextField.enabled = true
+                        Reading5TextField.isEnabled = true
                         stopProfileTimer()
                         
                     default:
@@ -489,7 +489,7 @@ class TemperatureProfileViewController: UITableViewController, UITextFieldDelega
     
     //MARK: - UITextFieldDelegate
     
-    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         if (Session.TimerRunning)
         {
             return false
@@ -498,30 +498,30 @@ class TemperatureProfileViewController: UITableViewController, UITextFieldDelega
     }
     
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
     
-    func textFieldDidBeginEditing(textField: UITextField) {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
         if (Session.BluetoothProbeConnected)
         {
             if(!Session.TimerRunning)
             {
                 Session.CurrentTemperatureControl = textField
-                Session.CurrentTemperatureControl!.backgroundColor = UIColor.greenColor()
-                Session.CurrentTemperatureControl!.enabled = false
+                Session.CurrentTemperatureControl!.backgroundColor = UIColor.green
+                Session.CurrentTemperatureControl!.isEnabled = false
                 startProbeTimer(0.25)
             }
         }
         self.addDoneButtonOnKeyboard(textField)
     }
     
-    func textFieldDidEndEditing(textField: UITextField) {
+    func textFieldDidEndEditing(_ textField: UITextField) {
         if (Session.BluetoothProbeConnected)
         {
             stopProbeTimer()
-            Session.CurrentTemperatureControl!.enabled = true
+            Session.CurrentTemperatureControl!.isEnabled = true
         }
         textField.resignFirstResponder()
     }
@@ -543,11 +543,11 @@ class TemperatureProfileViewController: UITableViewController, UITextFieldDelega
         Session.CurrentTemperatureControl?.text = Session.CurrentReading
     }
     
-    func startProbeTimer(interval: Double)
+    func startProbeTimer(_ interval: Double)
     {
-        let timerInterval: NSTimeInterval = NSTimeInterval(interval)
+        let timerInterval: TimeInterval = TimeInterval(interval)
         probeTimer.invalidate()
-        probeTimer = NSTimer.scheduledTimerWithTimeInterval(timerInterval, target: self, selector: #selector(TemperatureProfileViewController.doSend), userInfo: nil, repeats: true)
+        probeTimer = Timer.scheduledTimer(timeInterval: timerInterval, target: self, selector: #selector(TemperatureProfileViewController.doSend), userInfo: nil, repeats: true)
         Session.TimerRunning = true
     }
     
@@ -576,8 +576,8 @@ class TemperatureProfileViewController: UITableViewController, UITextFieldDelega
         stopProbeTimer()
         if Session.CurrentTemperatureControl != nil
         {
-            Session.CurrentTemperatureControl!.backgroundColor = UIColor.whiteColor()
-            Session.CurrentTemperatureControl!.enabled = true
+            Session.CurrentTemperatureControl!.backgroundColor = UIColor.white
+            Session.CurrentTemperatureControl!.isEnabled = true
             Session.CurrentTemperatureControl!.resignFirstResponder()
         }
     }
@@ -627,13 +627,13 @@ class TemperatureProfileViewController: UITableViewController, UITextFieldDelega
         Session.BluetoothProbeConnected = true
     }
     
-    func addDoneButtonOnKeyboard(view: UIView?)
+    func addDoneButtonOnKeyboard(_ view: UIView?)
     {
         
-        let doneToolbar: UIToolbar = UIToolbar(frame: CGRectMake(0, 0, 320, 50))
-        doneToolbar.barStyle = UIBarStyle.BlackTranslucent
-        let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
-        let done: UIBarButtonItem = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: view, action: #selector(UIResponder.resignFirstResponder))
+        let doneToolbar: UIToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: 320, height: 50))
+        doneToolbar.barStyle = UIBarStyle.blackTranslucent
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+        let done: UIBarButtonItem = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.done, target: view, action: #selector(UIResponder.resignFirstResponder))
         var items: [UIBarButtonItem] = [UIBarButtonItem]()
         items.append(flexSpace)
         items.append(done)

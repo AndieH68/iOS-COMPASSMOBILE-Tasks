@@ -14,10 +14,10 @@ class Task: NSObject {
     
     var RowId: String = String()
     var CreatedBy: String = String()
-    var CreatedOn: NSDate = NSDate()
+    var CreatedOn: Date = Date()
     var LastUpdatedBy: String? = nil
-    var LastUpdatedOn: NSDate? = nil
-    var Deleted: NSDate? = nil
+    var LastUpdatedOn: Date? = nil
+    var Deleted: Date? = nil
     var OrganisationId: String = String()
     var SiteId: String = String()
     var PropertyId: String = String()
@@ -33,8 +33,8 @@ class Task: NSObject {
     var Frequency: String = String()
     var AssetId: String? = nil
     var AssetNumber: String? = nil
-    var ScheduledDate: NSDate = NSDate()
-    var CompletedDate: NSDate? = nil
+    var ScheduledDate: Date = Date()
+    var CompletedDate: Date? = nil
     var Status: String = String()
     var Priority: Int = Int()
     var EstimatedDuration: Int? = nil
@@ -47,7 +47,7 @@ class Task: NSObject {
     // MARK: - Contructors
     
     convenience
-    init(rowId: String, createdBy: String, createdOn: NSDate, lastUpdatedBy: String?, lastUpdatedOn: NSDate?, deleted: NSDate?, organisationId: String, siteId: String, propertyId: String, locationId: String, locationGroupName: String, locationName: String, room: String?, taskTemplateId: String?, taskRef: String, PPMGroup: String?, assetType: String?, taskName: String, frequency: String, assetId: String?, assetNumber: String?, scheduledDate: NSDate, completedDate: NSDate?, status: String, priority: Int, estimatedDuration: Int?, operativeId: String?, actualDuration: Int?, travelDuration: Int?, comments: String?, alternateAssetCode: String?) {
+    init(rowId: String, createdBy: String, createdOn: Date, lastUpdatedBy: String?, lastUpdatedOn: Date?, deleted: Date?, organisationId: String, siteId: String, propertyId: String, locationId: String, locationGroupName: String, locationName: String, room: String?, taskTemplateId: String?, taskRef: String, PPMGroup: String?, assetType: String?, taskName: String, frequency: String, assetId: String?, assetNumber: String?, scheduledDate: Date, completedDate: Date?, status: String, priority: Int, estimatedDuration: Int?, operativeId: String?, actualDuration: Int?, travelDuration: Int?, comments: String?, alternateAssetCode: String?) {
         self.init()
         self.RowId = rowId
         self.CreatedBy = createdBy
@@ -87,7 +87,7 @@ class Task: NSObject {
         self.init()
         self.RowId = XMLElement.attributes["RowId"]!
         self.CreatedBy = XMLElement.attributes["CreatedBy"]!
-        self.CreatedOn = NSDate(dateString: XMLElement.attributes["CreatedOn"]!)
+        self.CreatedOn = Date(dateString: XMLElement.attributes["CreatedOn"]!)
         if XMLElement.attributes.keys.contains("LastUpdatedBy") {
             if XMLElement.attributes["LastUpdatedBy"] != ""
             {
@@ -97,13 +97,13 @@ class Task: NSObject {
         if XMLElement.attributes.keys.contains("LastUpdatedOn") {
             if XMLElement.attributes["LastUpdatedOn"] != ""
             {
-                self.LastUpdatedOn = NSDate(dateString: XMLElement.attributes["LastUpdatedOn"]!)
+                self.LastUpdatedOn = Date(dateString: XMLElement.attributes["LastUpdatedOn"]!)
             }
         }
         if XMLElement.attributes.keys.contains("Deleted") {
             if XMLElement.attributes["Deleted"] != ""
             {
-                self.Deleted = NSDate(dateString: XMLElement.attributes["Deleted"]!)
+                self.Deleted = Date(dateString: XMLElement.attributes["Deleted"]!)
             }
         }
         self.OrganisationId = XMLElement.attributes["OrganisationId"]!
@@ -137,10 +137,10 @@ class Task: NSObject {
         if XMLElement.attributes.keys.contains("AssetNumber") {
             if XMLElement.attributes["AssetNumber"] != "" {
                 self.AssetNumber = XMLElement.attributes["AssetNumber"]!}}
-        self.ScheduledDate = NSDate(dateString: XMLElement.attributes["ScheduledDate"]!)
+        self.ScheduledDate = Date(dateString: XMLElement.attributes["ScheduledDate"]!)
         if XMLElement.attributes.keys.contains("CompletedDate") {
             if XMLElement.attributes["CompletedDate"] != "" {
-                self.CompletedDate = NSDate(dateString: XMLElement.attributes["CompletedDate"]!)
+                self.CompletedDate = Date(dateString: XMLElement.attributes["CompletedDate"]!)
             }
         }
         self.Status = XMLElement.attributes["Status"]!

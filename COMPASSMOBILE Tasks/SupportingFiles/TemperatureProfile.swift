@@ -10,9 +10,9 @@ import UIKit
 
 class TemperatureProfile
 {
-    private var _Count: Int = 0
-    private var _Temperatures: [String] = []
-    private var _Times: [String] = []
+    fileprivate var _Count: Int = 0
+    fileprivate var _Temperatures: [String] = []
+    fileprivate var _Times: [String] = []
     
     
     init ()
@@ -42,7 +42,7 @@ class TemperatureProfile
         }
     }
     
-    internal func AddNextTemperature(temperature: String, time: String)
+    internal func AddNextTemperature(_ temperature: String, time: String)
     {
         if Count < 5
         {

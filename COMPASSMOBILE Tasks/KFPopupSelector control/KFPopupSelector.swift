@@ -11,11 +11,11 @@ import UIKit
 class KFPopupSelector: UIControl, UIPopoverPresentationControllerDelegate {
     
     enum Option {
-        case Text(text:String)
+        case text(text:String)
         
-        func intrinsicWidthWithFont(font: UIFont) -> CGFloat {
+        func intrinsicWidthWithFont(_ font: UIFont) -> CGFloat {
             switch(self) {
-            case Text(let t): return NSString(string:t).boundingRectWithSize(CGSize(width:1000, height:1000), options:[], attributes:[NSFontAttributeName: font], context:nil).width
+            case .text(let t): return NSString(string:t).boundingRect(with: CGSize(width:1000, height:1000), options:[], attributes:[NSFontAttributeName: font], context:nil).width
             }
         }
      }
@@ -31,7 +31,7 @@ class KFPopupSelector: UIControl, UIPopoverPresentationControllerDelegate {
     var selectedIndex: Int? = nil {
         didSet {
             updateLabel()
-            sendActionsForControlEvents(.ValueChanged)
+            sendActions(for: .valueChanged)
             if let index = selectedIndex {
                 itemSelected?(index)
             }
@@ -49,24 +49,24 @@ class KFPopupSelector: UIControl, UIPopoverPresentationControllerDelegate {
     var displaySelectedValueInLabel: Bool = true
     
     /** the horizontal alignment for the button text */
-    var buttonContentHorizontalAlignment: UIControlContentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
+    var buttonContentHorizontalAlignment: UIControlContentHorizontalAlignment = UIControlContentHorizontalAlignment.left
     
     /** the size of font for th etable to use*/
-    private var tableFont: UIFont = UIFont.systemFontOfSize(15.0)
+    fileprivate var tableFont: UIFont = UIFont.systemFont(ofSize: 15.0)
     
     
     /** How the button title is displayed */
     enum LabelDecoration {
-    case None
-    case DownwardTriangle        
-        func apply(str:String) ->String {
+    case none
+    case downwardTriangle        
+        func apply(_ str:String) ->String {
             switch(self) {
-            case None: return str
-            case DownwardTriangle: return str + " ▾"
+            case .none: return str
+            case .downwardTriangle: return str + " ▾"
             }
         }
     }
-    var labelDecoration: LabelDecoration = .None {
+    var labelDecoration: LabelDecoration = .none {
         didSet {
             updateLabel()
         }
@@ -75,23 +75,23 @@ class KFPopupSelector: UIControl, UIPopoverPresentationControllerDelegate {
     /** The behaviour when the list of options is empty */
     enum EmptyBehaviour {
         /** Leave the button enabled; this allows willOpenPopup to be used to dynamically fill the options */
-        case Enabled
+        case enabled
         /** Disable the button, but display it in a disabled state */
-        case Disabled
+        case disabled
         /** Hide the button */
-        case Hidden
+        case hidden
     }
-    var emptyBehaviour: EmptyBehaviour = .Disabled {
+    var emptyBehaviour: EmptyBehaviour = .disabled {
         didSet {
             updateButtonState()
         }
     }
     
-    func setLabelFont(font: UIFont) {
+    func setLabelFont(_ font: UIFont) {
         button.titleLabel?.font = font
     }
 
-    func setTableFont(font: UIFont) {
+    func setTableFont(_ font: UIFont) {
         tableFont = font
     }
     
@@ -103,15 +103,15 @@ class KFPopupSelector: UIControl, UIPopoverPresentationControllerDelegate {
     
     func updateButtonState() {
         let empty = options.isEmpty
-        button.enabled = !(empty && emptyBehaviour == .Disabled)
-        button.hidden = empty && emptyBehaviour == .Hidden
+        button.isEnabled = !(empty && emptyBehaviour == .disabled)
+        button.isHidden = empty && emptyBehaviour == .hidden
         invalidateIntrinsicContentSize()
     }
     
     func updateLabel() {
         if selectedIndex != nil && displaySelectedValueInLabel {
             switch (options[selectedIndex!]) {
-            case .Text(let text): buttonText = text
+            case .text(let text): buttonText = text
             }
         } else {
             buttonText = unselectedLabelText
@@ -124,7 +124,7 @@ class KFPopupSelector: UIControl, UIPopoverPresentationControllerDelegate {
         var minWidth: CGFloat = 160.0
         var optionsWidth: CGFloat = 40.0
 
-        var tableViewFont: UIFont = UIFont.systemFontOfSize(15.0)
+        var tableViewFont: UIFont = UIFont.systemFont(ofSize: 15.0)
 
         var options: [Option] = [] {
             didSet {
@@ -149,33 +149,33 @@ class KFPopupSelector: UIControl, UIPopoverPresentationControllerDelegate {
         override func loadView() {
             super.loadView()
             tableView.rowHeight = 36.0
-            tableView.separatorStyle = .None
+            tableView.separatorStyle = .none
         }
         
-        override func viewWillAppear(animated: Bool) {
+        override func viewWillAppear(_ animated: Bool) {
             super.viewWillAppear(animated)
-            tableView.scrollEnabled = (tableView.contentSize.height > tableView.frame.size.height)
+            tableView.isScrollEnabled = (tableView.contentSize.height > tableView.frame.size.height)
         }
         
-        override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        override func numberOfSections(in tableView: UITableView) -> Int {
             return 1
         }
         
-        override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
             return options.count
         }
         
-        override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-            let cell = (tableView.dequeueReusableCellWithIdentifier(KFPopupSelectorCellReuseId) ?? UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: KFPopupSelectorCellReuseId)) 
+        override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+            let cell = (tableView.dequeueReusableCell(withIdentifier: KFPopupSelectorCellReuseId) ?? UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: KFPopupSelectorCellReuseId)) 
             switch options[indexPath.row]  {
-            case .Text(let text): 
+            case .text(let text): 
                 cell.textLabel?.text = text
                 cell.textLabel?.font = tableViewFont
             }
             return cell
         }
         
-        override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
             itemSelected?(indexPath.row)
         }
     }
@@ -191,30 +191,30 @@ class KFPopupSelector: UIControl, UIPopoverPresentationControllerDelegate {
         }
     }
     
-    private let button = UIButton(type: .System)
+    fileprivate let button = UIButton(type: .system)
     
-    private var buttonText: String? {
+    fileprivate var buttonText: String? {
         get {
-            return button.titleForState(.Normal)
+            return button.title(for: UIControlState())
         }
         set {
-            button.setTitle(newValue.map { self.labelDecoration.apply($0) }, forState: .Normal)
+            button.setTitle(newValue.map { self.labelDecoration.apply($0) }, for: UIControlState())
             invalidateIntrinsicContentSize()
         }
     }
     
-    override func intrinsicContentSize() -> CGSize {
-        return (options.isEmpty && emptyBehaviour == .Hidden) ? CGSizeZero : button.intrinsicContentSize()
+    override var intrinsicContentSize : CGSize {
+        return (options.isEmpty && emptyBehaviour == .hidden) ? CGSize.zero : button.intrinsicContentSize
     }
     
-    private func setupView() {
-        button.setTitle(labelDecoration.apply(unselectedLabelText), forState: .Normal)
+    fileprivate func setupView() {
+        button.setTitle(labelDecoration.apply(unselectedLabelText), for: UIControlState())
         button.contentHorizontalAlignment = buttonContentHorizontalAlignment
         self.addSubview(button)
         button.frame = self.bounds
-        button.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+        button.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         
-        button.addTarget(self, action: #selector(KFPopupSelector.buttonPressed(_:)), forControlEvents:.TouchDown)
+        button.addTarget(self, action: #selector(KFPopupSelector.buttonPressed(_:)), for:.touchDown)
         self.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(KFPopupSelector.dragged(_:))))
     }
     
@@ -232,12 +232,12 @@ class KFPopupSelector: UIControl, UIPopoverPresentationControllerDelegate {
         setupView()
     }
     
-    private var viewController: UIViewController? {
+    fileprivate var viewController: UIViewController? {
         var next: UIView? = self.superview
         while (next?.superview != nil)
         {
            next = next?.superview
-            let responder = next?.nextResponder()
+            let responder = next?.next
             if let vc = responder as? UIViewController {
                 return vc
             }
@@ -253,19 +253,19 @@ class KFPopupSelector: UIControl, UIPopoverPresentationControllerDelegate {
 //        return nil
     }
     
-    func dragged(sender: UIPanGestureRecognizer!) {
+    func dragged(_ sender: UIPanGestureRecognizer!) {
         if let tableView = currentlyPresentedPopup?.tableView {
             switch(sender.state) {
-            case .Changed:
+            case .changed:
                 if tableView.superview != nil {
-                    let pos = sender.locationInView(tableView)
-                    if let ip = tableView.indexPathForRowAtPoint(pos) {
-                        tableView.selectRowAtIndexPath(ip, animated: false, scrollPosition: UITableViewScrollPosition.None)
+                    let pos = sender.location(in: tableView)
+                    if let ip = tableView.indexPathForRow(at: pos) {
+                        tableView.selectRow(at: ip, animated: false, scrollPosition: UITableViewScrollPosition.none)
                     }
                 }
-            case .Ended:
+            case .ended:
                 if let ip = tableView.indexPathForSelectedRow {
-                    currentlyPresentedPopup!.dismissViewControllerAnimated(true){ 
+                    currentlyPresentedPopup!.dismiss(animated: true){ 
                         self.currentlyPresentedPopup = nil 
                         self.selectedIndex = ip.row
                     }
@@ -275,31 +275,31 @@ class KFPopupSelector: UIControl, UIPopoverPresentationControllerDelegate {
         }
     }
     
-    func buttonPressed(sender: AnyObject?) {
+    func buttonPressed(_ sender: AnyObject?) {
         if(!Session.TimerRunning)
         {
             willOpenPopup?()
             if options.count > 0 {
-                let pvc = PopupViewController(style: UITableViewStyle.Plain)
+                let pvc = PopupViewController(style: UITableViewStyle.plain)
                 pvc.tableViewFont = tableFont
                 pvc.minWidth = self.bounds.width
                 pvc.options = options
                 pvc.itemSelected = { (index:Int) -> () in
-                    pvc.dismissViewControllerAnimated(true) { 
+                    pvc.dismiss(animated: true) { 
                         self.currentlyPresentedPopup = nil 
                         self.selectedIndex = index
                     }
                 }
-                pvc.modalPresentationStyle = .Popover
+                pvc.modalPresentationStyle = .popover
                 currentlyPresentedPopup = pvc
                 
                 let pc = pvc.popoverPresentationController
                 pc?.sourceView = self
                 pc?.sourceRect = button.frame
-                pc?.permittedArrowDirections = .Any
+                pc?.permittedArrowDirections = .any
                 pc?.delegate = self
                 
-                viewController!.presentViewController(pvc, animated: true) {}
+                viewController!.present(pvc, animated: true) {}
             }
         }
     }
@@ -307,11 +307,11 @@ class KFPopupSelector: UIControl, UIPopoverPresentationControllerDelegate {
     
     // MARK: UIPopoverPresentationControllerDelegate
     
-    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
-        return .None
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .none
     }
     
-    func popoverPresentationControllerDidDismissPopover(popoverPresentationController: UIPopoverPresentationController) {
+    func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
         currentlyPresentedPopup = nil
     }
 }

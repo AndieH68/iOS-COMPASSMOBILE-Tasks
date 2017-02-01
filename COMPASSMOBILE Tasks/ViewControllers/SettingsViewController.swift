@@ -24,16 +24,16 @@ class SettingsViewController: UITableViewController, MBProgressHUDDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         CompletedTasks.text = String(ModelUtility.getInstance().GetCompletedTaskCount())
-        if let version = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"] as? String
+        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
         {
             VersionNumber.text = version
         }
         
-        TaskTimingsSwitch.on = Session.UseTaskTiming
-        TemperatureProfileSwitch.on = Session.UseTemperatureProfile
+        TaskTimingsSwitch.isOn = Session.UseTaskTiming
+        TemperatureProfileSwitch.isOn = Session.UseTemperatureProfile
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         if let currentView: UIView = self.navigationController!.view
@@ -43,32 +43,32 @@ class SettingsViewController: UITableViewController, MBProgressHUDDelegate
             currentView.addSubview(headsUpDisplay!)
             
             //set the HUD mode
-            headsUpDisplay!.mode = .DeterminateHorizontalBar;
+            headsUpDisplay!.mode = .determinateHorizontalBar;
             
             // Register for HUD callbacks so we can remove it from the window at the right time
             headsUpDisplay!.delegate = self
         }
     }
    
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
       }
     
     // MARK: - User preferences
-    @IBAction func SelectProbe(sender: UIButton) {
-        EAController.sharedController().showBlueThermDeviceList()
+    @IBAction func SelectProbe(_ sender: UIButton) {
+        EAController.shared().showBlueThermDeviceList()
     }
     
   
     // MARK: - Navigation
     
-    @IBAction func Done(sender: UIBarButtonItem) {
-        self.navigationController?.popViewControllerAnimated(true)
+    @IBAction func Done(_ sender: UIBarButtonItem) {
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     // MARK: - UITableView
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         switch indexPath.section
         {
@@ -78,93 +78,93 @@ class SettingsViewController: UITableViewController, MBProgressHUDDelegate
             {
             case 0:
                 //upload tasks
-                let userPrompt: UIAlertController = UIAlertController(title: "Upload Tasks?", message: "Upload unsent tasks to COMPASS?", preferredStyle: UIAlertControllerStyle.Alert)
+                let userPrompt: UIAlertController = UIAlertController(title: "Upload Tasks?", message: "Upload unsent tasks to COMPASS?", preferredStyle: UIAlertControllerStyle.alert)
 
                 //the cancel action
                 userPrompt.addAction(UIAlertAction(
                     title: "Cancel",
-                    style: UIAlertActionStyle.Cancel,
+                    style: UIAlertActionStyle.cancel,
                     handler: nil))
                 
                 //the destructive option
                 userPrompt.addAction(UIAlertAction(
                     title: "Upload",
-                    style: UIAlertActionStyle.Destructive,
+                    style: UIAlertActionStyle.destructive,
                     handler: self.UploadHandler))
 
-                presentViewController(userPrompt, animated: true, completion: nil)
+                present(userPrompt, animated: true, completion: nil)
 
             case 1:
                 //download data
-                let userPrompt: UIAlertController = UIAlertController(title: "Synchronise Data", message: "Are you sure you want to synchronise data with COMPASS?", preferredStyle: UIAlertControllerStyle.Alert)
+                let userPrompt: UIAlertController = UIAlertController(title: "Synchronise Data", message: "Are you sure you want to synchronise data with COMPASS?", preferredStyle: UIAlertControllerStyle.alert)
                 
                 //the cancel action
                 userPrompt.addAction(UIAlertAction(
                     title: "Cancel",
-                    style: UIAlertActionStyle.Cancel,
+                    style: UIAlertActionStyle.cancel,
                     handler: nil))
                 
                 //the destructive option
                 userPrompt.addAction(UIAlertAction(
                     title: "Download",
-                    style: UIAlertActionStyle.Destructive,
+                    style: UIAlertActionStyle.destructive,
                     handler: self.ResynchroniseHandler))
 
-                presentViewController(userPrompt, animated: true, completion: nil)
+                present(userPrompt, animated: true, completion: nil)
                 
             case 2:
                 //reset synchronisation dates
-                let userPrompt: UIAlertController = UIAlertController(title: "Confirm reset", message: "Are you sure you want to reset the synchronisation dates?", preferredStyle: UIAlertControllerStyle.Alert)
+                let userPrompt: UIAlertController = UIAlertController(title: "Confirm reset", message: "Are you sure you want to reset the synchronisation dates?", preferredStyle: UIAlertControllerStyle.alert)
  
                 //the cancel action
                 userPrompt.addAction(UIAlertAction(
                     title: "No",
-                    style: UIAlertActionStyle.Cancel,
+                    style: UIAlertActionStyle.cancel,
                     handler: nil))
                 
                 //the destructive option
                 userPrompt.addAction(UIAlertAction(
                     title: "Yes",
-                    style: UIAlertActionStyle.Destructive,
+                    style: UIAlertActionStyle.destructive,
                     handler: self.ResetSynchronisationHandler))
 
-                presentViewController(userPrompt, animated: true, completion: nil)
+                present(userPrompt, animated: true, completion: nil)
                 
             case 3:
                 //reset tasks
-                let userPrompt: UIAlertController = UIAlertController(title: "Confirm reset", message: "Are you sure you want to reset all tasks?", preferredStyle: UIAlertControllerStyle.Alert)
+                let userPrompt: UIAlertController = UIAlertController(title: "Confirm reset", message: "Are you sure you want to reset all tasks?", preferredStyle: UIAlertControllerStyle.alert)
                 
                 //the cancel action
                 userPrompt.addAction(UIAlertAction(
                     title: "No",
-                    style: UIAlertActionStyle.Cancel,
+                    style: UIAlertActionStyle.cancel,
                     handler: nil))
                 
                 //the destructive option
                 userPrompt.addAction(UIAlertAction(
                     title: "Yes",
-                    style: UIAlertActionStyle.Destructive,
+                    style: UIAlertActionStyle.destructive,
                     handler: self.ResetTaskHandler))
                 
-                presentViewController(userPrompt, animated: true, completion: nil)
+                present(userPrompt, animated: true, completion: nil)
                 
             case 4:
                 //reset all data
-                let userPrompt: UIAlertController = UIAlertController(title: "Confirm reset", message: "Are you sure you want to reset all data?", preferredStyle: UIAlertControllerStyle.Alert)
+                let userPrompt: UIAlertController = UIAlertController(title: "Confirm reset", message: "Are you sure you want to reset all data?", preferredStyle: UIAlertControllerStyle.alert)
                 
                 //the cancel action
                 userPrompt.addAction(UIAlertAction(
                     title: "No",
-                    style: UIAlertActionStyle.Cancel,
+                    style: UIAlertActionStyle.cancel,
                     handler: nil))
                 
                 //the destructive option
                 userPrompt.addAction(UIAlertAction(
                     title: "Yes",
-                    style: UIAlertActionStyle.Destructive,
+                    style: UIAlertActionStyle.destructive,
                     handler: self.ResetAllDataSecondPromptHandler))
                 
-                presentViewController(userPrompt, animated: true, completion: nil)
+                present(userPrompt, animated: true, completion: nil)
 
             default:
                 print("default")
@@ -172,8 +172,8 @@ class SettingsViewController: UITableViewController, MBProgressHUDDelegate
             
         case 3:
             let urlString = "http://" + Session.Server + "/HelpDocuments/COMPASSMOBILE/COMPASSMOBILE-Tasks-User-Guide-for-iOS.pdf"
-            let url = NSURL(string: urlString)
-            let application = UIApplication.sharedApplication()
+            let url = URL(string: urlString)
+            let application = UIApplication.shared
             application.openURL(url!)
         
         default:
@@ -181,61 +181,61 @@ class SettingsViewController: UITableViewController, MBProgressHUDDelegate
         }
     }
     
-    @IBAction func Logout(sender: UIBarButtonItem) {
+    @IBAction func Logout(_ sender: UIBarButtonItem) {
         Session.OperativeId = nil
         Session.OrganisationId = "00000000-0000-0000-0000-000000000000"
-        self.navigationController?.popViewControllerAnimated(true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
 
     // MARK: - Action Handlers
 
-    func UploadHandler (actionTarget: UIAlertAction) {
+    func UploadHandler (_ actionTarget: UIAlertAction) {
 
         headsUpDisplay!.labelText = "Uploading"
         headsUpDisplay!.showWhileExecuting({Utility.SendTasks(self, HUD: self.headsUpDisplay)}, animated: true)
 
     }
     
-    func ResynchroniseHandler (actionTarget: UIAlertAction) {
+    func ResynchroniseHandler (_ actionTarget: UIAlertAction) {
 
         headsUpDisplay!.labelText = "Downloading"
         headsUpDisplay!.showWhileExecuting({Utility.DownloadAll(self, HUD: self.headsUpDisplay)}, animated: true)
 
     }
     
-    func ResetSynchronisationHandler (actionTarget: UIAlertAction) {
+    func ResetSynchronisationHandler (_ actionTarget: UIAlertAction) {
 
         headsUpDisplay!.labelText = "Resetting"
         headsUpDisplay!.showWhileExecuting({Utility.ResetSynchronisationDates(self, HUD: self.headsUpDisplay)}, animated: true)
 
     }
     
-    func ResetTaskHandler (actionTarget: UIAlertAction) {
+    func ResetTaskHandler (_ actionTarget: UIAlertAction) {
 
         headsUpDisplay!.labelText = "Resetting"
         headsUpDisplay!.showWhileExecuting({Utility.ResetTasks(self, HUD: self.headsUpDisplay)}, animated: true)
 
     }
     
-    func ResetAllDataSecondPromptHandler (actionTarget: UIAlertAction) {
-        let userPrompt: UIAlertController = UIAlertController(title: "Confirm reset", message: "The action you are about to take cannot be undone and will erase all data on this device.  Are you sure you want to proceeed?", preferredStyle: UIAlertControllerStyle.Alert)
+    func ResetAllDataSecondPromptHandler (_ actionTarget: UIAlertAction) {
+        let userPrompt: UIAlertController = UIAlertController(title: "Confirm reset", message: "The action you are about to take cannot be undone and will erase all data on this device.  Are you sure you want to proceeed?", preferredStyle: UIAlertControllerStyle.alert)
         
         //the cancel action
         userPrompt.addAction(UIAlertAction(
             title: "No",
-            style: UIAlertActionStyle.Cancel,
+            style: UIAlertActionStyle.cancel,
             handler: nil))
         
         //the destructive option
         userPrompt.addAction(UIAlertAction(
             title: "Yes",
-            style: UIAlertActionStyle.Destructive,
+            style: UIAlertActionStyle.destructive,
             handler: self.ResetAllDataHandler))
         
-        presentViewController(userPrompt, animated: true, completion: nil)
+        present(userPrompt, animated: true, completion: nil)
     }
     
-    func ResetAllDataHandler (actionTarget: UIAlertAction) {
+    func ResetAllDataHandler (_ actionTarget: UIAlertAction) {
 
         headsUpDisplay!.labelText = "Resetting"
         headsUpDisplay!.showWhileExecuting({Utility.ResetAllData(self, HUD: self.headsUpDisplay)}, animated: true)
@@ -243,18 +243,18 @@ class SettingsViewController: UITableViewController, MBProgressHUDDelegate
         //Logout
         Session.OperativeId = nil
         Session.OrganisationId = "00000000-0000-0000-0000-000000000000"
-        self.navigationController?.popViewControllerAnimated(true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
-    @IBAction func TaskTimingsSwitchValueChanged(sender: UISwitch) {
-        Session.UseTaskTiming = TaskTimingsSwitch.on
-        let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.setObject(Session.UseTaskTiming, forKey: "TaskTimings")
+    @IBAction func TaskTimingsSwitchValueChanged(_ sender: UISwitch) {
+        Session.UseTaskTiming = TaskTimingsSwitch.isOn
+        let defaults = UserDefaults.standard
+        defaults.set(Session.UseTaskTiming, forKey: "TaskTimings")
     }
     
-    @IBAction func TemperatureProfileSwitchValueChanged(sender: UISwitch) {
-        Session.UseTemperatureProfile = TemperatureProfileSwitch.on
-        let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.setObject(Session.UseTemperatureProfile, forKey: "TemperatureProfile")
+    @IBAction func TemperatureProfileSwitchValueChanged(_ sender: UISwitch) {
+        Session.UseTemperatureProfile = TemperatureProfileSwitch.isOn
+        let defaults = UserDefaults.standard
+        defaults.set(Session.UseTemperatureProfile, forKey: "TemperatureProfile")
     }
 }

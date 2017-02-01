@@ -23,7 +23,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let version = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"] as? String
+        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
         {
             VersionNumber.text = version
         }
@@ -35,8 +35,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         // Do any additional setup after loading the view.
         ServerTextField.text = Session.Server
         
-        let defaults = NSUserDefaults.standardUserDefaults()
-        UsernameTextField.text = defaults.objectForKey("Username") as? String
+        let defaults = UserDefaults.standard
+        UsernameTextField.text = defaults.object(forKey: "Username") as? String
         
         if !Session.DatabasePresent
         {
@@ -44,11 +44,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             Session.OperativeId = nil
 
             ValidationLabel.text = "Database not present - contact support"
-            ValidationLabel.hidden = false
-            LoginButton.enabled = false
-            ServerTextField.enabled = false
-            UsernameTextField.enabled = false
-            PasswordTextField.enabled = false
+            ValidationLabel.isHidden = false
+            LoginButton.isEnabled = false
+            ServerTextField.isEnabled = false
+            UsernameTextField.isEnabled = false
+            PasswordTextField.isEnabled = false
         }
         
     }
@@ -71,33 +71,33 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     //MARK: - UITextFieldDelegate
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
     
-    func textFieldDidBeginEditing(textField: UITextField) {
-        ValidationLabel.hidden = true
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        ValidationLabel.isHidden = true
     }
     
-    func textFieldDidEndEditing(textField: UITextField) {
+    func textFieldDidEndEditing(_ textField: UITextField) {
         textField.resignFirstResponder()
     }
     
    
     //MARK: - Actions
     
-    @IBAction func LoginButton(sender: UIButton) {
+    @IBAction func LoginButton(_ sender: UIButton) {
         
         var isRemoteAvailable: Bool = true
         
         ValidationLabel.text = "Invalid username or password"
-        ValidationLabel.hidden = true
+        ValidationLabel.isHidden = true
         
         if (ServerTextField.text == "")
         {
             ValidationLabel.text = "Please enter the server details"
-            ValidationLabel.hidden = false
+            ValidationLabel.isHidden = false
             return
         }
 
@@ -105,7 +105,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         if (UsernameTextField.text == "" || UsernameTextField.text == "")
         {
-            ValidationLabel.hidden = false
+            ValidationLabel.isHidden = false
             return
         }
 
@@ -116,10 +116,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         isRemoteAvailable = Reachability().connectedToNetwork()
        
         if isRemoteAvailable {
-            let data: NSData? = WebService.validateOperative(username, password: password)
+            let data: Data? = WebService.validateOperative(username, password: password)
             
             if data == nil{
-                ValidationLabel.hidden = false
+                ValidationLabel.isHidden = false
                 ValidationLabel.text = "error with web service"
                 //return
             }
@@ -132,15 +132,15 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                     //fault code here
                     let errorText: String = response.value!
                     ValidationLabel.text = errorText
-                    ValidationLabel.hidden = false
+                    ValidationLabel.isHidden = false
                 }
                 else
                 {
                     let operativeId = response["ValidateOperativeResult"].value
                 
-                    if operativeId == nil || operativeId!.containsString("not found")
+                    if operativeId == nil || operativeId!.contains("not found")
                     {
-                        ValidationLabel.hidden = false
+                        ValidationLabel.isHidden = false
                         //return
                     }
                     else
@@ -157,8 +157,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         var newOperative: Bool = false
         
         var criteria: Dictionary<String,AnyObject> = Dictionary<String,AnyObject>()
-        criteria["Username"] = username
-        criteria["Password"] = password
+        criteria["Username"] = username as AnyObject?
+        criteria["Password"] = password as AnyObject?
         
         var operatives: [Operative] = [Operative]()
         var count: Int32 = 0
@@ -183,24 +183,24 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         if (!(remoteValidation || localValidation) || Session.OperativeId == nil)
         {
-            ValidationLabel.hidden = false
+            ValidationLabel.isHidden = false
             return
         }
 
         //if the newOperative flag is set, the operative is present on COMPASS but not in the local database
         //therefore we must bring down the operative synchronisation package to ensure operatives are updated
         if newOperative {
-            let synchronisationDate: NSDate = BaseDate
+            let synchronisationDate: Date = BaseDate as Date
             var lastRowId: String = EmptyGuid
             let stage: Int32 = 9
             var count: Int32 = 0
         
             while (lastRowId != EmptyGuid || count == 0) {
                 count += 1
-                let data: NSData? = WebService.getSynchronisationPackageSync(Session.OperativeId!, synchronisationDate: synchronisationDate, lastRowId: lastRowId, stage: stage)
+                let data: Data? = WebService.getSynchronisationPackageSync(Session.OperativeId!, synchronisationDate: synchronisationDate, lastRowId: lastRowId, stage: stage)
 
                 if data == nil{
-                    ValidationLabel.hidden = false
+                    ValidationLabel.isHidden = false
                     ValidationLabel.text = "error with web service"
                     return
                 }
@@ -211,11 +211,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 {
                     let errorText: String = response.children[1].value!
                     ValidationLabel.text = errorText
-                    ValidationLabel.hidden = false
+                    ValidationLabel.isHidden = false
                     return
                 }
                 
-                let SynchronisationPackageData: NSData = (response["GetSynchronisationPackageResult"].value! as NSString).dataUsingEncoding(NSUTF8StringEncoding)!
+                let SynchronisationPackageData: Data = (response["GetSynchronisationPackageResult"].value! as NSString).data(using: String.Encoding.utf8.rawValue)!
                 
                 var SynchronisationPackageDocument: AEXMLDocument?
                 do {
@@ -226,14 +226,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 }
                 
                 //check for empty pacakage
-                (lastRowId, _, _, _) = Utility.importData(SynchronisationPackageDocument!.children[0], entityType: .Operative)
+                (lastRowId, _, _, _) = Utility.importData(SynchronisationPackageDocument!.children[0], entityType: .operative)
             }
         
             let operative: Operative? = ModelManager.getInstance().getOperative(Session.OperativeId!)
             
             if Session.OperativeId == nil
             {
-                ValidationLabel.hidden = false
+                ValidationLabel.isHidden = false
                 return
             }
         
@@ -243,11 +243,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         Session.CheckDatabase = true;
  
-        let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.setObject(Session.Server, forKey: "Server")
-        defaults.setObject(username, forKey: "Username")
+        let defaults = UserDefaults.standard
+        defaults.set(Session.Server, forKey: "Server")
+        defaults.set(username, forKey: "Username")
         
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
      }
 
     

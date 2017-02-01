@@ -7,6 +7,30 @@
 //
 
 import UIKit
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 class FilterViewController: UIViewController {
 
@@ -61,75 +85,75 @@ class FilterViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
  
         
         switch Session.TaskSort
         {
-            case .Date:
+            case .date:
                 TaskSortSegment.selectedSegmentIndex = 0
             
-            case .Location:
+            case .location:
                 TaskSortSegment.selectedSegmentIndex = 1
             
-            case .AssetType:
+            case .assetType:
                 TaskSortSegment.selectedSegmentIndex = 2
 
-            case .Task:
+            case .task:
                 TaskSortSegment.selectedSegmentIndex = 3
         }
      
-        JustMyTasks.on = Session.FilterJustMyTasks
+        JustMyTasks.isOn = Session.FilterJustMyTasks
  
         PropertyPopupSelector.unselectedLabelText = NotApplicable
-        PropertyPopupSelector.enabled = false
+        PropertyPopupSelector.isEnabled = false
         
         AssetGroupPopupSelector.unselectedLabelText = NotApplicable
-        AssetGroupPopupSelector.enabled = false
+        AssetGroupPopupSelector.isEnabled = false
         
         TaskNamePopupSelector.unselectedLabelText = NotApplicable
-        TaskNamePopupSelector.enabled = false
+        TaskNamePopupSelector.isEnabled = false
         
         AssetTypePopupSelector.unselectedLabelText = NotApplicable
-        AssetTypePopupSelector.enabled = false
+        AssetTypePopupSelector.isEnabled = false
         
         LocationGroupPopupSelector.unselectedLabelText = NotApplicable
-        LocationGroupPopupSelector.enabled = false
+        LocationGroupPopupSelector.isEnabled = false
         
         LocationPopupSelector.unselectedLabelText = NotApplicable
-        LocationPopupSelector.enabled = false
+        LocationPopupSelector.isEnabled = false
         
         AssetNumberPopupSelector.unselectedLabelText = NotApplicable
-        AssetNumberPopupSelector.enabled = false
+        AssetNumberPopupSelector.isEnabled = false
         
         PopulateSiteSelector()
         PopulateFrequencySelector()
         PopulatePeriodSelector()
     }
 
-    @IBAction func Cancel(sender: UIBarButtonItem) {
+    @IBAction func Cancel(_ sender: UIBarButtonItem) {
         Session.ClearFilter();
-        self.navigationController?.popViewControllerAnimated(true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
-    @IBAction func Done(sender: UIBarButtonItem) {
-        self.navigationController?.popViewControllerAnimated(true)
+    @IBAction func Done(_ sender: UIBarButtonItem) {
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
-    @IBAction func TaskFilterSort(sender: UISegmentedControl) {
+    @IBAction func TaskFilterSort(_ sender: UISegmentedControl) {
         switch sender.selectedSegmentIndex
         {
         case 0:
-            Session.TaskSort = TaskSortOrder.Date
+            Session.TaskSort = TaskSortOrder.date
         case 1:
-            Session.TaskSort = TaskSortOrder.Location
+            Session.TaskSort = TaskSortOrder.location
         case 2:
-            Session.TaskSort = TaskSortOrder.AssetType
+            Session.TaskSort = TaskSortOrder.assetType
         case 3:
-            Session.TaskSort = TaskSortOrder.Task
+            Session.TaskSort = TaskSortOrder.task
         default:
-            Session.TaskSort = TaskSortOrder.Date
+            Session.TaskSort = TaskSortOrder.date
         }
     }
 
@@ -184,10 +208,10 @@ class FilterViewController: UIViewController {
         }
         if (selectedIndex == 0) { Session.FilterSiteId = nil }
         
-        SitePopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
-        SitePopupSelector.setLabelFont(UIFont.systemFontOfSize(17))
-        SitePopupSelector.setTableFont(UIFont.systemFontOfSize(17))
-        SitePopupSelector.options = Sites.map { KFPopupSelector.Option.Text(text: $0) }
+        SitePopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.left
+        SitePopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
+        SitePopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
+        SitePopupSelector.options = Sites.map { KFPopupSelector.Option.text(text: $0) }
         if (selectedIndex > 0) { SitePopupSelector.selectedIndex = selectedIndex } else { SitePopupSelector.selectedIndex = nil }
         SitePopupSelector.unselectedLabelText = "Select Site"
         SitePopupSelector.displaySelectedValueInLabel = true
@@ -239,10 +263,10 @@ class FilterViewController: UIViewController {
         }
         if (selectedIndex == 0) { Session.FilterPropertyId = nil }
         
-        PropertyPopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
-        PropertyPopupSelector.setLabelFont(UIFont.systemFontOfSize(17))
-        PropertyPopupSelector.setTableFont(UIFont.systemFontOfSize(17))
-        PropertyPopupSelector.options = Properties.map { KFPopupSelector.Option.Text(text: $0) }
+        PropertyPopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.left
+        PropertyPopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
+        PropertyPopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
+        PropertyPopupSelector.options = Properties.map { KFPopupSelector.Option.text(text: $0) }
         if (selectedIndex > 0) { PropertyPopupSelector.selectedIndex = selectedIndex } else { PropertyPopupSelector.selectedIndex = nil }
         PropertyPopupSelector.unselectedLabelText = "Select Property"
         PropertyPopupSelector.displaySelectedValueInLabel = true
@@ -255,15 +279,15 @@ class FilterViewController: UIViewController {
         FrequencyDictionary = [:]
         
         // go and get the search/filter criteria from the values selected in the session
-        var criteria: Dictionary<String, String> = [:]
-        criteria["Type"] = "PPMFrequency"
+        var criteria: Dictionary<String, AnyObject> = [:]
+        criteria["Type"] = "PPMFrequency" as AnyObject
         
         var FrequencyData: [ReferenceData] = [] //NSMutableArray!
         var selectedIndex: Int? = 0
         Frequencies.append("")
         
         // go and get the Frequency data based on the criteria built
-        (FrequencyData, _) = ModelManager.getInstance().findReferenceDataList(criteria, pageSize: nil, pageNumber: nil, sortOrder: ReferenceDataSortOrder.Ordinal)
+        (FrequencyData, _) = ModelManager.getInstance().findReferenceDataList(criteria, pageSize: nil, pageNumber: nil, sortOrder: ReferenceDataSortOrder.ordinal)
         
         var count: Int = 1 //we already have the blank row
         for currentFrequency: ReferenceData in FrequencyData
@@ -278,10 +302,10 @@ class FilterViewController: UIViewController {
         Frequencies.append("All")
         FrequencyDictionary["All"] = "All"
         
-        FrequencyPopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
-        FrequencyPopupSelector.setLabelFont(UIFont.systemFontOfSize(17))
-        FrequencyPopupSelector.setTableFont(UIFont.systemFontOfSize(17))
-        FrequencyPopupSelector.options = Frequencies.map { KFPopupSelector.Option.Text(text: $0) }
+        FrequencyPopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.left
+        FrequencyPopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
+        FrequencyPopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
+        FrequencyPopupSelector.options = Frequencies.map { KFPopupSelector.Option.text(text: $0) }
         if (selectedIndex > 0) { FrequencyPopupSelector.selectedIndex = selectedIndex } else { FrequencyPopupSelector.selectedIndex = nil }
         FrequencyPopupSelector.unselectedLabelText = "Select Frequency"
         FrequencyPopupSelector.displaySelectedValueInLabel = true
@@ -300,10 +324,10 @@ class FilterViewController: UIViewController {
         }
         if (selectedIndex == 0) { Session.FilterPeriod = nil }
         
-        PeriodPopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
-        PeriodPopupSelector.setLabelFont(UIFont.systemFontOfSize(17))
-        PeriodPopupSelector.setTableFont(UIFont.systemFontOfSize(17))
-        PeriodPopupSelector.options = Periods.map { KFPopupSelector.Option.Text(text: $0) }
+        PeriodPopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.left
+        PeriodPopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
+        PeriodPopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
+        PeriodPopupSelector.options = Periods.map { KFPopupSelector.Option.text(text: $0) }
         if (selectedIndex > -1) { PeriodPopupSelector.selectedIndex = selectedIndex } else { PeriodPopupSelector.selectedIndex = nil }
         PeriodPopupSelector.unselectedLabelText = "Select Period"
         PeriodPopupSelector.displaySelectedValueInLabel = true
@@ -334,10 +358,10 @@ class FilterViewController: UIViewController {
         }
         if (selectedIndex == 0) { Session.FilterAssetGroup = nil }
         
-        AssetGroupPopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
-        AssetGroupPopupSelector.setLabelFont(UIFont.systemFontOfSize(17))
-        AssetGroupPopupSelector.setTableFont(UIFont.systemFontOfSize(17))
-        AssetGroupPopupSelector.options = AssetGroups.map { KFPopupSelector.Option.Text(text: $0) }
+        AssetGroupPopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.left
+        AssetGroupPopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
+        AssetGroupPopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
+        AssetGroupPopupSelector.options = AssetGroups.map { KFPopupSelector.Option.text(text: $0) }
         if (selectedIndex > 0) { AssetGroupPopupSelector.selectedIndex = selectedIndex } else { AssetGroupPopupSelector.selectedIndex = nil }
         AssetGroupPopupSelector.unselectedLabelText = "Select Asset Group"
         AssetGroupPopupSelector.displaySelectedValueInLabel = true
@@ -372,10 +396,10 @@ class FilterViewController: UIViewController {
         }
         if (selectedIndex == 0) { Session.FilterTaskName = nil }
         
-        TaskNamePopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
-        TaskNamePopupSelector.setLabelFont(UIFont.systemFontOfSize(17))
-        TaskNamePopupSelector.setTableFont(UIFont.systemFontOfSize(17))
-        TaskNamePopupSelector.options = TaskNames.map { KFPopupSelector.Option.Text(text: $0) }
+        TaskNamePopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.left
+        TaskNamePopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
+        TaskNamePopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
+        TaskNamePopupSelector.options = TaskNames.map { KFPopupSelector.Option.text(text: $0) }
         if (selectedIndex > 0) { TaskNamePopupSelector.selectedIndex = selectedIndex } else { TaskNamePopupSelector.selectedIndex = nil }
         TaskNamePopupSelector.unselectedLabelText = "Select Task Name"
         TaskNamePopupSelector.displaySelectedValueInLabel = true
@@ -406,10 +430,10 @@ class FilterViewController: UIViewController {
         }
         if (selectedIndex == 0) { Session.FilterAssetType = nil }
         
-        AssetTypePopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
-        AssetTypePopupSelector.setLabelFont(UIFont.systemFontOfSize(17))
-        AssetTypePopupSelector.setTableFont(UIFont.systemFontOfSize(17))
-        AssetTypePopupSelector.options = AssetTypes.map { KFPopupSelector.Option.Text(text: $0) }
+        AssetTypePopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.left
+        AssetTypePopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
+        AssetTypePopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
+        AssetTypePopupSelector.options = AssetTypes.map { KFPopupSelector.Option.text(text: $0) }
         if (selectedIndex > 0) { AssetTypePopupSelector.selectedIndex = selectedIndex } else { AssetTypePopupSelector.selectedIndex = nil }
         AssetTypePopupSelector.unselectedLabelText = "Select Asset Type"
         AssetTypePopupSelector.displaySelectedValueInLabel = true
@@ -440,10 +464,10 @@ class FilterViewController: UIViewController {
         }
         if (selectedIndex == 0) { Session.FilterLocationGroup = nil }
         
-        LocationGroupPopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
-        LocationGroupPopupSelector.setLabelFont(UIFont.systemFontOfSize(17))
-        LocationGroupPopupSelector.setTableFont(UIFont.systemFontOfSize(17))
-        LocationGroupPopupSelector.options = LocationGroups.map { KFPopupSelector.Option.Text(text: $0) }
+        LocationGroupPopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.left
+        LocationGroupPopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
+        LocationGroupPopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
+        LocationGroupPopupSelector.options = LocationGroups.map { KFPopupSelector.Option.text(text: $0) }
         if (selectedIndex > 0) { LocationGroupPopupSelector.selectedIndex = selectedIndex } else { LocationGroupPopupSelector.selectedIndex = nil }
         LocationGroupPopupSelector.unselectedLabelText = "Select Area"
         LocationGroupPopupSelector.displaySelectedValueInLabel = true
@@ -474,10 +498,10 @@ class FilterViewController: UIViewController {
         }
         if (selectedIndex == 0) { Session.FilterLocation = nil }
         
-        LocationPopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
-        LocationPopupSelector.setLabelFont(UIFont.systemFontOfSize(17))
-        LocationPopupSelector.setTableFont(UIFont.systemFontOfSize(17))
-        LocationPopupSelector.options = Locations.map { KFPopupSelector.Option.Text(text: $0) }
+        LocationPopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.left
+        LocationPopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
+        LocationPopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
+        LocationPopupSelector.options = Locations.map { KFPopupSelector.Option.text(text: $0) }
         if (selectedIndex > 0) { LocationPopupSelector.selectedIndex = selectedIndex } else { LocationPopupSelector.selectedIndex = nil }
         LocationPopupSelector.unselectedLabelText = "Select Location"
         LocationPopupSelector.displaySelectedValueInLabel = true
@@ -508,10 +532,10 @@ class FilterViewController: UIViewController {
         }
         if (selectedIndex == 0) { Session.FilterAssetNumber = nil }
         
-        AssetNumberPopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
-        AssetNumberPopupSelector.setLabelFont(UIFont.systemFontOfSize(17))
-        AssetNumberPopupSelector.setTableFont(UIFont.systemFontOfSize(17))
-        AssetNumberPopupSelector.options = AssetNumbers.map { KFPopupSelector.Option.Text(text: $0) }
+        AssetNumberPopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.left
+        AssetNumberPopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
+        AssetNumberPopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
+        AssetNumberPopupSelector.options = AssetNumbers.map { KFPopupSelector.Option.text(text: $0) }
         if (selectedIndex > 0) { AssetNumberPopupSelector.selectedIndex = selectedIndex } else { AssetNumberPopupSelector.selectedIndex = nil }
         AssetNumberPopupSelector.unselectedLabelText = "Select Asset Number"
         AssetNumberPopupSelector.displaySelectedValueInLabel = true
@@ -520,7 +544,7 @@ class FilterViewController: UIViewController {
     
     //MARK : Action from selection
     
-    @IBAction func SiteChanged(sender: KFPopupSelector) {
+    @IBAction func SiteChanged(_ sender: KFPopupSelector) {
         //set the site filter
         if (SitePopupSelector.selectedIndex != nil && Sites[SitePopupSelector.selectedIndex!] != "")
         {
@@ -529,7 +553,7 @@ class FilterViewController: UIViewController {
         
             //do the property stuff
             PopulatePropertySelector()
-            PropertyPopupSelector.enabled = true
+            PropertyPopupSelector.isEnabled = true
         }
         else
         {
@@ -537,11 +561,11 @@ class FilterViewController: UIViewController {
             Session.FilterSiteId = nil
             Session.FilterSiteName = nil
             PropertyPopupSelector.unselectedLabelText = NotApplicable
-            PropertyPopupSelector.enabled = false
+            PropertyPopupSelector.isEnabled = false
         }
     }
     
-    @IBAction func PropertyChanged(sender: KFPopupSelector) {
+    @IBAction func PropertyChanged(_ sender: KFPopupSelector) {
         //set the property filter
         if (PropertyPopupSelector.selectedIndex != nil  && Properties[PropertyPopupSelector.selectedIndex!] != "")
         {
@@ -550,11 +574,11 @@ class FilterViewController: UIViewController {
         
             //do the asset group stuff
             PopulateAssetGroupSelector()
-            AssetGroupPopupSelector.enabled = true
+            AssetGroupPopupSelector.isEnabled = true
         
             //do the are stuff
             PopulateLocationGroupSelector()
-            LocationGroupPopupSelector.enabled = true
+            LocationGroupPopupSelector.isEnabled = true
         }
         else
         {
@@ -562,14 +586,14 @@ class FilterViewController: UIViewController {
             Session.FilterPropertyId = nil
             Session.FilterPropertyName = nil
             AssetGroupPopupSelector.unselectedLabelText = NotApplicable
-            AssetGroupPopupSelector.enabled = false
+            AssetGroupPopupSelector.isEnabled = false
             
             LocationGroupPopupSelector.unselectedLabelText = NotApplicable
-            LocationGroupPopupSelector.enabled = false
+            LocationGroupPopupSelector.isEnabled = false
         }
     }
  
-    @IBAction func FrequencyChanged(sender: KFPopupSelector) {
+    @IBAction func FrequencyChanged(_ sender: KFPopupSelector) {
         if (FrequencyPopupSelector.selectedIndex != nil && Frequencies[FrequencyPopupSelector.selectedIndex!] != "")
         {
             Session.FilterFrequency = FrequencyDictionary[Frequencies[FrequencyPopupSelector.selectedIndex!]]
@@ -581,7 +605,7 @@ class FilterViewController: UIViewController {
         }
     }
     
-    @IBAction func PeriodChanged(sender: KFPopupSelector) {
+    @IBAction func PeriodChanged(_ sender: KFPopupSelector) {
         if (PeriodPopupSelector.selectedIndex != nil && Periods[PeriodPopupSelector.selectedIndex!] != "")
         {
             Session.FilterPeriod = Periods[PeriodPopupSelector.selectedIndex!]
@@ -592,11 +616,11 @@ class FilterViewController: UIViewController {
         }
     }
     
-    @IBAction func MyTasksChanged(sender: UISwitch) {
-        Session.FilterJustMyTasks = sender.on
+    @IBAction func MyTasksChanged(_ sender: UISwitch) {
+        Session.FilterJustMyTasks = sender.isOn
     }
     
-    @IBAction func AssetGroupChanged(sender: KFPopupSelector) {
+    @IBAction func AssetGroupChanged(_ sender: KFPopupSelector) {
         //set the property filter
         if (AssetGroupPopupSelector.selectedIndex != nil && AssetGroups[AssetGroupPopupSelector.selectedIndex!] != "")
         {
@@ -604,18 +628,18 @@ class FilterViewController: UIViewController {
             
             //do the Task name stuff
             PopulateTaskNameSelector()
-            TaskNamePopupSelector.enabled = true
+            TaskNamePopupSelector.isEnabled = true
         }
         else
         {
             if (AssetGroupPopupSelector.selectedIndex != nil) { AssetGroupPopupSelector.selectedIndex = nil }
             Session.FilterAssetGroup = nil
             TaskNamePopupSelector.unselectedLabelText = NotApplicable
-            TaskNamePopupSelector.enabled = false
+            TaskNamePopupSelector.isEnabled = false
         }
     }
     
-    @IBAction func TaskNameChange(sender: KFPopupSelector) {
+    @IBAction func TaskNameChange(_ sender: KFPopupSelector) {
         //set the property filter
         if (TaskNamePopupSelector.selectedIndex != nil && TaskNames[TaskNamePopupSelector.selectedIndex!] != "")
         {
@@ -630,18 +654,18 @@ class FilterViewController: UIViewController {
             
             //do the AssetType stuff
             PopulateAssetTypeSelector()
-            AssetTypePopupSelector.enabled = true
+            AssetTypePopupSelector.isEnabled = true
         }
         else
         {
             if (TaskNamePopupSelector.selectedIndex != nil) { TaskNamePopupSelector.selectedIndex = nil }
             Session.FilterTaskName = nil
             AssetTypePopupSelector.unselectedLabelText = NotApplicable
-            AssetTypePopupSelector.enabled = false
+            AssetTypePopupSelector.isEnabled = false
         }
     }
     
-    @IBAction func AssetTypeChanged(sender: KFPopupSelector) {
+    @IBAction func AssetTypeChanged(_ sender: KFPopupSelector) {
         //set the property filter
         if (AssetTypePopupSelector.selectedIndex != nil && AssetTypes[AssetTypePopupSelector.selectedIndex!] != "")
         {
@@ -654,7 +678,7 @@ class FilterViewController: UIViewController {
         }
     }
     
-    @IBAction func LocationGroupChanged(sender: KFPopupSelector) {
+    @IBAction func LocationGroupChanged(_ sender: KFPopupSelector) {
         //set the property filter
         if (LocationGroupPopupSelector.selectedIndex != nil && LocationGroups[LocationGroupPopupSelector.selectedIndex!] != "")
         {
@@ -662,18 +686,18 @@ class FilterViewController: UIViewController {
             
             //do the AssetType stuff
             PopulateLocationSelector()
-            LocationPopupSelector.enabled = true
+            LocationPopupSelector.isEnabled = true
         }
         else
         {
             if (LocationGroupPopupSelector.selectedIndex != nil) { LocationGroupPopupSelector.selectedIndex = nil }
             Session.FilterLocationGroup = nil
             LocationPopupSelector.unselectedLabelText = NotApplicable
-            LocationPopupSelector.enabled = false
+            LocationPopupSelector.isEnabled = false
         }
     }
     
-    @IBAction func LocationChanged(sender: KFPopupSelector) {
+    @IBAction func LocationChanged(_ sender: KFPopupSelector) {
         //set the property filter
         if (LocationPopupSelector.selectedIndex != nil && Locations[LocationPopupSelector.selectedIndex!] != "")
         {
@@ -681,18 +705,18 @@ class FilterViewController: UIViewController {
             
             //do the AssetNumber stuff
             PopulateAssetNumberSelector()
-            AssetNumberPopupSelector.enabled = true
+            AssetNumberPopupSelector.isEnabled = true
         }
         else
         {
             if (LocationPopupSelector.selectedIndex != nil) { LocationPopupSelector.selectedIndex = nil }
             Session.FilterLocation = nil
             AssetNumberPopupSelector.unselectedLabelText = NotApplicable
-            AssetNumberPopupSelector.enabled = false
+            AssetNumberPopupSelector.isEnabled = false
         }
     }
     
-    @IBAction func AssetNumberChanged(sender: KFPopupSelector) {
+    @IBAction func AssetNumberChanged(_ sender: KFPopupSelector) {
         //set the property filter
         if (AssetNumberPopupSelector.selectedIndex != nil && AssetNumbers[AssetNumberPopupSelector.selectedIndex!] != "")
         {

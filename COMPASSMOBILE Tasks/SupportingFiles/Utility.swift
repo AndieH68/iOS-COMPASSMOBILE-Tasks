@@ -10,25 +10,25 @@ import UIKit
 
 class Utility: NSObject {
     
-    class func getPath(fileName: String) -> String {
+    class func getPath(_ fileName: String) -> String {
         
-        let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
-        let fileURL = documentsURL.URLByAppendingPathComponent(fileName)
+        let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let fileURL = documentsURL.appendingPathComponent(fileName)
         
-        return fileURL!.path!
+        return fileURL.path
     }
     
-    class func copyFile(viewController: UIViewController, fileName: NSString) -> (Bool, String){
+    class func copyFile(_ viewController: UIViewController, fileName: NSString) -> (Bool, String){
         let dbPath: String = getPath(fileName as String)
-        let fileManager = NSFileManager.defaultManager()
-        if !fileManager.fileExistsAtPath(dbPath) {
+        let fileManager = FileManager.default
+        if !fileManager.fileExists(atPath: dbPath) {
             
-            let documentsURL = NSBundle.mainBundle().resourceURL
-            let fromPath = documentsURL!.URLByAppendingPathComponent(fileName as String)
+            let documentsURL = Bundle.main.resourceURL
+            let fromPath = documentsURL!.appendingPathComponent(fileName as String)
             
             var error : NSError?
             do {
-                try fileManager.copyItemAtPath(fromPath!.path!, toPath: dbPath)
+                try fileManager.copyItem(atPath: fromPath.path, toPath: dbPath)
             } catch let error1 as NSError {
                 error = error1
             }
@@ -36,7 +36,7 @@ class Utility: NSObject {
                 return(false, (error?.localizedDescription)!)
             }
             
-            if !fileManager.fileExistsAtPath(dbPath) {
+            if !fileManager.fileExists(atPath: dbPath) {
                 return(false, "Missing Database file")
             }
         }
@@ -44,33 +44,29 @@ class Utility: NSObject {
         return (true, String())
     }
     
-    class func invokeAlertMethod(viewController: UIViewController, title: String, message: String, delegate: AnyObject?) {
+    class func invokeAlertMethod(_ viewController: UIViewController, title: String, message: String, delegate: AnyObject?) {
 
-        let userPrompt: UIAlertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-        
-//        userPrompt.addAction(UIAlertAction(
-//            title: "OK",
-//            style: UIAlertActionStyle.Cancel,
-//            handler: nil))
+        let userPrompt: UIAlertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
         
         //the default action
-        userPrompt.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: {UIAlertAction in delegate}))
-        
-        dispatch_async(dispatch_get_main_queue(), {viewController.presentViewController(userPrompt, animated: true, completion: nil)})
-    }
-
-    class func invokeAlertMethodDirect(viewController: UIViewController, title: String, message: String, delegate: AnyObject?) {
-
-        let userPrompt: UIAlertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-        
-        //the default action
-        let addAction = UIAlertAction( title: "Ok", style: UIAlertActionStyle.Default) {UIAlertAction in delegate}
+        let addAction = UIAlertAction( title: "Ok", style: UIAlertActionStyle.default) {action in delegate}
         userPrompt.addAction(addAction)
         
-        viewController.presentViewController(userPrompt, animated: true, completion: nil)
+        DispatchQueue.main.async(execute: {viewController.present(userPrompt, animated: true, completion: nil)})
+    }
+
+    class func invokeAlertMethodDirect(_ viewController: UIViewController, title: String, message: String, delegate: AnyObject?) {
+
+        let userPrompt: UIAlertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        
+        //the default action
+        let addAction = UIAlertAction( title: "Ok", style: UIAlertActionStyle.default) {action in delegate}
+        userPrompt.addAction(addAction)
+        
+        viewController.present(userPrompt, animated: true, completion: nil)
     }
     
-    class func openSoapEnvelope(data: NSData?) -> AEXMLElement?{
+    class func openSoapEnvelope(_ data: Data?) -> AEXMLElement?{
         if data == nil{
             return nil
         }
@@ -105,15 +101,15 @@ class Utility: NSObject {
     }
     
     // MARK: - Global
-    class func importData(packageData: AEXMLElement, entityType: EntityType) -> (String, NSDate, Int32, Int32) {
+    class func importData(_ packageData: AEXMLElement, entityType: EntityType) -> (String, Date, Int32, Int32) {
         let count: Int32 = 0
         let maxCount: Int32 = 0
         return importData(packageData, entityType: entityType, progressBar: nil, count: count, maxCount: maxCount)
     }
     
-    class func importData(packageData: AEXMLElement, entityType: EntityType, progressBar: MBProgressHUD?, count: Int32, maxCount: Int32) -> (String, NSDate, Int32, Int32) {
+    class func importData(_ packageData: AEXMLElement, entityType: EntityType, progressBar: MBProgressHUD?, count: Int32, maxCount: Int32) -> (String, Date, Int32, Int32) {
         
-        var lastDateInPackage: NSDate = BaseDate
+        var lastDateInPackage: Date = BaseDate as Date
         var lastRowId: String = EmptyGuid
         
         var current: Int32 = 0
@@ -139,7 +135,7 @@ class Utility: NSObject {
         {
             switch entityType {
             
-            case .Asset:
+            case .asset:
                 
                 //get the data nodes
                 let dataNode: AEXMLElement = packageData["Asset"]
@@ -154,15 +150,15 @@ class Utility: NSObject {
                         //get the first child
                         let asset: Asset = Asset(XMLElement: childNode)
                         
-                        var currentSynchDate: NSDate
+                        var currentSynchDate: Date
                         if asset.LastUpdatedOn == nil {
-                            currentSynchDate = asset.CreatedOn
+                            currentSynchDate = asset.CreatedOn as Date
                         }
                         else {
-                            currentSynchDate = asset.LastUpdatedOn!
+                            currentSynchDate = asset.LastUpdatedOn! as Date
                         }
                         
-                        lastDateInPackage = lastDateInPackage.laterDate(currentSynchDate)
+                        lastDateInPackage = (lastDateInPackage as NSDate).laterDate(currentSynchDate)
                         lastRowId = asset.RowId
                         
                         //does the record exists
@@ -173,7 +169,7 @@ class Utility: NSObject {
                             if (asset.Deleted == nil)
                             {
                                 //no insert it
-                                ModelManager.getInstance().addAsset(asset)
+                                _ = ModelManager.getInstance().addAsset(asset)
                             }
                         }
                         else
@@ -184,24 +180,24 @@ class Utility: NSObject {
                             if (asset.Deleted != nil)
                             {
                                 //yes  - delete the asset
-                                ModelManager.getInstance().deleteAsset(asset)
+                                _ = ModelManager.getInstance().deleteAsset(asset)
                             }
                             else
                             {
                                 //no  - update the asset
-                                ModelManager.getInstance().updateAsset(asset)
+                                _ = ModelManager.getInstance().updateAsset(asset)
                             }
                             
                         }
                         
                         if (progressBar != nil)
                         {
-                            dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Asset"; progressBar!.progress = (Float(current) / Float(total))})
+                            DispatchQueue.main.async(execute: {progressBar!.labelText = "Asset"; progressBar!.progress = (Float(current) / Float(total))})
                         }
                     }
                 }
                 
-            case .Location:
+            case .location:
                 
                 //get the data nodes
                 let dataNode: AEXMLElement = packageData["Location"]
@@ -216,15 +212,15 @@ class Utility: NSObject {
                     //get the first child
                     let location: Location = Location(XMLElement: childNode)
                     
-                    var currentSynchDate: NSDate
+                    var currentSynchDate: Date
                     if location.LastUpdatedOn == nil {
-                        currentSynchDate = location.CreatedOn
+                        currentSynchDate = location.CreatedOn as Date
                     }
                     else {
-                        currentSynchDate = location.LastUpdatedOn!
+                        currentSynchDate = location.LastUpdatedOn! as Date
                     }
                     
-                    lastDateInPackage = lastDateInPackage.laterDate(currentSynchDate)
+                    lastDateInPackage = (lastDateInPackage as NSDate).laterDate(currentSynchDate)
                     lastRowId = location.RowId
                     
                     //does the record exists
@@ -235,7 +231,7 @@ class Utility: NSObject {
                         if (location.Deleted == nil)
                         {
                             //no insert it
-                            ModelManager.getInstance().addLocation(location)
+                            _ = ModelManager.getInstance().addLocation(location)
                         }
                     }
                     else
@@ -246,24 +242,24 @@ class Utility: NSObject {
                         if (location.Deleted != nil)
                         {
                             //yes  - delete the Location
-                            ModelManager.getInstance().deleteLocation(location)
+                            _ = ModelManager.getInstance().deleteLocation(location)
                         }
                         else
                         {
                             //no  - update the Location
-                            ModelManager.getInstance().updateLocation(location)
+                            _ = ModelManager.getInstance().updateLocation(location)
                         }
                         
                     }
                     
                     if (progressBar != nil)
                     {
-                        dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Location"; progressBar!.progress = (Float(current) / Float(total))})
+                        DispatchQueue.main.async(execute: {progressBar!.labelText = "Location"; progressBar!.progress = (Float(current) / Float(total))})
                     }
                     }
                 }
 
-            case .LocationGroup:
+            case .locationGroup:
                 
                 //get the data nodes
                 let dataNode: AEXMLElement = packageData["LocationGroup"]
@@ -278,15 +274,15 @@ class Utility: NSObject {
                     //get the first child
                     let locationGroup: LocationGroup = LocationGroup(XMLElement: childNode)
                     
-                    var currentSynchDate: NSDate
+                    var currentSynchDate: Date
                     if locationGroup.LastUpdatedOn == nil {
-                        currentSynchDate = locationGroup.CreatedOn
+                        currentSynchDate = locationGroup.CreatedOn as Date
                     }
                     else {
-                        currentSynchDate = locationGroup.LastUpdatedOn!
+                        currentSynchDate = locationGroup.LastUpdatedOn! as Date
                     }
                     
-                    lastDateInPackage = lastDateInPackage.laterDate(currentSynchDate)
+                    lastDateInPackage = (lastDateInPackage as NSDate).laterDate(currentSynchDate)
                     lastRowId = locationGroup.RowId
                     
                     //does the record exists
@@ -297,7 +293,7 @@ class Utility: NSObject {
                         if (locationGroup.Deleted == nil)
                         {
                             //no insert it
-                            ModelManager.getInstance().addLocationGroup(locationGroup)
+                            _ = ModelManager.getInstance().addLocationGroup(locationGroup)
                         }
                     }
                     else
@@ -308,24 +304,24 @@ class Utility: NSObject {
                         if (locationGroup.Deleted != nil)
                         {
                             //yes  - delete the LocationGroup
-                            ModelManager.getInstance().deleteLocationGroup(locationGroup)
+                            _ = ModelManager.getInstance().deleteLocationGroup(locationGroup)
                         }
                         else
                         {
                             //no  - update the LocationGroup
-                            ModelManager.getInstance().updateLocationGroup(locationGroup)
+                            _ = ModelManager.getInstance().updateLocationGroup(locationGroup)
                         }
                         
                     }
                     
                     if (progressBar != nil)
                     {
-                        dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Area"; progressBar!.progress = (Float(current) / Float(total))})
+                        DispatchQueue.main.async(execute: {progressBar!.labelText = "Area"; progressBar!.progress = (Float(current) / Float(total))})
                     }
                     }
                 }
 
-            case .LocationGroupMembership:
+            case .locationGroupMembership:
                 
                 //get the data nodes
                 let dataNode: AEXMLElement = packageData["LocationGroupMembership"]
@@ -340,15 +336,15 @@ class Utility: NSObject {
                     //get the first child
                     let locationGroupMembership: LocationGroupMembership = LocationGroupMembership(XMLElement: childNode)
                     
-                    var currentSynchDate: NSDate
+                    var currentSynchDate: Date
                     if locationGroupMembership.LastUpdatedOn == nil {
-                        currentSynchDate = locationGroupMembership.CreatedOn
+                        currentSynchDate = locationGroupMembership.CreatedOn as Date
                     }
                     else {
-                        currentSynchDate = locationGroupMembership.LastUpdatedOn!
+                        currentSynchDate = locationGroupMembership.LastUpdatedOn! as Date
                     }
                     
-                    lastDateInPackage = lastDateInPackage.laterDate(currentSynchDate)
+                    lastDateInPackage = (lastDateInPackage as NSDate).laterDate(currentSynchDate)
                     lastRowId = locationGroupMembership.RowId
                     
                     //does the record exists
@@ -359,7 +355,7 @@ class Utility: NSObject {
                         if (locationGroupMembership.Deleted == nil)
                         {
                             //no insert it
-                            ModelManager.getInstance().addLocationGroupMembership(locationGroupMembership)
+                            _ = ModelManager.getInstance().addLocationGroupMembership(locationGroupMembership)
                         }
                     }
                     else
@@ -370,24 +366,24 @@ class Utility: NSObject {
                         if (locationGroupMembership.Deleted != nil)
                         {
                             //yes  - delete the LocationGroupMembership
-                            ModelManager.getInstance().deleteLocationGroupMembership(locationGroupMembership)
+                            _ = ModelManager.getInstance().deleteLocationGroupMembership(locationGroupMembership)
                         }
                         else
                         {
                             //no  - update the LocationGroupMembership
-                            ModelManager.getInstance().updateLocationGroupMembership(locationGroupMembership)
+                            _ = ModelManager.getInstance().updateLocationGroupMembership(locationGroupMembership)
                         }
                         
                     }
                     
                     if (progressBar != nil)
                     {
-                        dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Area Link"; progressBar!.progress = (Float(current) / Float(total))})
+                        DispatchQueue.main.async(execute: {progressBar!.labelText = "Area Link"; progressBar!.progress = (Float(current) / Float(total))})
                     }
                     }
                 }
                 
-            case .Operative:
+            case .operative:
                 
                 //get the data nodes
                 let dataNode: AEXMLElement = packageData["Operative"]
@@ -402,15 +398,15 @@ class Utility: NSObject {
                     //get the first child
                     let operative: Operative = Operative(XMLElement: childNode)
                     
-                    var currentSynchDate: NSDate
+                    var currentSynchDate: Date
                     if operative.LastUpdatedOn == nil {
-                        currentSynchDate = operative.CreatedOn
+                        currentSynchDate = operative.CreatedOn as Date
                     }
                     else {
-                        currentSynchDate = operative.LastUpdatedOn!
+                        currentSynchDate = operative.LastUpdatedOn! as Date
                     }
                     
-                    lastDateInPackage = lastDateInPackage.laterDate(currentSynchDate)
+                    lastDateInPackage = (lastDateInPackage as NSDate).laterDate(currentSynchDate)
                     lastRowId = operative.RowId
                     
                     //does the record exists
@@ -421,7 +417,7 @@ class Utility: NSObject {
                         if (operative.Deleted == nil)
                         {
                             //no insert it
-                            ModelManager.getInstance().addOperative(operative)
+                            _ = ModelManager.getInstance().addOperative(operative)
                         }
                     }
                     else
@@ -432,24 +428,24 @@ class Utility: NSObject {
                         if (operative.Deleted != nil)
                         {
                             //yes  - delete the Operative
-                            ModelManager.getInstance().deleteOperative(operative)
+                            _ = ModelManager.getInstance().deleteOperative(operative)
                         }
                         else
                         {
                             //no  - update the Operative
-                            ModelManager.getInstance().updateOperative(operative)
+                            _ = ModelManager.getInstance().updateOperative(operative)
                         }
                         
                     }
                     
                     if (progressBar != nil)
                     {
-                        dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Operative"; progressBar!.progress = (Float(current) / Float(total))})
+                        DispatchQueue.main.async(execute: {progressBar!.labelText = "Operative"; progressBar!.progress = (Float(current) / Float(total))})
                     }
                     //}
                 }
                 
-            case .Organisation:
+            case .organisation:
                 
                 //get the data nodes
                 let dataNode: AEXMLElement = packageData["Organisation"]
@@ -464,15 +460,15 @@ class Utility: NSObject {
                     //get the first child
                     let organisation: Organisation = Organisation(XMLElement: childNode)
                     
-                    var currentSynchDate: NSDate
+                    var currentSynchDate: Date
                     if organisation.LastUpdatedOn == nil {
-                        currentSynchDate = organisation.CreatedOn
+                        currentSynchDate = organisation.CreatedOn as Date
                     }
                     else {
-                        currentSynchDate = organisation.LastUpdatedOn!
+                        currentSynchDate = organisation.LastUpdatedOn! as Date
                     }
                     
-                    lastDateInPackage = lastDateInPackage.laterDate(currentSynchDate)
+                    lastDateInPackage = (lastDateInPackage as NSDate).laterDate(currentSynchDate)
                     lastRowId = organisation.RowId
                     
                     //does the record exists
@@ -483,7 +479,7 @@ class Utility: NSObject {
                         if (organisation.Deleted == nil)
                         {
                             //no insert it
-                            ModelManager.getInstance().addOrganisation(organisation)
+                            _ = ModelManager.getInstance().addOrganisation(organisation)
                         }
                     }
                     else
@@ -494,24 +490,24 @@ class Utility: NSObject {
                         if (organisation.Deleted != nil)
                         {
                             //yes  - delete the Organisation
-                            ModelManager.getInstance().deleteOrganisation(organisation)
+                            _ = ModelManager.getInstance().deleteOrganisation(organisation)
                         }
                         else
                         {
                             //no  - update the Organisation
-                            ModelManager.getInstance().updateOrganisation(organisation)
+                            _ = ModelManager.getInstance().updateOrganisation(organisation)
                         }
                         
                     }
                     
                     if (progressBar != nil)
                     {
-                        dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Organisation"; progressBar!.progress = (Float(current) / Float(total))})
+                        DispatchQueue.main.async(execute: {progressBar!.labelText = "Organisation"; progressBar!.progress = (Float(current) / Float(total))})
                     }
                     }
                 }
 
-            case .Site:
+            case .site:
                 
                 //get the data nodes
                 let dataNode: AEXMLElement = packageData["Site"]
@@ -526,15 +522,15 @@ class Utility: NSObject {
                     //get the first child
                     let site: Site = Site(XMLElement: childNode)
                     
-                    var currentSynchDate: NSDate
+                    var currentSynchDate: Date
                     if site.LastUpdatedOn == nil {
-                        currentSynchDate = site.CreatedOn
+                        currentSynchDate = site.CreatedOn as Date
                     }
                     else {
-                        currentSynchDate = site.LastUpdatedOn!
+                        currentSynchDate = site.LastUpdatedOn! as Date
                     }
                     
-                    lastDateInPackage = lastDateInPackage.laterDate(currentSynchDate)
+                    lastDateInPackage = (lastDateInPackage as NSDate).laterDate(currentSynchDate)
                     lastRowId = site.RowId
                     
                     //does the record exists
@@ -545,7 +541,7 @@ class Utility: NSObject {
                         if (site.Deleted == nil)
                         {
                             //no insert it
-                            ModelManager.getInstance().addSite(site)
+                            _ = ModelManager.getInstance().addSite(site)
                         }
                     }
                     else
@@ -556,24 +552,24 @@ class Utility: NSObject {
                         if (site.Deleted != nil)
                         {
                             //yes  - delete the Site
-                            ModelManager.getInstance().deleteSite(site)
+                            _ = ModelManager.getInstance().deleteSite(site)
                         }
                         else
                         {
                             //no  - update the Site
-                            ModelManager.getInstance().updateSite(site)
+                            _ = ModelManager.getInstance().updateSite(site)
                         }
                         
                     }
                     
                     if (progressBar != nil)
                     {
-                        dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Site"; progressBar!.progress = (Float(current) / Float(total))})
+                        DispatchQueue.main.async(execute: {progressBar!.labelText = "Site"; progressBar!.progress = (Float(current) / Float(total))})
                     }
                     }
                 }
                 
-            case .Property:
+            case .property:
                 
                 //get the data nodes
                 let dataNode: AEXMLElement = packageData["Property"]
@@ -588,15 +584,15 @@ class Utility: NSObject {
                     //get the first child
                     let property: Property = Property(XMLElement: childNode)
                     
-                    var currentSynchDate: NSDate
+                    var currentSynchDate: Date
                     if property.LastUpdatedOn == nil {
-                        currentSynchDate = property.CreatedOn
+                        currentSynchDate = property.CreatedOn as Date
                     }
                     else {
-                        currentSynchDate = property.LastUpdatedOn!
+                        currentSynchDate = property.LastUpdatedOn! as Date
                     }
                     
-                    lastDateInPackage = lastDateInPackage.laterDate(currentSynchDate)
+                    lastDateInPackage = (lastDateInPackage as NSDate).laterDate(currentSynchDate)
                     lastRowId = property.RowId
                     
                     //does the record exists
@@ -607,7 +603,7 @@ class Utility: NSObject {
                         if (property.Deleted == nil)
                         {
                             //no insert it
-                            ModelManager.getInstance().addProperty(property)
+                            _ = ModelManager.getInstance().addProperty(property)
                         }
                     }
                     else
@@ -618,24 +614,24 @@ class Utility: NSObject {
                         if (property.Deleted != nil)
                         {
                             //yes  - delete the Property
-                            ModelManager.getInstance().deleteProperty(property)
+                            _ = ModelManager.getInstance().deleteProperty(property)
                         }
                         else
                         {
                             //no  - update the Property
-                            ModelManager.getInstance().updateProperty(property)
+                            _ = ModelManager.getInstance().updateProperty(property)
                         }
                         
                     }
                     
                     if (progressBar != nil)
                     {
-                        dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Property"; progressBar!.progress = (Float(current) / Float(total))})
+                        DispatchQueue.main.async(execute: {progressBar!.labelText = "Property"; progressBar!.progress = (Float(current) / Float(total))})
                     }
                     }
                 }
 
-            case .ReferenceData:
+            case .referenceData:
                 
                 //get the data nodes
                 let dataNode: AEXMLElement = packageData["ReferenceData"]
@@ -650,15 +646,15 @@ class Utility: NSObject {
                     //get the first child
                     let referenceData: ReferenceData = ReferenceData(XMLElement: childNode)
                     
-                    var currentSynchDate: NSDate
+                    var currentSynchDate: Date
                     if referenceData.LastUpdatedOn == nil {
-                        currentSynchDate = referenceData.CreatedOn
+                        currentSynchDate = referenceData.CreatedOn as Date
                     }
                     else {
-                        currentSynchDate = referenceData.LastUpdatedOn!
+                        currentSynchDate = referenceData.LastUpdatedOn! as Date
                     }
                     
-                    lastDateInPackage = lastDateInPackage.laterDate(currentSynchDate)
+                    lastDateInPackage = (lastDateInPackage as NSDate).laterDate(currentSynchDate)
                     lastRowId = referenceData.RowId
                     
                     //does the record exists
@@ -669,7 +665,7 @@ class Utility: NSObject {
                         if (referenceData.Deleted == nil)
                         {
                             //no insert it
-                            ModelManager.getInstance().addReferenceData(referenceData)
+                            _ = ModelManager.getInstance().addReferenceData(referenceData)
                         }
                     }
                     else
@@ -680,23 +676,23 @@ class Utility: NSObject {
                         if (referenceData.Deleted != nil)
                         {
                             //yes  - delete the ReferenceData
-                            ModelManager.getInstance().deleteReferenceData(referenceData)
+                            _ = ModelManager.getInstance().deleteReferenceData(referenceData)
                         }
                         else
                         {
                             //no  - update the ReferenceData
-                            ModelManager.getInstance().updateReferenceData(referenceData)
+                            _ = ModelManager.getInstance().updateReferenceData(referenceData)
                         }
                     }
                     
                     if (progressBar != nil)
                     {
-                        dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Reference"; progressBar!.progress = (Float(current) / Float(total))})
+                        DispatchQueue.main.async(execute: {progressBar!.labelText = "Reference"; progressBar!.progress = (Float(current) / Float(total))})
                     }
                     }
                 }
                 
-            case .Task:
+            case .task:
                 
                 //get the data nodes
                 let dataNode: AEXMLElement = packageData["Task"]
@@ -711,15 +707,15 @@ class Utility: NSObject {
                     //get the first child
                     let task: Task = Task(XMLElement: childNode)
                     
-                    var currentSynchDate: NSDate
+                    var currentSynchDate: Date
                     if task.LastUpdatedOn == nil {
-                        currentSynchDate = task.CreatedOn
+                        currentSynchDate = task.CreatedOn as Date
                     }
                     else {
-                        currentSynchDate = task.LastUpdatedOn!
+                        currentSynchDate = task.LastUpdatedOn! as Date
                     }
                     
-                    lastDateInPackage = lastDateInPackage.laterDate(currentSynchDate)
+                    lastDateInPackage = (lastDateInPackage as NSDate).laterDate(currentSynchDate)
                     lastRowId = task.RowId
                     
                     //does the record exists
@@ -730,7 +726,7 @@ class Utility: NSObject {
                         if (task.Deleted == nil)
                         {
                             //no insert it
-                            ModelManager.getInstance().addTask(task)
+                            _ = ModelManager.getInstance().addTask(task)
                         }
                     }
                     else
@@ -741,24 +737,24 @@ class Utility: NSObject {
                         if (task.Deleted != nil)
                         {
                             //yes  - delete the Task
-                            ModelManager.getInstance().deleteTask(task)
+                            _ = ModelManager.getInstance().deleteTask(task)
                         }
                         else
                         {
                             //no  - update the Task
-                            ModelManager.getInstance().updateTask(task)
+                            _ = ModelManager.getInstance().updateTask(task)
                         }
                         
                     }
                     
                     if (progressBar != nil)
                     {
-                        dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Task"; progressBar!.progress = (Float(current) / Float(total))})
+                        DispatchQueue.main.async(execute: {progressBar!.labelText = "Task"; progressBar!.progress = (Float(current) / Float(total))})
                     }
                     }
                 }
 
-            case .TaskParameter:
+            case .taskParameter:
                 
                 //get the data nodes
                 let dataNode: AEXMLElement = packageData["TaskParameter"]
@@ -773,15 +769,15 @@ class Utility: NSObject {
                     //get the first child
                     let taskParameter: TaskParameter = TaskParameter(XMLElement: childNode)
                     
-                    var currentSynchDate: NSDate
+                    var currentSynchDate: Date
                     if taskParameter.LastUpdatedOn == nil {
-                        currentSynchDate = taskParameter.CreatedOn
+                        currentSynchDate = taskParameter.CreatedOn as Date
                     }
                     else {
-                        currentSynchDate = taskParameter.LastUpdatedOn!
+                        currentSynchDate = taskParameter.LastUpdatedOn! as Date
                     }
                     
-                    lastDateInPackage = lastDateInPackage.laterDate(currentSynchDate)
+                    lastDateInPackage = (lastDateInPackage as NSDate).laterDate(currentSynchDate)
                     lastRowId = taskParameter.RowId
                     
                     //does the record exists
@@ -792,7 +788,7 @@ class Utility: NSObject {
                         if (taskParameter.Deleted == nil)
                         {
                             //no insert it
-                            ModelManager.getInstance().addTaskParameter(taskParameter)
+                            _ = ModelManager.getInstance().addTaskParameter(taskParameter)
                         }
                     }
                     else
@@ -803,24 +799,24 @@ class Utility: NSObject {
                         if (taskParameter.Deleted != nil)
                         {
                             //yes  - delete the TaskParameter
-                            ModelManager.getInstance().deleteTaskParameter(taskParameter)
+                            _ = ModelManager.getInstance().deleteTaskParameter(taskParameter)
                         }
                         else
                         {
                             //no  - update the TaskParameter
-                            ModelManager.getInstance().updateTaskParameter(taskParameter)
+                            _ = ModelManager.getInstance().updateTaskParameter(taskParameter)
                         }
                         
                     }
                     
                     if (progressBar != nil)
                     {
-                        dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Task Parameters"; progressBar!.progress = (Float(current) / Float(total))})
+                        DispatchQueue.main.async(execute: {progressBar!.labelText = "Task Parameters"; progressBar!.progress = (Float(current) / Float(total))})
                     }
                     }
                 }
 
-            case .TaskTemplate:
+            case .taskTemplate:
                 
                 //get the data nodes
                 let dataNode: AEXMLElement = packageData["TaskTemplate"]
@@ -835,15 +831,15 @@ class Utility: NSObject {
                     //get the first child
                     let taskTemplate: TaskTemplate = TaskTemplate(XMLElement: childNode)
                     
-                    var currentSynchDate: NSDate
+                    var currentSynchDate: Date
                     if taskTemplate.LastUpdatedOn == nil {
-                        currentSynchDate = taskTemplate.CreatedOn
+                        currentSynchDate = taskTemplate.CreatedOn as Date
                     }
                     else {
-                        currentSynchDate = taskTemplate.LastUpdatedOn!
+                        currentSynchDate = taskTemplate.LastUpdatedOn! as Date
                     }
                     
-                    lastDateInPackage = lastDateInPackage.laterDate(currentSynchDate)
+                    lastDateInPackage = (lastDateInPackage as NSDate).laterDate(currentSynchDate)
                     lastRowId = taskTemplate.RowId
                     
                     //does the record exists
@@ -854,7 +850,7 @@ class Utility: NSObject {
                         if (taskTemplate.Deleted == nil)
                         {
                             //no insert it
-                            ModelManager.getInstance().addTaskTemplate(taskTemplate)
+                            _ = ModelManager.getInstance().addTaskTemplate(taskTemplate)
                         }
                     }
                     else
@@ -865,24 +861,24 @@ class Utility: NSObject {
                         if (taskTemplate.Deleted != nil)
                         {
                             //yes  - delete the TaskTemplate
-                            ModelManager.getInstance().deleteTaskTemplate(taskTemplate)
+                            _ = ModelManager.getInstance().deleteTaskTemplate(taskTemplate)
                         }
                         else
                         {
                             //no  - update the TaskTemplate
-                            ModelManager.getInstance().updateTaskTemplate(taskTemplate)
+                            _ = ModelManager.getInstance().updateTaskTemplate(taskTemplate)
                         }
                         
                     }
                     
                     if (progressBar != nil)
                     {
-                        dispatch_async(dispatch_get_main_queue(),{progressBar!.labelText = "Templates"; progressBar!.progress = (Float(current) / Float(total))})
+                        DispatchQueue.main.async(execute: {progressBar!.labelText = "Templates"; progressBar!.progress = (Float(current) / Float(total))})
                     }
                     }
                 }
 
-            case .TaskTemplateParameter:
+            case .taskTemplateParameter:
                 
                 //get the data nodes
                 let dataNode: AEXMLElement = packageData["TaskTemplateParameter"]
@@ -897,15 +893,15 @@ class Utility: NSObject {
                     //get the first child
                     let taskTemplateParameter: TaskTemplateParameter = TaskTemplateParameter(XMLElement: childNode)
                     
-                    var currentSynchDate: NSDate
+                    var currentSynchDate: Date
                     if taskTemplateParameter.LastUpdatedOn == nil {
-                        currentSynchDate = taskTemplateParameter.CreatedOn
+                        currentSynchDate = taskTemplateParameter.CreatedOn as Date
                     }
                     else {
-                        currentSynchDate = taskTemplateParameter.LastUpdatedOn!
+                        currentSynchDate = taskTemplateParameter.LastUpdatedOn! as Date
                     }
                     
-                    lastDateInPackage = lastDateInPackage.laterDate(currentSynchDate)
+                    lastDateInPackage = (lastDateInPackage as NSDate).laterDate(currentSynchDate)
                     lastRowId = taskTemplateParameter.RowId
                     
                     //does the record exists
@@ -916,7 +912,7 @@ class Utility: NSObject {
                         if (taskTemplateParameter.Deleted == nil)
                         {
                             //no insert it
-                            ModelManager.getInstance().addTaskTemplateParameter(taskTemplateParameter)
+                            _ = ModelManager.getInstance().addTaskTemplateParameter(taskTemplateParameter)
                         }
                     }
                     else
@@ -927,19 +923,19 @@ class Utility: NSObject {
                         if (taskTemplateParameter.Deleted != nil)
                         {
                             //yes  - delete the TaskTemplateParameter
-                            ModelManager.getInstance().deleteTaskTemplateParameter(taskTemplateParameter)
+                            _ = ModelManager.getInstance().deleteTaskTemplateParameter(taskTemplateParameter)
                         }
                         else
                         {
                             //no  - update the TaskTemplateParameter
-                            ModelManager.getInstance().updateTaskTemplateParameter(taskTemplateParameter)
+                            _ = ModelManager.getInstance().updateTaskTemplateParameter(taskTemplateParameter)
                         }
                         
                     }
                     
                     if (progressBar != nil)
                     {
-                        dispatch_async(dispatch_get_main_queue(), {progressBar!.labelText = "Template Parameters"; progressBar!.progress = (Float(current) / Float(total))})
+                        DispatchQueue.main.async(execute: {progressBar!.labelText = "Template Parameters"; progressBar!.progress = (Float(current) / Float(total))})
                     }
                     }
                 }
@@ -949,19 +945,19 @@ class Utility: NSObject {
         else
         {
             current = 1
-            lastDateInPackage = NSDate()
+            lastDateInPackage = Date()
         }
         
         return (lastRowId, lastDateInPackage, current, total)
     }
     
-    class func SynchroniseAllData(viewController: UIViewController, stage: Int32, progressBar: MBProgressHUD?) -> Bool
+    class func SynchroniseAllData(_ viewController: UIViewController, stage: Int32, progressBar: MBProgressHUD?) -> Bool
     {
         var SQLStatement: String
         var SQLParameterValues: [NSObject]
-        var synchronisationDateToUse: NSDate = BaseDate
+        var synchronisationDateToUse: Date = BaseDate as Date
         var synchronisationType: String = Session.OrganisationId! + ":Receive:"
-        synchronisationType.appendContentsOf(String(stage))
+        synchronisationType.append(String(stage))
         
         SQLStatement = "SELECT [LastSynchronisationDate] FROM [Synchronisation] WHERE [Type] = '" + synchronisationType + "'"
         
@@ -975,55 +971,55 @@ class Utility: NSObject {
         switch stage{
         
         case 1:
-            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 1, entityType: EntityType.ReferenceData, progressBar: progressBar)
+            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 1, entityType: EntityType.referenceData, progressBar: progressBar)
             if (!state){ return false }
             
         case 2:
-            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 2, entityType: EntityType.Organisation, progressBar: progressBar)
+            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 2, entityType: EntityType.organisation, progressBar: progressBar)
             if (!state){ return false }
             
         case 3:
-            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 3, entityType: EntityType.Site, progressBar: progressBar)
+            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 3, entityType: EntityType.site, progressBar: progressBar)
             if (!state){ return false }
             
         case 4:
-            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 4, entityType: EntityType.Property, progressBar: progressBar)
+            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 4, entityType: EntityType.property, progressBar: progressBar)
             if (!state){ return false }
         
         case 5:
-            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 5, entityType: EntityType.Location, progressBar: progressBar)
+            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 5, entityType: EntityType.location, progressBar: progressBar)
             if (!state){ return false }
             
         case 6:
-            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 6, entityType: EntityType.LocationGroup, progressBar: progressBar)
+            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 6, entityType: EntityType.locationGroup, progressBar: progressBar)
             if (!state){ return false }
             
         case 7:
-            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 7, entityType: EntityType.LocationGroupMembership, progressBar: progressBar)
+            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 7, entityType: EntityType.locationGroupMembership, progressBar: progressBar)
             if (!state){ return false }
             
         case 8:
-            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 8, entityType: EntityType.Asset, progressBar: progressBar)
+            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 8, entityType: EntityType.asset, progressBar: progressBar)
             if (!state){ return false }
             
         case 9:
-            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 9, entityType: EntityType.Operative, progressBar: progressBar)
+            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 9, entityType: EntityType.operative, progressBar: progressBar)
             if (!state){ return false }
             
         case 10:
-            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 10, entityType: EntityType.TaskTemplate, progressBar: progressBar)
+            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 10, entityType: EntityType.taskTemplate, progressBar: progressBar)
             if (!state) {return false }
             
         case 11:
-            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 11, entityType: EntityType.TaskTemplateParameter, progressBar: progressBar)
+            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 11, entityType: EntityType.taskTemplateParameter, progressBar: progressBar)
             if (!state){ return false }
             
         case 12:
-            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 12, entityType: EntityType.Task, progressBar: progressBar)
+            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 12, entityType: EntityType.task, progressBar: progressBar)
             if (!state){ return false }
 
         case 13:
-            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 13, entityType: EntityType.TaskParameter, progressBar: progressBar)
+            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 13, entityType: EntityType.taskParameter, progressBar: progressBar)
             if (!state){ return false }
 
         default:
@@ -1034,32 +1030,32 @@ class Utility: NSObject {
         
         SQLStatement = "DELETE FROM [Synchronisation] WHERE [Type] = ?"
         SQLParameterValues = [NSObject]()
-        SQLParameterValues.append(synchronisationType)
-        ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
+        SQLParameterValues.append(synchronisationType as NSObject)
+        _ = ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
 
         //update the synchronisation history
-        let newSynchronisationDate = NSDate()
+        let newSynchronisationDate = Date()
     
         SQLStatement = "INSERT INTO [Synchronisation] ([LastSynchronisationDate], [Type]) VALUES (?,?)"
         SQLParameterValues = [NSObject]()
-        SQLParameterValues.append(newSynchronisationDate)
-        SQLParameterValues.append(synchronisationType)
-        ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
+        SQLParameterValues.append(newSynchronisationDate as NSObject)
+        SQLParameterValues.append(synchronisationType as NSObject)
+        _ = ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
         
         SQLStatement = "INSERT INTO [SynchronisationHistory] ([SynchronisationDate], [CreatedBy], [CreatedOn], [Outcome]) VALUES (?, ?, ?, ?)"
         SQLParameterValues = [NSObject]()
-        SQLParameterValues.append(newSynchronisationDate)
-        SQLParameterValues.append(Session.OperativeId!)
-        SQLParameterValues.append(newSynchronisationDate)
-        SQLParameterValues.append("Success")
-        ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
+        SQLParameterValues.append(newSynchronisationDate as NSObject)
+        SQLParameterValues.append(Session.OperativeId! as NSObject)
+        SQLParameterValues.append(newSynchronisationDate as NSObject)
+        SQLParameterValues.append("Success" as NSObject)
+        _ = ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
 
         return true
     }
   
-    class func refactoredGetAndImport(viewController: UIViewController, synchronisationDate: NSDate, stage: Int32, entityType: EntityType, progressBar: MBProgressHUD?) -> (Bool, NSDate?) {
+    class func refactoredGetAndImport(_ viewController: UIViewController, synchronisationDate: Date, stage: Int32, entityType: EntityType, progressBar: MBProgressHUD?) -> (Bool, Date?) {
         
-        var lastDate: NSDate = NSDate()
+        var lastDate: Date = Date()
         var lastRowId: String = EmptyGuid
         var count: Int32 = 0
         var maxCount: Int32 = 0
@@ -1073,7 +1069,7 @@ class Utility: NSObject {
 //                    progressBar!.progress = (Float(count) / Float(count + 1));
 //                }
                 
-                let data: NSData? = WebService.getSynchronisationPackageSync(Session.OperativeId!, synchronisationDate: synchronisationDate, lastRowId: lastRowId, stage: stage)
+                let data: Data? = WebService.getSynchronisationPackageSync(Session.OperativeId!, synchronisationDate: synchronisationDate, lastRowId: lastRowId, stage: stage)
                 
                 if data == nil{
                     NSLog("data  is nil")
@@ -1096,7 +1092,7 @@ class Utility: NSObject {
 
                     if (!failed)
                     {
-                        let SynchronisationPackageData: NSData = (response["GetSynchronisationPackageResult"].value! as NSString).dataUsingEncoding(NSUTF8StringEncoding)!
+                        let SynchronisationPackageData: Data = (response["GetSynchronisationPackageResult"].value! as NSString).data(using: String.Encoding.utf8.rawValue)!
                         
                         var SynchronisationPackageDocument: AEXMLDocument?
                         do {
@@ -1130,7 +1126,7 @@ class Utility: NSObject {
     }
     
 
-    class func CheckSynchronisation(viewController: UIViewController, HUD: MBProgressHUD?)
+    class func CheckSynchronisation(_ viewController: UIViewController, HUD: MBProgressHUD?)
     {
         NSLog("CheckSynchronisation - started")
         self.SendTasks(viewController, HUD: HUD)
@@ -1139,7 +1135,7 @@ class Utility: NSObject {
         NSLog("CheckSynchronisation - ended")
     }
     
-    class func SendTasks(viewController: UIViewController, HUD: MBProgressHUD?)
+    class func SendTasks(_ viewController: UIViewController, HUD: MBProgressHUD?)
     {
         var success: Bool = false
         var taskCount: Int32 = 0
@@ -1160,11 +1156,11 @@ class Utility: NSObject {
             }
         }
         
-        dispatch_async(dispatch_get_main_queue(),{invokeAlertMethod(viewController, title: "Tasks Sent", message: message, delegate: nil)})
+        DispatchQueue.main.async(execute: {invokeAlertMethod(viewController, title: "Tasks Sent", message: message, delegate: nil)})
     
     }
     
-    class func SendTaskDetails(viewController: UIViewController, HUD: MBProgressHUD?) -> (Bool, Int32) {
+    class func SendTaskDetails(_ viewController: UIViewController, HUD: MBProgressHUD?) -> (Bool, Int32) {
         NSLog("SendTaskDetails - started")
         let isRemoteAvailable = Reachability().connectedToNetwork()
         var taskCounter: Int32 = 0;
@@ -1172,7 +1168,7 @@ class Utility: NSObject {
         if isRemoteAvailable {
             var SQLStatement: String
             var SQLParameterValues: [NSObject]
-            var synchronisationDateToUse: NSDate = BaseDate
+            var synchronisationDateToUse: Date = BaseDate as Date
             let synchronisationType: String = Session.OrganisationId! + ":Send"
             
             SQLStatement = "SELECT [LastSynchronisationDate] FROM [Synchronisation] WHERE [Type] = '" + synchronisationType + "'"
@@ -1195,22 +1191,22 @@ class Utility: NSObject {
                 var taskList: [String] = [String]()
             
                 var taskQueryParameters: [AnyObject] = [AnyObject]()
-                taskQueryParameters.append(synchronisationDateToUse)
-                taskQueryParameters.append(lastRowId)
+                taskQueryParameters.append(synchronisationDateToUse as AnyObject)
+                taskQueryParameters.append(lastRowId as AnyObject)
                 
                 var taskData: String = "<Tasks>"
   
-                let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(taskQuery, withArgumentsInArray: taskQueryParameters)
+                let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(taskQuery, withArgumentsIn: taskQueryParameters)
                 if (resultSet != nil)
                 {
                     while resultSet.next()
                     {
-                        let rowId = resultSet.stringForColumnIndex(0)
-                        let taskRecord = resultSet.stringForColumnIndex(1)
+                        let rowId = resultSet.string(forColumnIndex: 0)
+                        let taskRecord = resultSet.string(forColumnIndex: 1)
                         
                         taskCounter += 1
-                        taskList.append(rowId)
-                        taskData += taskRecord
+                        taskList.append(rowId!)
+                        taskData += taskRecord!
                     }
                 }
                 taskData += "</Tasks>"
@@ -1229,15 +1225,15 @@ class Utility: NSObject {
                     lastRowId = taskId;
                     
                     var taskParameterQueryParameters: [AnyObject] = [AnyObject]()
-                    taskParameterQueryParameters.append(lastRowId)
+                    taskParameterQueryParameters.append(lastRowId as AnyObject)
                     
-                    let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(taskParameterQuery, withArgumentsInArray: taskParameterQueryParameters)
+                    let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(taskParameterQuery, withArgumentsIn: taskParameterQueryParameters)
                     if (resultSet != nil)
                     {
                         while resultSet.next()
                         {
-                            let taskParameterRecord = resultSet.stringForColumnIndex(0)
-                            taskParameterData += taskParameterRecord
+                            let taskParameterRecord = resultSet.string(forColumnIndex: 0)
+                            taskParameterData += taskParameterRecord!
                         }
                     }
                 }
@@ -1253,7 +1249,7 @@ class Utility: NSObject {
                 
                 PDASynchronisationPackage = PDASynchronisationPackage.xmlSimpleEscape()
                 
-                let data: NSData? = WebService.sendSyncronisationPackageSync(Session.OperativeId!, sysnchronisationPackage: PDASynchronisationPackage)
+                let data: Data? = WebService.sendSyncronisationPackageSync(Session.OperativeId!, sysnchronisationPackage: PDASynchronisationPackage)
                 
                 NSLog("SendTaskDetails - process response")
                 if data == nil{
@@ -1278,35 +1274,35 @@ class Utility: NSObject {
                 for taskId in taskList
                 {
                     var taskUpdateParameters: [AnyObject] = [AnyObject]()
-                    taskUpdateParameters.append(Session.OperativeId!)
-                    taskUpdateParameters.append(NSDate())
-                    taskUpdateParameters.append(taskId)
+                    taskUpdateParameters.append(Session.OperativeId! as AnyObject)
+                    taskUpdateParameters.append(Date() as AnyObject)
+                    taskUpdateParameters.append(taskId as AnyObject)
                     
-                    sharedModelManager.database!.executeUpdate(updateStatement, withArgumentsInArray: taskUpdateParameters)
+                    sharedModelManager.database!.executeUpdate(updateStatement, withArgumentsIn: taskUpdateParameters)
                 }
                 
                 NSLog("SendTaskDetails - update synchronisation status")
                 SQLStatement = "DELETE FROM [Synchronisation] WHERE [Type] = ?"
                 SQLParameterValues = [NSObject]()
-                SQLParameterValues.append(synchronisationType)
-                ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
+                SQLParameterValues.append(synchronisationType as NSObject)
+                _ = ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
                 
                 //update the synchronisation history
-                let newSynchronisationDate = NSDate()
+                let newSynchronisationDate = Date()
                 
                 SQLStatement = "INSERT INTO [Synchronisation] ([LastSynchronisationDate], [Type]) VALUES (?,?)"
                 SQLParameterValues = [NSObject]()
-                SQLParameterValues.append(newSynchronisationDate)
-                SQLParameterValues.append(synchronisationType)
-                ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
+                SQLParameterValues.append(newSynchronisationDate as NSObject)
+                SQLParameterValues.append(synchronisationType as NSObject)
+                _ = ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
                 
                 SQLStatement = "INSERT INTO [SynchronisationHistory] ([SynchronisationDate], [CreatedBy], [CreatedOn], [Outcome]) VALUES (?, ?, ?, ?)"
                 SQLParameterValues = [NSObject]()
-                SQLParameterValues.append(newSynchronisationDate)
-                SQLParameterValues.append(Session.OperativeId!)
-                SQLParameterValues.append(newSynchronisationDate)
-                SQLParameterValues.append("Success")
-                ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
+                SQLParameterValues.append(newSynchronisationDate as NSObject)
+                SQLParameterValues.append(Session.OperativeId! as NSObject)
+                SQLParameterValues.append(newSynchronisationDate as NSObject)
+                SQLParameterValues.append("Success" as NSObject)
+                _ = ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
                 
             }
         }
@@ -1314,15 +1310,15 @@ class Utility: NSObject {
         return (isRemoteAvailable, taskCounter)
     }
  
-    class func DownloadAll(viewController: UIViewController, HUD: MBProgressHUD?)
+    class func DownloadAll(_ viewController: UIViewController, HUD: MBProgressHUD?)
     {
         self.DownloadAllDetails(viewController, HUD: HUD)
         
-        dispatch_async(dispatch_get_main_queue(),{invokeAlertMethod(viewController, title: "Synchronise", message: "Download complete", delegate: nil)})
+        DispatchQueue.main.async(execute: {invokeAlertMethod(viewController, title: "Synchronise", message: "Download complete", delegate: nil)})
         
     }
     
-    class func DownloadAllDetails(viewController: UIViewController, HUD: MBProgressHUD?)
+    class func DownloadAllDetails(_ viewController: UIViewController, HUD: MBProgressHUD?)
     {
         var success: Bool = false
         
@@ -1405,8 +1401,8 @@ class Utility: NSObject {
             
             SQLStatement = "DELETE FROM [Task] WHERE [OrganisationId] = ? AND [Status] IN ('Complete','Incomplete','Rescheduled')"
             SQLParameterValues = [NSObject]()
-            SQLParameterValues.append(Session.OrganisationId!)
-            ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
+            SQLParameterValues.append(Session.OrganisationId! as NSObject)
+            _ = ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
         }
 
         success = Utility.SynchroniseAllData(viewController, stage: 13, progressBar: HUD)
@@ -1421,18 +1417,18 @@ class Utility: NSObject {
             
             SQLStatement = "DELETE FROM [TaskParameter] WHERE [TaskId] NOT IN (SELECT [RowId] FROM [Task])"
             SQLParameterValues = [NSObject]()
-            ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
+            _ = ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
         }
     }
    
-    class func ResetSynchronisationDates(viewController: UIViewController, HUD: MBProgressHUD?)
+    class func ResetSynchronisationDates(_ viewController: UIViewController, HUD: MBProgressHUD?)
     {
         self.ResetSynchronisationDatesDetails(HUD)
         
-        dispatch_async(dispatch_get_main_queue(),{invokeAlertMethod(viewController, title: "Synchronise", message: "Synchronisation complete", delegate: nil)})
+        DispatchQueue.main.async(execute: {invokeAlertMethod(viewController, title: "Synchronise", message: "Synchronisation complete", delegate: nil)})
     }
     
-    class func ResetSynchronisationDatesDetails(HUD: MBProgressHUD?)
+    class func ResetSynchronisationDatesDetails(_ HUD: MBProgressHUD?)
     {
         var SQLStatement: String
         var SQLParameterValues: [NSObject]
@@ -1440,19 +1436,19 @@ class Utility: NSObject {
 
         SQLStatement = "DELETE FROM [Synchronisation] WHERE [Type] LIKE ?"
         SQLParameterValues = [NSObject]()
-        SQLParameterValues.append(synchronisationType)
-        ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
+        SQLParameterValues.append(synchronisationType as NSObject)
+        _ = ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
     }
     
-    class func ResetTasks(viewController: UIViewController, HUD: MBProgressHUD?)
+    class func ResetTasks(_ viewController: UIViewController, HUD: MBProgressHUD?)
     {
         self.ResetTasksDetails(HUD)
         
-        dispatch_async(dispatch_get_main_queue(),{invokeAlertMethod(viewController, title: "Synchronise", message: "Synchronisation complete", delegate: nil)})
+        DispatchQueue.main.async(execute: {invokeAlertMethod(viewController, title: "Synchronise", message: "Synchronisation complete", delegate: nil)})
 
     }
     
-    class func ResetTasksDetails(HUD: MBProgressHUD?)
+    class func ResetTasksDetails(_ HUD: MBProgressHUD?)
     {
         var SQLStatement: String
         var SQLParameterValues: [NSObject]
@@ -1460,89 +1456,89 @@ class Utility: NSObject {
         var synchronisationType: String = Session.OrganisationId! + ":Receive:12"
         SQLStatement = "DELETE FROM [Synchronisation] WHERE [Type] LIKE ?"
         SQLParameterValues = [NSObject]()
-        SQLParameterValues.append(synchronisationType)
-        ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
+        SQLParameterValues.append(synchronisationType as NSObject)
+        _ = ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
     
         synchronisationType = Session.OrganisationId! + ":Receive:13"
         SQLStatement = "DELETE FROM [Synchronisation] WHERE [Type] LIKE ?"
         SQLParameterValues = [NSObject]()
-        SQLParameterValues.append(synchronisationType)
-        ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
+        SQLParameterValues.append(synchronisationType as NSObject)
+        _ = ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
         
         SQLStatement = "DELETE FROM [Task] WHERE [OrganisationId] = ?"
         SQLParameterValues = [NSObject]()
-        SQLParameterValues.append(Session.OrganisationId!)
-        ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
+        SQLParameterValues.append(Session.OrganisationId! as NSObject)
+        _ = ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
         
     
     }
     
-    class func ResetAllData(viewController: UIViewController, HUD: MBProgressHUD?)
+    class func ResetAllData(_ viewController: UIViewController, HUD: MBProgressHUD?)
     {
         self.ResetAllDataDetails(HUD)
         
-        dispatch_async(dispatch_get_main_queue(),{invokeAlertMethod(viewController, title: "Synchronise", message: "Synchronisation complete", delegate: nil)})
+        DispatchQueue.main.async(execute: {invokeAlertMethod(viewController, title: "Synchronise", message: "Synchronisation complete", delegate: nil)})
     }
     
-    class func ResetAllDataDetails(HUD: MBProgressHUD?)
+    class func ResetAllDataDetails(_ HUD: MBProgressHUD?)
     {
         var SQLStatement: String
         var SQLParameterValues: [NSObject]  = [NSObject]()
 
-        ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [ReferenceData]")
-        ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [TaskTemplate]")
-        ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [TaskTemplateParameter]")
-        ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [Operative]")
-        ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [Organisation]")
-        ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [Site]")
-        ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [Property]")
-        ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [LocationGroup]")
-        ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [LocationGroupMembership]")
-        ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [Location]")
-        ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [Asset]")
-        ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [Task]")
-        ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [TaskParameter]")
+        _ = ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [ReferenceData]")
+        _ = ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [TaskTemplate]")
+        _ = ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [TaskTemplateParameter]")
+        _ = ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [Operative]")
+        _ = ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [Organisation]")
+        _ = ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [Site]")
+        _ = ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [Property]")
+        _ = ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [LocationGroup]")
+        _ = ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [LocationGroupMembership]")
+        _ = ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [Location]")
+        _ = ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [Asset]")
+        _ = ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [Task]")
+        _ = ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [TaskParameter]")
 
         var synchronisationType: String = Session.OrganisationId! + ":Receive%"
         SQLStatement = "DELETE FROM [Synchronisation] WHERE [Type] LIKE ?"
         SQLParameterValues = [NSObject]()
-        SQLParameterValues.append(synchronisationType)
-        ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
+        SQLParameterValues.append(synchronisationType as NSObject)
+        _ = ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
         
         synchronisationType = Session.OrganisationId! + ":Send%"
         
         SQLStatement = "DELETE FROM [Synchronisation] WHERE [Type] LIKE ?"
         SQLParameterValues = [NSObject]()
-        SQLParameterValues.append(synchronisationType)
-        ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
+        SQLParameterValues.append(synchronisationType as NSObject)
+        _ = ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
     }
 
-    class func DateToStringForXML(dateToFormat: NSDate) -> String {
+    class func DateToStringForXML(_ dateToFormat: Date) -> String {
         //this doesn't work in 12 hour locale
-        let dateStringFormatter = NSDateFormatter()
-        dateStringFormatter.locale = NSLocale.init(localeIdentifier: "en_US_POSIX")
+        let dateStringFormatter = DateFormatter()
+        dateStringFormatter.locale = Locale.init(identifier: "en_US_POSIX")
         dateStringFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS"
-        dateStringFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
-        return dateStringFormatter.stringFromDate(dateToFormat)
+        dateStringFormatter.timeZone = TimeZone(abbreviation: "UTC")
+        return dateStringFormatter.string(from: dateToFormat)
     }
     
-    class func DateToStringForView(dateToFormat: NSDate) -> String {
-        let dateStringFormatter = NSDateFormatter()
-        dateStringFormatter.locale = NSLocale.init(localeIdentifier: "en_US_POSIX")
+    class func DateToStringForView(_ dateToFormat: Date) -> String {
+        let dateStringFormatter = DateFormatter()
+        dateStringFormatter.locale = Locale.init(identifier: "en_US_POSIX")
         dateStringFormatter.dateFormat = "dd/MM/yyyy"
-        dateStringFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
-        return dateStringFormatter.stringFromDate(dateToFormat)
+        dateStringFormatter.timeZone = TimeZone(abbreviation: "UTC")
+        return dateStringFormatter.string(from: dateToFormat)
     }
     
-    class func DateToStringForTaskRef(dateToFormat: NSDate) -> String {
-        let dateStringFormatter = NSDateFormatter()
-        dateStringFormatter.locale = NSLocale.init(localeIdentifier: "en_US_POSIX")
+    class func DateToStringForTaskRef(_ dateToFormat: Date) -> String {
+        let dateStringFormatter = DateFormatter()
+        dateStringFormatter.locale = Locale.init(identifier: "en_US_POSIX")
         dateStringFormatter.dateFormat = "yyMMddHHmm"
-        dateStringFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
-        return dateStringFormatter.stringFromDate(dateToFormat)
+        dateStringFormatter.timeZone = TimeZone(abbreviation: "UTC")
+        return dateStringFormatter.string(from: dateToFormat)
     }
     
-    func findKeyForValue(value: String, dictionary: [String: [String]]) ->String?
+    func findKeyForValue(_ value: String, dictionary: [String: [String]]) ->String?
     {
         for (key, array) in dictionary
         {
@@ -1556,112 +1552,133 @@ class Utility: NSObject {
     }
 }
 
-extension NSDate
+extension Date
 {
-    convenience
+    
     init(dateString:String) {
-        let dateStringFormatter = NSDateFormatter()
-        dateStringFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
+        let dateStringFormatter = DateFormatter()
+        dateStringFormatter.timeZone = TimeZone(abbreviation: "UTC")
         dateStringFormatter.dateFormat = hasAMPM ? DateFormat12 : DateFormat24
-        if let d = dateStringFormatter.dateFromString(dateString)
+        if let d = dateStringFormatter.date(from: dateString)
         {
-            self.init(timeInterval:0, sinceDate:d)
+            self = Date(timeInterval: 0, since: d)
             return
         }
+        
         dateStringFormatter.dateFormat = hasAMPM ? DateFormat12NoNano : DateFormat24NoNano
-        if let d = dateStringFormatter.dateFromString(dateString)
+        if let d = dateStringFormatter.date(from: dateString)
         {
-            self.init(timeInterval:0, sinceDate:d)
+            self = Date(timeInterval: 0, since: d)
             return
         }
+        
         dateStringFormatter.dateFormat = DateFormatNoTime
-        if let d = dateStringFormatter.dateFromString(dateString)
+        if let d = dateStringFormatter.date(from: dateString)
         {
-            self.init(timeInterval:0, sinceDate:d)
+            self = Date(timeInterval: 0, since: d)
             return
         }
-        let d = dateStringFormatter.dateFromString(dateString)
-        self.init(timeInterval:0, sinceDate:d!)
+        
+        dateStringFormatter.locale = Locale.init(identifier: "en_US_POSIX")
+        dateStringFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS"
+        dateStringFormatter.timeZone = TimeZone(abbreviation: "UTC")
+        if let d = dateStringFormatter.date(from: dateString)
+        {
+            self = Date(timeInterval: 0, since: d)
+            return
+        }
+
+        dateStringFormatter.locale = Locale.init(identifier: "en_US_POSIX")
+        dateStringFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        dateStringFormatter.timeZone = TimeZone(abbreviation: "UTC")
+        if let d = dateStringFormatter.date(from: dateString)
+        {
+            self = Date(timeInterval: 0, since: d)
+            return
+        }
+        
+        let d = dateStringFormatter.date(from: dateString)
+        self = Date(timeInterval: 0, since: d!)
     }
    
-    func startOfDay() -> NSDate {
-        let dateStringFormatter = NSDateFormatter()
+    func startOfDay() -> Date {
+        let dateStringFormatter = DateFormatter()
         dateStringFormatter.dateFormat = hasAMPM ? DateFormat12StartOfDay : DateFormat24StartOfDay
-        dateStringFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
-        let startOfDay: NSDate =  NSDate(dateString: dateStringFormatter.stringFromDate(self))
+        dateStringFormatter.timeZone = TimeZone(abbreviation: "UTC")
+        let startOfDay: Date =  Date(dateString: dateStringFormatter.string(from: self))
         return startOfDay
     }
  
-    func endOfDay() -> NSDate {
-        let startOfDay: NSDate = self.startOfDay()
-        let calendar = NSCalendar.currentCalendar()
-        let startOfTomorrow = calendar.dateByAddingUnit(.Day, value: 1, toDate: startOfDay, options: NSCalendarOptions(rawValue: 0))!
-        let endOfDay = calendar.dateByAddingUnit(.Second, value: -1, toDate: startOfTomorrow, options: NSCalendarOptions(rawValue: 0))!
+    func endOfDay() -> Date {
+        let startOfDay: Date = self.startOfDay()
+        let calendar = Calendar.current
+        let startOfTomorrow = (calendar as NSCalendar).date(byAdding: .day, value: 1, to: startOfDay, options: NSCalendar.Options(rawValue: 0))!
+        let endOfDay = (calendar as NSCalendar).date(byAdding: .second, value: -1, to: startOfTomorrow, options: NSCalendar.Options(rawValue: 0))!
         return endOfDay
     }
     
-    func startOfWeek() -> NSDate {
-        let calendar = NSCalendar.currentCalendar()
+    func startOfWeek() -> Date {
+        var calendar = Calendar.current
         calendar.firstWeekday = 2
         var startOfWeek : NSDate?
-        calendar.rangeOfUnit(.WeekOfYear, startDate: &startOfWeek, interval: nil, forDate: self)
-        return startOfWeek!
+        (calendar as NSCalendar).range(of: .weekOfYear, start: &startOfWeek, interval: nil, for: self)
+        return startOfWeek! as Date
     }
    
-    func endOfWeek() -> NSDate {
-        let calendar = NSCalendar.currentCalendar()
+    func endOfWeek() -> Date {
+        var calendar = Calendar.current
         calendar.firstWeekday = 2
         var startOfWeek : NSDate?
-        calendar.rangeOfUnit(.WeekOfYear, startDate: &startOfWeek, interval: nil, forDate: self)
-        let startOfNextWeek = calendar.dateByAddingUnit(.Day, value: 7, toDate: startOfWeek!, options: NSCalendarOptions(rawValue: 0))!
-        let endOfWeek = calendar.dateByAddingUnit(.Second, value: -1, toDate: startOfNextWeek, options: NSCalendarOptions(rawValue: 0))!
-        return endOfWeek
+        (calendar as NSCalendar).range(of: .weekOfYear, start: &startOfWeek, interval: nil, for: self)
+        let startOfNextWeek = (calendar as NSCalendar).date(byAdding: .day, value: 7, to: startOfWeek! as Date, options: NSCalendar.Options(rawValue: 0))!
+        let endOfWeek = (calendar as NSCalendar).date(byAdding: .second, value: -1, to: startOfNextWeek, options: NSCalendar.Options(rawValue: 0))!
+        return endOfWeek as Date
     }
     
-    func startOfMonth() -> NSDate {
-        let dateStringFormatter = NSDateFormatter()
+    func startOfMonth() -> Date {
+        let dateStringFormatter = DateFormatter()
         dateStringFormatter.dateFormat = hasAMPM ? DateFormat12StartOfMonth : DateFormat24StartOfMonth
-        dateStringFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
-        return NSDate(dateString: dateStringFormatter.stringFromDate(self))
+        dateStringFormatter.timeZone = TimeZone(abbreviation: "UTC")
+        return Date(dateString: dateStringFormatter.string(from: self))
     }
  
-    func endOfMonth() -> NSDate {
-        let dateStringFormatter = NSDateFormatter()
+    func endOfMonth() -> Date {
+        let dateStringFormatter = DateFormatter()
         dateStringFormatter.dateFormat = hasAMPM ? DateFormat12StartOfMonth : DateFormat24StartOfMonth
-        dateStringFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
-        var startOfMonth : NSDate?
-        startOfMonth =  NSDate(dateString: dateStringFormatter.stringFromDate(self))
+        dateStringFormatter.timeZone = TimeZone(abbreviation: "UTC")
+        var startOfMonth : Date?
+        startOfMonth =  Date(dateString: dateStringFormatter.string(from: self))
 
-        let calendar = NSCalendar.currentCalendar()
+        let calendar = Calendar.current
  
-        let startOfNextMonth = calendar.dateByAddingUnit(.Month, value: 1, toDate: startOfMonth!, options: NSCalendarOptions(rawValue: 0))!
-        let endOfMonth = calendar.dateByAddingUnit(.Second, value: -1, toDate: startOfNextMonth, options: NSCalendarOptions(rawValue: 0))!
+        let startOfNextMonth = (calendar as NSCalendar).date(byAdding: .month, value: 1, to: startOfMonth!, options: NSCalendar.Options(rawValue: 0))!
+        let endOfMonth = (calendar as NSCalendar).date(byAdding: .second, value: -1, to: startOfNextMonth, options: NSCalendar.Options(rawValue: 0))!
         return endOfMonth
     }
     
-    func startOfNextMonth() -> NSDate {
-        let dateStringFormatter = NSDateFormatter()
+    func startOfNextMonth() -> Date {
+        let dateStringFormatter = DateFormatter()
         dateStringFormatter.dateFormat = hasAMPM ? DateFormat12StartOfMonth : DateFormat24StartOfMonth
-        dateStringFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
-        var startOfMonth : NSDate?
-        startOfMonth =  NSDate(dateString: dateStringFormatter.stringFromDate(self))
+        dateStringFormatter.timeZone = TimeZone(abbreviation: "UTC")
+        var startOfMonth : Date?
+        startOfMonth =  Date(dateString: dateStringFormatter.string(from: self))
         
-        let calendar = NSCalendar.currentCalendar()
-        let startOfNextMonth = calendar.dateByAddingUnit(.Month, value: 1, toDate: startOfMonth!, options: NSCalendarOptions(rawValue: 0))!
+        let calendar = Calendar.current
+        let startOfNextMonth = (calendar as NSCalendar).date(byAdding: .month, value: 1, to: startOfMonth!, options: NSCalendar.Options(rawValue: 0))!
         return startOfNextMonth
     }
     
-    func endOfNextMonth() -> NSDate {
-        let dateStringFormatter = NSDateFormatter()
+    func endOfNextMonth() -> Date {
+        let dateStringFormatter = DateFormatter()
         dateStringFormatter.dateFormat = hasAMPM ? DateFormat12StartOfMonth : DateFormat24StartOfMonth
-        dateStringFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
-        var startOfMonth : NSDate?
-        startOfMonth =  NSDate(dateString: dateStringFormatter.stringFromDate(self))
+        dateStringFormatter.timeZone = TimeZone(abbreviation: "UTC")
+        var startOfMonth : Date?
+        startOfMonth =  Date(dateString: dateStringFormatter.string(from: self))
         
-        let calendar = NSCalendar.currentCalendar()
+        let calendar = Calendar.current
         
-        let startOfOverMonth = calendar.dateByAddingUnit(.Month, value: 2, toDate: startOfMonth!, options: NSCalendarOptions(rawValue: 0))!
-        let endOfNextMonth = calendar.dateByAddingUnit(.Second, value: -1, toDate: startOfOverMonth, options: NSCalendarOptions(rawValue: 0))!
+        let startOfOverMonth = (calendar as NSCalendar).date(byAdding: .month, value: 2, to: startOfMonth!, options: NSCalendar.Options(rawValue: 0))!
+        let endOfNextMonth = (calendar as NSCalendar).date(byAdding: .second, value: -1, to: startOfOverMonth, options: NSCalendar.Options(rawValue: 0))!
         return endOfNextMonth
     }
     
@@ -1671,16 +1688,16 @@ extension String
 {
     typealias SimpleToFromReplaceList = [(fromSubString:String,toSubString:String)]
 
-    func simpleReplace( mapList:SimpleToFromReplaceList ) -> String
+    func simpleReplace( _ mapList:SimpleToFromReplaceList ) -> String
     {
         var string = self
 
         for (fromStr, toStr) in mapList
         {
-            let separatedList = string.componentsSeparatedByString(fromStr)
+            let separatedList = string.components(separatedBy: fromStr)
             if separatedList.count > 1
             {
-                string = separatedList.joinWithSeparator(toStr)
+                string = separatedList.joined(separator: toStr)
             }
         }
     

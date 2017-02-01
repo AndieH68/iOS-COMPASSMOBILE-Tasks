@@ -25,46 +25,46 @@ class ModelManager: NSObject {
         return sharedModelManager
     }
     
-    func executeDirectNoParameters(SQLStatement: String) -> Bool{
+    func executeDirectNoParameters(_ SQLStatement: String) -> Bool{
         sharedModelManager.database!.open()
         let isExecuted: Bool = sharedModelManager.database!.executeStatements(SQLStatement)
         sharedModelManager.database!.close()
         return isExecuted
     }
     
-    func executeDirect(SQLStatement: String, SQLParameterValues: [NSObject]?) -> Bool{
+    func executeDirect(_ SQLStatement: String, SQLParameterValues: [NSObject]?) -> Bool{
         sharedModelManager.database!.open()
-        let isExecuted: Bool = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        let isExecuted: Bool = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
         sharedModelManager.database!.close()
         return isExecuted
     }
     
-    func executeSingleValueReader(SQLStatement: String, SQLParameterValues: [NSObject]?) -> NSObject?{
+    func executeSingleValueReader(_ SQLStatement: String, SQLParameterValues: [NSObject]?) -> NSObject?{
         var returnValue: NSObject = NSObject()
         sharedModelManager.database!.open()
-        let resultSet = sharedModelManager.database!.executeQuery(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        let resultSet = sharedModelManager.database!.executeQuery(SQLStatement, withArgumentsIn: SQLParameterValues)
         if (resultSet != nil) {
-            while resultSet.next() {
-                returnValue = resultSet.objectForColumnIndex(0) as! NSObject
+            while (resultSet?.next())! {
+                returnValue = resultSet?.object(forColumnIndex: 0) as! NSObject
             }
         }
         sharedModelManager.database!.close()
         return returnValue
     }
     
-    func executeSingleDateReader(SQLStatement: String, SQLParameterValues: [NSObject]?) -> NSDate?{
+    func executeSingleDateReader(_ SQLStatement: String, SQLParameterValues: [NSObject]?) -> Date?{
         sharedModelManager.database!.open()
-        let resultSet = sharedModelManager.database!.executeQuery(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        let resultSet = sharedModelManager.database!.executeQuery(SQLStatement, withArgumentsIn: SQLParameterValues)
         if (resultSet != nil) {
-            while resultSet.next() {
-                return resultSet.dateForColumnIndex(0)
+            while (resultSet?.next())! {
+                return resultSet?.date(forColumnIndex: 0)
             }
         }
         sharedModelManager.database!.close()
         return nil
     }
     
-    func buildWhereClause(criteria: Dictionary<String, AnyObject>) -> (whereClause: String, whereValues: [AnyObject]) {
+    func buildWhereClause(_ criteria: Dictionary<String, AnyObject>) -> (whereClause: String, whereValues: [AnyObject]) {
         var whereClause: String = String()
         var loopCount: Int32 = 0
         var whereValues: [AnyObject] = [AnyObject]()
@@ -90,7 +90,7 @@ class ModelManager: NSObject {
     
     // MARK: - Asset
     
-    func addAsset(asset: Asset) -> Bool {
+    func addAsset(_ asset: Asset) -> Bool {
         //build the sql statemnt
         var SQLStatement: String = String()
         var SQLParameterNames: String = String()
@@ -99,181 +99,181 @@ class ModelManager: NSObject {
         
         SQLParameterNames = "[RowId], [CreatedBy], [CreatedOn]"
         SQLParameterPlaceholders = "?, ?, ?"
-        SQLParameterValues.append(asset.RowId)
-        SQLParameterValues.append(asset.CreatedBy)
-        SQLParameterValues.append(asset.CreatedOn)
+        SQLParameterValues.append(asset.RowId as NSObject)
+        SQLParameterValues.append(asset.CreatedBy as NSObject)
+        SQLParameterValues.append(asset.CreatedOn as NSObject)
         
         if asset.LastUpdatedBy != nil {
             SQLParameterNames += ", [LastUpdatedBy]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(asset.LastUpdatedBy!)
+            SQLParameterValues.append(asset.LastUpdatedBy! as NSObject)
         }
         
         if asset.LastUpdatedOn != nil {
             SQLParameterNames += ", [LastUpdatedOn]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(asset.LastUpdatedOn!)
+            SQLParameterValues.append(asset.LastUpdatedOn! as NSObject)
         }
         
         if asset.Deleted != nil {
             SQLParameterNames += ", [Deleted]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(asset.Deleted!)
+            SQLParameterValues.append(asset.Deleted! as NSObject)
         }
         
         SQLParameterNames += ", [AssetType]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(asset.AssetType)
+        SQLParameterValues.append(asset.AssetType as NSObject)
         SQLParameterNames += ", [PropertyId]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(asset.PropertyId)
+        SQLParameterValues.append(asset.PropertyId as NSObject)
         SQLParameterNames += ", [LocationId]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(asset.LocationId)
+        SQLParameterValues.append(asset.LocationId as NSObject)
         if asset.HydropName != nil {
             SQLParameterNames += ", [HydropName]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(asset.HydropName!)
+            SQLParameterValues.append(asset.HydropName! as NSObject)
         }
         if asset.ClientName != nil {
             SQLParameterNames += ", [ClientName]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(asset.ClientName!)
+            SQLParameterValues.append(asset.ClientName! as NSObject)
         }
         if asset.ScanCode != nil {
             SQLParameterNames += ", [ScanCode]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(asset.ScanCode!)
+            SQLParameterValues.append(asset.ScanCode! as NSObject)
         }
         if asset.HotType != nil {
             SQLParameterNames += ", [HotType]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(asset.HotType!)
+            SQLParameterValues.append(asset.HotType! as NSObject)
         }
         if asset.ColdType != nil {
             SQLParameterNames += ", [ColdType]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(asset.ColdType!)
+            SQLParameterValues.append(asset.ColdType! as NSObject)
         }
         
         SQLStatement = "INSERT INTO [Asset] (" + SQLParameterNames + ") VALUES (" + SQLParameterPlaceholders + ")"
         
         sharedModelManager.database!.open()
-        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
         sharedModelManager.database!.close()
         return isInserted
     }
     
-    func updateAsset(asset: Asset) -> Bool {
+    func updateAsset(_ asset: Asset) -> Bool {
         //build the sql statemnt
         var SQLStatement: String = String()
         var SQLParameterNames: String = String()
         var SQLParameterValues: [NSObject] = [NSObject]()
         
         SQLParameterNames = "[CreatedBy]=?, [CreatedOn]=?"
-        SQLParameterValues.append(asset.CreatedBy)
-        SQLParameterValues.append(asset.CreatedOn)
+        SQLParameterValues.append(asset.CreatedBy as NSObject)
+        SQLParameterValues.append(asset.CreatedOn as NSObject)
         
         if asset.LastUpdatedBy != nil {
             SQLParameterNames += ", [LastUpdatedBy]=?"
-            SQLParameterValues.append(asset.LastUpdatedBy!)
+            SQLParameterValues.append(asset.LastUpdatedBy! as NSObject)
         }
         
         if asset.LastUpdatedOn != nil {
             SQLParameterNames += ", [LastUpdatedOn]=?"
-            SQLParameterValues.append(asset.LastUpdatedOn!)
+            SQLParameterValues.append(asset.LastUpdatedOn! as NSObject)
         }
         
         if asset.Deleted != nil {
             SQLParameterNames += ", [Deleted]=?"
-            SQLParameterValues.append(asset.Deleted!)
+            SQLParameterValues.append(asset.Deleted! as NSObject)
         }
         
         SQLParameterNames += ", [AssetType]=?"
-        SQLParameterValues.append(asset.AssetType)
+        SQLParameterValues.append(asset.AssetType as NSObject)
         SQLParameterNames += ", [PropertyId]=?"
-        SQLParameterValues.append(asset.PropertyId)
+        SQLParameterValues.append(asset.PropertyId as NSObject)
         SQLParameterNames += ", [LocationId]=?"
-        SQLParameterValues.append(asset.LocationId)
+        SQLParameterValues.append(asset.LocationId as NSObject)
         if asset.HydropName != nil {
             SQLParameterNames += ", [HydropName]=?"
-            SQLParameterValues.append(asset.HydropName!)
+            SQLParameterValues.append(asset.HydropName! as NSObject)
         }
         if asset.ClientName != nil {
             SQLParameterNames += ", [ClientName]=?"
-            SQLParameterValues.append(asset.ClientName!)
+            SQLParameterValues.append(asset.ClientName! as NSObject)
         }
         if asset.ScanCode != nil {
             SQLParameterNames += ", [ScanCode]=?"
-            SQLParameterValues.append(asset.ScanCode!)
+            SQLParameterValues.append(asset.ScanCode! as NSObject)
         }
         if asset.HotType != nil {
             SQLParameterNames += ", [HotType]=?"
-            SQLParameterValues.append(asset.HotType!)
+            SQLParameterValues.append(asset.HotType! as NSObject)
         }
         if asset.ColdType != nil {
             SQLParameterNames += ", [ColdType]=?"
-            SQLParameterValues.append(asset.ColdType!)
+            SQLParameterValues.append(asset.ColdType! as NSObject)
         }
         
-        SQLParameterValues.append(asset.RowId)
+        SQLParameterValues.append(asset.RowId as NSObject)
         
         SQLStatement = "UPDATE [Asset] SET " + SQLParameterNames + "WHERE [RowId]=?"
         
         sharedModelManager.database!.open()
-        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
         sharedModelManager.database!.close()
         return isUpdated
     }
     
-    func deleteAsset(asset: Asset) -> Bool {
+    func deleteAsset(_ asset: Asset) -> Bool {
         sharedModelManager.database!.open()
-        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [Asset] WHERE [RowId]=?", withArgumentsInArray: [asset.RowId])
+        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [Asset] WHERE [RowId]=?", withArgumentsIn: [asset.RowId])
         sharedModelManager.database!.close()
         return isDeleted
     }
     
-    func getAsset(assetId: String) -> Asset? {
+    func getAsset(_ assetId: String) -> Asset? {
         sharedModelManager.database!.open()
         var asset: Asset? = nil
         
-        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [AssetType], [PropertyId], [LocationId], [HydropName], [ClientName], [ScanCode], [HotType], [ColdType] FROM [Asset] WHERE [RowId]=?", withArgumentsInArray: [assetId])
+        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [AssetType], [PropertyId], [LocationId], [HydropName], [ClientName], [ScanCode], [HotType], [ColdType] FROM [Asset] WHERE [RowId]=?", withArgumentsIn: [assetId])
         if (resultSet != nil) {
-            while resultSet.next() {
+            while (resultSet?.next())! {
                 var resultAsset: Asset = Asset()
                 resultAsset = Asset()
-                resultAsset.RowId = resultSet.stringForColumn("RowId")
-                resultAsset.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                resultAsset.CreatedOn = resultSet.dateForColumn("CreatedOn")
-                if !resultSet.columnIsNull("LastUpdatedBy")
+                resultAsset.RowId = (resultSet?.string(forColumn: "RowId"))!
+                resultAsset.CreatedBy = (resultSet?.string(forColumn: "CreatedBy"))!
+                resultAsset.CreatedOn = resultSet!.date(forColumn: "CreatedOn")
+                if !(resultSet?.columnIsNull("LastUpdatedBy"))!
                 {
-                    resultAsset.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                    resultAsset.LastUpdatedBy = resultSet?.string(forColumn: "LastUpdatedBy")
                 }
-                if !resultSet.columnIsNull("LastUpdatedOn")
+                if !(resultSet?.columnIsNull("LastUpdatedOn"))!
                 {
-                    resultAsset.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                    resultAsset.LastUpdatedOn = resultSet?.date(forColumn: "LastUpdatedOn")
                 }
-                if !resultSet.columnIsNull("Deleted")
+                if !(resultSet?.columnIsNull("Deleted"))!
                 {
-                    resultAsset.Deleted = resultSet.dateForColumn("Deleted")
+                    resultAsset.Deleted = resultSet?.date(forColumn: "Deleted")
                 }
-                resultAsset.AssetType = resultSet.stringForColumn("AssetType")
-                resultAsset.PropertyId = resultSet.stringForColumn("PropertyId")
-                resultAsset.LocationId = resultSet.stringForColumn("LocationId")
-                if !resultSet.columnIsNull("HydropName") {
-                    resultAsset.HydropName = resultSet.stringForColumn("HydropName")
+                resultAsset.AssetType = (resultSet?.string(forColumn: "AssetType"))!
+                resultAsset.PropertyId = (resultSet?.string(forColumn: "PropertyId"))!
+                resultAsset.LocationId = (resultSet?.string(forColumn: "LocationId"))!
+                if !(resultSet?.columnIsNull("HydropName"))! {
+                    resultAsset.HydropName = resultSet?.string(forColumn: "HydropName")
                 }
-                if !resultSet.columnIsNull("ClientName") {
-                    resultAsset.ClientName = resultSet.stringForColumn("ClientName")
+                if !(resultSet?.columnIsNull("ClientName"))! {
+                    resultAsset.ClientName = resultSet?.string(forColumn: "ClientName")
                 }
-                if !resultSet.columnIsNull("ScanCode") {
-                    resultAsset.ScanCode = resultSet.stringForColumn("ScanCode")
+                if !(resultSet?.columnIsNull("ScanCode"))! {
+                    resultAsset.ScanCode = resultSet?.string(forColumn: "ScanCode")
                 }
-                if !resultSet.columnIsNull("HotType") {
-                    resultAsset.HotType = resultSet.stringForColumn("HotType")
+                if !(resultSet?.columnIsNull("HotType"))! {
+                    resultAsset.HotType = resultSet?.string(forColumn: "HotType")
                 }
-                if !resultSet.columnIsNull("ColdType") {
-                    resultAsset.ColdType = resultSet.stringForColumn("ColdType")
+                if !(resultSet?.columnIsNull("ColdType"))! {
+                    resultAsset.ColdType = resultSet?.string(forColumn: "ColdType")
                 }
                 
                 asset = resultAsset
@@ -285,43 +285,43 @@ class ModelManager: NSObject {
     
     func getAllAsset() -> [Asset] {
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [AssetType], [PropertyId], [LocationId], [HydropName], [ClientName], [ScanCode], [HotType], [ColdType] FROM [Asset]", withArgumentsInArray: nil)
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [AssetType], [PropertyId], [LocationId], [HydropName], [ClientName], [ScanCode], [HotType], [ColdType] FROM [Asset]", withArgumentsIn: nil)
         var assetList: [Asset] = [Asset]()
         if (resultSet != nil) {
             while resultSet.next() {
                 let asset : Asset = Asset()
-                asset.RowId = resultSet.stringForColumn("RowId")
-                asset.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                asset.CreatedOn = resultSet.dateForColumn("CreatedOn")
+                asset.RowId = resultSet.string(forColumn: "RowId")
+                asset.CreatedBy = resultSet.string(forColumn: "CreatedBy")
+                asset.CreatedOn = resultSet.date(forColumn: "CreatedOn")
                 if !resultSet.columnIsNull("LastUpdatedBy")
                 {
-                    asset.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                    asset.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
                 }
                 if !resultSet.columnIsNull("LastUpdatedOn")
                 {
-                    asset.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                    asset.LastUpdatedOn = resultSet.date(forColumn: "LastUpdatedOn")
                 }
                 if !resultSet.columnIsNull("Deleted")
                 {
-                    asset.Deleted = resultSet.dateForColumn("Deleted")
+                    asset.Deleted = resultSet.date(forColumn: "Deleted")
                 }
-                asset.AssetType = resultSet.stringForColumn("AssetType")
-                asset.PropertyId = resultSet.stringForColumn("PropertyId")
-                asset.LocationId = resultSet.stringForColumn("LocationId")
+                asset.AssetType = resultSet.string(forColumn: "AssetType")
+                asset.PropertyId = resultSet.string(forColumn: "PropertyId")
+                asset.LocationId = resultSet.string(forColumn: "LocationId")
                 if !resultSet.columnIsNull("HydropName") {
-                    asset.HydropName = resultSet.stringForColumn("HydropName")
+                    asset.HydropName = resultSet.string(forColumn: "HydropName")
                 }
                 if !resultSet.columnIsNull("ClientName") {
-                    asset.ClientName = resultSet.stringForColumn("ClientName")
+                    asset.ClientName = resultSet.string(forColumn: "ClientName")
                 }
                 if !resultSet.columnIsNull("ScanCode") {
-                    asset.ScanCode = resultSet.stringForColumn("ScanCode")
+                    asset.ScanCode = resultSet.string(forColumn: "ScanCode")
                 }
                 if !resultSet.columnIsNull("HotType") {
-                    asset.HotType = resultSet.stringForColumn("HotType")
+                    asset.HotType = resultSet.string(forColumn: "HotType")
                 }
                 if !resultSet.columnIsNull("ColdType") {
-                    asset.ColdType = resultSet.stringForColumn("ColdType")
+                    asset.ColdType = resultSet.string(forColumn: "ColdType")
                 }
                 
                 assetList.append(asset)
@@ -331,14 +331,14 @@ class ModelManager: NSObject {
         return assetList
     }
     
-    func findAssetList(criteria: Dictionary<String, AnyObject>) -> [Asset] {
+    func findAssetList(_ criteria: Dictionary<String, AnyObject>) -> [Asset] {
         var list: [Asset] = [Asset]()
         //var count: Int32 = 0
         (list, _) = findAssetList(criteria, pageSize: nil, pageNumber: nil)
         return list
     }
 
-    func findAssetList(criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [Asset], Count: Int32) {
+    func findAssetList(_ criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [Asset], Count: Int32) {
         
         //return variables
         var count: Int32 = 0
@@ -356,10 +356,10 @@ class ModelManager: NSObject {
         }
    
         sharedModelManager.database!.open()
-        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [Asset] " + whereClause, withArgumentsInArray: whereValues)
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [Asset] " + whereClause, withArgumentsIn: whereValues)
         if (countSet != nil) {
             while countSet.next() {
-                count = countSet.intForColumnIndex(0)
+                count = countSet.int(forColumnIndex: 0)
             }
         }
         
@@ -371,42 +371,42 @@ class ModelManager: NSObject {
                 pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
             }
             
-            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [AssetType], [PropertyId], [LocationId], [HydropName], [ClientName], [ScanCode], [HotType], [ColdType] FROM [Asset] " + whereClause + pageClause, withArgumentsInArray: whereValues)
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [AssetType], [PropertyId], [LocationId], [HydropName], [ClientName], [ScanCode], [HotType], [ColdType] FROM [Asset] " + whereClause + pageClause, withArgumentsIn: whereValues)
             if (resultSet != nil) {
                 while resultSet.next() {
                     let asset : Asset = Asset()
-                    asset.RowId = resultSet.stringForColumn("RowId")
-                    asset.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                    asset.CreatedOn = resultSet.dateForColumn("CreatedOn")
+                    asset.RowId = resultSet.string(forColumn: "RowId")
+                    asset.CreatedBy = resultSet.string(forColumn: "CreatedBy")
+                    asset.CreatedOn = resultSet.date(forColumn: "CreatedOn")
                     if !resultSet.columnIsNull("LastUpdatedBy")
                     {
-                        asset.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                        asset.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
                     }
                     if !resultSet.columnIsNull("LastUpdatedOn")
                     {
-                        asset.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                        asset.LastUpdatedOn = resultSet.date(forColumn: "LastUpdatedOn")
                     }
                     if !resultSet.columnIsNull("Deleted")
                     {
-                        asset.Deleted = resultSet.dateForColumn("Deleted")
+                        asset.Deleted = resultSet.date(forColumn: "Deleted")
                     }
-                    asset.AssetType = resultSet.stringForColumn("AssetType")
-                    asset.PropertyId = resultSet.stringForColumn("PropertyId")
-                    asset.LocationId = resultSet.stringForColumn("LocationId")
+                    asset.AssetType = resultSet.string(forColumn: "AssetType")
+                    asset.PropertyId = resultSet.string(forColumn: "PropertyId")
+                    asset.LocationId = resultSet.string(forColumn: "LocationId")
                     if !resultSet.columnIsNull("HydropName") {
-                        asset.HydropName = resultSet.stringForColumn("HydropName")
+                        asset.HydropName = resultSet.string(forColumn: "HydropName")
                     }
                     if !resultSet.columnIsNull("ClientName") {
-                        asset.ClientName = resultSet.stringForColumn("ClientName")
+                        asset.ClientName = resultSet.string(forColumn: "ClientName")
                     }
                     if !resultSet.columnIsNull("ScanCode") {
-                        asset.ScanCode = resultSet.stringForColumn("ScanCode")
+                        asset.ScanCode = resultSet.string(forColumn: "ScanCode")
                     }
                     if !resultSet.columnIsNull("HotType") {
-                        asset.HotType = resultSet.stringForColumn("HotType")
+                        asset.HotType = resultSet.string(forColumn: "HotType")
                     }
                     if !resultSet.columnIsNull("ColdType") {
-                        asset.ColdType = resultSet.stringForColumn("ColdType")
+                        asset.ColdType = resultSet.string(forColumn: "ColdType")
                     }
                     
                     assetList.append(asset)
@@ -421,7 +421,7 @@ class ModelManager: NSObject {
     
     // MARK: - Location
     
-    func addLocation(location: Location) -> Bool {
+    func addLocation(_ location: Location) -> Bool {
         //build the sql statemnt
         var SQLStatement: String = String()
         var SQLParameterNames: String = String()
@@ -430,189 +430,189 @@ class ModelManager: NSObject {
         
         SQLParameterNames = "[RowId], [CreatedBy], [CreatedOn]"
         SQLParameterPlaceholders = "?, ?, ?"
-        SQLParameterValues.append(location.RowId)
-        SQLParameterValues.append(location.CreatedBy)
-        SQLParameterValues.append(location.CreatedOn)
+        SQLParameterValues.append(location.RowId as NSObject)
+        SQLParameterValues.append(location.CreatedBy as NSObject)
+        SQLParameterValues.append(location.CreatedOn as NSObject)
         
         if location.LastUpdatedBy != nil {
             SQLParameterNames += ", [LastUpdatedBy]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(location.LastUpdatedBy!)
+            SQLParameterValues.append(location.LastUpdatedBy! as NSObject)
         }
         
         if location.LastUpdatedOn != nil {
             SQLParameterNames += ", [LastUpdatedOn]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(location.LastUpdatedOn!)
+            SQLParameterValues.append(location.LastUpdatedOn! as NSObject)
         }
         
         if location.Deleted != nil {
             SQLParameterNames += ", [Deleted]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(location.Deleted!)
+            SQLParameterValues.append(location.Deleted! as NSObject)
         }
         
         SQLParameterNames += ", [PropertyId]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(location.PropertyId)
+        SQLParameterValues.append(location.PropertyId as NSObject)
         SQLParameterNames += ", [Name]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(location.Name)
+        SQLParameterValues.append(location.Name as NSObject)
         if location.Description != nil {
             SQLParameterNames += ", [Description]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(location.Description!)
+            SQLParameterValues.append(location.Description! as NSObject)
         }
         if location.Level != nil {
             SQLParameterNames += ", [Level]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(location.Level!)
+            SQLParameterValues.append(location.Level! as NSObject)
         }
         if location.Number != nil {
             SQLParameterNames += ", [Number]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(location.Number!)
+            SQLParameterValues.append(location.Number! as NSObject)
         }
         if location.SubNumber != nil {
             SQLParameterNames += ", [SubNumber]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(location.SubNumber!)
+            SQLParameterValues.append(location.SubNumber! as NSObject)
         }
         if location.Use != nil {
             SQLParameterNames += ", [Use]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(location.Use!)
+            SQLParameterValues.append(location.Use! as NSObject)
         }
         if location.ClientLocationName != nil {
             SQLParameterNames += ", [ClientLocationName]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(location.ClientLocationName!)
+            SQLParameterValues.append(location.ClientLocationName! as NSObject)
         }
         
         
         SQLStatement = "INSERT INTO [Location] (" + SQLParameterNames + ") VALUES (" + SQLParameterPlaceholders + ")"
         
         sharedModelManager.database!.open()
-        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
         sharedModelManager.database!.close()
         return isInserted
     }
     
-    func updateLocation(location: Location) -> Bool {
+    func updateLocation(_ location: Location) -> Bool {
         //build the sql statemnt
         var SQLStatement: String = String()
         var SQLParameterNames: String = String()
         var SQLParameterValues: [NSObject] = [NSObject]()
         
         SQLParameterNames = "[CreatedBy]=?, [CreatedOn]=?"
-        SQLParameterValues.append(location.CreatedBy)
-        SQLParameterValues.append(location.CreatedOn)
+        SQLParameterValues.append(location.CreatedBy as NSObject)
+        SQLParameterValues.append(location.CreatedOn as NSObject)
         
         if location.LastUpdatedBy != nil {
             SQLParameterNames += ", [LastUpdatedBy]=?"
-            SQLParameterValues.append(location.LastUpdatedBy!)
+            SQLParameterValues.append(location.LastUpdatedBy! as NSObject)
         }
         
         if location.LastUpdatedOn != nil {
             SQLParameterNames += ", [LastUpdatedOn]=?"
-            SQLParameterValues.append(location.LastUpdatedOn!)
+            SQLParameterValues.append(location.LastUpdatedOn! as NSObject)
         }
         
         if location.Deleted != nil {
             SQLParameterNames += ", [Deleted]=?"
-            SQLParameterValues.append(location.Deleted!)
+            SQLParameterValues.append(location.Deleted! as NSObject)
         }
         
         SQLParameterNames += ", [PropertyId]=?"
-        SQLParameterValues.append(location.PropertyId)
+        SQLParameterValues.append(location.PropertyId as NSObject)
         SQLParameterNames += ", [Name]=?"
-        SQLParameterValues.append(location.Name)
+        SQLParameterValues.append(location.Name as NSObject)
         if location.Description != nil {
             SQLParameterNames += ", [Description]=?"
-            SQLParameterValues.append(location.Description!)
+            SQLParameterValues.append(location.Description! as NSObject)
         }
         if location.Level != nil {
             SQLParameterNames += ", [Level]=?"
-            SQLParameterValues.append(location.Level!)
+            SQLParameterValues.append(location.Level! as NSObject)
         }
         if location.Number != nil {
             SQLParameterNames += ", [Number]=?"
-            SQLParameterValues.append(location.Number!)
+            SQLParameterValues.append(location.Number! as NSObject)
         }
         if location.SubNumber != nil {
             SQLParameterNames += ", [SubNumber]=?"
-            SQLParameterValues.append(location.SubNumber!)
+            SQLParameterValues.append(location.SubNumber! as NSObject)
         }
         if location.Use != nil {
             SQLParameterNames += ", [Use]=?"
-            SQLParameterValues.append(location.Use!)
+            SQLParameterValues.append(location.Use! as NSObject)
         }
         if location.ClientLocationName != nil {
             SQLParameterNames += ", [ClientLocationName]=?"
-            SQLParameterValues.append(location.ClientLocationName!)
+            SQLParameterValues.append(location.ClientLocationName! as NSObject)
         }
         
         
-        SQLParameterValues.append(location.RowId)
+        SQLParameterValues.append(location.RowId as NSObject)
         
         SQLStatement = "UPDATE [Location] SET " + SQLParameterNames + "WHERE [RowId]=?"
         
         sharedModelManager.database!.open()
-        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
         sharedModelManager.database!.close()
         return isUpdated
     }
     
-    func deleteLocation(location: Location) -> Bool {
+    func deleteLocation(_ location: Location) -> Bool {
         sharedModelManager.database!.open()
-        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [Location] WHERE [RowId]=?", withArgumentsInArray: [location.RowId])
+        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [Location] WHERE [RowId]=?", withArgumentsIn: [location.RowId])
         sharedModelManager.database!.close()
         return isDeleted
     }
     
-    func getLocation(locationId: String) -> Location? {
+    func getLocation(_ locationId: String) -> Location? {
         sharedModelManager.database!.open()
         var location: Location? = nil
         
-        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [PropertyId], [Name], [Description], [Level], [Number], [SubNumber], [Use], [ClientLocationName] FROM [Location] WHERE [RowId]=?", withArgumentsInArray: [locationId])
+        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [PropertyId], [Name], [Description], [Level], [Number], [SubNumber], [Use], [ClientLocationName] FROM [Location] WHERE [RowId]=?", withArgumentsIn: [locationId])
         if (resultSet != nil) {
-            while resultSet.next() {
+            while (resultSet?.next())! {
                 var resultLocation: Location = Location()
                 resultLocation = Location()
-                resultLocation.RowId = resultSet.stringForColumn("RowId")
-                resultLocation.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                resultLocation.CreatedOn = resultSet.dateForColumn("CreatedOn")
-                if !resultSet.columnIsNull("LastUpdatedBy")
+                resultLocation.RowId = (resultSet?.string(forColumn: "RowId"))!
+                resultLocation.CreatedBy = (resultSet?.string(forColumn: "CreatedBy"))!
+                resultLocation.CreatedOn = resultSet!.date(forColumn: "CreatedOn")
+                if !(resultSet?.columnIsNull("LastUpdatedBy"))!
                 {
-                    resultLocation.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                    resultLocation.LastUpdatedBy = resultSet?.string(forColumn: "LastUpdatedBy")
                 }
-                if !resultSet.columnIsNull("LastUpdatedOn")
+                if !(resultSet?.columnIsNull("LastUpdatedOn"))!
                 {
-                    resultLocation.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                    resultLocation.LastUpdatedOn = resultSet?.date(forColumn: "LastUpdatedOn")
                 }
-                if !resultSet.columnIsNull("Deleted")
+                if !(resultSet?.columnIsNull("Deleted"))!
                 {
-                    resultLocation.Deleted = resultSet.dateForColumn("Deleted")
+                    resultLocation.Deleted = resultSet?.date(forColumn: "Deleted")
                 }
-                resultLocation.PropertyId = resultSet.stringForColumn("PropertyId")
-                resultLocation.Name = resultSet.stringForColumn("Name")
-                if !resultSet.columnIsNull("Description") {
-                    resultLocation.Description = resultSet.stringForColumn("Description")
+                resultLocation.PropertyId = (resultSet?.string(forColumn: "PropertyId"))!
+                resultLocation.Name = (resultSet?.string(forColumn: "Name"))!
+                if !(resultSet?.columnIsNull("Description"))! {
+                    resultLocation.Description = resultSet?.string(forColumn: "Description")
                 }
-                if !resultSet.columnIsNull("Level") {
-                    resultLocation.Level = resultSet.stringForColumn("Level")
+                if !(resultSet?.columnIsNull("Level"))! {
+                    resultLocation.Level = resultSet?.string(forColumn: "Level")
                 }
-                if !resultSet.columnIsNull("Number") {
-                    resultLocation.Number = resultSet.stringForColumn("Number")
+                if !(resultSet?.columnIsNull("Number"))! {
+                    resultLocation.Number = resultSet?.string(forColumn: "Number")
                 }
-                if !resultSet.columnIsNull("SubNumber") {
-                    resultLocation.SubNumber = resultSet.stringForColumn("SubNumber")
+                if !(resultSet?.columnIsNull("SubNumber"))! {
+                    resultLocation.SubNumber = resultSet?.string(forColumn: "SubNumber")
                 }
-                if !resultSet.columnIsNull("Use") {
-                    resultLocation.Use = resultSet.stringForColumn("Use")
+                if !(resultSet?.columnIsNull("Use"))! {
+                    resultLocation.Use = resultSet?.string(forColumn: "Use")
                 }
-                if !resultSet.columnIsNull("ClientLocationName") {
-                    resultLocation.ClientLocationName = resultSet.stringForColumn("ClientLocationName")
+                if !(resultSet?.columnIsNull("ClientLocationName"))! {
+                    resultLocation.ClientLocationName = resultSet?.string(forColumn: "ClientLocationName")
                 }
                 
                 location = resultLocation
@@ -624,45 +624,45 @@ class ModelManager: NSObject {
     
     func getAllLocation() -> [Location] {
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [PropertyId], [Name], [Description], [Level], [Number], [SubNumber], [Use], [ClientLocationName] FROM [Location]", withArgumentsInArray: nil)
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [PropertyId], [Name], [Description], [Level], [Number], [SubNumber], [Use], [ClientLocationName] FROM [Location]", withArgumentsIn: nil)
         var locationList : [Location] = [Location]()
         if (resultSet != nil) {
             while resultSet.next() {
                 let location : Location = Location()
-                location.RowId = resultSet.stringForColumn("RowId")
-                location.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                location.CreatedOn = resultSet.dateForColumn("CreatedOn")
+                location.RowId = resultSet.string(forColumn: "RowId")
+                location.CreatedBy = resultSet.string(forColumn: "CreatedBy")
+                location.CreatedOn = resultSet.date(forColumn: "CreatedOn")
                 if !resultSet.columnIsNull("LastUpdatedBy")
                 {
-                    location.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                    location.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
                 }
                 if !resultSet.columnIsNull("LastUpdatedOn")
                 {
-                    location.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                    location.LastUpdatedOn = resultSet.date(forColumn: "LastUpdatedOn")
                 }
                 if !resultSet.columnIsNull("Deleted")
                 {
-                    location.Deleted = resultSet.dateForColumn("Deleted")
+                    location.Deleted = resultSet.date(forColumn: "Deleted")
                 }
-                location.PropertyId = resultSet.stringForColumn("PropertyId")
-                location.Name = resultSet.stringForColumn("Name")
+                location.PropertyId = resultSet.string(forColumn: "PropertyId")
+                location.Name = resultSet.string(forColumn: "Name")
                 if !resultSet.columnIsNull("Description") {
-                    location.Description = resultSet.stringForColumn("Description")
+                    location.Description = resultSet.string(forColumn: "Description")
                 }
                 if !resultSet.columnIsNull("Level") {
-                    location.Level = resultSet.stringForColumn("Level")
+                    location.Level = resultSet.string(forColumn: "Level")
                 }
                 if !resultSet.columnIsNull("Number") {
-                    location.Number = resultSet.stringForColumn("Number")
+                    location.Number = resultSet.string(forColumn: "Number")
                 }
                 if !resultSet.columnIsNull("SubNumber") {
-                    location.SubNumber = resultSet.stringForColumn("SubNumber")
+                    location.SubNumber = resultSet.string(forColumn: "SubNumber")
                 }
                 if !resultSet.columnIsNull("Use") {
-                    location.Use = resultSet.stringForColumn("Use")
+                    location.Use = resultSet.string(forColumn: "Use")
                 }
                 if !resultSet.columnIsNull("ClientLocationName") {
-                    location.ClientLocationName = resultSet.stringForColumn("ClientLocationName")
+                    location.ClientLocationName = resultSet.string(forColumn: "ClientLocationName")
                 }
                 
                 locationList.append(location)
@@ -672,14 +672,14 @@ class ModelManager: NSObject {
         return locationList
     }
     
-    func findLocationList(criteria: Dictionary<String, AnyObject>) -> [Location] {
+    func findLocationList(_ criteria: Dictionary<String, AnyObject>) -> [Location] {
         var list: [Location] = [Location]()
         //var count: Int32 = 0
         (list, _) = findLocationList(criteria, pageSize: nil, pageNumber: nil)
         return list
     }
 
-    func findLocationList(criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [Location], Count: Int32) {
+    func findLocationList(_ criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [Location], Count: Int32) {
         //return variables
         var count: Int32 = 0
         var locationList: [Location] = [Location]()
@@ -699,10 +699,10 @@ class ModelManager: NSObject {
         }
 
         sharedModelManager.database!.open()
-        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [Location] " + whereClause + orderByClause, withArgumentsInArray: whereValues)
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [Location] " + whereClause + orderByClause, withArgumentsIn: whereValues)
         if (countSet != nil) {
             while countSet.next() {
-                count = countSet.intForColumnIndex(0)
+                count = countSet.int(forColumnIndex: 0)
             }
         }
         
@@ -714,44 +714,44 @@ class ModelManager: NSObject {
                 pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
             }
             
-            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [PropertyId], [Name], [Description], [Level], [Number], [SubNumber], [Use], [ClientLocationName] FROM [Location] " + whereClause + orderByClause + pageClause, withArgumentsInArray: whereValues)
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [PropertyId], [Name], [Description], [Level], [Number], [SubNumber], [Use], [ClientLocationName] FROM [Location] " + whereClause + orderByClause + pageClause, withArgumentsIn: whereValues)
             
             if (resultSet != nil) {
                 while resultSet.next() {
                     let location : Location = Location()
-                    location.RowId = resultSet.stringForColumn("RowId")
-                    location.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                    location.CreatedOn = resultSet.dateForColumn("CreatedOn")
+                    location.RowId = resultSet.string(forColumn: "RowId")
+                    location.CreatedBy = resultSet.string(forColumn: "CreatedBy")
+                    location.CreatedOn = resultSet.date(forColumn: "CreatedOn")
                     if !resultSet.columnIsNull("LastUpdatedBy") {
-                        location.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                        location.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
                     }
                     if !resultSet.columnIsNull("LastUpdatedOn")
                     {
-                        location.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                        location.LastUpdatedOn = resultSet.date(forColumn: "LastUpdatedOn")
                     }
                     if !resultSet.columnIsNull("Deleted")
                     {
-                        location.Deleted = resultSet.dateForColumn("Deleted")
+                        location.Deleted = resultSet.date(forColumn: "Deleted")
                     }
-                    location.PropertyId = resultSet.stringForColumn("PropertyId")
-                    location.Name = resultSet.stringForColumn("Name")
+                    location.PropertyId = resultSet.string(forColumn: "PropertyId")
+                    location.Name = resultSet.string(forColumn: "Name")
                     if !resultSet.columnIsNull("Description") {
-                        location.Description = resultSet.stringForColumn("Description")
+                        location.Description = resultSet.string(forColumn: "Description")
                     }
                     if !resultSet.columnIsNull("Level") {
-                        location.Level = resultSet.stringForColumn("Level")
+                        location.Level = resultSet.string(forColumn: "Level")
                     }
                     if !resultSet.columnIsNull("Number") {
-                        location.Number = resultSet.stringForColumn("Number")
+                        location.Number = resultSet.string(forColumn: "Number")
                     }
                     if !resultSet.columnIsNull("SubNumber") {
-                        location.SubNumber = resultSet.stringForColumn("SubNumber")
+                        location.SubNumber = resultSet.string(forColumn: "SubNumber")
                     }
                     if !resultSet.columnIsNull("Use") {
-                        location.Use = resultSet.stringForColumn("Use")
+                        location.Use = resultSet.string(forColumn: "Use")
                     }
                     if !resultSet.columnIsNull("ClientLocationName") {
-                        location.ClientLocationName = resultSet.stringForColumn("ClientLocationName")
+                        location.ClientLocationName = resultSet.string(forColumn: "ClientLocationName")
                     }
                     
                     locationList.append(location)
@@ -763,7 +763,7 @@ class ModelManager: NSObject {
         return (locationList, count)
     }
 
-    func findLocationListByLocationGroup(LocationGroupId: String, criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [Location], Count: Int32) {
+    func findLocationListByLocationGroup(_ LocationGroupId: String, criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [Location], Count: Int32) {
         //return variables
         var count: Int32 = 0
         var locationList: [Location] = [Location]()
@@ -777,7 +777,7 @@ class ModelManager: NSObject {
         
         (whereClause, whereValues) = buildWhereClause(criteria)
         whereClause += (whereClause != "" ? " AND " : "") + " [LocationGroupMembership].[LocationGroupId] = ? "
-        whereValues.append(LocationGroupId)
+        whereValues.append(LocationGroupId as AnyObject)
         
         if (whereClause != "")
         {
@@ -785,10 +785,10 @@ class ModelManager: NSObject {
         }
         
         sharedModelManager.database!.open()
-        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([Location].[RowId]) FROM [Location] INNER JOIN [LocationGroupMembership] ON [Location].[RowId] = [LocationGroupMembership].[LocationId] " + whereClause + orderByClause, withArgumentsInArray: whereValues)
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([Location].[RowId]) FROM [Location] INNER JOIN [LocationGroupMembership] ON [Location].[RowId] = [LocationGroupMembership].[LocationId] " + whereClause + orderByClause, withArgumentsIn: whereValues)
         if (countSet != nil) {
             while countSet.next() {
-                count = countSet.intForColumnIndex(0)
+                count = countSet.int(forColumnIndex: 0)
             }
         }
         
@@ -800,44 +800,44 @@ class ModelManager: NSObject {
                 pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
             }
             
-            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [Location].[RowId], [Location].[CreatedBy], [Location].[CreatedOn], [Location].[LastUpdatedBy], [Location].[LastUpdatedOn], [Location].[Deleted], [Location].[PropertyId], [Location].[Name], [Location].[Description], [Location].[Level], [Location].[Number], [Location].[SubNumber], [Location].[Use], [Location].[ClientLocationName] FROM [Location] INNER JOIN [LocationGroupMembership] ON [Location].[RowId] = [LocationGroupMembership].[LocationId] " + whereClause + orderByClause + pageClause, withArgumentsInArray: whereValues)
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [Location].[RowId], [Location].[CreatedBy], [Location].[CreatedOn], [Location].[LastUpdatedBy], [Location].[LastUpdatedOn], [Location].[Deleted], [Location].[PropertyId], [Location].[Name], [Location].[Description], [Location].[Level], [Location].[Number], [Location].[SubNumber], [Location].[Use], [Location].[ClientLocationName] FROM [Location] INNER JOIN [LocationGroupMembership] ON [Location].[RowId] = [LocationGroupMembership].[LocationId] " + whereClause + orderByClause + pageClause, withArgumentsIn: whereValues)
             
             if (resultSet != nil) {
                 while resultSet.next() {
                     let location : Location = Location()
-                    location.RowId = resultSet.stringForColumn("RowId")
-                    location.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                    location.CreatedOn = resultSet.dateForColumn("CreatedOn")
+                    location.RowId = resultSet.string(forColumn: "RowId")
+                    location.CreatedBy = resultSet.string(forColumn: "CreatedBy")
+                    location.CreatedOn = resultSet.date(forColumn: "CreatedOn")
                     if !resultSet.columnIsNull("LastUpdatedBy") {
-                        location.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                        location.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
                     }
                     if !resultSet.columnIsNull("LastUpdatedOn")
                     {
-                        location.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                        location.LastUpdatedOn = resultSet.date(forColumn: "LastUpdatedOn")
                     }
                     if !resultSet.columnIsNull("Deleted")
                     {
-                        location.Deleted = resultSet.dateForColumn("Deleted")
+                        location.Deleted = resultSet.date(forColumn: "Deleted")
                     }
-                    location.PropertyId = resultSet.stringForColumn("PropertyId")
-                    location.Name = resultSet.stringForColumn("Name")
+                    location.PropertyId = resultSet.string(forColumn: "PropertyId")
+                    location.Name = resultSet.string(forColumn: "Name")
                     if !resultSet.columnIsNull("Description") {
-                        location.Description = resultSet.stringForColumn("Description")
+                        location.Description = resultSet.string(forColumn: "Description")
                     }
                     if !resultSet.columnIsNull("Level") {
-                        location.Level = resultSet.stringForColumn("Level")
+                        location.Level = resultSet.string(forColumn: "Level")
                     }
                     if !resultSet.columnIsNull("Number") {
-                        location.Number = resultSet.stringForColumn("Number")
+                        location.Number = resultSet.string(forColumn: "Number")
                     }
                     if !resultSet.columnIsNull("SubNumber") {
-                        location.SubNumber = resultSet.stringForColumn("SubNumber")
+                        location.SubNumber = resultSet.string(forColumn: "SubNumber")
                     }
                     if !resultSet.columnIsNull("Use") {
-                        location.Use = resultSet.stringForColumn("Use")
+                        location.Use = resultSet.string(forColumn: "Use")
                     }
                     if !resultSet.columnIsNull("ClientLocationName") {
-                        location.ClientLocationName = resultSet.stringForColumn("ClientLocationName")
+                        location.ClientLocationName = resultSet.string(forColumn: "ClientLocationName")
                     }
                     
                     locationList.append(location)
@@ -851,7 +851,7 @@ class ModelManager: NSObject {
 
     // MARK: - LocationGroup
     
-    func addLocationGroup(locationGroup: LocationGroup) -> Bool {
+    func addLocationGroup(_ locationGroup: LocationGroup) -> Bool {
         //build the sql statemnt
         var SQLStatement: String = String()
         var SQLParameterNames: String = String()
@@ -860,156 +860,156 @@ class ModelManager: NSObject {
         
         SQLParameterNames = "[RowId], [CreatedBy], [CreatedOn]"
         SQLParameterPlaceholders = "?, ?, ?"
-        SQLParameterValues.append(locationGroup.RowId)
-        SQLParameterValues.append(locationGroup.CreatedBy)
-        SQLParameterValues.append(locationGroup.CreatedOn)
+        SQLParameterValues.append(locationGroup.RowId as NSObject)
+        SQLParameterValues.append(locationGroup.CreatedBy as NSObject)
+        SQLParameterValues.append(locationGroup.CreatedOn as NSObject)
         
         if locationGroup.LastUpdatedBy != nil {
             SQLParameterNames += ", [LastUpdatedBy]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(locationGroup.LastUpdatedBy!)
+            SQLParameterValues.append(locationGroup.LastUpdatedBy! as NSObject)
         }
         
         if locationGroup.LastUpdatedOn != nil {
             SQLParameterNames += ", [LastUpdatedOn]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(locationGroup.LastUpdatedOn!)
+            SQLParameterValues.append(locationGroup.LastUpdatedOn! as NSObject)
         }
         
         if locationGroup.Deleted != nil {
             SQLParameterNames += ", [Deleted]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(locationGroup.Deleted!)
+            SQLParameterValues.append(locationGroup.Deleted! as NSObject)
         }
         SQLParameterNames += ", [PropertyId]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(locationGroup.PropertyId)
-        if locationGroup.Type != nil {
+        SQLParameterValues.append(locationGroup.PropertyId as NSObject)
+        if locationGroup.LocationGroupType != nil {
             SQLParameterNames += ", [Type]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(locationGroup.Type!)
+            SQLParameterValues.append(locationGroup.LocationGroupType! as NSObject)
         }
         if locationGroup.Name != nil {
             SQLParameterNames += ", [Name]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(locationGroup.Name!)
+            SQLParameterValues.append(locationGroup.Name! as NSObject)
         }
         if locationGroup.Description != nil {
             SQLParameterNames += ", [Description]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(locationGroup.Description!)
+            SQLParameterValues.append(locationGroup.Description! as NSObject)
         }
         if locationGroup.OccupantRiskFactor != nil {
             SQLParameterNames += ", [OccupantRiskFactor]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(locationGroup.OccupantRiskFactor!)
+            SQLParameterValues.append(locationGroup.OccupantRiskFactor! as NSObject)
         }
         
         SQLStatement = "INSERT INTO [LocationGroup] (" + SQLParameterNames + ") VALUES (" + SQLParameterPlaceholders + ")"
         
         sharedModelManager.database!.open()
-        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
         sharedModelManager.database!.close()
         return isInserted
     }
     
-    func updateLocationGroup(locationGroup: LocationGroup) -> Bool {
+    func updateLocationGroup(_ locationGroup: LocationGroup) -> Bool {
         //build the sql statemnt
         var SQLStatement: String = String()
         var SQLParameterNames: String = String()
         var SQLParameterValues: [NSObject] = [NSObject]()
         
         SQLParameterNames = "[CreatedBy]=?, [CreatedOn]=?"
-        SQLParameterValues.append(locationGroup.CreatedBy)
-        SQLParameterValues.append(locationGroup.CreatedOn)
+        SQLParameterValues.append(locationGroup.CreatedBy as NSObject)
+        SQLParameterValues.append(locationGroup.CreatedOn as NSObject)
         
         if locationGroup.LastUpdatedBy != nil {
             SQLParameterNames += ", [LastUpdatedBy]=?"
-            SQLParameterValues.append(locationGroup.LastUpdatedBy!)
+            SQLParameterValues.append(locationGroup.LastUpdatedBy! as NSObject)
         }
         
         if locationGroup.LastUpdatedOn != nil {
             SQLParameterNames += ", [LastUpdatedOn]=?"
-            SQLParameterValues.append(locationGroup.LastUpdatedOn!)
+            SQLParameterValues.append(locationGroup.LastUpdatedOn! as NSObject)
         }
         
         if locationGroup.Deleted != nil {
             SQLParameterNames += ", [Deleted]=?"
-            SQLParameterValues.append(locationGroup.Deleted!)
+            SQLParameterValues.append(locationGroup.Deleted! as NSObject)
         }
         SQLParameterNames += ", [PropertyId]=?"
-        SQLParameterValues.append(locationGroup.PropertyId)
-        if locationGroup.Type != nil {
+        SQLParameterValues.append(locationGroup.PropertyId as NSObject)
+        if locationGroup.LocationGroupType != nil {
             SQLParameterNames += ", [Type]=?"
-            SQLParameterValues.append(locationGroup.Type!)
+            SQLParameterValues.append(locationGroup.LocationGroupType! as NSObject)
         }
         if locationGroup.Name != nil {
             SQLParameterNames += ", [Name]=?"
-            SQLParameterValues.append(locationGroup.Name!)
+            SQLParameterValues.append(locationGroup.Name! as NSObject)
         }
         if locationGroup.Description != nil {
             SQLParameterNames += ", [Description]=?"
-            SQLParameterValues.append(locationGroup.Description!)
+            SQLParameterValues.append(locationGroup.Description! as NSObject)
         }
         if locationGroup.OccupantRiskFactor != nil {
             SQLParameterNames += ", [OccupantRiskFactor]=?"
-            SQLParameterValues.append(locationGroup.OccupantRiskFactor!)
+            SQLParameterValues.append(locationGroup.OccupantRiskFactor! as NSObject)
         }
         
         
-        SQLParameterValues.append(locationGroup.RowId)
+        SQLParameterValues.append(locationGroup.RowId as NSObject)
         
         SQLStatement = "UPDATE [LocationGroup] SET " + SQLParameterNames + "WHERE [RowId]=?"
         
         sharedModelManager.database!.open()
-        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
         sharedModelManager.database!.close()
         return isUpdated
     }
     
-    func deleteLocationGroup(locationGroup: LocationGroup) -> Bool {
+    func deleteLocationGroup(_ locationGroup: LocationGroup) -> Bool {
         sharedModelManager.database!.open()
-        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [LocationGroup] WHERE [RowId]=?", withArgumentsInArray: [locationGroup.RowId])
+        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [LocationGroup] WHERE [RowId]=?", withArgumentsIn: [locationGroup.RowId])
         sharedModelManager.database!.close()
         return isDeleted
     }
     
-    func getLocationGroup(locationGroupId: String) -> LocationGroup? {
+    func getLocationGroup(_ locationGroupId: String) -> LocationGroup? {
         sharedModelManager.database!.open()
         var locationGroup: LocationGroup? = nil
         
-        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [PropertyId], [Type], [Name], [Description], [OccupantRiskFactor] FROM [LocationGroup] WHERE [RowId]=?", withArgumentsInArray: [locationGroupId])
+        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [PropertyId], [Type], [Name], [Description], [OccupantRiskFactor] FROM [LocationGroup] WHERE [RowId]=?", withArgumentsIn: [locationGroupId])
         if (resultSet != nil) {
-            while resultSet.next() {
+            while (resultSet?.next())! {
                 var resultLocationGroup: LocationGroup = LocationGroup()
                 resultLocationGroup = LocationGroup()
-                resultLocationGroup.RowId = resultSet.stringForColumn("RowId")
-                resultLocationGroup.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                resultLocationGroup.CreatedOn = resultSet.dateForColumn("CreatedOn")
-                if !resultSet.columnIsNull("LastUpdatedBy")
+                resultLocationGroup.RowId = (resultSet?.string(forColumn: "RowId"))!
+                resultLocationGroup.CreatedBy = (resultSet?.string(forColumn: "CreatedBy"))!
+                resultLocationGroup.CreatedOn = resultSet!.date(forColumn: "CreatedOn")
+                if !(resultSet?.columnIsNull("LastUpdatedBy"))!
                 {
-                    resultLocationGroup.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                    resultLocationGroup.LastUpdatedBy = resultSet?.string(forColumn: "LastUpdatedBy")
                 }
-                if !resultSet.columnIsNull("LastUpdatedOn")
+                if !(resultSet?.columnIsNull("LastUpdatedOn"))!
                 {
-                    resultLocationGroup.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                    resultLocationGroup.LastUpdatedOn = resultSet?.date(forColumn: "LastUpdatedOn")
                 }
-                if !resultSet.columnIsNull("Deleted")
+                if !(resultSet?.columnIsNull("Deleted"))!
                 {
-                    resultLocationGroup.Deleted = resultSet.dateForColumn("Deleted")
+                    resultLocationGroup.Deleted = resultSet?.date(forColumn: "Deleted")
                 }
-                resultLocationGroup.PropertyId = resultSet.stringForColumn("PropertyId")
-                if !resultSet.columnIsNull("Type") {
-                    resultLocationGroup.Type = resultSet.stringForColumn("Type")
+                resultLocationGroup.PropertyId = (resultSet?.string(forColumn: "PropertyId"))!
+                if !(resultSet?.columnIsNull("Type"))! {
+                    resultLocationGroup.LocationGroupType = resultSet?.string(forColumn: "Type")
                 }
-                if !resultSet.columnIsNull("Name") {
-                    resultLocationGroup.Name = resultSet.stringForColumn("Name")
+                if !(resultSet?.columnIsNull("Name"))! {
+                    resultLocationGroup.Name = resultSet?.string(forColumn: "Name")
                 }
-                if !resultSet.columnIsNull("Description") {
-                    resultLocationGroup.Description = resultSet.stringForColumn("Description")
+                if !(resultSet?.columnIsNull("Description"))! {
+                    resultLocationGroup.Description = resultSet?.string(forColumn: "Description")
                 }
-                if !resultSet.columnIsNull("OccupantRiskFactor") {
-                    resultLocationGroup.OccupantRiskFactor = resultSet.stringForColumn("OccupantRiskFactor")
+                if !(resultSet?.columnIsNull("OccupantRiskFactor"))! {
+                    resultLocationGroup.OccupantRiskFactor = resultSet?.string(forColumn: "OccupantRiskFactor")
                 }
                 
                 
@@ -1022,38 +1022,38 @@ class ModelManager: NSObject {
     
     func getAllLocationGroup() -> [LocationGroup] {
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [PropertyId], [Type], [Name], [Description], [OccupantRiskFactor] FROM [LocationGroup]", withArgumentsInArray: nil)
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [PropertyId], [Type], [Name], [Description], [OccupantRiskFactor] FROM [LocationGroup]", withArgumentsIn: nil)
         var locationGroupList : [LocationGroup] = [LocationGroup]()
         if (resultSet != nil) {
             while resultSet.next() {
                 let locationGroup : LocationGroup = LocationGroup()
-                locationGroup.RowId = resultSet.stringForColumn("RowId")
-                locationGroup.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                locationGroup.CreatedOn = resultSet.dateForColumn("CreatedOn")
+                locationGroup.RowId = resultSet.string(forColumn: "RowId")
+                locationGroup.CreatedBy = resultSet.string(forColumn: "CreatedBy")
+                locationGroup.CreatedOn = resultSet.date(forColumn: "CreatedOn")
                 if !resultSet.columnIsNull("LastUpdatedBy")
                 {
-                    locationGroup.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                    locationGroup.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
                 }
                 if !resultSet.columnIsNull("LastUpdatedOn")
                 {
-                    locationGroup.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                    locationGroup.LastUpdatedOn = resultSet.date(forColumn: "LastUpdatedOn")
                 }
                 if !resultSet.columnIsNull("Deleted")
                 {
-                    locationGroup.Deleted = resultSet.dateForColumn("Deleted")
+                    locationGroup.Deleted = resultSet.date(forColumn: "Deleted")
                 }
-                locationGroup.PropertyId = resultSet.stringForColumn("PropertyId")
+                locationGroup.PropertyId = resultSet.string(forColumn: "PropertyId")
                 if !resultSet.columnIsNull("Type") {
-                    locationGroup.Type = resultSet.stringForColumn("Type")
+                    locationGroup.LocationGroupType = resultSet.string(forColumn: "Type")
                 }
                 if !resultSet.columnIsNull("Name") {
-                    locationGroup.Name = resultSet.stringForColumn("Name")
+                    locationGroup.Name = resultSet.string(forColumn: "Name")
                 }
                 if !resultSet.columnIsNull("Description") {
-                    locationGroup.Description = resultSet.stringForColumn("Description")
+                    locationGroup.Description = resultSet.string(forColumn: "Description")
                 }
                 if !resultSet.columnIsNull("OccupantRiskFactor") {
-                    locationGroup.OccupantRiskFactor = resultSet.stringForColumn("OccupantRiskFactor")
+                    locationGroup.OccupantRiskFactor = resultSet.string(forColumn: "OccupantRiskFactor")
                 }
                 
                 
@@ -1064,14 +1064,14 @@ class ModelManager: NSObject {
         return locationGroupList
     }
     
-    func findLocationGroupList(criteria: Dictionary<String, AnyObject>) -> [LocationGroup] {
+    func findLocationGroupList(_ criteria: Dictionary<String, AnyObject>) -> [LocationGroup] {
         var list: [LocationGroup] = [LocationGroup]()
         //var count: Int32 = 0
         (list, _) = findLocationGroupList(criteria, pageSize: nil, pageNumber: nil)
         return list
     }
 
-    func findLocationGroupList(criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [LocationGroup], Count: Int32) {
+    func findLocationGroupList(_ criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [LocationGroup], Count: Int32) {
         //return variables
         var count: Int32 = 0
         var locationGroupList: [LocationGroup] = [LocationGroup]()
@@ -1091,10 +1091,10 @@ class ModelManager: NSObject {
         }
 
         sharedModelManager.database!.open()
-        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [LocationGroup] " + whereClause + orderByClause, withArgumentsInArray: whereValues)
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [LocationGroup] " + whereClause + orderByClause, withArgumentsIn: whereValues)
         if (countSet != nil) {
             while countSet.next() {
-                count = countSet.intForColumnIndex(0)
+                count = countSet.int(forColumnIndex: 0)
             }
         }
         
@@ -1106,37 +1106,37 @@ class ModelManager: NSObject {
                 pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
             }
             
-            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [PropertyId], [Type], [Name], [Description], [OccupantRiskFactor] FROM [LocationGroup] " + whereClause + orderByClause + pageClause, withArgumentsInArray: whereValues)
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [PropertyId], [Type], [Name], [Description], [OccupantRiskFactor] FROM [LocationGroup] " + whereClause + orderByClause + pageClause, withArgumentsIn: whereValues)
             if (resultSet != nil) {
                 while resultSet.next() {
                     let locationGroup : LocationGroup = LocationGroup()
-                    locationGroup.RowId = resultSet.stringForColumn("RowId")
-                    locationGroup.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                    locationGroup.CreatedOn = resultSet.dateForColumn("CreatedOn")
+                    locationGroup.RowId = resultSet.string(forColumn: "RowId")
+                    locationGroup.CreatedBy = resultSet.string(forColumn: "CreatedBy")
+                    locationGroup.CreatedOn = resultSet.date(forColumn: "CreatedOn")
                     if !resultSet.columnIsNull("LastUpdatedBy")
                     {
-                        locationGroup.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                        locationGroup.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
                     }
                     if !resultSet.columnIsNull("LastUpdatedOn")
                     {
-                        locationGroup.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                        locationGroup.LastUpdatedOn = resultSet.date(forColumn: "LastUpdatedOn")
                     }
                     if !resultSet.columnIsNull("Deleted")
                     {
-                        locationGroup.Deleted = resultSet.dateForColumn("Deleted")
+                        locationGroup.Deleted = resultSet.date(forColumn: "Deleted")
                     }
-                    locationGroup.PropertyId = resultSet.stringForColumn("PropertyId")
+                    locationGroup.PropertyId = resultSet.string(forColumn: "PropertyId")
                     if !resultSet.columnIsNull("Type") {
-                        locationGroup.Type = resultSet.stringForColumn("Type")
+                        locationGroup.LocationGroupType = resultSet.string(forColumn: "Type")
                     }
                     if !resultSet.columnIsNull("Name") {
-                        locationGroup.Name = resultSet.stringForColumn("Name")
+                        locationGroup.Name = resultSet.string(forColumn: "Name")
                     }
                     if !resultSet.columnIsNull("Description") {
-                        locationGroup.Description = resultSet.stringForColumn("Description")
+                        locationGroup.Description = resultSet.string(forColumn: "Description")
                     }
                     if !resultSet.columnIsNull("OccupantRiskFactor") {
-                        locationGroup.OccupantRiskFactor = resultSet.stringForColumn("OccupantRiskFactor")
+                        locationGroup.OccupantRiskFactor = resultSet.string(forColumn: "OccupantRiskFactor")
                     }
                     
                     
@@ -1151,7 +1151,7 @@ class ModelManager: NSObject {
     
     // MARK: - LocationGroupMembership
     
-    func addLocationGroupMembership(locationGroupMembership: LocationGroupMembership) -> Bool {
+    func addLocationGroupMembership(_ locationGroupMembership: LocationGroupMembership) -> Bool {
         //build the sql statemnt
         var SQLStatement: String = String()
         var SQLParameterNames: String = String()
@@ -1160,114 +1160,114 @@ class ModelManager: NSObject {
         
         SQLParameterNames = "[RowId], [CreatedBy], [CreatedOn]"
         SQLParameterPlaceholders = "?, ?, ?"
-        SQLParameterValues.append(locationGroupMembership.RowId)
-        SQLParameterValues.append(locationGroupMembership.CreatedBy)
-        SQLParameterValues.append(locationGroupMembership.CreatedOn)
+        SQLParameterValues.append(locationGroupMembership.RowId as NSObject)
+        SQLParameterValues.append(locationGroupMembership.CreatedBy as NSObject)
+        SQLParameterValues.append(locationGroupMembership.CreatedOn as NSObject)
         
         if locationGroupMembership.LastUpdatedBy != nil {
             SQLParameterNames += ", [LastUpdatedBy]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(locationGroupMembership.LastUpdatedBy!)
+            SQLParameterValues.append(locationGroupMembership.LastUpdatedBy! as NSObject)
         }
         
         if locationGroupMembership.LastUpdatedOn != nil {
             SQLParameterNames += ", [LastUpdatedOn]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(locationGroupMembership.LastUpdatedOn!)
+            SQLParameterValues.append(locationGroupMembership.LastUpdatedOn! as NSObject)
         }
         
         if locationGroupMembership.Deleted != nil {
             SQLParameterNames += ", [Deleted]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(locationGroupMembership.Deleted!)
+            SQLParameterValues.append(locationGroupMembership.Deleted! as NSObject)
         }
         SQLParameterNames += ", [LocationGroupId]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(locationGroupMembership.LocationGroupId)
+        SQLParameterValues.append(locationGroupMembership.LocationGroupId as NSObject)
         SQLParameterNames += ", [LocationId]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(locationGroupMembership.LocationId)
+        SQLParameterValues.append(locationGroupMembership.LocationId as NSObject)
         
         SQLStatement = "INSERT INTO [LocationGroupMembership] (" + SQLParameterNames + ") VALUES (" + SQLParameterPlaceholders + ")"
         
         sharedModelManager.database!.open()
-        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
         sharedModelManager.database!.close()
         return isInserted
     }
     
-    func updateLocationGroupMembership(locationGroupMembership: LocationGroupMembership) -> Bool {
+    func updateLocationGroupMembership(_ locationGroupMembership: LocationGroupMembership) -> Bool {
         //build the sql statemnt
         var SQLStatement: String = String()
         var SQLParameterNames: String = String()
         var SQLParameterValues: [NSObject] = [NSObject]()
         
         SQLParameterNames = "[CreatedBy]=?, [CreatedOn]=?"
-        SQLParameterValues.append(locationGroupMembership.CreatedBy)
-        SQLParameterValues.append(locationGroupMembership.CreatedOn)
+        SQLParameterValues.append(locationGroupMembership.CreatedBy as NSObject)
+        SQLParameterValues.append(locationGroupMembership.CreatedOn as NSObject)
         
         if locationGroupMembership.LastUpdatedBy != nil {
             SQLParameterNames += ", [LastUpdatedBy]=?"
-            SQLParameterValues.append(locationGroupMembership.LastUpdatedBy!)
+            SQLParameterValues.append(locationGroupMembership.LastUpdatedBy! as NSObject)
         }
         
         if locationGroupMembership.LastUpdatedOn != nil {
             SQLParameterNames += ", [LastUpdatedOn]=?"
-            SQLParameterValues.append(locationGroupMembership.LastUpdatedOn!)
+            SQLParameterValues.append(locationGroupMembership.LastUpdatedOn! as NSObject)
         }
         
         if locationGroupMembership.Deleted != nil {
             SQLParameterNames += ", [Deleted]=?"
-            SQLParameterValues.append(locationGroupMembership.Deleted!)
+            SQLParameterValues.append(locationGroupMembership.Deleted! as NSObject)
         }
         SQLParameterNames += ", [LocationGroupId]=?"
-        SQLParameterValues.append(locationGroupMembership.LocationGroupId)
+        SQLParameterValues.append(locationGroupMembership.LocationGroupId as NSObject)
         SQLParameterNames += ", [LocationId]=?"
-        SQLParameterValues.append(locationGroupMembership.LocationId)
+        SQLParameterValues.append(locationGroupMembership.LocationId as NSObject)
         
-        SQLParameterValues.append(locationGroupMembership.RowId)
+        SQLParameterValues.append(locationGroupMembership.RowId as NSObject)
         
         SQLStatement = "UPDATE [LocationGroupMembership] SET " + SQLParameterNames + "WHERE [RowId]=?"
         
         sharedModelManager.database!.open()
-        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
         sharedModelManager.database!.close()
         return isUpdated
     }
     
-    func deleteLocationGroupMembership(locationGroupMembership: LocationGroupMembership) -> Bool {
+    func deleteLocationGroupMembership(_ locationGroupMembership: LocationGroupMembership) -> Bool {
         sharedModelManager.database!.open()
-        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [LocationGroupMembership] WHERE [RowId]=?", withArgumentsInArray: [locationGroupMembership.RowId])
+        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [LocationGroupMembership] WHERE [RowId]=?", withArgumentsIn: [locationGroupMembership.RowId])
         sharedModelManager.database!.close()
         return isDeleted
     }
     
-    func getLocationGroupMembership(locationGroupMembershipId: String) -> LocationGroupMembership? {
+    func getLocationGroupMembership(_ locationGroupMembershipId: String) -> LocationGroupMembership? {
         sharedModelManager.database!.open()
         var locationGroupMembership: LocationGroupMembership? = nil
         
-        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [LocationGroupId], [LocationId] FROM [LocationGroupMembership] WHERE [RowId]=?", withArgumentsInArray: [locationGroupMembershipId])
+        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [LocationGroupId], [LocationId] FROM [LocationGroupMembership] WHERE [RowId]=?", withArgumentsIn: [locationGroupMembershipId])
         if (resultSet != nil) {
-            while resultSet.next() {
+            while (resultSet?.next())! {
                 var resultLocationGroupMembership: LocationGroupMembership = LocationGroupMembership()
                 resultLocationGroupMembership = LocationGroupMembership()
-                resultLocationGroupMembership.RowId = resultSet.stringForColumn("RowId")
-                resultLocationGroupMembership.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                resultLocationGroupMembership.CreatedOn = resultSet.dateForColumn("CreatedOn")
-                if !resultSet.columnIsNull("LastUpdatedBy")
+                resultLocationGroupMembership.RowId = (resultSet?.string(forColumn: "RowId"))!
+                resultLocationGroupMembership.CreatedBy = (resultSet?.string(forColumn: "CreatedBy"))!
+                resultLocationGroupMembership.CreatedOn = resultSet!.date(forColumn: "CreatedOn")
+                if !(resultSet?.columnIsNull("LastUpdatedBy"))!
                 {
-                    resultLocationGroupMembership.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                    resultLocationGroupMembership.LastUpdatedBy = resultSet?.string(forColumn: "LastUpdatedBy")
                 }
-                if !resultSet.columnIsNull("LastUpdatedOn")
+                if !(resultSet?.columnIsNull("LastUpdatedOn"))!
                 {
-                    resultLocationGroupMembership.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                    resultLocationGroupMembership.LastUpdatedOn = resultSet?.date(forColumn: "LastUpdatedOn")
                 }
-                if !resultSet.columnIsNull("Deleted")
+                if !(resultSet?.columnIsNull("Deleted"))!
                 {
-                    resultLocationGroupMembership.Deleted = resultSet.dateForColumn("Deleted")
+                    resultLocationGroupMembership.Deleted = resultSet?.date(forColumn: "Deleted")
                 }
-                resultLocationGroupMembership.LocationGroupId = resultSet.stringForColumn("LocationGroupId")
-                resultLocationGroupMembership.LocationId = resultSet.stringForColumn("LocationId")
+                resultLocationGroupMembership.LocationGroupId = (resultSet?.string(forColumn: "LocationGroupId"))!
+                resultLocationGroupMembership.LocationId = (resultSet?.string(forColumn: "LocationId"))!
                 
                 locationGroupMembership = resultLocationGroupMembership
             }
@@ -1278,28 +1278,28 @@ class ModelManager: NSObject {
     
     func getAllLocationGroupMembership() -> [LocationGroupMembership] {
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [LocationGroupId], [LocationId] FROM [LocationGroupMembership]", withArgumentsInArray: nil)
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [LocationGroupId], [LocationId] FROM [LocationGroupMembership]", withArgumentsIn: nil)
         var locationGroupMembershipList : [LocationGroupMembership] = [LocationGroupMembership]()
         if (resultSet != nil) {
             while resultSet.next() {
                 let locationGroupMembership : LocationGroupMembership = LocationGroupMembership()
-                locationGroupMembership.RowId = resultSet.stringForColumn("RowId")
-                locationGroupMembership.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                locationGroupMembership.CreatedOn = resultSet.dateForColumn("CreatedOn")
+                locationGroupMembership.RowId = resultSet.string(forColumn: "RowId")
+                locationGroupMembership.CreatedBy = resultSet.string(forColumn: "CreatedBy")
+                locationGroupMembership.CreatedOn = resultSet.date(forColumn: "CreatedOn")
                 if !resultSet.columnIsNull("LastUpdatedBy")
                 {
-                    locationGroupMembership.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                    locationGroupMembership.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
                 }
                 if !resultSet.columnIsNull("LastUpdatedOn")
                 {
-                    locationGroupMembership.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                    locationGroupMembership.LastUpdatedOn = resultSet.date(forColumn: "LastUpdatedOn")
                 }
                 if !resultSet.columnIsNull("Deleted")
                 {
-                    locationGroupMembership.Deleted = resultSet.dateForColumn("Deleted")
+                    locationGroupMembership.Deleted = resultSet.date(forColumn: "Deleted")
                 }
-                locationGroupMembership.LocationGroupId = resultSet.stringForColumn("LocationGroupId")
-                locationGroupMembership.LocationId = resultSet.stringForColumn("LocationId")
+                locationGroupMembership.LocationGroupId = resultSet.string(forColumn: "LocationGroupId")
+                locationGroupMembership.LocationId = resultSet.string(forColumn: "LocationId")
                 
                 locationGroupMembershipList.append(locationGroupMembership)
             }
@@ -1308,14 +1308,14 @@ class ModelManager: NSObject {
         return locationGroupMembershipList
     }
     
-    func findLocationGroupMembershipList(criteria: Dictionary<String, AnyObject>) -> [LocationGroupMembership] {
+    func findLocationGroupMembershipList(_ criteria: Dictionary<String, AnyObject>) -> [LocationGroupMembership] {
         var list: [LocationGroupMembership] = [LocationGroupMembership]()
         //var count: Int32 = 0
         (list, _) = findLocationGroupMembershipList(criteria, pageSize: nil, pageNumber: nil)
         return list
     }
 
-    func findLocationGroupMembershipList(criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [LocationGroupMembership], Count: Int32) {
+    func findLocationGroupMembershipList(_ criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [LocationGroupMembership], Count: Int32) {
         //return variables
         var count: Int32 = 0
         var locationGroupMembershipList: [LocationGroupMembership] = [LocationGroupMembership]()
@@ -1332,10 +1332,10 @@ class ModelManager: NSObject {
         }
 
         sharedModelManager.database!.open()
-        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [LocationGroupMembership] " + whereClause, withArgumentsInArray: whereValues)
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [LocationGroupMembership] " + whereClause, withArgumentsIn: whereValues)
         if (countSet != nil) {
             while countSet.next() {
-                count = countSet.intForColumnIndex(0)
+                count = countSet.int(forColumnIndex: 0)
             }
         }
         
@@ -1347,27 +1347,27 @@ class ModelManager: NSObject {
                 pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
             }
             
-            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [LocationGroupId], [LocationId] FROM [LocationGroupMembership] " + whereClause + pageClause, withArgumentsInArray: whereValues)
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [LocationGroupId], [LocationId] FROM [LocationGroupMembership] " + whereClause + pageClause, withArgumentsIn: whereValues)
             if (resultSet != nil) {
                 while resultSet.next() {
                     let locationGroupMembership : LocationGroupMembership = LocationGroupMembership()
-                    locationGroupMembership.RowId = resultSet.stringForColumn("RowId")
-                    locationGroupMembership.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                    locationGroupMembership.CreatedOn = resultSet.dateForColumn("CreatedOn")
+                    locationGroupMembership.RowId = resultSet.string(forColumn: "RowId")
+                    locationGroupMembership.CreatedBy = resultSet.string(forColumn: "CreatedBy")
+                    locationGroupMembership.CreatedOn = resultSet.date(forColumn: "CreatedOn")
                     if !resultSet.columnIsNull("LastUpdatedBy")
                     {
-                        locationGroupMembership.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                        locationGroupMembership.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
                     }
                     if !resultSet.columnIsNull("LastUpdatedOn")
                     {
-                        locationGroupMembership.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                        locationGroupMembership.LastUpdatedOn = resultSet.date(forColumn: "LastUpdatedOn")
                     }
                     if !resultSet.columnIsNull("Deleted")
                     {
-                        locationGroupMembership.Deleted = resultSet.dateForColumn("Deleted")
+                        locationGroupMembership.Deleted = resultSet.date(forColumn: "Deleted")
                     }
-                    locationGroupMembership.LocationGroupId = resultSet.stringForColumn("LocationGroupId")
-                    locationGroupMembership.LocationId = resultSet.stringForColumn("LocationId")
+                    locationGroupMembership.LocationGroupId = resultSet.string(forColumn: "LocationGroupId")
+                    locationGroupMembership.LocationId = resultSet.string(forColumn: "LocationId")
                     
                     locationGroupMembershipList.append(locationGroupMembership)
                 }
@@ -1379,7 +1379,7 @@ class ModelManager: NSObject {
     
     // MARK: - Operative
     
-    func addOperative(operative: Operative) -> Bool {
+    func addOperative(_ operative: Operative) -> Bool {
         //build the sql statemnt
         var SQLStatement: String = String()
         var SQLParameterNames: String = String()
@@ -1388,116 +1388,116 @@ class ModelManager: NSObject {
         
         SQLParameterNames = "[RowId], [CreatedBy], [CreatedOn]"
         SQLParameterPlaceholders = "?, ?, ?"
-        SQLParameterValues.append(operative.RowId)
-        SQLParameterValues.append(operative.CreatedBy)
-        SQLParameterValues.append(operative.CreatedOn)
+        SQLParameterValues.append(operative.RowId as NSObject)
+        SQLParameterValues.append(operative.CreatedBy as NSObject)
+        SQLParameterValues.append(operative.CreatedOn as NSObject)
         
         if operative.LastUpdatedBy != nil {
             SQLParameterNames += ", [LastUpdatedBy]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(operative.LastUpdatedBy!)
+            SQLParameterValues.append(operative.LastUpdatedBy! as NSObject)
         }
         
         if operative.LastUpdatedOn != nil {
             SQLParameterNames += ", [LastUpdatedOn]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(operative.LastUpdatedOn!)
+            SQLParameterValues.append(operative.LastUpdatedOn! as NSObject)
         }
         
         if operative.Deleted != nil {
             SQLParameterNames += ", [Deleted]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(operative.Deleted!)
+            SQLParameterValues.append(operative.Deleted! as NSObject)
         }
         
         SQLParameterNames += ", [OrganisationId], [Username], [Password]"
         SQLParameterPlaceholders += ", ?, ?, ?"
-        SQLParameterValues.append(operative.OrganisationId)
-        SQLParameterValues.append(operative.Username)
-        SQLParameterValues.append(operative.Password)
+        SQLParameterValues.append(operative.OrganisationId as NSObject)
+        SQLParameterValues.append(operative.Username as NSObject)
+        SQLParameterValues.append(operative.Password as NSObject)
         
         SQLStatement = "INSERT INTO [OPERATIVE] (" + SQLParameterNames + ") VALUES (" + SQLParameterPlaceholders + ")"
         
         sharedModelManager.database!.open()
-        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
         sharedModelManager.database!.close()
         return isInserted
     }
     
-    func updateOperative(operative: Operative) -> Bool {
+    func updateOperative(_ operative: Operative) -> Bool {
         //build the sql statemnt
         var SQLStatement: String = String()
         var SQLParameterNames: String = String()
         var SQLParameterValues: [NSObject] = [NSObject]()
         
         SQLParameterNames = "[CreatedBy]=?, [CreatedOn]=?"
-        SQLParameterValues.append(operative.CreatedBy)
-        SQLParameterValues.append(operative.CreatedOn)
+        SQLParameterValues.append(operative.CreatedBy as NSObject)
+        SQLParameterValues.append(operative.CreatedOn as NSObject)
         
         if operative.LastUpdatedBy != nil {
             SQLParameterNames += ", [LastUpdatedBy]=?"
-            SQLParameterValues.append(operative.LastUpdatedBy!)
+            SQLParameterValues.append(operative.LastUpdatedBy! as NSObject)
         }
         
         if operative.LastUpdatedOn != nil {
             SQLParameterNames += ", [LastUpdatedOn]=?"
-            SQLParameterValues.append(operative.LastUpdatedOn!)
+            SQLParameterValues.append(operative.LastUpdatedOn! as NSObject)
         }
         
         if operative.Deleted != nil {
             SQLParameterNames += ", [Deleted]=?"
-            SQLParameterValues.append(operative.Deleted!)
+            SQLParameterValues.append(operative.Deleted! as NSObject)
         }
         
         SQLParameterNames += ", [OrganisationId]=?, [Username]=?, [Password]=?"
-        SQLParameterValues.append(operative.OrganisationId)
-        SQLParameterValues.append(operative.Username)
-        SQLParameterValues.append(operative.Password)
+        SQLParameterValues.append(operative.OrganisationId as NSObject)
+        SQLParameterValues.append(operative.Username as NSObject)
+        SQLParameterValues.append(operative.Password as NSObject)
         
-        SQLParameterValues.append(operative.RowId)
+        SQLParameterValues.append(operative.RowId as NSObject)
         
         SQLStatement = "UPDATE [OPERATIVE] SET " + SQLParameterNames + "WHERE [RowId]=?"
         
         sharedModelManager.database!.open()
-        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
         sharedModelManager.database!.close()
         return isUpdated
     }
     
-    func deleteOperative(operative: Operative) -> Bool {
+    func deleteOperative(_ operative: Operative) -> Bool {
         sharedModelManager.database!.open()
-        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [OPERATIVE] WHERE [RowId]=?", withArgumentsInArray: [operative.RowId])
+        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [OPERATIVE] WHERE [RowId]=?", withArgumentsIn: [operative.RowId])
         sharedModelManager.database!.close()
         return isDeleted
     }
     
-    func getOperative(operativeId: String) -> Operative? {
+    func getOperative(_ operativeId: String) -> Operative? {
         sharedModelManager.database!.open()
         var operative: Operative? = nil
         
-        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [Username], [Password] FROM [Operative] WHERE [RowId]=?", withArgumentsInArray: [operativeId])
+        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [Username], [Password] FROM [Operative] WHERE [RowId]=?", withArgumentsIn: [operativeId])
         if (resultSet != nil) {
-            while resultSet.next() {
+            while (resultSet?.next())! {
                 var resultOperative: Operative = Operative()
                 resultOperative = Operative()
-                resultOperative.RowId = resultSet.stringForColumn("RowId")
-                resultOperative.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                resultOperative.CreatedOn = resultSet.dateForColumn("CreatedOn")
-                if !resultSet.columnIsNull("LastUpdatedBy")
+                resultOperative.RowId = (resultSet?.string(forColumn: "RowId"))!
+                resultOperative.CreatedBy = (resultSet?.string(forColumn: "CreatedBy"))!
+                resultOperative.CreatedOn = resultSet!.date(forColumn: "CreatedOn")
+                if !(resultSet?.columnIsNull("LastUpdatedBy"))!
                 {
-                    resultOperative.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                    resultOperative.LastUpdatedBy = resultSet?.string(forColumn: "LastUpdatedBy")
                 }
-                if !resultSet.columnIsNull("LastUpdatedOn")
+                if !(resultSet?.columnIsNull("LastUpdatedOn"))!
                 {
-                    resultOperative.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                    resultOperative.LastUpdatedOn = resultSet?.date(forColumn: "LastUpdatedOn")
                 }
-                if !resultSet.columnIsNull("Deleted")
+                if !(resultSet?.columnIsNull("Deleted"))!
                 {
-                    resultOperative.Deleted = resultSet.dateForColumn("Deleted")
+                    resultOperative.Deleted = resultSet?.date(forColumn: "Deleted")
                 }
-                resultOperative.OrganisationId = resultSet.stringForColumn("OrganisationId")
-                resultOperative.Username = resultSet.stringForColumn("Username")
-                resultOperative.Password = resultSet.stringForColumn("Password")
+                resultOperative.OrganisationId = (resultSet?.string(forColumn: "OrganisationId"))!
+                resultOperative.Username = (resultSet?.string(forColumn: "Username"))!
+                resultOperative.Password = (resultSet?.string(forColumn: "Password"))!
                 
                 operative = resultOperative
             }
@@ -1508,29 +1508,29 @@ class ModelManager: NSObject {
     
     func getAllOperative() -> [Operative] {
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [Username], [Password] FROM [Operative]", withArgumentsInArray: nil)
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [Username], [Password] FROM [Operative]", withArgumentsIn: nil)
         var operativeList: [Operative] = [Operative]()
         if (resultSet != nil) {
             while resultSet.next() {
                 let operative : Operative = Operative()
-                operative.RowId = resultSet.stringForColumn("RowId")
-                operative.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                operative.CreatedOn = resultSet.dateForColumn("CreatedOn")
+                operative.RowId = resultSet.string(forColumn: "RowId")
+                operative.CreatedBy = resultSet.string(forColumn: "CreatedBy")
+                operative.CreatedOn = resultSet.date(forColumn: "CreatedOn")
                 if !resultSet.columnIsNull("LastUpdatedBy")
                 {
-                    operative.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                    operative.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
                 }
                 if !resultSet.columnIsNull("LastUpdatedOn")
                 {
-                    operative.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                    operative.LastUpdatedOn = resultSet.date(forColumn: "LastUpdatedOn")
                 }
                 if !resultSet.columnIsNull("Deleted")
                 {
-                    operative.Deleted = resultSet.dateForColumn("Deleted")
+                    operative.Deleted = resultSet.date(forColumn: "Deleted")
                 }
-                operative.OrganisationId = resultSet.stringForColumn("OrganisationId")
-                operative.Username = resultSet.stringForColumn("Username")
-                operative.Password = resultSet.stringForColumn("Password")
+                operative.OrganisationId = resultSet.string(forColumn: "OrganisationId")
+                operative.Username = resultSet.string(forColumn: "Username")
+                operative.Password = resultSet.string(forColumn: "Password")
                 
                 operativeList.append(operative)
             }
@@ -1539,14 +1539,14 @@ class ModelManager: NSObject {
         return operativeList
     }
     
-    func findOperativeList(criteria: Dictionary<String, AnyObject>) -> [Operative] {
+    func findOperativeList(_ criteria: Dictionary<String, AnyObject>) -> [Operative] {
         var list: [Operative] = [Operative]()
         //var count: Int32 = 0
         (list, _) = findOperativeList(criteria, pageSize: nil, pageNumber: nil)
         return list
     }
 
-    func findOperativeList(criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [Operative], Count: Int32) {
+    func findOperativeList(_ criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [Operative], Count: Int32) {
         //return variables
         var count: Int32 = 0
         var operativeList: [Operative] = [Operative]()
@@ -1566,10 +1566,10 @@ class ModelManager: NSObject {
         }
 
         sharedModelManager.database!.open()
-        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [Operative] " + whereClause + orderByClause, withArgumentsInArray: whereValues)
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [Operative] " + whereClause + orderByClause, withArgumentsIn: whereValues)
         if (countSet != nil) {
             while countSet.next() {
-                count = countSet.intForColumnIndex(0)
+                count = countSet.int(forColumnIndex: 0)
             }
         }
         
@@ -1581,28 +1581,28 @@ class ModelManager: NSObject {
                 pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
             }
             
-            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [Username], [Password] FROM [Operative] " + whereClause + orderByClause + pageClause, withArgumentsInArray: whereValues)
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [Username], [Password] FROM [Operative] " + whereClause + orderByClause + pageClause, withArgumentsIn: whereValues)
             if (resultSet != nil) {
                 while resultSet.next() {
                     let operative : Operative = Operative()
-                    operative.RowId = resultSet.stringForColumn("RowId")
-                    operative.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                    operative.CreatedOn = resultSet.dateForColumn("CreatedOn")
+                    operative.RowId = resultSet.string(forColumn: "RowId")
+                    operative.CreatedBy = resultSet.string(forColumn: "CreatedBy")
+                    operative.CreatedOn = resultSet.date(forColumn: "CreatedOn")
                     if !resultSet.columnIsNull("LastUpdatedBy")
                     {
-                        operative.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                        operative.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
                     }
                     if !resultSet.columnIsNull("LastUpdatedOn")
                     {
-                        operative.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                        operative.LastUpdatedOn = resultSet.date(forColumn: "LastUpdatedOn")
                     }
                     if !resultSet.columnIsNull("Deleted")
                     {
-                        operative.Deleted = resultSet.dateForColumn("Deleted")
+                        operative.Deleted = resultSet.date(forColumn: "Deleted")
                     }
-                    operative.OrganisationId = resultSet.stringForColumn("OrganisationId")
-                    operative.Username = resultSet.stringForColumn("Username")
-                    operative.Password = resultSet.stringForColumn("Password")
+                    operative.OrganisationId = resultSet.string(forColumn: "OrganisationId")
+                    operative.Username = resultSet.string(forColumn: "Username")
+                    operative.Password = resultSet.string(forColumn: "Password")
                     
                     operativeList.append(operative)
                 }
@@ -1616,7 +1616,7 @@ class ModelManager: NSObject {
     // MARK: - Organisation
     
     
-    func addOrganisation(organisation: Organisation) -> Bool {
+    func addOrganisation(_ organisation: Organisation) -> Bool {
         //build the sql statemnt
         var SQLStatement: String = String()
         var SQLParameterNames: String = String()
@@ -1625,116 +1625,116 @@ class ModelManager: NSObject {
         
         SQLParameterNames = "[RowId], [CreatedBy], [CreatedOn]"
         SQLParameterPlaceholders = "?, ?, ?"
-        SQLParameterValues.append(organisation.RowId)
-        SQLParameterValues.append(organisation.CreatedBy)
-        SQLParameterValues.append(organisation.CreatedOn)
+        SQLParameterValues.append(organisation.RowId as NSObject)
+        SQLParameterValues.append(organisation.CreatedBy as NSObject)
+        SQLParameterValues.append(organisation.CreatedOn as NSObject)
         
         if organisation.LastUpdatedBy != nil {
             SQLParameterNames += ", [LastUpdatedBy]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(organisation.LastUpdatedBy!)
+            SQLParameterValues.append(organisation.LastUpdatedBy! as NSObject)
         }
         
         if organisation.LastUpdatedOn != nil {
             SQLParameterNames += ", [LastUpdatedOn]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(organisation.LastUpdatedOn!)
+            SQLParameterValues.append(organisation.LastUpdatedOn! as NSObject)
         }
         
         if organisation.Deleted != nil {
             SQLParameterNames += ", [Deleted]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(organisation.Deleted!)
+            SQLParameterValues.append(organisation.Deleted! as NSObject)
         }
         
         SQLParameterNames += ", [ParentOrganisationId]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(organisation.ParentOrganisationId)
+        SQLParameterValues.append(organisation.ParentOrganisationId as NSObject)
         SQLParameterNames += ", [Name]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(organisation.Name)
+        SQLParameterValues.append(organisation.Name as NSObject)
         
         SQLStatement = "INSERT INTO [Organisation] (" + SQLParameterNames + ") VALUES (" + SQLParameterPlaceholders + ")"
         
         sharedModelManager.database!.open()
-        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
         sharedModelManager.database!.close()
         return isInserted
     }
     
-    func updateOrganisation(organisation: Organisation) -> Bool {
+    func updateOrganisation(_ organisation: Organisation) -> Bool {
         //build the sql statemnt
         var SQLStatement: String = String()
         var SQLParameterNames: String = String()
         var SQLParameterValues: [NSObject] = [NSObject]()
         
         SQLParameterNames = "[CreatedBy]=?, [CreatedOn]=?"
-        SQLParameterValues.append(organisation.CreatedBy)
-        SQLParameterValues.append(organisation.CreatedOn)
+        SQLParameterValues.append(organisation.CreatedBy as NSObject)
+        SQLParameterValues.append(organisation.CreatedOn as NSObject)
         
         if organisation.LastUpdatedBy != nil {
             SQLParameterNames += ", [LastUpdatedBy]=?"
-            SQLParameterValues.append(organisation.LastUpdatedBy!)
+            SQLParameterValues.append(organisation.LastUpdatedBy! as NSObject)
         }
         
         if organisation.LastUpdatedOn != nil {
             SQLParameterNames += ", [LastUpdatedOn]=?"
-            SQLParameterValues.append(organisation.LastUpdatedOn!)
+            SQLParameterValues.append(organisation.LastUpdatedOn! as NSObject)
         }
         
         if organisation.Deleted != nil {
             SQLParameterNames += ", [Deleted]=?"
-            SQLParameterValues.append(organisation.Deleted!)
+            SQLParameterValues.append(organisation.Deleted! as NSObject)
         }
         SQLParameterNames += ", [ParentOrganisationId]=?"
-        SQLParameterValues.append(organisation.ParentOrganisationId)
+        SQLParameterValues.append(organisation.ParentOrganisationId as NSObject)
         SQLParameterNames += ", [Name]=?"
-        SQLParameterValues.append(organisation.Name)
+        SQLParameterValues.append(organisation.Name as NSObject)
         
         
-        SQLParameterValues.append(organisation.RowId)
+        SQLParameterValues.append(organisation.RowId as NSObject)
         
         SQLStatement = "UPDATE [Organisation] SET " + SQLParameterNames + "WHERE [RowId]=?"
         
         sharedModelManager.database!.open()
-        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
         sharedModelManager.database!.close()
         return isUpdated
     }
     
-    func deleteOrganisation(organisation: Organisation) -> Bool {
+    func deleteOrganisation(_ organisation: Organisation) -> Bool {
         sharedModelManager.database!.open()
-        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [Organisation] WHERE [RowId]=?", withArgumentsInArray: [organisation.RowId])
+        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [Organisation] WHERE [RowId]=?", withArgumentsIn: [organisation.RowId])
         sharedModelManager.database!.close()
         return isDeleted
     }
     
-    func getOrganisation(organisationId: String) -> Organisation? {
+    func getOrganisation(_ organisationId: String) -> Organisation? {
         sharedModelManager.database!.open()
         var organisation: Organisation? = nil
         
-        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [ParentOrganisationId], [Name] FROM [Organisation] WHERE [RowId]=?", withArgumentsInArray: [organisationId])
+        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [ParentOrganisationId], [Name] FROM [Organisation] WHERE [RowId]=?", withArgumentsIn: [organisationId])
         if (resultSet != nil) {
-            while resultSet.next() {
+            while (resultSet?.next())! {
                 var resultOrganisation: Organisation = Organisation()
                 resultOrganisation = Organisation()
-                resultOrganisation.RowId = resultSet.stringForColumn("RowId")
-                resultOrganisation.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                resultOrganisation.CreatedOn = resultSet.dateForColumn("CreatedOn")
-                if !resultSet.columnIsNull("LastUpdatedBy")
+                resultOrganisation.RowId = (resultSet?.string(forColumn: "RowId"))!
+                resultOrganisation.CreatedBy = (resultSet?.string(forColumn: "CreatedBy"))!
+                resultOrganisation.CreatedOn = resultSet!.date(forColumn: "CreatedOn")
+                if !(resultSet?.columnIsNull("LastUpdatedBy"))!
                 {
-                    resultOrganisation.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                    resultOrganisation.LastUpdatedBy = resultSet?.string(forColumn: "LastUpdatedBy")
                 }
-                if !resultSet.columnIsNull("LastUpdatedOn")
+                if !(resultSet?.columnIsNull("LastUpdatedOn"))!
                 {
-                    resultOrganisation.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                    resultOrganisation.LastUpdatedOn = resultSet?.date(forColumn: "LastUpdatedOn")
                 }
-                if !resultSet.columnIsNull("Deleted")
+                if !(resultSet?.columnIsNull("Deleted"))!
                 {
-                    resultOrganisation.Deleted = resultSet.dateForColumn("Deleted")
+                    resultOrganisation.Deleted = resultSet?.date(forColumn: "Deleted")
                 }
-                resultOrganisation.ParentOrganisationId = resultSet.stringForColumn("ParentOrganisationId")
-                resultOrganisation.Name = resultSet.stringForColumn("Name")
+                resultOrganisation.ParentOrganisationId = (resultSet?.string(forColumn: "ParentOrganisationId"))!
+                resultOrganisation.Name = (resultSet?.string(forColumn: "Name"))!
                 
                 organisation = resultOrganisation
             }
@@ -1745,28 +1745,28 @@ class ModelManager: NSObject {
     
     func getAllOrganisation() -> [Organisation] {
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [ParentOrganisationId], [Name] FROM [Organisation]", withArgumentsInArray: nil)
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [ParentOrganisationId], [Name] FROM [Organisation]", withArgumentsIn: nil)
         var organisationList: [Organisation] = [Organisation]()
         if (resultSet != nil) {
             while resultSet.next() {
                 let organisation : Organisation = Organisation()
-                organisation.RowId = resultSet.stringForColumn("RowId")
-                organisation.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                organisation.CreatedOn = resultSet.dateForColumn("CreatedOn")
+                organisation.RowId = resultSet.string(forColumn: "RowId")
+                organisation.CreatedBy = resultSet.string(forColumn: "CreatedBy")
+                organisation.CreatedOn = resultSet.date(forColumn: "CreatedOn")
                 if !resultSet.columnIsNull("LastUpdatedBy")
                 {
-                    organisation.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                    organisation.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
                 }
                 if !resultSet.columnIsNull("LastUpdatedOn")
                 {
-                    organisation.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                    organisation.LastUpdatedOn = resultSet.date(forColumn: "LastUpdatedOn")
                 }
                 if !resultSet.columnIsNull("Deleted")
                 {
-                    organisation.Deleted = resultSet.dateForColumn("Deleted")
+                    organisation.Deleted = resultSet.date(forColumn: "Deleted")
                 }
-                organisation.ParentOrganisationId = resultSet.stringForColumn("ParentOrganisationId")
-                organisation.Name = resultSet.stringForColumn("Name")
+                organisation.ParentOrganisationId = resultSet.string(forColumn: "ParentOrganisationId")
+                organisation.Name = resultSet.string(forColumn: "Name")
                 
                 organisationList.append(organisation)
             }
@@ -1775,14 +1775,14 @@ class ModelManager: NSObject {
         return organisationList
     }
     
-    func findOrganisationList(criteria: Dictionary<String, AnyObject>) -> [Organisation] {
+    func findOrganisationList(_ criteria: Dictionary<String, AnyObject>) -> [Organisation] {
         var list: [Organisation] = [Organisation]()
         //var count: Int32 = 0
         (list, _) = findOrganisationList(criteria, pageSize: nil, pageNumber: nil)
         return list
     }
 
-    func findOrganisationList(criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [Organisation], Count: Int32) {
+    func findOrganisationList(_ criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [Organisation], Count: Int32) {
         //return variables
         var count: Int32 = 0
         var organisationList: [Organisation] = [Organisation]()
@@ -1802,10 +1802,10 @@ class ModelManager: NSObject {
         }
 
         sharedModelManager.database!.open()
-        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [Organisation] " + whereClause + orderByClause, withArgumentsInArray: whereValues)
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [Organisation] " + whereClause + orderByClause, withArgumentsIn: whereValues)
         if (countSet != nil) {
             while countSet.next() {
-                count = countSet.intForColumnIndex(0)
+                count = countSet.int(forColumnIndex: 0)
             }
         }
         
@@ -1817,27 +1817,27 @@ class ModelManager: NSObject {
                 pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
             }
             
-            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [ParentOrganisationId], [Name] FROM [Organisation] " + whereClause + orderByClause + pageClause, withArgumentsInArray: whereValues)
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [ParentOrganisationId], [Name] FROM [Organisation] " + whereClause + orderByClause + pageClause, withArgumentsIn: whereValues)
             if (resultSet != nil) {
                 while resultSet.next() {
                     let organisation : Organisation = Organisation()
-                    organisation.RowId = resultSet.stringForColumn("RowId")
-                    organisation.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                    organisation.CreatedOn = resultSet.dateForColumn("CreatedOn")
+                    organisation.RowId = resultSet.string(forColumn: "RowId")
+                    organisation.CreatedBy = resultSet.string(forColumn: "CreatedBy")
+                    organisation.CreatedOn = resultSet.date(forColumn: "CreatedOn")
                     if !resultSet.columnIsNull("LastUpdatedBy")
                     {
-                        organisation.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                        organisation.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
                     }
                     if !resultSet.columnIsNull("LastUpdatedOn")
                     {
-                        organisation.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                        organisation.LastUpdatedOn = resultSet.date(forColumn: "LastUpdatedOn")
                     }
                     if !resultSet.columnIsNull("Deleted")
                     {
-                        organisation.Deleted = resultSet.dateForColumn("Deleted")
+                        organisation.Deleted = resultSet.date(forColumn: "Deleted")
                     }
-                    organisation.ParentOrganisationId = resultSet.stringForColumn("ParentOrganisationId")
-                    organisation.Name = resultSet.stringForColumn("Name")
+                    organisation.ParentOrganisationId = resultSet.string(forColumn: "ParentOrganisationId")
+                    organisation.Name = resultSet.string(forColumn: "Name")
                     
                     organisationList.append(organisation)
                 }
@@ -1850,7 +1850,7 @@ class ModelManager: NSObject {
     
     // MARK: - Property
     
-    func addProperty(property: Property) -> Bool {
+    func addProperty(_ property: Property) -> Bool {
         //build the sql statemnt
         var SQLStatement: String = String()
         var SQLParameterNames: String = String()
@@ -1859,120 +1859,120 @@ class ModelManager: NSObject {
         
         SQLParameterNames = "[RowId], [CreatedBy], [CreatedOn]"
         SQLParameterPlaceholders = "?, ?, ?"
-        SQLParameterValues.append(property.RowId)
-        SQLParameterValues.append(property.CreatedBy)
-        SQLParameterValues.append(property.CreatedOn)
+        SQLParameterValues.append(property.RowId as NSObject)
+        SQLParameterValues.append(property.CreatedBy as NSObject)
+        SQLParameterValues.append(property.CreatedOn as NSObject)
         
         if property.LastUpdatedBy != nil {
             SQLParameterNames += ", [LastUpdatedBy]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(property.LastUpdatedBy!)
+            SQLParameterValues.append(property.LastUpdatedBy! as NSObject)
         }
         
         if property.LastUpdatedOn != nil {
             SQLParameterNames += ", [LastUpdatedOn]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(property.LastUpdatedOn!)
+            SQLParameterValues.append(property.LastUpdatedOn! as NSObject)
         }
         
         if property.Deleted != nil {
             SQLParameterNames += ", [Deleted]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(property.Deleted!)
+            SQLParameterValues.append(property.Deleted! as NSObject)
         }
         SQLParameterNames += ", [SiteId]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(property.SiteId)
+        SQLParameterValues.append(property.SiteId as NSObject)
         SQLParameterNames += ", [Name]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(property.Name)
+        SQLParameterValues.append(property.Name as NSObject)
         SQLParameterNames += ", [Healthcare]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(property.Healthcare)
+        SQLParameterValues.append(property.Healthcare as NSObject)
         
         SQLStatement = "INSERT INTO [Property] (" + SQLParameterNames + ") VALUES (" + SQLParameterPlaceholders + ")"
         
         sharedModelManager.database!.open()
-        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
         sharedModelManager.database!.close()
         return isInserted
     }
     
-    func updateProperty(property: Property) -> Bool {
+    func updateProperty(_ property: Property) -> Bool {
         //build the sql statemnt
         var SQLStatement: String = String()
         var SQLParameterNames: String = String()
         var SQLParameterValues: [NSObject] = [NSObject]()
         
         SQLParameterNames = "[CreatedBy]=?, [CreatedOn]=?"
-        SQLParameterValues.append(property.CreatedBy)
-        SQLParameterValues.append(property.CreatedOn)
+        SQLParameterValues.append(property.CreatedBy as NSObject)
+        SQLParameterValues.append(property.CreatedOn as NSObject)
         
         if property.LastUpdatedBy != nil {
             SQLParameterNames += ", [LastUpdatedBy]=?"
-            SQLParameterValues.append(property.LastUpdatedBy!)
+            SQLParameterValues.append(property.LastUpdatedBy! as NSObject)
         }
         
         if property.LastUpdatedOn != nil {
             SQLParameterNames += ", [LastUpdatedOn]=?"
-            SQLParameterValues.append(property.LastUpdatedOn!)
+            SQLParameterValues.append(property.LastUpdatedOn! as NSObject)
         }
         
         if property.Deleted != nil {
             SQLParameterNames += ", [Deleted]=?"
-            SQLParameterValues.append(property.Deleted!)
+            SQLParameterValues.append(property.Deleted! as NSObject)
         }
         SQLParameterNames += ", [SiteId]=?"
-        SQLParameterValues.append(property.SiteId)
+        SQLParameterValues.append(property.SiteId as NSObject)
         SQLParameterNames += ", [Name]=?"
-        SQLParameterValues.append(property.Name)
+        SQLParameterValues.append(property.Name as NSObject)
         SQLParameterNames += ", [Healthcare]=?"
-        SQLParameterValues.append(property.Healthcare)
+        SQLParameterValues.append(property.Healthcare as NSObject)
         
-        SQLParameterValues.append(property.RowId)
+        SQLParameterValues.append(property.RowId as NSObject)
         
         SQLStatement = "UPDATE [Property] SET " + SQLParameterNames + "WHERE [RowId]=?"
         
         sharedModelManager.database!.open()
-        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
         sharedModelManager.database!.close()
         return isUpdated
     }
     
-    func deleteProperty(property: Property) -> Bool {
+    func deleteProperty(_ property: Property) -> Bool {
         sharedModelManager.database!.open()
-        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [Property] WHERE [RowId]=?", withArgumentsInArray: [property.RowId])
+        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [Property] WHERE [RowId]=?", withArgumentsIn: [property.RowId])
         sharedModelManager.database!.close()
         return isDeleted
     }
     
-    func getProperty(propertyId: String) -> Property? {
+    func getProperty(_ propertyId: String) -> Property? {
         sharedModelManager.database!.open()
         var property: Property? = nil
         
-        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [SiteId], [Name], [Healthcare] FROM [Property] WHERE [RowId]=?", withArgumentsInArray: [propertyId])
+        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [SiteId], [Name], [Healthcare] FROM [Property] WHERE [RowId]=?", withArgumentsIn: [propertyId])
         if (resultSet != nil) {
-            while resultSet.next() {
+            while (resultSet?.next())! {
                 var resultProperty: Property = Property()
                 resultProperty = Property()
-                resultProperty.RowId = resultSet.stringForColumn("RowId")
-                resultProperty.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                resultProperty.CreatedOn = resultSet.dateForColumn("CreatedOn")
-                if !resultSet.columnIsNull("LastUpdatedBy")
+                resultProperty.RowId = (resultSet?.string(forColumn: "RowId"))!
+                resultProperty.CreatedBy = (resultSet?.string(forColumn: "CreatedBy"))!
+                resultProperty.CreatedOn = resultSet!.date(forColumn: "CreatedOn")
+                if !(resultSet?.columnIsNull("LastUpdatedBy"))!
                 {
-                    resultProperty.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                    resultProperty.LastUpdatedBy = resultSet?.string(forColumn: "LastUpdatedBy")
                 }
-                if !resultSet.columnIsNull("LastUpdatedOn")
+                if !(resultSet?.columnIsNull("LastUpdatedOn"))!
                 {
-                    resultProperty.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                    resultProperty.LastUpdatedOn = resultSet?.date(forColumn: "LastUpdatedOn")
                 }
-                if !resultSet.columnIsNull("Deleted")
+                if !(resultSet?.columnIsNull("Deleted"))!
                 {
-                    resultProperty.Deleted = resultSet.dateForColumn("Deleted")
+                    resultProperty.Deleted = resultSet?.date(forColumn: "Deleted")
                 }
-                resultProperty.SiteId = resultSet.stringForColumn("SiteId")
-                resultProperty.Name = resultSet.stringForColumn("Name")
-                resultProperty.Healthcare = resultSet.boolForColumn("Healthcare")
+                resultProperty.SiteId = (resultSet?.string(forColumn: "SiteId"))!
+                resultProperty.Name = (resultSet?.string(forColumn: "Name"))!
+                resultProperty.Healthcare = (resultSet?.bool(forColumn: "Healthcare"))!
                 
                 property = resultProperty
             }
@@ -1983,29 +1983,29 @@ class ModelManager: NSObject {
     
     func getAllProperty() -> [Property] {
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [SiteId], [Name], [Healthcare] FROM [Property]", withArgumentsInArray: nil)
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [SiteId], [Name], [Healthcare] FROM [Property]", withArgumentsIn: nil)
         var propertyList: [Property] = [Property]()
         if (resultSet != nil) {
             while resultSet.next() {
                 let property : Property = Property()
-                property.RowId = resultSet.stringForColumn("RowId")
-                property.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                property.CreatedOn = resultSet.dateForColumn("CreatedOn")
+                property.RowId = resultSet.string(forColumn: "RowId")
+                property.CreatedBy = resultSet.string(forColumn: "CreatedBy")
+                property.CreatedOn = resultSet.date(forColumn: "CreatedOn")
                 if !resultSet.columnIsNull("LastUpdatedBy")
                 {
-                    property.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                    property.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
                 }
                 if !resultSet.columnIsNull("LastUpdatedOn")
                 {
-                    property.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                    property.LastUpdatedOn = resultSet.date(forColumn: "LastUpdatedOn")
                 }
                 if !resultSet.columnIsNull("Deleted")
                 {
-                    property.Deleted = resultSet.dateForColumn("Deleted")
+                    property.Deleted = resultSet.date(forColumn: "Deleted")
                 }
-                property.SiteId = resultSet.stringForColumn("SiteId")
-                property.Name = resultSet.stringForColumn("Name")
-                property.Healthcare = resultSet.boolForColumn("Healthcare")
+                property.SiteId = resultSet.string(forColumn: "SiteId")
+                property.Name = resultSet.string(forColumn: "Name")
+                property.Healthcare = resultSet.bool(forColumn: "Healthcare")
                 
                 propertyList.append(property)
             }
@@ -2014,14 +2014,14 @@ class ModelManager: NSObject {
         return propertyList
     }
     
-    func findPropertyList(criteria: Dictionary<String, AnyObject>) -> [Property] {
+    func findPropertyList(_ criteria: Dictionary<String, AnyObject>) -> [Property] {
         var list: [Property] = [Property]()
         //var count: Int32 = 0
         (list, _) = findPropertyList(criteria, pageSize: nil, pageNumber: nil)
         return list
     }
 
-    func findPropertyList(criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [Property], Count: Int32) {
+    func findPropertyList(_ criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [Property], Count: Int32) {
         //return variables
         var count: Int32 = 0
         var propertyList: [Property] = [Property]()
@@ -2041,10 +2041,10 @@ class ModelManager: NSObject {
         }
 
         sharedModelManager.database!.open()
-        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [Property] " + whereClause + orderByClause, withArgumentsInArray: whereValues)
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [Property] " + whereClause + orderByClause, withArgumentsIn: whereValues)
         if (countSet != nil) {
             while countSet.next() {
-                count = countSet.intForColumnIndex(0)
+                count = countSet.int(forColumnIndex: 0)
             }
         }
         
@@ -2056,28 +2056,28 @@ class ModelManager: NSObject {
                 pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
             }
             
-            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [SiteId], [Name], [Healthcare] FROM [Property] " + whereClause + orderByClause + pageClause, withArgumentsInArray: whereValues)
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [SiteId], [Name], [Healthcare] FROM [Property] " + whereClause + orderByClause + pageClause, withArgumentsIn: whereValues)
             if (resultSet != nil) {
                 while resultSet.next() {
                     let property : Property = Property()
-                    property.RowId = resultSet.stringForColumn("RowId")
-                    property.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                    property.CreatedOn = resultSet.dateForColumn("CreatedOn")
+                    property.RowId = resultSet.string(forColumn: "RowId")
+                    property.CreatedBy = resultSet.string(forColumn: "CreatedBy")
+                    property.CreatedOn = resultSet.date(forColumn: "CreatedOn")
                     if !resultSet.columnIsNull("LastUpdatedBy")
                     {
-                        property.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                        property.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
                     }
                     if !resultSet.columnIsNull("LastUpdatedOn")
                     {
-                        property.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                        property.LastUpdatedOn = resultSet.date(forColumn: "LastUpdatedOn")
                     }
                     if !resultSet.columnIsNull("Deleted")
                     {
-                        property.Deleted = resultSet.dateForColumn("Deleted")
+                        property.Deleted = resultSet.date(forColumn: "Deleted")
                     }
-                    property.SiteId = resultSet.stringForColumn("SiteId")
-                    property.Name = resultSet.stringForColumn("Name")
-                    property.Healthcare = resultSet.boolForColumn("Healthcare")
+                    property.SiteId = resultSet.string(forColumn: "SiteId")
+                    property.Name = resultSet.string(forColumn: "Name")
+                    property.Healthcare = resultSet.bool(forColumn: "Healthcare")
                     
                     propertyList.append(property)
                 }
@@ -2090,7 +2090,7 @@ class ModelManager: NSObject {
     
     // MARK: - ReferenceData
     
-    func addReferenceData(referenceData: ReferenceData) -> Bool {
+    func addReferenceData(_ referenceData: ReferenceData) -> Bool {
         //build the sql statemnt
         var SQLStatement: String = String()
         var SQLParameterNames: String = String()
@@ -2099,174 +2099,174 @@ class ModelManager: NSObject {
         
         SQLParameterNames = "[RowId], [CreatedBy], [CreatedOn]"
         SQLParameterPlaceholders = "?, ?, ?"
-        SQLParameterValues.append(referenceData.RowId)
-        SQLParameterValues.append(referenceData.CreatedBy)
-        SQLParameterValues.append(referenceData.CreatedOn)
+        SQLParameterValues.append(referenceData.RowId as NSObject)
+        SQLParameterValues.append(referenceData.CreatedBy as NSObject)
+        SQLParameterValues.append(referenceData.CreatedOn as NSObject)
         
         if referenceData.LastUpdatedBy != nil {
             SQLParameterNames += ", [LastUpdatedBy]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(referenceData.LastUpdatedBy!)
+            SQLParameterValues.append(referenceData.LastUpdatedBy! as NSObject)
         }
         
         if referenceData.LastUpdatedOn != nil {
             SQLParameterNames += ", [LastUpdatedOn]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(referenceData.LastUpdatedOn!)
+            SQLParameterValues.append(referenceData.LastUpdatedOn! as NSObject)
         }
         
         if referenceData.Deleted != nil {
             SQLParameterNames += ", [Deleted]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(referenceData.Deleted!)
+            SQLParameterValues.append(referenceData.Deleted! as NSObject)
         }
         SQLParameterNames += ", [StartDate]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(referenceData.StartDate)
+        SQLParameterValues.append(referenceData.StartDate as NSObject)
         if referenceData.EndDate != nil {
             SQLParameterNames += ", [EndDate]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(referenceData.EndDate!)
+            SQLParameterValues.append(referenceData.EndDate! as NSObject)
         }
         SQLParameterNames += ", [Type]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(referenceData.Type)
+        SQLParameterValues.append(referenceData.ReferenceType as NSObject)
         SQLParameterNames += ", [Value]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(referenceData.Value)
+        SQLParameterValues.append(referenceData.Value as NSObject)
         SQLParameterNames += ", [Ordinal]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(String(referenceData.Ordinal))
+        SQLParameterValues.append(String(referenceData.Ordinal) as NSObject)
         SQLParameterNames += ", [Display]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(referenceData.Display)
+        SQLParameterValues.append(referenceData.Display as NSObject)
         SQLParameterNames += ", [System]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(referenceData.System)
+        SQLParameterValues.append(referenceData.System as NSObject)
         if referenceData.ParentType != nil {
             SQLParameterNames += ", [ParentType]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(referenceData.ParentType!)
+            SQLParameterValues.append(referenceData.ParentType! as NSObject)
         }
         if referenceData.ParentValue != nil {
             SQLParameterNames += ", [ParentValue]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(referenceData.ParentValue!)
+            SQLParameterValues.append(referenceData.ParentValue! as NSObject)
         }
         
         SQLStatement = "INSERT INTO [ReferenceData] (" + SQLParameterNames + ") VALUES (" + SQLParameterPlaceholders + ")"
         
         sharedModelManager.database!.open()
-        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
         sharedModelManager.database!.close()
         return isInserted
     }
     
-    func updateReferenceData(referenceData: ReferenceData) -> Bool {
+    func updateReferenceData(_ referenceData: ReferenceData) -> Bool {
         //build the sql statemnt
         var SQLStatement: String = String()
         var SQLParameterNames: String = String()
         var SQLParameterValues: [NSObject] = [NSObject]()
         
         SQLParameterNames = "[CreatedBy]=?, [CreatedOn]=?"
-        SQLParameterValues.append(referenceData.CreatedBy)
-        SQLParameterValues.append(referenceData.CreatedOn)
+        SQLParameterValues.append(referenceData.CreatedBy as NSObject)
+        SQLParameterValues.append(referenceData.CreatedOn as NSObject)
         
         if referenceData.LastUpdatedBy != nil {
             SQLParameterNames += ", [LastUpdatedBy]=?"
-            SQLParameterValues.append(referenceData.LastUpdatedBy!)
+            SQLParameterValues.append(referenceData.LastUpdatedBy! as NSObject)
         }
         
         if referenceData.LastUpdatedOn != nil {
             SQLParameterNames += ", [LastUpdatedOn]=?"
-            SQLParameterValues.append(referenceData.LastUpdatedOn!)
+            SQLParameterValues.append(referenceData.LastUpdatedOn! as NSObject)
         }
         
         if referenceData.Deleted != nil {
             SQLParameterNames += ", [Deleted]=?"
-            SQLParameterValues.append(referenceData.Deleted!)
+            SQLParameterValues.append(referenceData.Deleted! as NSObject)
         }
         SQLParameterNames += ", [StartDate]=?"
-        SQLParameterValues.append(referenceData.StartDate)
+        SQLParameterValues.append(referenceData.StartDate as NSObject)
         if referenceData.EndDate != nil {
             SQLParameterNames += ", [EndDate]=?"
-            SQLParameterValues.append(referenceData.EndDate!)
+            SQLParameterValues.append(referenceData.EndDate! as NSObject)
         }
         SQLParameterNames += ", [Type]=?"
-        SQLParameterValues.append(referenceData.Type)
+        SQLParameterValues.append(referenceData.ReferenceType as NSObject)
         SQLParameterNames += ", [Value]=?"
-        SQLParameterValues.append(referenceData.Value)
+        SQLParameterValues.append(referenceData.Value as NSObject)
         SQLParameterNames += ", [Ordinal]=?"
-        SQLParameterValues.append(referenceData.Ordinal)
+        SQLParameterValues.append(referenceData.Ordinal as NSObject)
         SQLParameterNames += ", [Display]=?"
-        SQLParameterValues.append(referenceData.Display)
+        SQLParameterValues.append(referenceData.Display as NSObject)
         SQLParameterNames += ", [System]=?"
-        SQLParameterValues.append(referenceData.System)
+        SQLParameterValues.append(referenceData.System as NSObject)
         if referenceData.ParentType != nil {
             SQLParameterNames += ", [ParentType]=?"
-            SQLParameterValues.append(referenceData.ParentType!)
+            SQLParameterValues.append(referenceData.ParentType! as NSObject)
         }
         if referenceData.ParentValue != nil {
             SQLParameterNames += ", [ParentValue]=?"
-            SQLParameterValues.append(referenceData.ParentValue!)
+            SQLParameterValues.append(referenceData.ParentValue! as NSObject)
         }
         
         
-        SQLParameterValues.append(referenceData.RowId)
+        SQLParameterValues.append(referenceData.RowId as NSObject)
         
         SQLStatement = "UPDATE [ReferenceData] SET " + SQLParameterNames + "WHERE [RowId]=?"
         
         sharedModelManager.database!.open()
-        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
         sharedModelManager.database!.close()
         return isUpdated
     }
     
-    func deleteReferenceData(referenceData: ReferenceData) -> Bool {
+    func deleteReferenceData(_ referenceData: ReferenceData) -> Bool {
         sharedModelManager.database!.open()
-        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [ReferenceData] WHERE [RowId]=?", withArgumentsInArray: [referenceData.RowId])
+        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [ReferenceData] WHERE [RowId]=?", withArgumentsIn: [referenceData.RowId])
         sharedModelManager.database!.close()
         return isDeleted
     }
     
-    func getReferenceData(referenceDataId: String) -> ReferenceData? {
+    func getReferenceData(_ referenceDataId: String) -> ReferenceData? {
         sharedModelManager.database!.open()
         var referenceData: ReferenceData? = nil
         
-        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [StartDate], [EndDate], [Type], [Value], [Ordinal], [Display], [System], [ParentType], [ParentValue] FROM [ReferenceData] WHERE [RowId]=?", withArgumentsInArray: [referenceDataId])
+        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [StartDate], [EndDate], [Type], [Value], [Ordinal], [Display], [System], [ParentType], [ParentValue] FROM [ReferenceData] WHERE [RowId]=?", withArgumentsIn: [referenceDataId])
         if (resultSet != nil) {
-            while resultSet.next() {
+            while (resultSet?.next())! {
                 var resultReferenceData: ReferenceData = ReferenceData()
                 resultReferenceData = ReferenceData()
-                resultReferenceData.RowId = resultSet.stringForColumn("RowId")
-                resultReferenceData.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                resultReferenceData.CreatedOn = resultSet.dateForColumn("CreatedOn")
-                if !resultSet.columnIsNull("LastUpdatedBy")
+                resultReferenceData.RowId = (resultSet?.string(forColumn: "RowId"))!
+                resultReferenceData.CreatedBy = (resultSet?.string(forColumn: "CreatedBy"))!
+                resultReferenceData.CreatedOn = resultSet!.date(forColumn: "CreatedOn")
+                if !(resultSet?.columnIsNull("LastUpdatedBy"))!
                 {
-                    resultReferenceData.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                    resultReferenceData.LastUpdatedBy = resultSet?.string(forColumn: "LastUpdatedBy")
                 }
-                if !resultSet.columnIsNull("LastUpdatedOn")
+                if !(resultSet?.columnIsNull("LastUpdatedOn"))!
                 {
-                    resultReferenceData.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                    resultReferenceData.LastUpdatedOn = resultSet?.date(forColumn: "LastUpdatedOn")
                 }
-                if !resultSet.columnIsNull("Deleted")
+                if !(resultSet?.columnIsNull("Deleted"))!
                 {
-                    resultReferenceData.Deleted = resultSet.dateForColumn("Deleted")
+                    resultReferenceData.Deleted = resultSet?.date(forColumn: "Deleted")
                 }
-                resultReferenceData.StartDate = resultSet.dateForColumn("StartDate")
-                if !resultSet.columnIsNull("EndDate") {
-                    resultReferenceData.EndDate = resultSet.dateForColumn("EndDate")
+                resultReferenceData.StartDate = resultSet!.date(forColumn: "StartDate")
+                if !(resultSet?.columnIsNull("EndDate"))! {
+                    resultReferenceData.EndDate = resultSet?.date(forColumn: "EndDate")
                 }
-                resultReferenceData.Type = resultSet.stringForColumn("Type")
-                resultReferenceData.Value = resultSet.stringForColumn("Value")
-                resultReferenceData.Ordinal = Int(resultSet.intForColumn("Ordinal"))
-                resultReferenceData.Display = resultSet.stringForColumn("Display")
-                resultReferenceData.System = resultSet.boolForColumn("System")
-                if !resultSet.columnIsNull("ParentType") {
-                    resultReferenceData.ParentType = resultSet.stringForColumn("ParentType")
+                resultReferenceData.ReferenceType = (resultSet?.string(forColumn: "Type"))!
+                resultReferenceData.Value = (resultSet?.string(forColumn: "Value"))!
+                resultReferenceData.Ordinal = Int((resultSet?.int(forColumn: "Ordinal"))!)
+                resultReferenceData.Display = (resultSet?.string(forColumn: "Display"))!
+                resultReferenceData.System = (resultSet?.bool(forColumn: "System"))!
+                if !(resultSet?.columnIsNull("ParentType"))! {
+                    resultReferenceData.ParentType = resultSet?.string(forColumn: "ParentType")
                 }
-                if !resultSet.columnIsNull("ParentValue") {
-                    resultReferenceData.ParentValue = resultSet.stringForColumn("ParentValue")
+                if !(resultSet?.columnIsNull("ParentValue"))! {
+                    resultReferenceData.ParentValue = resultSet?.string(forColumn: "ParentValue")
                 }
                 
                 
@@ -2279,40 +2279,40 @@ class ModelManager: NSObject {
     
     func getAllReferenceData() -> [ReferenceData] {
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [StartDate], [EndDate], [Type], [Value], [Ordinal], [Display], [System], [ParentType], [ParentValue] FROM [ReferenceData]", withArgumentsInArray: nil)
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [StartDate], [EndDate], [Type], [Value], [Ordinal], [Display], [System], [ParentType], [ParentValue] FROM [ReferenceData]", withArgumentsIn: nil)
         var referenceDataList: [ReferenceData] = [ReferenceData]()
         if (resultSet != nil) {
             while resultSet.next() {
                 let referenceData : ReferenceData = ReferenceData()
-                referenceData.RowId = resultSet.stringForColumn("RowId")
-                referenceData.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                referenceData.CreatedOn = resultSet.dateForColumn("CreatedOn")
+                referenceData.RowId = resultSet.string(forColumn: "RowId")
+                referenceData.CreatedBy = resultSet.string(forColumn: "CreatedBy")
+                referenceData.CreatedOn = resultSet.date(forColumn: "CreatedOn")
                 if !resultSet.columnIsNull("LastUpdatedBy")
                 {
-                    referenceData.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                    referenceData.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
                 }
                 if !resultSet.columnIsNull("LastUpdatedOn")
                 {
-                    referenceData.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                    referenceData.LastUpdatedOn = resultSet.date(forColumn: "LastUpdatedOn")
                 }
                 if !resultSet.columnIsNull("Deleted")
                 {
-                    referenceData.Deleted = resultSet.dateForColumn("Deleted")
+                    referenceData.Deleted = resultSet.date(forColumn: "Deleted")
                 }
-                referenceData.StartDate = resultSet.dateForColumn("StartDate")
+                referenceData.StartDate = resultSet.date(forColumn: "StartDate")
                 if !resultSet.columnIsNull("EndDate") {
-                    referenceData.EndDate = resultSet.dateForColumn("EndDate")
+                    referenceData.EndDate = resultSet.date(forColumn: "EndDate")
                 }
-                referenceData.Type = resultSet.stringForColumn("Type")
-                referenceData.Value = resultSet.stringForColumn("Value")
-                referenceData.Ordinal = Int(resultSet.intForColumn("Ordinal"))
-                referenceData.Display = resultSet.stringForColumn("Display")
-                referenceData.System = resultSet.boolForColumn("System")
+                referenceData.ReferenceType = resultSet.string(forColumn: "Type")
+                referenceData.Value = resultSet.string(forColumn: "Value")
+                referenceData.Ordinal = Int(resultSet.int(forColumn: "Ordinal"))
+                referenceData.Display = resultSet.string(forColumn: "Display")
+                referenceData.System = resultSet.bool(forColumn: "System")
                 if !resultSet.columnIsNull("ParentType") {
-                    referenceData.ParentType = resultSet.stringForColumn("ParentType")
+                    referenceData.ParentType = resultSet.string(forColumn: "ParentType")
                 }
                 if !resultSet.columnIsNull("ParentValue") {
-                    referenceData.ParentValue = resultSet.stringForColumn("ParentValue")
+                    referenceData.ParentValue = resultSet.string(forColumn: "ParentValue")
                 }
                 
                 referenceDataList.append(referenceData)
@@ -2322,21 +2322,21 @@ class ModelManager: NSObject {
         return referenceDataList
     }
     
-    func findReferenceDataList(criteria: Dictionary<String, AnyObject>) -> [ReferenceData] {
+    func findReferenceDataList(_ criteria: Dictionary<String, AnyObject>) -> [ReferenceData] {
         var list: [ReferenceData] = [ReferenceData]()
         //var count: Int32 = 0
         (list, _) = findReferenceDataList(criteria, pageSize: nil, pageNumber: nil)
         return list
     }
 
-    func findReferenceDataList(criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [ReferenceData], Count: Int32) {
+    func findReferenceDataList(_ criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [ReferenceData], Count: Int32) {
         var list: [ReferenceData] = [ReferenceData]()
         var count: Int32 = 0
-        (list, count) = findReferenceDataList(criteria, pageSize: nil, pageNumber: nil, sortOrder: ReferenceDataSortOrder.Display)
+        (list, count) = findReferenceDataList(criteria, pageSize: nil, pageNumber: nil, sortOrder: ReferenceDataSortOrder.display)
         return (list, count)
     }
     
-    func findReferenceDataList(criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?, sortOrder: ReferenceDataSortOrder) -> (List: [ReferenceData], Count: Int32) {
+    func findReferenceDataList(_ criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?, sortOrder: ReferenceDataSortOrder) -> (List: [ReferenceData], Count: Int32) {
         //return variables
         var count: Int32 = 0
         var referenceDataList: [ReferenceData] = [ReferenceData]()
@@ -2346,10 +2346,10 @@ class ModelManager: NSObject {
         
         switch sortOrder {
             
-        case .Display:
+        case .display:
             orderByClause += "[Display] "
             
-        case .Ordinal:
+        case .ordinal:
             orderByClause += "[Ordinal] "
             
         }
@@ -2366,10 +2366,10 @@ class ModelManager: NSObject {
         }
 
         sharedModelManager.database!.open()
-        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [ReferenceData] " + whereClause + orderByClause, withArgumentsInArray: whereValues)
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [ReferenceData] " + whereClause + orderByClause, withArgumentsIn: whereValues)
         if (countSet != nil) {
             while countSet.next() {
-                count = countSet.intForColumnIndex(0)
+                count = countSet.int(forColumnIndex: 0)
             }
         }
         
@@ -2381,39 +2381,39 @@ class ModelManager: NSObject {
                 pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
             }
             
-            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [StartDate], [EndDate], [Type], [Value], [Ordinal], [Display], [System], [ParentType], [ParentValue] FROM [ReferenceData] " + whereClause + orderByClause + pageClause, withArgumentsInArray: whereValues)
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [StartDate], [EndDate], [Type], [Value], [Ordinal], [Display], [System], [ParentType], [ParentValue] FROM [ReferenceData] " + whereClause + orderByClause + pageClause, withArgumentsIn: whereValues)
             if (resultSet != nil) {
                 while resultSet.next() {
                     let referenceData : ReferenceData = ReferenceData()
-                    referenceData.RowId = resultSet.stringForColumn("RowId")
-                    referenceData.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                    referenceData.CreatedOn = resultSet.dateForColumn("CreatedOn")
+                    referenceData.RowId = resultSet.string(forColumn: "RowId")
+                    referenceData.CreatedBy = resultSet.string(forColumn: "CreatedBy")
+                    referenceData.CreatedOn = resultSet.date(forColumn: "CreatedOn")
                     if !resultSet.columnIsNull("LastUpdatedBy")
                     {
-                        referenceData.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                        referenceData.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
                     }
                     if !resultSet.columnIsNull("LastUpdatedOn")
                     {
-                        referenceData.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                        referenceData.LastUpdatedOn = resultSet.date(forColumn: "LastUpdatedOn")
                     }
                     if !resultSet.columnIsNull("Deleted")
                     {
-                        referenceData.Deleted = resultSet.dateForColumn("Deleted")
+                        referenceData.Deleted = resultSet.date(forColumn: "Deleted")
                     }
-                    referenceData.StartDate = resultSet.dateForColumn("StartDate")
+                    referenceData.StartDate = resultSet.date(forColumn: "StartDate")
                     if !resultSet.columnIsNull("EndDate") {
-                        referenceData.EndDate = resultSet.dateForColumn("EndDate")
+                        referenceData.EndDate = resultSet.date(forColumn: "EndDate")
                     }
-                    referenceData.Type = resultSet.stringForColumn("Type")
-                    referenceData.Value = resultSet.stringForColumn("Value")
-                    referenceData.Ordinal = Int(resultSet.intForColumn("Ordinal"))
-                    referenceData.Display = resultSet.stringForColumn("Display")
-                    referenceData.System = resultSet.boolForColumn("System")
+                    referenceData.ReferenceType = resultSet.string(forColumn: "Type")
+                    referenceData.Value = resultSet.string(forColumn: "Value")
+                    referenceData.Ordinal = Int(resultSet.int(forColumn: "Ordinal"))
+                    referenceData.Display = resultSet.string(forColumn: "Display")
+                    referenceData.System = resultSet.bool(forColumn: "System")
                     if !resultSet.columnIsNull("ParentType") {
-                        referenceData.ParentType = resultSet.stringForColumn("ParentType")
+                        referenceData.ParentType = resultSet.string(forColumn: "ParentType")
                     }
                     if !resultSet.columnIsNull("ParentValue") {
-                        referenceData.ParentValue = resultSet.stringForColumn("ParentValue")
+                        referenceData.ParentValue = resultSet.string(forColumn: "ParentValue")
                     }
                     referenceDataList.append(referenceData)
                 }
@@ -2426,7 +2426,7 @@ class ModelManager: NSObject {
     
     // MARK: - Site
     
-    func addSite(site: Site) -> Bool {
+    func addSite(_ site: Site) -> Bool {
         //build the sql statemnt
         var SQLStatement: String = String()
         var SQLParameterNames: String = String()
@@ -2435,115 +2435,115 @@ class ModelManager: NSObject {
         
         SQLParameterNames = "[RowId], [CreatedBy], [CreatedOn]"
         SQLParameterPlaceholders = "?, ?, ?"
-        SQLParameterValues.append(site.RowId)
-        SQLParameterValues.append(site.CreatedBy)
-        SQLParameterValues.append(site.CreatedOn)
+        SQLParameterValues.append(site.RowId as NSObject)
+        SQLParameterValues.append(site.CreatedBy as NSObject)
+        SQLParameterValues.append(site.CreatedOn as NSObject)
         
         if site.LastUpdatedBy != nil {
             SQLParameterNames += ", [LastUpdatedBy]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(site.LastUpdatedBy!)
+            SQLParameterValues.append(site.LastUpdatedBy! as NSObject)
         }
         
         if site.LastUpdatedOn != nil {
             SQLParameterNames += ", [LastUpdatedOn]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(site.LastUpdatedOn!)
+            SQLParameterValues.append(site.LastUpdatedOn! as NSObject)
         }
         
         if site.Deleted != nil {
             SQLParameterNames += ", [Deleted]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(site.Deleted!)
+            SQLParameterValues.append(site.Deleted! as NSObject)
         }
         SQLParameterNames += ", [OrganisationId]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(site.OrganisationId)
+        SQLParameterValues.append(site.OrganisationId as NSObject)
         SQLParameterNames += ", [Name]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(site.Name)
+        SQLParameterValues.append(site.Name as NSObject)
         
         SQLStatement = "INSERT INTO [Site] (" + SQLParameterNames + ") VALUES (" + SQLParameterPlaceholders + ")"
         
         sharedModelManager.database!.open()
-        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
         sharedModelManager.database!.close()
         return isInserted
     }
     
-    func updateSite(site: Site) -> Bool {
+    func updateSite(_ site: Site) -> Bool {
         //build the sql statemnt
         var SQLStatement: String = String()
         var SQLParameterNames: String = String()
         var SQLParameterValues: [NSObject] = [NSObject]()
         
         SQLParameterNames = "[CreatedBy]=?, [CreatedOn]=?"
-        SQLParameterValues.append(site.CreatedBy)
-        SQLParameterValues.append(site.CreatedOn)
+        SQLParameterValues.append(site.CreatedBy as NSObject)
+        SQLParameterValues.append(site.CreatedOn as NSObject)
         
         if site.LastUpdatedBy != nil {
             SQLParameterNames += ", [LastUpdatedBy]=?"
-            SQLParameterValues.append(site.LastUpdatedBy!)
+            SQLParameterValues.append(site.LastUpdatedBy! as NSObject)
         }
         
         if site.LastUpdatedOn != nil {
             SQLParameterNames += ", [LastUpdatedOn]=?"
-            SQLParameterValues.append(site.LastUpdatedOn!)
+            SQLParameterValues.append(site.LastUpdatedOn! as NSObject)
         }
         
         if site.Deleted != nil {
             SQLParameterNames += ", [Deleted]=?"
-            SQLParameterValues.append(site.Deleted!)
+            SQLParameterValues.append(site.Deleted! as NSObject)
         }
         
         SQLParameterNames += ", [OrganisationId]=?"
-        SQLParameterValues.append(site.OrganisationId)
+        SQLParameterValues.append(site.OrganisationId as NSObject)
         SQLParameterNames += ", [Name]=?"
-        SQLParameterValues.append(site.Name)
+        SQLParameterValues.append(site.Name as NSObject)
         
-        SQLParameterValues.append(site.RowId)
+        SQLParameterValues.append(site.RowId as NSObject)
         
         SQLStatement = "UPDATE [Site] SET " + SQLParameterNames + "WHERE [RowId]=?"
         
         sharedModelManager.database!.open()
-        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
         sharedModelManager.database!.close()
         return isUpdated
     }
     
-    func deleteSite(site: Site) -> Bool {
+    func deleteSite(_ site: Site) -> Bool {
         sharedModelManager.database!.open()
-        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [Site] WHERE [RowId]=?", withArgumentsInArray: [site.RowId])
+        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [Site] WHERE [RowId]=?", withArgumentsIn: [site.RowId])
         sharedModelManager.database!.close()
         return isDeleted
     }
     
-    func getSite(siteId: String) -> Site? {
+    func getSite(_ siteId: String) -> Site? {
         sharedModelManager.database!.open()
         var site: Site? = nil
         
-        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [Name] FROM [Site] WHERE [RowId]=?", withArgumentsInArray: [siteId])
+        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [Name] FROM [Site] WHERE [RowId]=?", withArgumentsIn: [siteId])
         if (resultSet != nil) {
-            while resultSet.next() {
+            while (resultSet?.next())! {
                 var resultSite: Site = Site()
                 resultSite = Site()
-                resultSite.RowId = resultSet.stringForColumn("RowId")
-                resultSite.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                resultSite.CreatedOn = resultSet.dateForColumn("CreatedOn")
-                if !resultSet.columnIsNull("LastUpdatedBy")
+                resultSite.RowId = (resultSet?.string(forColumn: "RowId"))!
+                resultSite.CreatedBy = (resultSet?.string(forColumn: "CreatedBy"))!
+                resultSite.CreatedOn = resultSet!.date(forColumn: "CreatedOn")
+                if !(resultSet?.columnIsNull("LastUpdatedBy"))!
                 {
-                    resultSite.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                    resultSite.LastUpdatedBy = resultSet?.string(forColumn: "LastUpdatedBy")
                 }
-                if !resultSet.columnIsNull("LastUpdatedOn")
+                if !(resultSet?.columnIsNull("LastUpdatedOn"))!
                 {
-                    resultSite.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                    resultSite.LastUpdatedOn = resultSet?.date(forColumn: "LastUpdatedOn")
                 }
-                if !resultSet.columnIsNull("Deleted")
+                if !(resultSet?.columnIsNull("Deleted"))!
                 {
-                    resultSite.Deleted = resultSet.dateForColumn("Deleted")
+                    resultSite.Deleted = resultSet?.date(forColumn: "Deleted")
                 }
-                resultSite.OrganisationId = resultSet.stringForColumn("OrganisationId")
-                resultSite.Name = resultSet.stringForColumn("Name")
+                resultSite.OrganisationId = (resultSet?.string(forColumn: "OrganisationId"))!
+                resultSite.Name = (resultSet?.string(forColumn: "Name"))!
                 
                 site = resultSite
             }
@@ -2554,28 +2554,28 @@ class ModelManager: NSObject {
     
     func getAllSite() -> [Site] {
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [Name] FROM [Site]", withArgumentsInArray: nil)
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [Name] FROM [Site]", withArgumentsIn: nil)
         var siteList: [Site] = [Site]()
         if (resultSet != nil) {
             while resultSet.next() {
                 let site : Site = Site()
-                site.RowId = resultSet.stringForColumn("RowId")
-                site.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                site.CreatedOn = resultSet.dateForColumn("CreatedOn")
+                site.RowId = resultSet.string(forColumn: "RowId")
+                site.CreatedBy = resultSet.string(forColumn: "CreatedBy")
+                site.CreatedOn = resultSet.date(forColumn: "CreatedOn")
                 if !resultSet.columnIsNull("LastUpdatedBy")
                 {
-                    site.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                    site.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
                 }
                 if !resultSet.columnIsNull("LastUpdatedOn")
                 {
-                    site.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                    site.LastUpdatedOn = resultSet.date(forColumn: "LastUpdatedOn")
                 }
                 if !resultSet.columnIsNull("Deleted")
                 {
-                    site.Deleted = resultSet.dateForColumn("Deleted")
+                    site.Deleted = resultSet.date(forColumn: "Deleted")
                 }
-                site.OrganisationId = resultSet.stringForColumn("OrganisationId")
-                site.Name = resultSet.stringForColumn("Name")
+                site.OrganisationId = resultSet.string(forColumn: "OrganisationId")
+                site.Name = resultSet.string(forColumn: "Name")
                 
                 siteList.append(site)
             }
@@ -2584,14 +2584,14 @@ class ModelManager: NSObject {
         return siteList
     }
     
-    func findSiteList(criteria: Dictionary<String, AnyObject>) -> [Site] {
+    func findSiteList(_ criteria: Dictionary<String, AnyObject>) -> [Site] {
         var list: [Site] = [Site]()
         //var count: Int32 = 0
         (list, _) = findSiteList(criteria, pageSize: nil, pageNumber: nil)
         return list
     }
 
-    func findSiteList(criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [Site], Count: Int32) {
+    func findSiteList(_ criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [Site], Count: Int32) {
         //return variables
         var count: Int32 = 0
         var siteList: [Site] = [Site]()
@@ -2611,10 +2611,10 @@ class ModelManager: NSObject {
         }
         
         sharedModelManager.database!.open()
-        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [Site] " + whereClause + orderByClause, withArgumentsInArray: whereValues)
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [Site] " + whereClause + orderByClause, withArgumentsIn: whereValues)
         if (countSet != nil) {
             while countSet.next() {
-                count = countSet.intForColumnIndex(0)
+                count = countSet.int(forColumnIndex: 0)
             }
         }
         
@@ -2626,27 +2626,27 @@ class ModelManager: NSObject {
                 pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
             }
             
-            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [Name] FROM [Site] " + whereClause + orderByClause + pageClause, withArgumentsInArray: whereValues)
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [Name] FROM [Site] " + whereClause + orderByClause + pageClause, withArgumentsIn: whereValues)
             if (resultSet != nil) {
                 while resultSet.next() {
                     let site : Site = Site()
-                    site.RowId = resultSet.stringForColumn("RowId")
-                    site.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                    site.CreatedOn = resultSet.dateForColumn("CreatedOn")
+                    site.RowId = resultSet.string(forColumn: "RowId")
+                    site.CreatedBy = resultSet.string(forColumn: "CreatedBy")
+                    site.CreatedOn = resultSet.date(forColumn: "CreatedOn")
                     if !resultSet.columnIsNull("LastUpdatedBy")
                     {
-                        site.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                        site.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
                     }
                     if !resultSet.columnIsNull("LastUpdatedOn")
                     {
-                        site.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                        site.LastUpdatedOn = resultSet.date(forColumn: "LastUpdatedOn")
                     }
                     if !resultSet.columnIsNull("Deleted")
                     {
-                        site.Deleted = resultSet.dateForColumn("Deleted")
+                        site.Deleted = resultSet.date(forColumn: "Deleted")
                     }
-                    site.OrganisationId = resultSet.stringForColumn("OrganisationId")
-                    site.Name = resultSet.stringForColumn("Name")
+                    site.OrganisationId = resultSet.string(forColumn: "OrganisationId")
+                    site.Name = resultSet.string(forColumn: "Name")
                     
                     siteList.append(site)
                 }
@@ -2659,7 +2659,7 @@ class ModelManager: NSObject {
     
     // MARK: - Task
     
-    func addTask(task: Task) -> Bool {
+    func addTask(_ task: Task) -> Bool {
         //build the sql statemnt
         var SQLStatement: String = String()
         var SQLParameterNames: String = String()
@@ -2668,332 +2668,332 @@ class ModelManager: NSObject {
         
         SQLParameterNames = "[RowId], [CreatedBy], [CreatedOn]"
         SQLParameterPlaceholders = "?, ?, ?"
-        SQLParameterValues.append(task.RowId)
-        SQLParameterValues.append(task.CreatedBy)
-        SQLParameterValues.append(task.CreatedOn)
+        SQLParameterValues.append(task.RowId as NSObject)
+        SQLParameterValues.append(task.CreatedBy as NSObject)
+        SQLParameterValues.append(task.CreatedOn as NSObject)
         
         if task.LastUpdatedBy != nil {
             SQLParameterNames += ", [LastUpdatedBy]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(task.LastUpdatedBy!)
+            SQLParameterValues.append(task.LastUpdatedBy! as NSObject)
         }
         
         if task.LastUpdatedOn != nil {
             SQLParameterNames += ", [LastUpdatedOn]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(task.LastUpdatedOn!)
+            SQLParameterValues.append(task.LastUpdatedOn! as NSObject)
         }
         
         if task.Deleted != nil {
             SQLParameterNames += ", [Deleted]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(task.Deleted!)
+            SQLParameterValues.append(task.Deleted! as NSObject)
         }
         SQLParameterNames += ", [OrganisationId]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(task.OrganisationId)
+        SQLParameterValues.append(task.OrganisationId as NSObject)
         SQLParameterNames += ", [SiteId]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(task.SiteId)
+        SQLParameterValues.append(task.SiteId as NSObject)
         SQLParameterNames += ", [PropertyId]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(task.PropertyId)
+        SQLParameterValues.append(task.PropertyId as NSObject)
         SQLParameterNames += ", [LocationId]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(task.LocationId)
+        SQLParameterValues.append(task.LocationId as NSObject)
         SQLParameterNames += ", [LocationGroupName]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(task.LocationGroupName)
+        SQLParameterValues.append(task.LocationGroupName as NSObject)
         SQLParameterNames += ", [LocationName]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(task.LocationName)
+        SQLParameterValues.append(task.LocationName as NSObject)
         if task.Room != nil {
             SQLParameterNames += ", [Room]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(task.Room!)
+            SQLParameterValues.append(task.Room! as NSObject)
         }
         if task.TaskTemplateId != nil {
             SQLParameterNames += ", [TaskTemplateId]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(task.TaskTemplateId!)
+            SQLParameterValues.append(task.TaskTemplateId! as NSObject)
         }
         SQLParameterNames += ", [TaskRef]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(task.TaskRef)
+        SQLParameterValues.append(task.TaskRef as NSObject)
         if task.PPMGroup != nil {
             SQLParameterNames += ", [PPMGroup]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(task.PPMGroup!)
+            SQLParameterValues.append(task.PPMGroup! as NSObject)
         }
         if task.AssetType != nil {
             SQLParameterNames += ", [AssetType]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(task.AssetType!)
+            SQLParameterValues.append(task.AssetType! as NSObject)
         }
         SQLParameterNames += ", [TaskName]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(task.TaskName)
+        SQLParameterValues.append(task.TaskName as NSObject)
         SQLParameterNames += ", [Frequency]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(task.Frequency)
+        SQLParameterValues.append(task.Frequency as NSObject)
         if task.AssetId != nil {
             SQLParameterNames += ", [AssetId]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(task.AssetId!)
+            SQLParameterValues.append(task.AssetId! as NSObject)
         }
         if task.AssetNumber != nil {
             SQLParameterNames += ", [AssetNumber]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(task.AssetNumber!)
+            SQLParameterValues.append(task.AssetNumber! as NSObject)
         }
         SQLParameterNames += ", [ScheduledDate]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(task.ScheduledDate)
+        SQLParameterValues.append(task.ScheduledDate as NSObject)
         if task.CompletedDate != nil {
             SQLParameterNames += ", [CompletedDate]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(task.CompletedDate!)
+            SQLParameterValues.append(task.CompletedDate! as NSObject)
         }
         SQLParameterNames += ", [Status]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(task.Status)
+        SQLParameterValues.append(task.Status as NSObject)
         SQLParameterNames += ", [Priority]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(task.Priority)
+        SQLParameterValues.append(task.Priority as NSObject)
         if task.EstimatedDuration != nil {
             SQLParameterNames += ", [EstimatedDuration]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(task.EstimatedDuration!)
+            SQLParameterValues.append(task.EstimatedDuration! as NSObject)
         }
         if task.OperativeId != nil {
             SQLParameterNames += ", [OperativeId]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(task.OperativeId!)
+            SQLParameterValues.append(task.OperativeId! as NSObject)
         }
         if task.ActualDuration != nil {
             SQLParameterNames += ", [ActualDuration]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(task.ActualDuration!)
+            SQLParameterValues.append(task.ActualDuration! as NSObject)
         }
         if task.TravelDuration != nil {
             SQLParameterNames += ", [TravelDuration]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(task.TravelDuration!)
+            SQLParameterValues.append(task.TravelDuration! as NSObject)
         }
         if task.Comments != nil {
             SQLParameterNames += ", [Comments]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(task.Comments!)
+            SQLParameterValues.append(task.Comments! as NSObject)
         }
         if task.AlternateAssetCode != nil {
             SQLParameterNames += ", [AlternateAssetCode]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(task.AlternateAssetCode!)
+            SQLParameterValues.append(task.AlternateAssetCode! as NSObject)
         }
         
         
         SQLStatement = "INSERT INTO [Task] (" + SQLParameterNames + ") VALUES (" + SQLParameterPlaceholders + ")"
         
         sharedModelManager.database!.open()
-        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
         sharedModelManager.database!.close()
         return isInserted
     }
     
-    func updateTask(task: Task) -> Bool {
+    func updateTask(_ task: Task) -> Bool {
         //build the sql statemnt
         var SQLStatement: String = String()
         var SQLParameterNames: String = String()
         var SQLParameterValues: [NSObject] = [NSObject]()
         
         SQLParameterNames = "[CreatedBy]=?, [CreatedOn]=?"
-        SQLParameterValues.append(task.CreatedBy)
-        SQLParameterValues.append(task.CreatedOn)
+        SQLParameterValues.append(task.CreatedBy as NSObject)
+        SQLParameterValues.append(task.CreatedOn as NSObject)
         
         if task.LastUpdatedBy != nil {
             SQLParameterNames += ", [LastUpdatedBy]=?"
-            SQLParameterValues.append(task.LastUpdatedBy!)
+            SQLParameterValues.append(task.LastUpdatedBy! as NSObject)
         }
         
         if task.LastUpdatedOn != nil {
             SQLParameterNames += ", [LastUpdatedOn]=?"
-            SQLParameterValues.append(task.LastUpdatedOn!)
+            SQLParameterValues.append(task.LastUpdatedOn! as NSObject)
         }
         
         if task.Deleted != nil {
             SQLParameterNames += ", [Deleted]=?"
-            SQLParameterValues.append(task.Deleted!)
+            SQLParameterValues.append(task.Deleted! as NSObject)
         }
         
         SQLParameterNames += ", [OrganisationId]=?"
-        SQLParameterValues.append(task.OrganisationId)
+        SQLParameterValues.append(task.OrganisationId as NSObject)
         SQLParameterNames += ", [SiteId]=?"
-        SQLParameterValues.append(task.SiteId)
+        SQLParameterValues.append(task.SiteId as NSObject)
         SQLParameterNames += ", [PropertyId]=?"
-        SQLParameterValues.append(task.PropertyId)
+        SQLParameterValues.append(task.PropertyId as NSObject)
         SQLParameterNames += ", [LocationId]=?"
-        SQLParameterValues.append(task.LocationId)
+        SQLParameterValues.append(task.LocationId as NSObject)
         SQLParameterNames += ", [LocationGroupName]=?"
-        SQLParameterValues.append(task.LocationGroupName)
+        SQLParameterValues.append(task.LocationGroupName as NSObject)
         SQLParameterNames += ", [LocationName]=?"
-        SQLParameterValues.append(task.LocationName)
+        SQLParameterValues.append(task.LocationName as NSObject)
         if task.Room != nil {
             SQLParameterNames += ", [Room]=?"
-            SQLParameterValues.append(task.Room!)
+            SQLParameterValues.append(task.Room! as NSObject)
         }
         if task.TaskTemplateId != nil {
             SQLParameterNames += ", [TaskTemplateId]=?"
-            SQLParameterValues.append(task.TaskTemplateId!)
+            SQLParameterValues.append(task.TaskTemplateId! as NSObject)
         }
         SQLParameterNames += ", [TaskRef]=?"
-        SQLParameterValues.append(task.TaskRef)
+        SQLParameterValues.append(task.TaskRef as NSObject)
         if task.PPMGroup != nil {
             SQLParameterNames += ", [PPMGroup]=?"
-            SQLParameterValues.append(task.PPMGroup!)
+            SQLParameterValues.append(task.PPMGroup! as NSObject)
         }
         if task.AssetType != nil {
             SQLParameterNames += ", [AssetType]=?"
-            SQLParameterValues.append(task.AssetType!)
+            SQLParameterValues.append(task.AssetType! as NSObject)
         }
         SQLParameterNames += ", [TaskName]=?"
-        SQLParameterValues.append(task.TaskName)
+        SQLParameterValues.append(task.TaskName as NSObject)
         SQLParameterNames += ", [Frequency]=?"
-        SQLParameterValues.append(task.Frequency)
+        SQLParameterValues.append(task.Frequency as NSObject)
         if task.AssetId != nil {
             SQLParameterNames += ", [AssetId]=?"
-            SQLParameterValues.append(task.AssetId!)
+            SQLParameterValues.append(task.AssetId! as NSObject)
         }
         if task.AssetNumber != nil {
             SQLParameterNames += ", [AssetNumber]=?"
-            SQLParameterValues.append(task.AssetNumber!)
+            SQLParameterValues.append(task.AssetNumber! as NSObject)
         }
         SQLParameterNames += ", [ScheduledDate]=?"
-        SQLParameterValues.append(task.ScheduledDate)
+        SQLParameterValues.append(task.ScheduledDate as NSObject)
         if task.CompletedDate != nil {
             SQLParameterNames += ", [CompletedDate]=?"
-            SQLParameterValues.append(task.CompletedDate!)
+            SQLParameterValues.append(task.CompletedDate! as NSObject)
         }
         SQLParameterNames += ", [Status]=?"
-        SQLParameterValues.append(task.Status)
+        SQLParameterValues.append(task.Status as NSObject)
         SQLParameterNames += ", [Priority]=?"
-        SQLParameterValues.append(task.Priority)
+        SQLParameterValues.append(task.Priority as NSObject)
         if task.EstimatedDuration != nil {
             SQLParameterNames += ", [EstimatedDuration]=?"
-            SQLParameterValues.append(task.EstimatedDuration!)
+            SQLParameterValues.append(task.EstimatedDuration! as NSObject)
         }
         if task.OperativeId != nil {
             SQLParameterNames += ", [OperativeId]=?"
-            SQLParameterValues.append(task.OperativeId!)
+            SQLParameterValues.append(task.OperativeId! as NSObject)
         }
         if task.ActualDuration != nil {
             SQLParameterNames += ", [ActualDuration]=?"
-            SQLParameterValues.append(task.ActualDuration!)
+            SQLParameterValues.append(task.ActualDuration! as NSObject)
         }
         if task.TravelDuration != nil {
             SQLParameterNames += ", [TravelDuration]=?"
-            SQLParameterValues.append(task.TravelDuration!)
+            SQLParameterValues.append(task.TravelDuration! as NSObject)
         }
         if task.Comments != nil {
             SQLParameterNames += ", [Comments]=?"
-            SQLParameterValues.append(task.Comments!)
+            SQLParameterValues.append(task.Comments! as NSObject)
         }
         if task.AlternateAssetCode != nil {
             SQLParameterNames += ", [AlternateAssetCode]=?"
-            SQLParameterValues.append(task.AlternateAssetCode!)
+            SQLParameterValues.append(task.AlternateAssetCode! as NSObject)
         }
         
         
-        SQLParameterValues.append(task.RowId)
+        SQLParameterValues.append(task.RowId as NSObject)
         
         SQLStatement = "UPDATE [Task] SET " + SQLParameterNames + "WHERE [RowId]=?"
         
         sharedModelManager.database!.open()
-        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
         sharedModelManager.database!.close()
         return isUpdated
     }
     
-    func deleteTask(task: Task) -> Bool {
+    func deleteTask(_ task: Task) -> Bool {
         sharedModelManager.database!.open()
-        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [Task] WHERE [RowId]=?", withArgumentsInArray: [task.RowId])
+        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [Task] WHERE [RowId]=?", withArgumentsIn: [task.RowId])
         sharedModelManager.database!.close()
         return isDeleted
     }
     
-    func getTask(taskId: String) -> Task? {
+    func getTask(_ taskId: String) -> Task? {
         sharedModelManager.database!.open()
         var task: Task? = nil
         
-        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [SiteId], [PropertyId], [LocationId], [LocationGroupName], [LocationName], [Room], [TaskTemplateId], [TaskRef], [PPMGroup], [AssetType], [TaskName], [Frequency], [AssetId], [AssetNumber], [ScheduledDate], [CompletedDate], [Status], [Priority], [EstimatedDuration], [OperativeId], [ActualDuration], [TravelDuration], [Comments], [AlternateAssetCode] FROM [Task] WHERE [RowId]=?", withArgumentsInArray: [taskId])
+        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [SiteId], [PropertyId], [LocationId], [LocationGroupName], [LocationName], [Room], [TaskTemplateId], [TaskRef], [PPMGroup], [AssetType], [TaskName], [Frequency], [AssetId], [AssetNumber], [ScheduledDate], [CompletedDate], [Status], [Priority], [EstimatedDuration], [OperativeId], [ActualDuration], [TravelDuration], [Comments], [AlternateAssetCode] FROM [Task] WHERE [RowId]=?", withArgumentsIn: [taskId])
         if (resultSet != nil) {
-            while resultSet.next() {
+            while (resultSet?.next())! {
                 var resultTask: Task = Task()
                 resultTask = Task()
-                resultTask.RowId = resultSet.stringForColumn("RowId")
-                resultTask.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                resultTask.CreatedOn = resultSet.dateForColumn("CreatedOn")
-                if !resultSet.columnIsNull("LastUpdatedBy")
+                resultTask.RowId = (resultSet?.string(forColumn: "RowId"))!
+                resultTask.CreatedBy = (resultSet?.string(forColumn: "CreatedBy"))!
+                resultTask.CreatedOn = resultSet!.date(forColumn: "CreatedOn")
+                if !(resultSet?.columnIsNull("LastUpdatedBy"))!
                 {
-                    resultTask.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                    resultTask.LastUpdatedBy = resultSet?.string(forColumn: "LastUpdatedBy")
                 }
-                if !resultSet.columnIsNull("LastUpdatedOn")
+                if !(resultSet?.columnIsNull("LastUpdatedOn"))!
                 {
-                    resultTask.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                    resultTask.LastUpdatedOn = resultSet?.date(forColumn: "LastUpdatedOn")
                 }
-                if !resultSet.columnIsNull("Deleted")
+                if !(resultSet?.columnIsNull("Deleted"))!
                 {
-                    resultTask.Deleted = resultSet.dateForColumn("Deleted")
+                    resultTask.Deleted = resultSet?.date(forColumn: "Deleted")
                 }
-                resultTask.OrganisationId = resultSet.stringForColumn("OrganisationId")
-                resultTask.SiteId = resultSet.stringForColumn("SiteId")
-                resultTask.PropertyId = resultSet.stringForColumn("PropertyId")
-                resultTask.LocationId = resultSet.stringForColumn("LocationId")
-                resultTask.LocationGroupName = resultSet.stringForColumn("LocationGroupName")
-                resultTask.LocationName = resultSet.stringForColumn("LocationName")
-                if !resultSet.columnIsNull("Room") {
-                    resultTask.Room = resultSet.stringForColumn("Room")
+                resultTask.OrganisationId = (resultSet?.string(forColumn: "OrganisationId"))!
+                resultTask.SiteId = (resultSet?.string(forColumn: "SiteId"))!
+                resultTask.PropertyId = (resultSet?.string(forColumn: "PropertyId"))!
+                resultTask.LocationId = (resultSet?.string(forColumn: "LocationId"))!
+                resultTask.LocationGroupName = (resultSet?.string(forColumn: "LocationGroupName"))!
+                resultTask.LocationName = (resultSet?.string(forColumn: "LocationName"))!
+                if !(resultSet?.columnIsNull("Room"))! {
+                    resultTask.Room = resultSet?.string(forColumn: "Room")
                 }
-                if !resultSet.columnIsNull("TaskTemplateId") {
-                    resultTask.TaskTemplateId = resultSet.stringForColumn("TaskTemplateId")
+                if !(resultSet?.columnIsNull("TaskTemplateId"))! {
+                    resultTask.TaskTemplateId = resultSet?.string(forColumn: "TaskTemplateId")
                 }
-                resultTask.TaskRef = resultSet.stringForColumn("TaskRef")
-                if !resultSet.columnIsNull("PPMGroup") {
-                    resultTask.PPMGroup = resultSet.stringForColumn("PPMGroup")
+                resultTask.TaskRef = (resultSet?.string(forColumn: "TaskRef"))!
+                if !(resultSet?.columnIsNull("PPMGroup"))! {
+                    resultTask.PPMGroup = resultSet?.string(forColumn: "PPMGroup")
                 }
-                if !resultSet.columnIsNull("AssetType") {
-                    resultTask.AssetType = resultSet.stringForColumn("AssetType")
+                if !(resultSet?.columnIsNull("AssetType"))! {
+                    resultTask.AssetType = resultSet?.string(forColumn: "AssetType")
                 }
-                resultTask.TaskName = resultSet.stringForColumn("TaskName")
-                resultTask.Frequency = resultSet.stringForColumn("Frequency")
-                if !resultSet.columnIsNull("AssetId") {
-                    resultTask.AssetId = resultSet.stringForColumn("AssetId")
+                resultTask.TaskName = (resultSet?.string(forColumn: "TaskName"))!
+                resultTask.Frequency = (resultSet?.string(forColumn: "Frequency"))!
+                if !(resultSet?.columnIsNull("AssetId"))! {
+                    resultTask.AssetId = resultSet?.string(forColumn: "AssetId")
                 }
-                if !resultSet.columnIsNull("AssetNumber") {
-                    resultTask.AssetNumber = resultSet.stringForColumn("AssetNumber")
+                if !(resultSet?.columnIsNull("AssetNumber"))! {
+                    resultTask.AssetNumber = resultSet?.string(forColumn: "AssetNumber")
                 }
-                resultTask.ScheduledDate = resultSet.dateForColumn("ScheduledDate")
-                if !resultSet.columnIsNull("CompletedDate") {
-                    resultTask.CompletedDate = resultSet.dateForColumn("CompletedDate")
+                resultTask.ScheduledDate = resultSet!.date(forColumn: "ScheduledDate")
+                if !(resultSet?.columnIsNull("CompletedDate"))! {
+                    resultTask.CompletedDate = resultSet?.date(forColumn: "CompletedDate")
                 }
-                resultTask.Status = resultSet.stringForColumn("Status")
-                resultTask.Priority = Int(resultSet.intForColumn("Priority"))
-                if !resultSet.columnIsNull("EstimatedDuration") {
-                    resultTask.EstimatedDuration = Int(resultSet.intForColumn("EstimatedDuration"))
+                resultTask.Status = (resultSet?.string(forColumn: "Status"))!
+                resultTask.Priority = Int((resultSet?.int(forColumn: "Priority"))!)
+                if !(resultSet?.columnIsNull("EstimatedDuration"))! {
+                    resultTask.EstimatedDuration = Int((resultSet?.int(forColumn: "EstimatedDuration"))!)
                 }
-                if !resultSet.columnIsNull("OperativeId") {
-                    resultTask.OperativeId = resultSet.stringForColumn("OperativeId")
+                if !(resultSet?.columnIsNull("OperativeId"))! {
+                    resultTask.OperativeId = resultSet?.string(forColumn: "OperativeId")
                 }
-                if !resultSet.columnIsNull("ActualDuration") {
-                    resultTask.ActualDuration = Int(resultSet.intForColumn("ActualDuration"))
+                if !(resultSet?.columnIsNull("ActualDuration"))! {
+                    resultTask.ActualDuration = Int((resultSet?.int(forColumn: "ActualDuration"))!)
                 }
-                if !resultSet.columnIsNull("TravelDuration") {
-                    resultTask.TravelDuration = Int(resultSet.intForColumn("TravelDuration"))
+                if !(resultSet?.columnIsNull("TravelDuration"))! {
+                    resultTask.TravelDuration = Int((resultSet?.int(forColumn: "TravelDuration"))!)
                 }
-                if !resultSet.columnIsNull("Comments") {
-                    resultTask.Comments = resultSet.stringForColumn("Comments")
+                if !(resultSet?.columnIsNull("Comments"))! {
+                    resultTask.Comments = resultSet?.string(forColumn: "Comments")
                 }
-                if !resultSet.columnIsNull("AlternateAssetCode") {
-                    resultTask.AlternateAssetCode = resultSet.stringForColumn("AlternateAssetCode")
+                if !(resultSet?.columnIsNull("AlternateAssetCode"))! {
+                    resultTask.AlternateAssetCode = resultSet?.string(forColumn: "AlternateAssetCode")
                 }
                 
                 task = resultTask
@@ -3005,76 +3005,76 @@ class ModelManager: NSObject {
     
     func getAllTask() -> [Task] {
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [SiteId], [PropertyId], [LocationId], [LocationGroupName], [LocationName], [Room], [TaskTemplateId], [TaskRef], [PPMGroup], [AssetType], [TaskName], [Frequency], [AssetId], [AssetNumber], [ScheduledDate], [CompletedDate], [Status], [Priority], [EstimatedDuration], [OperativeId], [ActualDuration], [TravelDuration], [Comments], [AlternateAssetCode] FROM [Task]", withArgumentsInArray: nil)
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [SiteId], [PropertyId], [LocationId], [LocationGroupName], [LocationName], [Room], [TaskTemplateId], [TaskRef], [PPMGroup], [AssetType], [TaskName], [Frequency], [AssetId], [AssetNumber], [ScheduledDate], [CompletedDate], [Status], [Priority], [EstimatedDuration], [OperativeId], [ActualDuration], [TravelDuration], [Comments], [AlternateAssetCode] FROM [Task]", withArgumentsIn: nil)
         var taskList: [Task] = [Task]()
         if (resultSet != nil) {
             while resultSet.next() {
                 let task : Task = Task()
-                task.RowId = resultSet.stringForColumn("RowId")
-                task.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                task.CreatedOn = resultSet.dateForColumn("CreatedOn")
+                task.RowId = resultSet.string(forColumn: "RowId")
+                task.CreatedBy = resultSet.string(forColumn: "CreatedBy")
+                task.CreatedOn = resultSet.date(forColumn: "CreatedOn")
                 if !resultSet.columnIsNull("LastUpdatedBy")
                 {
-                    task.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                    task.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
                 }
                 if !resultSet.columnIsNull("LastUpdatedOn")
                 {
-                    task.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                    task.LastUpdatedOn = resultSet.date(forColumn: "LastUpdatedOn")
                 }
                 if !resultSet.columnIsNull("Deleted")
                 {
-                    task.Deleted = resultSet.dateForColumn("Deleted")
+                    task.Deleted = resultSet.date(forColumn: "Deleted")
                 }
-                task.OrganisationId = resultSet.stringForColumn("OrganisationId")
-                task.SiteId = resultSet.stringForColumn("SiteId")
-                task.PropertyId = resultSet.stringForColumn("PropertyId")
-                task.LocationId = resultSet.stringForColumn("LocationId")
-                task.LocationGroupName = resultSet.stringForColumn("LocationGroupName")
-                task.LocationName = resultSet.stringForColumn("LocationName")
+                task.OrganisationId = resultSet.string(forColumn: "OrganisationId")
+                task.SiteId = resultSet.string(forColumn: "SiteId")
+                task.PropertyId = resultSet.string(forColumn: "PropertyId")
+                task.LocationId = resultSet.string(forColumn: "LocationId")
+                task.LocationGroupName = resultSet.string(forColumn: "LocationGroupName")
+                task.LocationName = resultSet.string(forColumn: "LocationName")
                 if !resultSet.columnIsNull("Room") {
-                    task.Room = resultSet.stringForColumn("Room")
+                    task.Room = resultSet.string(forColumn: "Room")
                 }
                 if !resultSet.columnIsNull("TaskTemplateId") {
-                    task.TaskTemplateId = resultSet.stringForColumn("TaskTemplateId")
+                    task.TaskTemplateId = resultSet.string(forColumn: "TaskTemplateId")
                 }
-                task.TaskRef = resultSet.stringForColumn("TaskRef")
+                task.TaskRef = resultSet.string(forColumn: "TaskRef")
                 if !resultSet.columnIsNull("PPMGroup") {
-                    task.PPMGroup = resultSet.stringForColumn("PPMGroup")
+                    task.PPMGroup = resultSet.string(forColumn: "PPMGroup")
                 }
                 if !resultSet.columnIsNull("AssetType") {
-                    task.AssetType = resultSet.stringForColumn("AssetType")
+                    task.AssetType = resultSet.string(forColumn: "AssetType")
                 }
-                task.TaskName = resultSet.stringForColumn("TaskName")
-                task.Frequency = resultSet.stringForColumn("Frequency")
+                task.TaskName = resultSet.string(forColumn: "TaskName")
+                task.Frequency = resultSet.string(forColumn: "Frequency")
                 if !resultSet.columnIsNull("AssetId") {
-                    task.AssetId = resultSet.stringForColumn("AssetId")
+                    task.AssetId = resultSet.string(forColumn: "AssetId")
                 }
                 if !resultSet.columnIsNull("AssetNumber") {
-                    task.AssetNumber = resultSet.stringForColumn("AssetNumber")
+                    task.AssetNumber = resultSet.string(forColumn: "AssetNumber")
                 }
-                task.ScheduledDate = resultSet.dateForColumn("ScheduledDate")
+                task.ScheduledDate = resultSet.date(forColumn: "ScheduledDate")
                 if !resultSet.columnIsNull("CompletedDate") {
-                    task.CompletedDate = resultSet.dateForColumn("CompletedDate")
+                    task.CompletedDate = resultSet.date(forColumn: "CompletedDate")
                 }
-                task.Status = resultSet.stringForColumn("Status")
-                task.Priority = Int(resultSet.intForColumn("Priority"))
+                task.Status = resultSet.string(forColumn: "Status")
+                task.Priority = Int(resultSet.int(forColumn: "Priority"))
                 if !resultSet.columnIsNull("EstimatedDuration") {
-                    task.EstimatedDuration = Int(resultSet.intForColumn("EstimatedDuration"))
+                    task.EstimatedDuration = Int(resultSet.int(forColumn: "EstimatedDuration"))
                 }
                 if !resultSet.columnIsNull("OperativeId") {
-                    task.OperativeId = resultSet.stringForColumn("OperativeId")
+                    task.OperativeId = resultSet.string(forColumn: "OperativeId")
                 }
                 if !resultSet.columnIsNull("ActualDuration") {
-                    task.ActualDuration = Int(resultSet.intForColumn("ActualDuration"))
+                    task.ActualDuration = Int(resultSet.int(forColumn: "ActualDuration"))
                 }
                 if !resultSet.columnIsNull("TravelDuration") {
-                    task.TravelDuration = Int(resultSet.intForColumn("TravelDuration"))
+                    task.TravelDuration = Int(resultSet.int(forColumn: "TravelDuration"))
                 }
                 if !resultSet.columnIsNull("Comments") {
-                    task.Comments = resultSet.stringForColumn("Comments")
+                    task.Comments = resultSet.string(forColumn: "Comments")
                 }
                 if !resultSet.columnIsNull("AlternateAssetCode") {
-                    task.AlternateAssetCode = resultSet.stringForColumn("AlternateAssetCode")
+                    task.AlternateAssetCode = resultSet.string(forColumn: "AlternateAssetCode")
                 }
                 
                 taskList.append(task)
@@ -3084,20 +3084,20 @@ class ModelManager: NSObject {
         return taskList
     }
     
-    func findTaskList(criteria: Dictionary<String, AnyObject>, onlyPending: Bool) -> [Task] {
+    func findTaskList(_ criteria: Dictionary<String, AnyObject>, onlyPending: Bool) -> [Task] {
         var list: [Task] = [Task]()
         //var count: Int32 = 0
-        (list, _) = findTaskList(criteria, onlyPending: true, pageSize: nil, pageNumber: nil, sortOrder: TaskSortOrder.Date)
+        (list, _) = findTaskList(criteria, onlyPending: true, pageSize: nil, pageNumber: nil, sortOrder: TaskSortOrder.date)
         return list
     }
 
-    func findTaskList(criteria: Dictionary<String, AnyObject>, onlyPending: Bool, pageSize: Int32?, pageNumber: Int32?) -> (List: [Task], Count: Int32) {
+    func findTaskList(_ criteria: Dictionary<String, AnyObject>, onlyPending: Bool, pageSize: Int32?, pageNumber: Int32?) -> (List: [Task], Count: Int32) {
         var list: [Task] = [Task]()
         var count: Int32 = 0
-        (list, count) = findTaskList(criteria, onlyPending: true, pageSize: nil, pageNumber: nil, sortOrder: TaskSortOrder.Date)
+        (list, count) = findTaskList(criteria, onlyPending: true, pageSize: nil, pageNumber: nil, sortOrder: TaskSortOrder.date)
         return (list, count)
     }          
-    func findTaskList(criteria: Dictionary<String, AnyObject>, onlyPending: Bool, pageSize: Int32?, pageNumber: Int32?, sortOrder: TaskSortOrder) -> (List: [Task], Count: Int32) {
+    func findTaskList(_ criteria: Dictionary<String, AnyObject>, onlyPending: Bool, pageSize: Int32?, pageNumber: Int32?, sortOrder: TaskSortOrder) -> (List: [Task], Count: Int32) {
        //return variables
         var count: Int32 = 0
         var taskList: [Task] = [Task]()
@@ -3107,16 +3107,16 @@ class ModelManager: NSObject {
         
         switch sortOrder {
             
-        case .Date: 
+        case .date: 
             orderByClause += "[ScheduledDate] "
             
-        case .Location:
+        case .location:
             orderByClause += "[LocationName] "
             
-        case .AssetType:
+        case .assetType:
             orderByClause += "[PPMGroup] "
            
-        case .Task:
+        case .task:
             orderByClause += "[TaskName] "
             
         }
@@ -3139,36 +3139,36 @@ class ModelManager: NSObject {
             {
             case DueTodayText:
                  
-                let endOfToday: NSDate = NSDate().endOfDay()
+                let endOfToday: Date = Date().endOfDay()
                 
                 whereClause += (whereClause != "" ? " AND " : " ")
                 whereClause += " [ScheduledDate] <= ? "
-                whereValues.append(endOfToday)
+                whereValues.append(endOfToday as AnyObject)
                 
             case DueNext7DaysText:
                 
-                let endOfThisWeek: NSDate = NSDate().endOfWeek()
+                let endOfThisWeek: Date = Date().endOfWeek()
             
                 whereClause += (whereClause != "" ? " AND " : " ")
                 whereClause += " [ScheduledDate] <= ? "
-                whereValues.append(endOfThisWeek)
+                whereValues.append(endOfThisWeek as AnyObject)
                 
             case DueCalendarMonthText:
                 
-                let endOfThisMonth: NSDate = NSDate().endOfMonth()
+                let endOfThisMonth: Date = Date().endOfMonth()
                 
                 whereClause += (whereClause != "" ? " AND " : " ")
                 whereClause += " [ScheduledDate] <= ? "
-                whereValues.append(endOfThisMonth)
+                whereValues.append(endOfThisMonth as AnyObject)
                 
             case DueThisMonthText:
   
-                let startOfNextMonth: NSDate = NSDate().startOfNextMonth()
-                let endOfNextMonth: NSDate = NSDate().endOfNextMonth()
+                let startOfNextMonth: Date = Date().startOfNextMonth()
+                let endOfNextMonth: Date = Date().endOfNextMonth()
                 whereClause += (whereClause != "" ? " AND " : " ")
                 whereClause += " [ScheduledDate] >= ? AND [ScheduledDate] <= ? "
-                whereValues.append(startOfNextMonth)
-                whereValues.append(endOfNextMonth)
+                whereValues.append(startOfNextMonth as AnyObject)
+                whereValues.append(endOfNextMonth as AnyObject)
                 
             case "All":
                 //nothing to do
@@ -3196,16 +3196,16 @@ class ModelManager: NSObject {
             whereClause = whereClausePredicate + whereClause
         }
          
-        if (!whereClause.containsString("OperativeId"))
+        if (!whereClause.contains("OperativeId"))
         {
             whereClause += " AND (OperativeId IS NULL OR OperativeId = '00000000-0000-0000-0000-000000000000' OR OperativeId = '" + Session.OperativeId! + "')"
         }
         
         sharedModelManager.database!.open()
-        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [Task] " + whereClause + orderByClause, withArgumentsInArray: whereValues)
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [Task] " + whereClause + orderByClause, withArgumentsIn: whereValues)
         if (countSet != nil) {
             while countSet.next() {
-                count = countSet.intForColumnIndex(0)
+                count = countSet.int(forColumnIndex: 0)
             }
         }
         
@@ -3217,75 +3217,75 @@ class ModelManager: NSObject {
                 pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
             }
             
-            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [SiteId], [PropertyId], [LocationId], [LocationGroupName], [LocationName], [Room], [TaskTemplateId], [TaskRef], [PPMGroup], [AssetType], [TaskName], [Frequency], [AssetId], [AssetNumber], [ScheduledDate], [CompletedDate], [Status], [Priority], [EstimatedDuration], [OperativeId], [ActualDuration], [TravelDuration], [Comments], [AlternateAssetCode] FROM [Task] " + whereClause  + orderByClause + pageClause, withArgumentsInArray: whereValues)
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [SiteId], [PropertyId], [LocationId], [LocationGroupName], [LocationName], [Room], [TaskTemplateId], [TaskRef], [PPMGroup], [AssetType], [TaskName], [Frequency], [AssetId], [AssetNumber], [ScheduledDate], [CompletedDate], [Status], [Priority], [EstimatedDuration], [OperativeId], [ActualDuration], [TravelDuration], [Comments], [AlternateAssetCode] FROM [Task] " + whereClause  + orderByClause + pageClause, withArgumentsIn: whereValues)
             if (resultSet != nil) {
                 while resultSet.next() {
                     let task : Task = Task()
-                    task.RowId = resultSet.stringForColumn("RowId")
-                    task.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                    task.CreatedOn = resultSet.dateForColumn("CreatedOn")
+                    task.RowId = resultSet.string(forColumn: "RowId")
+                    task.CreatedBy = resultSet.string(forColumn: "CreatedBy")
+                    task.CreatedOn = resultSet.date(forColumn: "CreatedOn")
                     if !resultSet.columnIsNull("LastUpdatedBy")
                     {
-                        task.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                        task.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
                     }
                     if !resultSet.columnIsNull("LastUpdatedOn")
                     {
-                        task.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                        task.LastUpdatedOn = resultSet.date(forColumn: "LastUpdatedOn")
                     }
                     if !resultSet.columnIsNull("Deleted")
                     {
-                        task.Deleted = resultSet.dateForColumn("Deleted")
+                        task.Deleted = resultSet.date(forColumn: "Deleted")
                     }
-                    task.OrganisationId = resultSet.stringForColumn("OrganisationId")
-                    task.SiteId = resultSet.stringForColumn("SiteId")
-                    task.PropertyId = resultSet.stringForColumn("PropertyId")
-                    task.LocationId = resultSet.stringForColumn("LocationId")
-                    task.LocationGroupName = resultSet.stringForColumn("LocationGroupName")
-                    task.LocationName = resultSet.stringForColumn("LocationName")
+                    task.OrganisationId = resultSet.string(forColumn: "OrganisationId")
+                    task.SiteId = resultSet.string(forColumn: "SiteId")
+                    task.PropertyId = resultSet.string(forColumn: "PropertyId")
+                    task.LocationId = resultSet.string(forColumn: "LocationId")
+                    task.LocationGroupName = resultSet.string(forColumn: "LocationGroupName")
+                    task.LocationName = resultSet.string(forColumn: "LocationName")
                     if !resultSet.columnIsNull("Room") {
-                        task.Room = resultSet.stringForColumn("Room")
+                        task.Room = resultSet.string(forColumn: "Room")
                     }
                     if !resultSet.columnIsNull("TaskTemplateId") {
-                        task.TaskTemplateId = resultSet.stringForColumn("TaskTemplateId")
+                        task.TaskTemplateId = resultSet.string(forColumn: "TaskTemplateId")
                     }
-                    task.TaskRef = resultSet.stringForColumn("TaskRef")
+                    task.TaskRef = resultSet.string(forColumn: "TaskRef")
                     if !resultSet.columnIsNull("PPMGroup") {
-                        task.PPMGroup = resultSet.stringForColumn("PPMGroup")
+                        task.PPMGroup = resultSet.string(forColumn: "PPMGroup")
                     }
                     if !resultSet.columnIsNull("AssetType") {
-                        task.AssetType = resultSet.stringForColumn("AssetType")
+                        task.AssetType = resultSet.string(forColumn: "AssetType")
                     }
-                    task.TaskName = resultSet.stringForColumn("TaskName")
-                    task.Frequency = resultSet.stringForColumn("Frequency")
+                    task.TaskName = resultSet.string(forColumn: "TaskName")
+                    task.Frequency = resultSet.string(forColumn: "Frequency")
                     if !resultSet.columnIsNull("AssetId") {
-                        task.AssetId = resultSet.stringForColumn("AssetId")
+                        task.AssetId = resultSet.string(forColumn: "AssetId")
                     }
                     if !resultSet.columnIsNull("AssetNumber") {
-                        task.AssetNumber = resultSet.stringForColumn("AssetNumber")
+                        task.AssetNumber = resultSet.string(forColumn: "AssetNumber")
                     }
-                    task.ScheduledDate = resultSet.dateForColumn("ScheduledDate")
+                    task.ScheduledDate = resultSet.date(forColumn: "ScheduledDate")
                     if !resultSet.columnIsNull("CompletedDate") {
-                        task.CompletedDate = resultSet.dateForColumn("CompletedDate")
+                        task.CompletedDate = resultSet.date(forColumn: "CompletedDate")
                     }
-                    task.Status = resultSet.stringForColumn("Status")
-                    task.Priority = Int(resultSet.intForColumn("Priority"))
+                    task.Status = resultSet.string(forColumn: "Status")
+                    task.Priority = Int(resultSet.int(forColumn: "Priority"))
                     if !resultSet.columnIsNull("EstimatedDuration") {
-                        task.EstimatedDuration = Int(resultSet.intForColumn("EstimatedDuration"))
+                        task.EstimatedDuration = Int(resultSet.int(forColumn: "EstimatedDuration"))
                     }
                     if !resultSet.columnIsNull("OperativeId") {
-                        task.OperativeId = resultSet.stringForColumn("OperativeId")
+                        task.OperativeId = resultSet.string(forColumn: "OperativeId")
                     }
                     if !resultSet.columnIsNull("ActualDuration") {
-                        task.ActualDuration = Int(resultSet.intForColumn("ActualDuration"))
+                        task.ActualDuration = Int(resultSet.int(forColumn: "ActualDuration"))
                     }
                     if !resultSet.columnIsNull("TravelDuration") {
-                        task.TravelDuration = Int(resultSet.intForColumn("TravelDuration"))
+                        task.TravelDuration = Int(resultSet.int(forColumn: "TravelDuration"))
                     }
                     if !resultSet.columnIsNull("Comments") {
-                        task.Comments = resultSet.stringForColumn("Comments")
+                        task.Comments = resultSet.string(forColumn: "Comments")
                     }
                     if !resultSet.columnIsNull("AlternateAssetCode") {
-                        task.AlternateAssetCode = resultSet.stringForColumn("AlternateAssetCode")
+                        task.AlternateAssetCode = resultSet.string(forColumn: "AlternateAssetCode")
                     }
                     
                     taskList.append(task)
@@ -3299,7 +3299,7 @@ class ModelManager: NSObject {
     
     // MARK: - TaskParameter
     
-    func addTaskParameter(taskParameter: TaskParameter) -> Bool {
+    func addTaskParameter(_ taskParameter: TaskParameter) -> Bool {
         //build the sql statemnt
         var SQLStatement: String = String()
         var SQLParameterNames: String = String()
@@ -3308,152 +3308,152 @@ class ModelManager: NSObject {
         
         SQLParameterNames = "[RowId], [CreatedBy], [CreatedOn]"
         SQLParameterPlaceholders = "?, ?, ?"
-        SQLParameterValues.append(taskParameter.RowId)
-        SQLParameterValues.append(taskParameter.CreatedBy)
-        SQLParameterValues.append(taskParameter.CreatedOn)
+        SQLParameterValues.append(taskParameter.RowId as NSObject)
+        SQLParameterValues.append(taskParameter.CreatedBy as NSObject)
+        SQLParameterValues.append(taskParameter.CreatedOn as NSObject)
         
         if taskParameter.LastUpdatedBy != nil {
             SQLParameterNames += ", [LastUpdatedBy]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(taskParameter.LastUpdatedBy!)
+            SQLParameterValues.append(taskParameter.LastUpdatedBy! as NSObject)
         }
         
         if taskParameter.LastUpdatedOn != nil {
             SQLParameterNames += ", [LastUpdatedOn]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(taskParameter.LastUpdatedOn!)
+            SQLParameterValues.append(taskParameter.LastUpdatedOn! as NSObject)
         }
         
         if taskParameter.Deleted != nil {
             SQLParameterNames += ", [Deleted]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(taskParameter.Deleted!)
+            SQLParameterValues.append(taskParameter.Deleted! as NSObject)
         }
         
         if taskParameter.TaskTemplateParameterId != nil {
             SQLParameterNames += ", [TaskTemplateParameterId]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(taskParameter.TaskTemplateParameterId!)
+            SQLParameterValues.append(taskParameter.TaskTemplateParameterId! as NSObject)
         }
         SQLParameterNames += ", [TaskId]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(taskParameter.TaskId)
+        SQLParameterValues.append(taskParameter.TaskId as NSObject)
         SQLParameterNames += ", [ParameterName]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(taskParameter.ParameterName)
+        SQLParameterValues.append(taskParameter.ParameterName as NSObject)
         SQLParameterNames += ", [ParameterType]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(taskParameter.ParameterType)
+        SQLParameterValues.append(taskParameter.ParameterType as NSObject)
         SQLParameterNames += ", [ParameterDisplay]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(taskParameter.ParameterDisplay)
+        SQLParameterValues.append(taskParameter.ParameterDisplay as NSObject)
         SQLParameterNames += ", [Collect]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(taskParameter.Collect)
+        SQLParameterValues.append(taskParameter.Collect as NSObject)
         SQLParameterNames += ", [ParameterValue]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(taskParameter.ParameterValue)
+        SQLParameterValues.append(taskParameter.ParameterValue as NSObject)
         
         SQLStatement = "INSERT INTO [TaskParameter] (" + SQLParameterNames + ") VALUES (" + SQLParameterPlaceholders + ")"
         
         sharedModelManager.database!.open()
-        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
         sharedModelManager.database!.close()
         return isInserted
     }
     
-    func updateTaskParameter(taskParameter: TaskParameter) -> Bool {
+    func updateTaskParameter(_ taskParameter: TaskParameter) -> Bool {
         //build the sql statemnt
         var SQLStatement: String = String()
         var SQLParameterNames: String = String()
         var SQLParameterValues: [NSObject] = [NSObject]()
         
         SQLParameterNames = "[CreatedBy]=?, [CreatedOn]=?"
-        SQLParameterValues.append(taskParameter.CreatedBy)
-        SQLParameterValues.append(taskParameter.CreatedOn)
+        SQLParameterValues.append(taskParameter.CreatedBy as NSObject)
+        SQLParameterValues.append(taskParameter.CreatedOn as NSObject)
         
         if taskParameter.LastUpdatedBy != nil {
             SQLParameterNames += ", [LastUpdatedBy]=?"
-            SQLParameterValues.append(taskParameter.LastUpdatedBy!)
+            SQLParameterValues.append(taskParameter.LastUpdatedBy! as NSObject)
         }
         
         if taskParameter.LastUpdatedOn != nil {
             SQLParameterNames += ", [LastUpdatedOn]=?"
-            SQLParameterValues.append(taskParameter.LastUpdatedOn!)
+            SQLParameterValues.append(taskParameter.LastUpdatedOn! as NSObject)
         }
         
         if taskParameter.Deleted != nil {
             SQLParameterNames += ", [Deleted]=?"
-            SQLParameterValues.append(taskParameter.Deleted!)
+            SQLParameterValues.append(taskParameter.Deleted! as NSObject)
         }
         
         if taskParameter.TaskTemplateParameterId != nil {
             SQLParameterNames += ", [TaskTemplateParameterId]=?"
-            SQLParameterValues.append(taskParameter.TaskTemplateParameterId!)
+            SQLParameterValues.append(taskParameter.TaskTemplateParameterId! as NSObject)
         }
         SQLParameterNames += ", [TaskId]=?"
-        SQLParameterValues.append(taskParameter.TaskId)
+        SQLParameterValues.append(taskParameter.TaskId as NSObject)
         SQLParameterNames += ", [ParameterName]=?"
-        SQLParameterValues.append(taskParameter.ParameterName)
+        SQLParameterValues.append(taskParameter.ParameterName as NSObject)
         SQLParameterNames += ", [ParameterType]=?"
-        SQLParameterValues.append(taskParameter.ParameterType)
+        SQLParameterValues.append(taskParameter.ParameterType as NSObject)
         SQLParameterNames += ", [ParameterDisplay]=?"
-        SQLParameterValues.append(taskParameter.ParameterDisplay)
+        SQLParameterValues.append(taskParameter.ParameterDisplay as NSObject)
         SQLParameterNames += ", [Collect]=?"
-        SQLParameterValues.append(taskParameter.Collect)
+        SQLParameterValues.append(taskParameter.Collect as NSObject)
         SQLParameterNames += ", [ParameterValue]=?"
-        SQLParameterValues.append(taskParameter.ParameterValue)
+        SQLParameterValues.append(taskParameter.ParameterValue as NSObject)
         
-        SQLParameterValues.append(taskParameter.RowId)
+        SQLParameterValues.append(taskParameter.RowId as NSObject)
         
         SQLStatement = "UPDATE [TaskParameter] SET " + SQLParameterNames + "WHERE [RowId]=?"
         
         sharedModelManager.database!.open()
-        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
         sharedModelManager.database!.close()
         return isUpdated
     }
     
-    func deleteTaskParameter(taskParameter: TaskParameter) -> Bool {
+    func deleteTaskParameter(_ taskParameter: TaskParameter) -> Bool {
         sharedModelManager.database!.open()
-        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [TaskParameter] WHERE [RowId]=?", withArgumentsInArray: [taskParameter.RowId])
+        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [TaskParameter] WHERE [RowId]=?", withArgumentsIn: [taskParameter.RowId])
         sharedModelManager.database!.close()
         return isDeleted
     }
     
-    func getTaskParameter(taskParameterId: String) -> TaskParameter? {
+    func getTaskParameter(_ taskParameterId: String) -> TaskParameter? {
         sharedModelManager.database!.open()
         var taskParameter: TaskParameter? = nil
         
-        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TaskTemplateParameterId], [TaskId], [ParameterName], [ParameterType], [ParameterDisplay], [Collect], [ParameterValue] FROM [TaskParameter] WHERE [RowId]=?", withArgumentsInArray: [taskParameterId])
+        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TaskTemplateParameterId], [TaskId], [ParameterName], [ParameterType], [ParameterDisplay], [Collect], [ParameterValue] FROM [TaskParameter] WHERE [RowId]=?", withArgumentsIn: [taskParameterId])
         if (resultSet != nil) {
-            while resultSet.next() {
+            while (resultSet?.next())! {
                 var resultTaskParameter: TaskParameter = TaskParameter()
                 resultTaskParameter = TaskParameter()
-                resultTaskParameter.RowId = resultSet.stringForColumn("RowId")
-                resultTaskParameter.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                resultTaskParameter.CreatedOn = resultSet.dateForColumn("CreatedOn")
-                if !resultSet.columnIsNull("LastUpdatedBy")
+                resultTaskParameter.RowId = (resultSet?.string(forColumn: "RowId"))!
+                resultTaskParameter.CreatedBy = (resultSet?.string(forColumn: "CreatedBy"))!
+                resultTaskParameter.CreatedOn = resultSet!.date(forColumn: "CreatedOn")
+                if !(resultSet?.columnIsNull("LastUpdatedBy"))!
                 {
-                    resultTaskParameter.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                    resultTaskParameter.LastUpdatedBy = resultSet?.string(forColumn: "LastUpdatedBy")
                 }
-                if !resultSet.columnIsNull("LastUpdatedOn")
+                if !(resultSet?.columnIsNull("LastUpdatedOn"))!
                 {
-                    resultTaskParameter.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                    resultTaskParameter.LastUpdatedOn = resultSet?.date(forColumn: "LastUpdatedOn")
                 }
-                if !resultSet.columnIsNull("Deleted")
+                if !(resultSet?.columnIsNull("Deleted"))!
                 {
-                    resultTaskParameter.Deleted = resultSet.dateForColumn("Deleted")
+                    resultTaskParameter.Deleted = resultSet?.date(forColumn: "Deleted")
                 }
-                if !resultSet.columnIsNull("TaskTemplateParameterId") {
-                    resultTaskParameter.TaskTemplateParameterId = resultSet.stringForColumn("TaskTemplateParameterId")
+                if !(resultSet?.columnIsNull("TaskTemplateParameterId"))! {
+                    resultTaskParameter.TaskTemplateParameterId = resultSet?.string(forColumn: "TaskTemplateParameterId")
                 }
-                resultTaskParameter.TaskId = resultSet.stringForColumn("TaskId")
-                resultTaskParameter.ParameterName = resultSet.stringForColumn("ParameterName")
-                resultTaskParameter.ParameterType = resultSet.stringForColumn("ParameterType")
-                resultTaskParameter.ParameterDisplay = resultSet.stringForColumn("ParameterDisplay")
-                resultTaskParameter.Collect = resultSet.boolForColumn("Collect")
-                resultTaskParameter.ParameterValue = resultSet.stringForColumn("ParameterValue")
+                resultTaskParameter.TaskId = (resultSet?.string(forColumn: "TaskId"))!
+                resultTaskParameter.ParameterName = (resultSet?.string(forColumn: "ParameterName"))!
+                resultTaskParameter.ParameterType = (resultSet?.string(forColumn: "ParameterType"))!
+                resultTaskParameter.ParameterDisplay = (resultSet?.string(forColumn: "ParameterDisplay"))!
+                resultTaskParameter.Collect = (resultSet?.bool(forColumn: "Collect"))!
+                resultTaskParameter.ParameterValue = (resultSet?.string(forColumn: "ParameterValue"))!
                 
                 taskParameter = resultTaskParameter
             }
@@ -3464,35 +3464,35 @@ class ModelManager: NSObject {
     
     func getAllTaskParameter() -> [TaskParameter] {
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TaskTemplateParameterId], [TaskId], [ParameterName], [ParameterType], [ParameterDisplay], [Collect], [ParameterValue] FROM [TaskParameter]", withArgumentsInArray: nil)
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TaskTemplateParameterId], [TaskId], [ParameterName], [ParameterType], [ParameterDisplay], [Collect], [ParameterValue] FROM [TaskParameter]", withArgumentsIn: nil)
         var taskParameterList: [TaskParameter] = [TaskParameter]()
         if (resultSet != nil) {
             while resultSet.next() {
                 let taskParameter : TaskParameter = TaskParameter()
-                taskParameter.RowId = resultSet.stringForColumn("RowId")
-                taskParameter.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                taskParameter.CreatedOn = resultSet.dateForColumn("CreatedOn")
+                taskParameter.RowId = resultSet.string(forColumn: "RowId")
+                taskParameter.CreatedBy = resultSet.string(forColumn: "CreatedBy")
+                taskParameter.CreatedOn = resultSet.date(forColumn: "CreatedOn")
                 if !resultSet.columnIsNull("LastUpdatedBy")
                 {
-                    taskParameter.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                    taskParameter.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
                 }
                 if !resultSet.columnIsNull("LastUpdatedOn")
                 {
-                    taskParameter.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                    taskParameter.LastUpdatedOn = resultSet.date(forColumn: "LastUpdatedOn")
                 }
                 if !resultSet.columnIsNull("Deleted")
                 {
-                    taskParameter.Deleted = resultSet.dateForColumn("Deleted")
+                    taskParameter.Deleted = resultSet.date(forColumn: "Deleted")
                 }
                 if !resultSet.columnIsNull("TaskTemplateParameterId") {
-                    taskParameter.TaskTemplateParameterId = resultSet.stringForColumn("TaskTemplateParameterId")
+                    taskParameter.TaskTemplateParameterId = resultSet.string(forColumn: "TaskTemplateParameterId")
                 }
-                taskParameter.TaskId = resultSet.stringForColumn("TaskId")
-                taskParameter.ParameterName = resultSet.stringForColumn("ParameterName")
-                taskParameter.ParameterType = resultSet.stringForColumn("ParameterType")
-                taskParameter.ParameterDisplay = resultSet.stringForColumn("ParameterDisplay")
-                taskParameter.Collect = resultSet.boolForColumn("Collect")
-                taskParameter.ParameterValue = resultSet.stringForColumn("ParameterValue")
+                taskParameter.TaskId = resultSet.string(forColumn: "TaskId")
+                taskParameter.ParameterName = resultSet.string(forColumn: "ParameterName")
+                taskParameter.ParameterType = resultSet.string(forColumn: "ParameterType")
+                taskParameter.ParameterDisplay = resultSet.string(forColumn: "ParameterDisplay")
+                taskParameter.Collect = resultSet.bool(forColumn: "Collect")
+                taskParameter.ParameterValue = resultSet.string(forColumn: "ParameterValue")
                 
                 taskParameterList.append(taskParameter)
             }
@@ -3501,14 +3501,14 @@ class ModelManager: NSObject {
         return taskParameterList
     }
     
-    func findTaskParameterList(criteria: Dictionary<String, AnyObject>) -> [TaskParameter] {
+    func findTaskParameterList(_ criteria: Dictionary<String, AnyObject>) -> [TaskParameter] {
         var list: [TaskParameter] = [TaskParameter]()
         //var count: Int32 = 0
         (list, _) = findTaskParameterList(criteria, pageSize: nil, pageNumber: nil)
         return list
     }
 
-    func findTaskParameterList(criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [TaskParameter], Count: Int32) {
+    func findTaskParameterList(_ criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [TaskParameter], Count: Int32) {
         //return variables
         var count: Int32 = 0
         var taskParameterList: [TaskParameter] = [TaskParameter]()
@@ -3528,10 +3528,10 @@ class ModelManager: NSObject {
         }
 
         sharedModelManager.database!.open()
-        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [TaskParameter] " + whereClause + orderByClause, withArgumentsInArray: whereValues)
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [TaskParameter] " + whereClause + orderByClause, withArgumentsIn: whereValues)
         if (countSet != nil) {
             while countSet.next() {
-                count = countSet.intForColumnIndex(0)
+                count = countSet.int(forColumnIndex: 0)
             }
         }
         
@@ -3543,34 +3543,34 @@ class ModelManager: NSObject {
                 pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
             }
             
-            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TaskTemplateParameterId], [TaskId], [ParameterName], [ParameterType], [ParameterDisplay], [Collect], [ParameterValue] FROM [TaskParameter] " + whereClause + orderByClause + pageClause, withArgumentsInArray: whereValues)
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TaskTemplateParameterId], [TaskId], [ParameterName], [ParameterType], [ParameterDisplay], [Collect], [ParameterValue] FROM [TaskParameter] " + whereClause + orderByClause + pageClause, withArgumentsIn: whereValues)
             if (resultSet != nil) {
                 while resultSet.next() {
                     let taskParameter : TaskParameter = TaskParameter()
-                    taskParameter.RowId = resultSet.stringForColumn("RowId")
-                    taskParameter.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                    taskParameter.CreatedOn = resultSet.dateForColumn("CreatedOn")
+                    taskParameter.RowId = resultSet.string(forColumn: "RowId")
+                    taskParameter.CreatedBy = resultSet.string(forColumn: "CreatedBy")
+                    taskParameter.CreatedOn = resultSet.date(forColumn: "CreatedOn")
                     if !resultSet.columnIsNull("LastUpdatedBy")
                     {
-                        taskParameter.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                        taskParameter.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
                     }
                     if !resultSet.columnIsNull("LastUpdatedOn")
                     {
-                        taskParameter.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                        taskParameter.LastUpdatedOn = resultSet.date(forColumn: "LastUpdatedOn")
                     }
                     if !resultSet.columnIsNull("Deleted")
                     {
-                        taskParameter.Deleted = resultSet.dateForColumn("Deleted")
+                        taskParameter.Deleted = resultSet.date(forColumn: "Deleted")
                     }
                     if !resultSet.columnIsNull("TaskTemplateParameterId") {
-                        taskParameter.TaskTemplateParameterId = resultSet.stringForColumn("TaskTemplateParameterId")
+                        taskParameter.TaskTemplateParameterId = resultSet.string(forColumn: "TaskTemplateParameterId")
                     }
-                    taskParameter.TaskId = resultSet.stringForColumn("TaskId")
-                    taskParameter.ParameterName = resultSet.stringForColumn("ParameterName")
-                    taskParameter.ParameterType = resultSet.stringForColumn("ParameterType")
-                    taskParameter.ParameterDisplay = resultSet.stringForColumn("ParameterDisplay")
-                    taskParameter.Collect = resultSet.boolForColumn("Collect")
-                    taskParameter.ParameterValue = resultSet.stringForColumn("ParameterValue")
+                    taskParameter.TaskId = resultSet.string(forColumn: "TaskId")
+                    taskParameter.ParameterName = resultSet.string(forColumn: "ParameterName")
+                    taskParameter.ParameterType = resultSet.string(forColumn: "ParameterType")
+                    taskParameter.ParameterDisplay = resultSet.string(forColumn: "ParameterDisplay")
+                    taskParameter.Collect = resultSet.bool(forColumn: "Collect")
+                    taskParameter.ParameterValue = resultSet.string(forColumn: "ParameterValue")
                     
                     taskParameterList.append(taskParameter)
                 }
@@ -3583,7 +3583,7 @@ class ModelManager: NSObject {
     
     // MARK: - TaskTemplate
     
-    func addTaskTemplate(taskTemplate: TaskTemplate) -> Bool {
+    func addTaskTemplate(_ taskTemplate: TaskTemplate) -> Bool {
         //build the sql statemnt
         var SQLStatement: String = String()
         var SQLParameterNames: String = String()
@@ -3592,134 +3592,134 @@ class ModelManager: NSObject {
         
         SQLParameterNames = "[RowId], [CreatedBy], [CreatedOn]"
         SQLParameterPlaceholders = "?, ?, ?"
-        SQLParameterValues.append(taskTemplate.RowId)
-        SQLParameterValues.append(taskTemplate.CreatedBy)
-        SQLParameterValues.append(taskTemplate.CreatedOn)
+        SQLParameterValues.append(taskTemplate.RowId as NSObject)
+        SQLParameterValues.append(taskTemplate.CreatedBy as NSObject)
+        SQLParameterValues.append(taskTemplate.CreatedOn as NSObject)
         
         if taskTemplate.LastUpdatedBy != nil {
             SQLParameterNames += ", [LastUpdatedBy]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(taskTemplate.LastUpdatedBy!)
+            SQLParameterValues.append(taskTemplate.LastUpdatedBy! as NSObject)
         }
         
         if taskTemplate.LastUpdatedOn != nil {
             SQLParameterNames += ", [LastUpdatedOn]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(taskTemplate.LastUpdatedOn!)
+            SQLParameterValues.append(taskTemplate.LastUpdatedOn! as NSObject)
         }
         
         if taskTemplate.Deleted != nil {
             SQLParameterNames += ", [Deleted]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(taskTemplate.Deleted!)
+            SQLParameterValues.append(taskTemplate.Deleted! as NSObject)
         }
         
         SQLParameterNames += ", [OrganisationId]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(taskTemplate.OrganisationId)
+        SQLParameterValues.append(taskTemplate.OrganisationId as NSObject)
         SQLParameterNames += ", [AssetType]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(taskTemplate.AssetType)
+        SQLParameterValues.append(taskTemplate.AssetType as NSObject)
         SQLParameterNames += ", [TaskName]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(taskTemplate.TaskName)
+        SQLParameterValues.append(taskTemplate.TaskName as NSObject)
         SQLParameterNames += ", [Priority]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(taskTemplate.Priority)
+        SQLParameterValues.append(taskTemplate.Priority as NSObject)
         SQLParameterNames += ", [EstimatedDuration]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(taskTemplate.EstimatedDuration)
+        SQLParameterValues.append(taskTemplate.EstimatedDuration as NSObject)
         
         SQLStatement = "INSERT INTO [TaskTemplate] (" + SQLParameterNames + ") VALUES (" + SQLParameterPlaceholders + ")"
         
         sharedModelManager.database!.open()
-        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
         sharedModelManager.database!.close()
         return isInserted
     }
     
-    func updateTaskTemplate(taskTemplate: TaskTemplate) -> Bool {
+    func updateTaskTemplate(_ taskTemplate: TaskTemplate) -> Bool {
         //build the sql statemnt
         var SQLStatement: String = String()
         var SQLParameterNames: String = String()
         var SQLParameterValues: [NSObject] = [NSObject]()
         
         SQLParameterNames = "[CreatedBy]=?, [CreatedOn]=?"
-        SQLParameterValues.append(taskTemplate.CreatedBy)
-        SQLParameterValues.append(taskTemplate.CreatedOn)
+        SQLParameterValues.append(taskTemplate.CreatedBy as NSObject)
+        SQLParameterValues.append(taskTemplate.CreatedOn as NSObject)
         
         if taskTemplate.LastUpdatedBy != nil {
             SQLParameterNames += ", [LastUpdatedBy]=?"
-            SQLParameterValues.append(taskTemplate.LastUpdatedBy!)
+            SQLParameterValues.append(taskTemplate.LastUpdatedBy! as NSObject)
         }
         
         if taskTemplate.LastUpdatedOn != nil {
             SQLParameterNames += ", [LastUpdatedOn]=?"
-            SQLParameterValues.append(taskTemplate.LastUpdatedOn!)
+            SQLParameterValues.append(taskTemplate.LastUpdatedOn! as NSObject)
         }
         
         if taskTemplate.Deleted != nil {
             SQLParameterNames += ", [Deleted]=?"
-            SQLParameterValues.append(taskTemplate.Deleted!)
+            SQLParameterValues.append(taskTemplate.Deleted! as NSObject)
         }
         
         SQLParameterNames += ", [OrganisationId]=?"
-        SQLParameterValues.append(taskTemplate.OrganisationId)
+        SQLParameterValues.append(taskTemplate.OrganisationId as NSObject)
         SQLParameterNames += ", [AssetType]=?"
-        SQLParameterValues.append(taskTemplate.AssetType)
+        SQLParameterValues.append(taskTemplate.AssetType as NSObject)
         SQLParameterNames += ", [TaskName]=?"
-        SQLParameterValues.append(taskTemplate.TaskName)
+        SQLParameterValues.append(taskTemplate.TaskName as NSObject)
         SQLParameterNames += ", [Priority]=?"
-        SQLParameterValues.append(taskTemplate.Priority)
+        SQLParameterValues.append(taskTemplate.Priority as NSObject)
         SQLParameterNames += ", [EstimatedDuration]=?"
-        SQLParameterValues.append(taskTemplate.EstimatedDuration)
+        SQLParameterValues.append(taskTemplate.EstimatedDuration as NSObject)
         
-        SQLParameterValues.append(taskTemplate.RowId)
+        SQLParameterValues.append(taskTemplate.RowId as NSObject)
         
         SQLStatement = "UPDATE [TaskTemplate] SET " + SQLParameterNames + "WHERE [RowId]=?"
         
         sharedModelManager.database!.open()
-        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
         sharedModelManager.database!.close()
         return isUpdated
     }
     
-    func deleteTaskTemplate(taskTemplate: TaskTemplate) -> Bool {
+    func deleteTaskTemplate(_ taskTemplate: TaskTemplate) -> Bool {
         sharedModelManager.database!.open()
-        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [TaskTemplate] WHERE [RowId]=?", withArgumentsInArray: [taskTemplate.RowId])
+        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [TaskTemplate] WHERE [RowId]=?", withArgumentsIn: [taskTemplate.RowId])
         sharedModelManager.database!.close()
         return isDeleted
     }
     
-    func getTaskTemplate(taskTemplateId: String) -> TaskTemplate? {
+    func getTaskTemplate(_ taskTemplateId: String) -> TaskTemplate? {
         sharedModelManager.database!.open()
         var taskTemplate: TaskTemplate? = nil
         
-        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [AssetType], [TaskName], [Priority], [EstimatedDuration] FROM [TaskTemplate] WHERE [RowId]=?", withArgumentsInArray: [taskTemplateId])
+        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [AssetType], [TaskName], [Priority], [EstimatedDuration] FROM [TaskTemplate] WHERE [RowId]=?", withArgumentsIn: [taskTemplateId])
         if (resultSet != nil) {
-            while resultSet.next() {
+            while (resultSet?.next())! {
                 var resultTaskTemplate: TaskTemplate = TaskTemplate()
                 resultTaskTemplate = TaskTemplate()
-                resultTaskTemplate.RowId = resultSet.stringForColumn("RowId")
-                resultTaskTemplate.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                resultTaskTemplate.CreatedOn = resultSet.dateForColumn("CreatedOn")
-                if !resultSet.columnIsNull("LastUpdatedBy")
+                resultTaskTemplate.RowId = (resultSet?.string(forColumn: "RowId"))!
+                resultTaskTemplate.CreatedBy = (resultSet?.string(forColumn: "CreatedBy"))!
+                resultTaskTemplate.CreatedOn = resultSet!.date(forColumn: "CreatedOn")
+                if !(resultSet?.columnIsNull("LastUpdatedBy"))!
                 {
-                    resultTaskTemplate.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                    resultTaskTemplate.LastUpdatedBy = resultSet?.string(forColumn: "LastUpdatedBy")
                 }
-                if !resultSet.columnIsNull("LastUpdatedOn")
+                if !(resultSet?.columnIsNull("LastUpdatedOn"))!
                 {
-                    resultTaskTemplate.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                    resultTaskTemplate.LastUpdatedOn = resultSet?.date(forColumn: "LastUpdatedOn")
                 }
-                if !resultSet.columnIsNull("Deleted")
+                if !(resultSet?.columnIsNull("Deleted"))!
                 {
-                    resultTaskTemplate.Deleted = resultSet.dateForColumn("Deleted")
+                    resultTaskTemplate.Deleted = resultSet?.date(forColumn: "Deleted")
                 }
-                resultTaskTemplate.OrganisationId = resultSet.stringForColumn("OrganisationId")
-                resultTaskTemplate.AssetType = resultSet.stringForColumn("AssetType")
-                resultTaskTemplate.TaskName = resultSet.stringForColumn("TaskName")
-                resultTaskTemplate.Priority = Int(resultSet.intForColumn("Priority"))
-                resultTaskTemplate.EstimatedDuration = Int(resultSet.intForColumn("EstimatedDuration"))
+                resultTaskTemplate.OrganisationId = (resultSet?.string(forColumn: "OrganisationId"))!
+                resultTaskTemplate.AssetType = (resultSet?.string(forColumn: "AssetType"))!
+                resultTaskTemplate.TaskName = (resultSet?.string(forColumn: "TaskName"))!
+                resultTaskTemplate.Priority = Int((resultSet?.int(forColumn: "Priority"))!)
+                resultTaskTemplate.EstimatedDuration = Int((resultSet?.int(forColumn: "EstimatedDuration"))!)
                 
                 taskTemplate = resultTaskTemplate
             }
@@ -3730,31 +3730,31 @@ class ModelManager: NSObject {
     
     func getAllTaskTemplate() -> [TaskTemplate] {
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [AssetType], [TaskName], [Priority], [EstimatedDuration] FROM [TaskTemplate]", withArgumentsInArray: nil)
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [AssetType], [TaskName], [Priority], [EstimatedDuration] FROM [TaskTemplate]", withArgumentsIn: nil)
         var taskTemplateList: [TaskTemplate] = [TaskTemplate]()
         if (resultSet != nil) {
             while resultSet.next() {
                 let taskTemplate : TaskTemplate = TaskTemplate()
-                taskTemplate.RowId = resultSet.stringForColumn("RowId")
-                taskTemplate.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                taskTemplate.CreatedOn = resultSet.dateForColumn("CreatedOn")
+                taskTemplate.RowId = resultSet.string(forColumn: "RowId")
+                taskTemplate.CreatedBy = resultSet.string(forColumn: "CreatedBy")
+                taskTemplate.CreatedOn = resultSet.date(forColumn: "CreatedOn")
                 if !resultSet.columnIsNull("LastUpdatedBy")
                 {
-                    taskTemplate.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                    taskTemplate.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
                 }
                 if !resultSet.columnIsNull("LastUpdatedOn")
                 {
-                    taskTemplate.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                    taskTemplate.LastUpdatedOn = resultSet.date(forColumn: "LastUpdatedOn")
                 }
                 if !resultSet.columnIsNull("Deleted")
                 {
-                    taskTemplate.Deleted = resultSet.dateForColumn("Deleted")
+                    taskTemplate.Deleted = resultSet.date(forColumn: "Deleted")
                 }
-                taskTemplate.OrganisationId = resultSet.stringForColumn("OrganisationId")
-                taskTemplate.AssetType = resultSet.stringForColumn("AssetType")
-                taskTemplate.TaskName = resultSet.stringForColumn("TaskName")
-                taskTemplate.Priority = Int(resultSet.intForColumn("Priority"))
-                taskTemplate.EstimatedDuration = Int(resultSet.intForColumn("EstimatedDuration"))
+                taskTemplate.OrganisationId = resultSet.string(forColumn: "OrganisationId")
+                taskTemplate.AssetType = resultSet.string(forColumn: "AssetType")
+                taskTemplate.TaskName = resultSet.string(forColumn: "TaskName")
+                taskTemplate.Priority = Int(resultSet.int(forColumn: "Priority"))
+                taskTemplate.EstimatedDuration = Int(resultSet.int(forColumn: "EstimatedDuration"))
                 
                 taskTemplateList.append(taskTemplate)
             }
@@ -3763,14 +3763,14 @@ class ModelManager: NSObject {
         return taskTemplateList
     }
     
-    func findTaskTemplateList(criteria: Dictionary<String, AnyObject>) -> [TaskTemplate] {
+    func findTaskTemplateList(_ criteria: Dictionary<String, AnyObject>) -> [TaskTemplate] {
         var list: [TaskTemplate] = [TaskTemplate]()
         //var count: Int32 = 0
         (list, _) = findTaskTemplateList(criteria, pageSize: nil, pageNumber: nil)
         return list
     }
 
-    func findTaskTemplateList(criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [TaskTemplate], Count: Int32) {
+    func findTaskTemplateList(_ criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [TaskTemplate], Count: Int32) {
         //return variables
         var count: Int32 = 0
         var taskTemplateList: [TaskTemplate] = [TaskTemplate]()
@@ -3790,10 +3790,10 @@ class ModelManager: NSObject {
         }
 
         sharedModelManager.database!.open()
-        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [TaskTemplate] " + whereClause + orderByClause, withArgumentsInArray: whereValues)
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [TaskTemplate] " + whereClause + orderByClause, withArgumentsIn: whereValues)
         if (countSet != nil) {
             while countSet.next() {
-                count = countSet.intForColumnIndex(0)
+                count = countSet.int(forColumnIndex: 0)
             }
         }
         
@@ -3805,30 +3805,30 @@ class ModelManager: NSObject {
                 pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
             }
             
-            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [AssetType], [TaskName], [Priority], [EstimatedDuration]FROM [TaskTemplate] " + whereClause + orderByClause + pageClause, withArgumentsInArray: whereValues)
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [AssetType], [TaskName], [Priority], [EstimatedDuration]FROM [TaskTemplate] " + whereClause + orderByClause + pageClause, withArgumentsIn: whereValues)
             if (resultSet != nil) {
                 while resultSet.next() {
                     let taskTemplate : TaskTemplate = TaskTemplate()
-                    taskTemplate.RowId = resultSet.stringForColumn("RowId")
-                    taskTemplate.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                    taskTemplate.CreatedOn = resultSet.dateForColumn("CreatedOn")
+                    taskTemplate.RowId = resultSet.string(forColumn: "RowId")
+                    taskTemplate.CreatedBy = resultSet.string(forColumn: "CreatedBy")
+                    taskTemplate.CreatedOn = resultSet.date(forColumn: "CreatedOn")
                     if !resultSet.columnIsNull("LastUpdatedBy")
                     {
-                        taskTemplate.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                        taskTemplate.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
                     }
                     if !resultSet.columnIsNull("LastUpdatedOn")
                     {
-                        taskTemplate.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                        taskTemplate.LastUpdatedOn = resultSet.date(forColumn: "LastUpdatedOn")
                     }
                     if !resultSet.columnIsNull("Deleted")
                     {
-                        taskTemplate.Deleted = resultSet.dateForColumn("Deleted")
+                        taskTemplate.Deleted = resultSet.date(forColumn: "Deleted")
                     }
-                    taskTemplate.OrganisationId = resultSet.stringForColumn("OrganisationId")
-                    taskTemplate.AssetType = resultSet.stringForColumn("AssetType")
-                    taskTemplate.TaskName = resultSet.stringForColumn("TaskName")
-                    taskTemplate.Priority = Int(resultSet.intForColumn("Priority"))
-                    taskTemplate.EstimatedDuration = Int(resultSet.intForColumn("EstimatedDuration"))
+                    taskTemplate.OrganisationId = resultSet.string(forColumn: "OrganisationId")
+                    taskTemplate.AssetType = resultSet.string(forColumn: "AssetType")
+                    taskTemplate.TaskName = resultSet.string(forColumn: "TaskName")
+                    taskTemplate.Priority = Int(resultSet.int(forColumn: "Priority"))
+                    taskTemplate.EstimatedDuration = Int(resultSet.int(forColumn: "EstimatedDuration"))
                     
                     taskTemplateList.append(taskTemplate)
                 }
@@ -3841,7 +3841,7 @@ class ModelManager: NSObject {
     
     // MARK: - TaskTemplateParameter
     
-    func addTaskTemplateParameter(taskTemplateParameter: TaskTemplateParameter) -> Bool {
+    func addTaskTemplateParameter(_ taskTemplateParameter: TaskTemplateParameter) -> Bool {
         //build the sql statemnt
         var SQLStatement: String = String()
         var SQLParameterNames: String = String()
@@ -3850,67 +3850,67 @@ class ModelManager: NSObject {
         
         SQLParameterNames = "[RowId], [CreatedBy], [CreatedOn]"
         SQLParameterPlaceholders = "?, ?, ?"
-        SQLParameterValues.append(taskTemplateParameter.RowId)
-        SQLParameterValues.append(taskTemplateParameter.CreatedBy)
-        SQLParameterValues.append(taskTemplateParameter.CreatedOn)
+        SQLParameterValues.append(taskTemplateParameter.RowId as NSObject)
+        SQLParameterValues.append(taskTemplateParameter.CreatedBy as NSObject)
+        SQLParameterValues.append(taskTemplateParameter.CreatedOn as NSObject)
         
         if taskTemplateParameter.LastUpdatedBy != nil {
             SQLParameterNames += ", [LastUpdatedBy]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(taskTemplateParameter.LastUpdatedBy!)
+            SQLParameterValues.append(taskTemplateParameter.LastUpdatedBy! as NSObject)
         }
         
         if taskTemplateParameter.LastUpdatedOn != nil {
             SQLParameterNames += ", [LastUpdatedOn]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(taskTemplateParameter.LastUpdatedOn!)
+            SQLParameterValues.append(taskTemplateParameter.LastUpdatedOn! as NSObject)
         }
         
         if taskTemplateParameter.Deleted != nil {
             SQLParameterNames += ", [Deleted]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(taskTemplateParameter.Deleted!)
+            SQLParameterValues.append(taskTemplateParameter.Deleted! as NSObject)
         }
         
         SQLParameterNames += ", [TaskTemplateId]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(taskTemplateParameter.TaskTemplateId)
+        SQLParameterValues.append(taskTemplateParameter.TaskTemplateId as NSObject)
         SQLParameterNames += ", [ParameterName]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(taskTemplateParameter.ParameterName)
+        SQLParameterValues.append(taskTemplateParameter.ParameterName as NSObject)
         SQLParameterNames += ", [ParameterType]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(taskTemplateParameter.ParameterType)
+        SQLParameterValues.append(taskTemplateParameter.ParameterType as NSObject)
         SQLParameterNames += ", [ParameterDisplay]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(taskTemplateParameter.ParameterDisplay)
+        SQLParameterValues.append(taskTemplateParameter.ParameterDisplay as NSObject)
         SQLParameterNames += ", [Collect]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(taskTemplateParameter.Collect)
+        SQLParameterValues.append(taskTemplateParameter.Collect as NSObject)
         
         if taskTemplateParameter.ReferenceDataType != nil {
             SQLParameterNames += ", [ReferenceDataType]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(taskTemplateParameter.ReferenceDataType!)
+            SQLParameterValues.append(taskTemplateParameter.ReferenceDataType! as NSObject)
         }
         if taskTemplateParameter.ReferenceDataExtendedType != nil {
             SQLParameterNames += ", [ReferenceDataExtendedType]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(taskTemplateParameter.ReferenceDataExtendedType!)
+            SQLParameterValues.append(taskTemplateParameter.ReferenceDataExtendedType! as NSObject)
         }
         SQLParameterNames += ", [Ordinal]"
         SQLParameterPlaceholders += ", ?"
-        SQLParameterValues.append(taskTemplateParameter.Ordinal)
+        SQLParameterValues.append(taskTemplateParameter.Ordinal as NSObject)
         
         if taskTemplateParameter.Predecessor != nil {
             SQLParameterNames += ", [Predecessor]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(taskTemplateParameter.Predecessor!)
+            SQLParameterValues.append(taskTemplateParameter.Predecessor! as NSObject)
         }
         if taskTemplateParameter.PredecessorTrueValue != nil {
             SQLParameterNames += ", [PredecessorTrueValue]"
             SQLParameterPlaceholders += ", ?"
-            SQLParameterValues.append(taskTemplateParameter.PredecessorTrueValue!)
+            SQLParameterValues.append(taskTemplateParameter.PredecessorTrueValue! as NSObject)
         }
 
         
@@ -3918,124 +3918,124 @@ class ModelManager: NSObject {
         SQLStatement = "INSERT INTO [TaskTemplateParameter] (" + SQLParameterNames + ") VALUES (" + SQLParameterPlaceholders + ")"
         
         sharedModelManager.database!.open()
-        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
         sharedModelManager.database!.close()
         return isInserted
     }
     
-    func updateTaskTemplateParameter(taskTemplateParameter: TaskTemplateParameter) -> Bool {
+    func updateTaskTemplateParameter(_ taskTemplateParameter: TaskTemplateParameter) -> Bool {
         //build the sql statemnt
         var SQLStatement: String = String()
         var SQLParameterNames: String = String()
         var SQLParameterValues: [NSObject] = [NSObject]()
         
         SQLParameterNames = "[CreatedBy]=?, [CreatedOn]=?"
-        SQLParameterValues.append(taskTemplateParameter.CreatedBy)
-        SQLParameterValues.append(taskTemplateParameter.CreatedOn)
+        SQLParameterValues.append(taskTemplateParameter.CreatedBy as NSObject)
+        SQLParameterValues.append(taskTemplateParameter.CreatedOn as NSObject)
         
         if taskTemplateParameter.LastUpdatedBy != nil {
             SQLParameterNames += ", [LastUpdatedBy]=?"
-            SQLParameterValues.append(taskTemplateParameter.LastUpdatedBy!)
+            SQLParameterValues.append(taskTemplateParameter.LastUpdatedBy! as NSObject)
         }
         
         if taskTemplateParameter.LastUpdatedOn != nil {
             SQLParameterNames += ", [LastUpdatedOn]=?"
-            SQLParameterValues.append(taskTemplateParameter.LastUpdatedOn!)
+            SQLParameterValues.append(taskTemplateParameter.LastUpdatedOn! as NSObject)
         }
         
         if taskTemplateParameter.Deleted != nil {
             SQLParameterNames += ", [Deleted]=?"
-            SQLParameterValues.append(taskTemplateParameter.Deleted!)
+            SQLParameterValues.append(taskTemplateParameter.Deleted! as NSObject)
         }
         
         SQLParameterNames += ", [TaskTemplateId]=?"
-        SQLParameterValues.append(taskTemplateParameter.TaskTemplateId)
+        SQLParameterValues.append(taskTemplateParameter.TaskTemplateId as NSObject)
         SQLParameterNames += ", [ParameterName]=?"
-        SQLParameterValues.append(taskTemplateParameter.ParameterName)
+        SQLParameterValues.append(taskTemplateParameter.ParameterName as NSObject)
         SQLParameterNames += ", [ParameterType]=?"
-        SQLParameterValues.append(taskTemplateParameter.ParameterType)
+        SQLParameterValues.append(taskTemplateParameter.ParameterType as NSObject)
         SQLParameterNames += ", [ParameterDisplay]=?"
-        SQLParameterValues.append(taskTemplateParameter.ParameterDisplay)
+        SQLParameterValues.append(taskTemplateParameter.ParameterDisplay as NSObject)
         SQLParameterNames += ", [Collect]=?"
-        SQLParameterValues.append(taskTemplateParameter.Collect)
+        SQLParameterValues.append(taskTemplateParameter.Collect as NSObject)
         if taskTemplateParameter.ReferenceDataType != nil {
             SQLParameterNames += ", [ReferenceDataType]=?"
-            SQLParameterValues.append(taskTemplateParameter.ReferenceDataType!)
+            SQLParameterValues.append(taskTemplateParameter.ReferenceDataType! as NSObject)
         }
         if taskTemplateParameter.ReferenceDataExtendedType != nil {
             SQLParameterNames += ", [ReferenceDataExtendedType]=?"
-            SQLParameterValues.append(taskTemplateParameter.ReferenceDataExtendedType!)
+            SQLParameterValues.append(taskTemplateParameter.ReferenceDataExtendedType! as NSObject)
         }
         SQLParameterNames += ", [Ordinal]=?"
-        SQLParameterValues.append(taskTemplateParameter.Ordinal)
+        SQLParameterValues.append(taskTemplateParameter.Ordinal as NSObject)
         
         if taskTemplateParameter.Predecessor != nil {
             SQLParameterNames += ", [Predecessor]=?"
-            SQLParameterValues.append(taskTemplateParameter.Predecessor!)
+            SQLParameterValues.append(taskTemplateParameter.Predecessor! as NSObject)
         }
         if taskTemplateParameter.PredecessorTrueValue != nil {
             SQLParameterNames += ", [PredecessorTrueValue]=?"
-            SQLParameterValues.append(taskTemplateParameter.PredecessorTrueValue!)
+            SQLParameterValues.append(taskTemplateParameter.PredecessorTrueValue! as NSObject)
         }
 
-        SQLParameterValues.append(taskTemplateParameter.RowId)
+        SQLParameterValues.append(taskTemplateParameter.RowId as NSObject)
         
         SQLStatement = "UPDATE [TaskTemplateParameter] SET " + SQLParameterNames + "WHERE [RowId]=?"
         
         sharedModelManager.database!.open()
-        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsInArray: SQLParameterValues)
+        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
         sharedModelManager.database!.close()
         return isUpdated
     }
     
-    func deleteTaskTemplateParameter(taskTemplateParameter: TaskTemplateParameter) -> Bool {
+    func deleteTaskTemplateParameter(_ taskTemplateParameter: TaskTemplateParameter) -> Bool {
         sharedModelManager.database!.open()
-        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [TaskTemplateParameter] WHERE [RowId]=?", withArgumentsInArray: [taskTemplateParameter.RowId])
+        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [TaskTemplateParameter] WHERE [RowId]=?", withArgumentsIn: [taskTemplateParameter.RowId])
         sharedModelManager.database!.close()
         return isDeleted
     }
     
-    func getTaskTemplateParameter(taskTemplateParameterId: String) -> TaskTemplateParameter? {
+    func getTaskTemplateParameter(_ taskTemplateParameterId: String) -> TaskTemplateParameter? {
         sharedModelManager.database!.open()
         var taskTemplateParameter: TaskTemplateParameter? = nil
         
-        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TaskTemplateId], [ParameterName], [ParameterType], [ParameterDisplay], [Collect], [ReferenceDataType], [ReferenceDataExtendedType], [Ordinal], [Predecessor], [PredecessorTrueValue] FROM [TaskTemplateParameter] WHERE [RowId]=?", withArgumentsInArray: [taskTemplateParameterId])
+        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TaskTemplateId], [ParameterName], [ParameterType], [ParameterDisplay], [Collect], [ReferenceDataType], [ReferenceDataExtendedType], [Ordinal], [Predecessor], [PredecessorTrueValue] FROM [TaskTemplateParameter] WHERE [RowId]=?", withArgumentsIn: [taskTemplateParameterId])
         if (resultSet != nil) {
-            while resultSet.next() {
+            while (resultSet?.next())! {
                 var resultTaskTemplateParameter: TaskTemplateParameter = TaskTemplateParameter()
                 resultTaskTemplateParameter = TaskTemplateParameter()
-                resultTaskTemplateParameter.RowId = resultSet.stringForColumn("RowId")
-                resultTaskTemplateParameter.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                resultTaskTemplateParameter.CreatedOn = resultSet.dateForColumn("CreatedOn")
-                if !resultSet.columnIsNull("LastUpdatedBy")
+                resultTaskTemplateParameter.RowId = (resultSet?.string(forColumn: "RowId"))!
+                resultTaskTemplateParameter.CreatedBy = (resultSet?.string(forColumn: "CreatedBy"))!
+                resultTaskTemplateParameter.CreatedOn = resultSet!.date(forColumn: "CreatedOn")
+                if !(resultSet?.columnIsNull("LastUpdatedBy"))!
                 {
-                    resultTaskTemplateParameter.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                    resultTaskTemplateParameter.LastUpdatedBy = resultSet?.string(forColumn: "LastUpdatedBy")
                 }
-                if !resultSet.columnIsNull("LastUpdatedOn")
+                if !(resultSet?.columnIsNull("LastUpdatedOn"))!
                 {
-                    resultTaskTemplateParameter.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                    resultTaskTemplateParameter.LastUpdatedOn = resultSet?.date(forColumn: "LastUpdatedOn")
                 }
-                if !resultSet.columnIsNull("Deleted")
+                if !(resultSet?.columnIsNull("Deleted"))!
                 {
-                    resultTaskTemplateParameter.Deleted = resultSet.dateForColumn("Deleted")
+                    resultTaskTemplateParameter.Deleted = resultSet?.date(forColumn: "Deleted")
                 }
-                resultTaskTemplateParameter.TaskTemplateId = resultSet.stringForColumn("TaskTemplateId")
-                resultTaskTemplateParameter.ParameterName = resultSet.stringForColumn("ParameterName")
-                resultTaskTemplateParameter.ParameterType = resultSet.stringForColumn("ParameterType")
-                resultTaskTemplateParameter.ParameterDisplay = resultSet.stringForColumn("ParameterDisplay")
-                resultTaskTemplateParameter.Collect = resultSet.boolForColumn("Collect")
-                if !resultSet.columnIsNull("ReferenceDataType") {
-                    resultTaskTemplateParameter.ReferenceDataType = resultSet.stringForColumn("ReferenceDataType")
+                resultTaskTemplateParameter.TaskTemplateId = (resultSet?.string(forColumn: "TaskTemplateId"))!
+                resultTaskTemplateParameter.ParameterName = (resultSet?.string(forColumn: "ParameterName"))!
+                resultTaskTemplateParameter.ParameterType = (resultSet?.string(forColumn: "ParameterType"))!
+                resultTaskTemplateParameter.ParameterDisplay = (resultSet?.string(forColumn: "ParameterDisplay"))!
+                resultTaskTemplateParameter.Collect = (resultSet?.bool(forColumn: "Collect"))!
+                if !(resultSet?.columnIsNull("ReferenceDataType"))! {
+                    resultTaskTemplateParameter.ReferenceDataType = resultSet?.string(forColumn: "ReferenceDataType")
                 }
-                if !resultSet.columnIsNull("ReferenceDataExtendedType") {
-                    resultTaskTemplateParameter.ReferenceDataExtendedType = resultSet.stringForColumn("ReferenceDataExtendedType")
+                if !(resultSet?.columnIsNull("ReferenceDataExtendedType"))! {
+                    resultTaskTemplateParameter.ReferenceDataExtendedType = resultSet?.string(forColumn: "ReferenceDataExtendedType")
                 }
-                resultTaskTemplateParameter.Ordinal = Int(resultSet.intForColumn("Ordinal"))
-                if !resultSet.columnIsNull("Predecessor") {
-                    resultTaskTemplateParameter.Predecessor = resultSet.stringForColumn("Predecessor")
+                resultTaskTemplateParameter.Ordinal = Int((resultSet?.int(forColumn: "Ordinal"))!)
+                if !(resultSet?.columnIsNull("Predecessor"))! {
+                    resultTaskTemplateParameter.Predecessor = resultSet?.string(forColumn: "Predecessor")
                 }
-                if !resultSet.columnIsNull("PredecessorTrueValue") {
-                    resultTaskTemplateParameter.PredecessorTrueValue = resultSet.stringForColumn("PredecessorTrueValue")
+                if !(resultSet?.columnIsNull("PredecessorTrueValue"))! {
+                    resultTaskTemplateParameter.PredecessorTrueValue = resultSet?.string(forColumn: "PredecessorTrueValue")
                 }
                 taskTemplateParameter = resultTaskTemplateParameter
             }
@@ -4046,43 +4046,43 @@ class ModelManager: NSObject {
     
     func getAllTaskTemplateParameter() -> [TaskTemplateParameter] {
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TaskTemplateId], [ParameterName], [ParameterType], [ParameterDisplay], [Collect], [ReferenceDataType], [ReferenceDataExtendedType], [Ordinal], [Predecessor], [PredecessorTrueValue] FROM [TaskTemplateParameter]", withArgumentsInArray: nil)
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TaskTemplateId], [ParameterName], [ParameterType], [ParameterDisplay], [Collect], [ReferenceDataType], [ReferenceDataExtendedType], [Ordinal], [Predecessor], [PredecessorTrueValue] FROM [TaskTemplateParameter]", withArgumentsIn: nil)
         var taskTemplateParameterList: [TaskTemplateParameter] = [TaskTemplateParameter]()
         if (resultSet != nil) {
             while resultSet.next() {
                 let taskTemplateParameter : TaskTemplateParameter = TaskTemplateParameter()
-                taskTemplateParameter.RowId = resultSet.stringForColumn("RowId")
-                taskTemplateParameter.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                taskTemplateParameter.CreatedOn = resultSet.dateForColumn("CreatedOn")
+                taskTemplateParameter.RowId = resultSet.string(forColumn: "RowId")
+                taskTemplateParameter.CreatedBy = resultSet.string(forColumn: "CreatedBy")
+                taskTemplateParameter.CreatedOn = resultSet.date(forColumn: "CreatedOn")
                 if !resultSet.columnIsNull("LastUpdatedBy")
                 {
-                    taskTemplateParameter.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                    taskTemplateParameter.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
                 }
                 if !resultSet.columnIsNull("LastUpdatedOn")
                 {
-                    taskTemplateParameter.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                    taskTemplateParameter.LastUpdatedOn = resultSet.date(forColumn: "LastUpdatedOn")
                 }
                 if !resultSet.columnIsNull("Deleted")
                 {
-                    taskTemplateParameter.Deleted = resultSet.dateForColumn("Deleted")
+                    taskTemplateParameter.Deleted = resultSet.date(forColumn: "Deleted")
                 }
-                taskTemplateParameter.TaskTemplateId = resultSet.stringForColumn("TaskTemplateId")
-                taskTemplateParameter.ParameterName = resultSet.stringForColumn("ParameterName")
-                taskTemplateParameter.ParameterType = resultSet.stringForColumn("ParameterType")
-                taskTemplateParameter.ParameterDisplay = resultSet.stringForColumn("ParameterDisplay")
-                taskTemplateParameter.Collect = resultSet.boolForColumn("Collect")
+                taskTemplateParameter.TaskTemplateId = resultSet.string(forColumn: "TaskTemplateId")
+                taskTemplateParameter.ParameterName = resultSet.string(forColumn: "ParameterName")
+                taskTemplateParameter.ParameterType = resultSet.string(forColumn: "ParameterType")
+                taskTemplateParameter.ParameterDisplay = resultSet.string(forColumn: "ParameterDisplay")
+                taskTemplateParameter.Collect = resultSet.bool(forColumn: "Collect")
                 if !resultSet.columnIsNull("ReferenceDataType") {
-                    taskTemplateParameter.ReferenceDataType = resultSet.stringForColumn("ReferenceDataType")
+                    taskTemplateParameter.ReferenceDataType = resultSet.string(forColumn: "ReferenceDataType")
                 }
                 if !resultSet.columnIsNull("ReferenceDataExtendedType") {
-                    taskTemplateParameter.ReferenceDataExtendedType = resultSet.stringForColumn("ReferenceDataExtendedType")
+                    taskTemplateParameter.ReferenceDataExtendedType = resultSet.string(forColumn: "ReferenceDataExtendedType")
                 }
-                taskTemplateParameter.Ordinal = Int(resultSet.intForColumn("Ordinal"))
+                taskTemplateParameter.Ordinal = Int(resultSet.int(forColumn: "Ordinal"))
                 if !resultSet.columnIsNull("Predecessor") {
-                    taskTemplateParameter.Predecessor = resultSet.stringForColumn("Predecessor")
+                    taskTemplateParameter.Predecessor = resultSet.string(forColumn: "Predecessor")
                 }
                 if !resultSet.columnIsNull("PredecessorTrueValue") {
-                    taskTemplateParameter.PredecessorTrueValue = resultSet.stringForColumn("PredecessorTrueValue")
+                    taskTemplateParameter.PredecessorTrueValue = resultSet.string(forColumn: "PredecessorTrueValue")
                 }
                 taskTemplateParameterList.append(taskTemplateParameter)
             }
@@ -4091,14 +4091,14 @@ class ModelManager: NSObject {
         return taskTemplateParameterList
     }
     
-    func findTaskTemplateParameterList(criteria: Dictionary<String, AnyObject>) -> [TaskTemplateParameter] {
+    func findTaskTemplateParameterList(_ criteria: Dictionary<String, AnyObject>) -> [TaskTemplateParameter] {
         var list: [TaskTemplateParameter] = [TaskTemplateParameter]()
         //var count: Int32 = 0
         (list, _) = findTaskTemplateParameterList(criteria, pageSize: nil, pageNumber: nil)
         return list
     }
     
-    func findTaskTemplateParameterList(criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [TaskTemplateParameter], Count: Int32) {
+    func findTaskTemplateParameterList(_ criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [TaskTemplateParameter], Count: Int32) {
         //return variables
         var count: Int32 = 0
         var taskTemplateParameterList: [TaskTemplateParameter] = [TaskTemplateParameter]()
@@ -4118,10 +4118,10 @@ class ModelManager: NSObject {
         }
 
         sharedModelManager.database!.open()
-        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [TaskTemplateParameter] " + whereClause + orderByClause, withArgumentsInArray: whereValues)
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [TaskTemplateParameter] " + whereClause + orderByClause, withArgumentsIn: whereValues)
         if (countSet != nil) {
             while countSet.next() {
-                count = countSet.intForColumnIndex(0)
+                count = countSet.int(forColumnIndex: 0)
             }
         }
         
@@ -4133,43 +4133,43 @@ class ModelManager: NSObject {
                 pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
             }
             
-            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TaskTemplateId], [ParameterName], [ParameterType], [ParameterDisplay], [Collect], [ReferenceDataType], [ReferenceDataExtendedType], [Ordinal], [Predecessor], [PredecessorTrueValue] FROM [TaskTemplateParameter] " + whereClause + orderByClause + pageClause, withArgumentsInArray: whereValues)
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TaskTemplateId], [ParameterName], [ParameterType], [ParameterDisplay], [Collect], [ReferenceDataType], [ReferenceDataExtendedType], [Ordinal], [Predecessor], [PredecessorTrueValue] FROM [TaskTemplateParameter] " + whereClause + orderByClause + pageClause, withArgumentsIn: whereValues)
             if (resultSet != nil) {
                 while resultSet.next() {
                     let taskTemplateParameter : TaskTemplateParameter = TaskTemplateParameter()
-                    taskTemplateParameter.RowId = resultSet.stringForColumn("RowId")
-                    taskTemplateParameter.CreatedBy = resultSet.stringForColumn("CreatedBy")
-                    taskTemplateParameter.CreatedOn = resultSet.dateForColumn("CreatedOn")
+                    taskTemplateParameter.RowId = resultSet.string(forColumn: "RowId")
+                    taskTemplateParameter.CreatedBy = resultSet.string(forColumn: "CreatedBy")
+                    taskTemplateParameter.CreatedOn = resultSet.date(forColumn: "CreatedOn")
                     if !resultSet.columnIsNull("LastUpdatedBy")
                     {
-                        taskTemplateParameter.LastUpdatedBy = resultSet.stringForColumn("LastUpdatedBy")
+                        taskTemplateParameter.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
                     }
                     if !resultSet.columnIsNull("LastUpdatedOn")
                     {
-                        taskTemplateParameter.LastUpdatedOn = resultSet.dateForColumn("LastUpdatedOn")
+                        taskTemplateParameter.LastUpdatedOn = resultSet.date(forColumn: "LastUpdatedOn")
                     }
                     if !resultSet.columnIsNull("Deleted")
                     {
-                        taskTemplateParameter.Deleted = resultSet.dateForColumn("Deleted")
+                        taskTemplateParameter.Deleted = resultSet.date(forColumn: "Deleted")
                     }
-                    taskTemplateParameter.TaskTemplateId = resultSet.stringForColumn("TaskTemplateId")
-                    taskTemplateParameter.ParameterName = resultSet.stringForColumn("ParameterName")
-                    taskTemplateParameter.ParameterType = resultSet.stringForColumn("ParameterType")
-                    taskTemplateParameter.ParameterDisplay = resultSet.stringForColumn("ParameterDisplay")
-                    taskTemplateParameter.Collect = resultSet.boolForColumn("Collect")
+                    taskTemplateParameter.TaskTemplateId = resultSet.string(forColumn: "TaskTemplateId")
+                    taskTemplateParameter.ParameterName = resultSet.string(forColumn: "ParameterName")
+                    taskTemplateParameter.ParameterType = resultSet.string(forColumn: "ParameterType")
+                    taskTemplateParameter.ParameterDisplay = resultSet.string(forColumn: "ParameterDisplay")
+                    taskTemplateParameter.Collect = resultSet.bool(forColumn: "Collect")
                     if !resultSet.columnIsNull("ReferenceDataType") {
-                        taskTemplateParameter.ReferenceDataType = resultSet.stringForColumn("ReferenceDataType")
+                        taskTemplateParameter.ReferenceDataType = resultSet.string(forColumn: "ReferenceDataType")
                     }
                     if !resultSet.columnIsNull("ReferenceDataExtendedType") {
-                        taskTemplateParameter.ReferenceDataExtendedType = resultSet.stringForColumn("ReferenceDataExtendedType")
+                        taskTemplateParameter.ReferenceDataExtendedType = resultSet.string(forColumn: "ReferenceDataExtendedType")
                     }
-                    taskTemplateParameter.Ordinal = Int(resultSet.intForColumn("Ordinal"))
+                    taskTemplateParameter.Ordinal = Int(resultSet.int(forColumn: "Ordinal"))
 
                     if !resultSet.columnIsNull("Predecessor") {
-                        taskTemplateParameter.Predecessor = resultSet.stringForColumn("Predecessor")
+                        taskTemplateParameter.Predecessor = resultSet.string(forColumn: "Predecessor")
                     }
                     if !resultSet.columnIsNull("PredecessorTrueValue") {
-                        taskTemplateParameter.PredecessorTrueValue = resultSet.stringForColumn("PredecessorTrueValue")
+                        taskTemplateParameter.PredecessorTrueValue = resultSet.string(forColumn: "PredecessorTrueValue")
                     }
                     
                     taskTemplateParameterList.append(taskTemplateParameter)

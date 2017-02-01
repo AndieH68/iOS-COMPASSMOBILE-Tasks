@@ -11,7 +11,7 @@ import Foundation
 
 class MainViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, MBProgressHUDDelegate {
 
-    @IBAction func logoutSelected(sender: UIBarButtonItem) {
+    @IBAction func logoutSelected(_ sender: UIBarButtonItem) {
         Session.OperativeId = nil
         viewDidAppear(true)
     }
@@ -26,7 +26,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @IBOutlet weak var SelectedProperty: UILabel!
     @IBOutlet weak var taskTable: UITableView!
     
-    @IBAction func Refresh(sender: UIBarButtonItem) {
+    @IBAction func Refresh(_ sender: UIBarButtonItem) {
 //        HUD!.labelText = "Downloading"
 //        HUD!.showWhileExecuting({Utility.DownloadAll(self, HUD: self.HUD,}, animated: true)
         DoSynchronise(nil)
@@ -35,11 +35,19 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         pageNumber = 1;
-        Session.TaskSort = TaskSortOrder.Date
+        Session.TaskSort = TaskSortOrder.date
         Session.PageNumber = pageNumber
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
+        
+        if Session.OperativeId == nil
+        {
+            // we don't yet have an operative and therefore the operative hasn't logged in
+            // take the user to the login screen
+            self.performSegue(withIdentifier: "loginView", sender: self)
+        }
+        
         // Get the filtered list of tasks to populate the table
         if(Session.FilterSiteName == nil) { SelectedSite.text = "All" } else { SelectedSite.text = Session.FilterSiteName }
         if(Session.FilterPropertyName == nil) { SelectedProperty.text = "All" } else { SelectedProperty.text = Session.FilterPropertyName }
@@ -54,7 +62,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         // Dispose of any resources that can be recreated.
     }
 
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         
         if !Session.DatabasePresent
         {
@@ -62,44 +70,45 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
             Session.OperativeId = nil
         }
         
-        //check that we have already populated the operativeid for the session.
-        if Session.OperativeId == nil
-        {
-            // we don't yet have an operative and therefore the operative hasn't logged in
-            // take the user to the login screen
-            self.performSegueWithIdentifier("loginView", sender: self)
-        }
         
+        //check that we have already populated the operativeid for the session.
+//        if Session.OperativeId == nil
+//        {
+//            // we don't yet have an operative and therefore the operative hasn't logged in
+//            // take the user to the login screen
+//            self.performSegue(withIdentifier: "loginView", sender: self)
+//        }
+//        
         if Session.TaskId != nil
         {
-            self.performSegueWithIdentifier("TaskSegue", sender: self)
+            self.performSegue(withIdentifier: "TaskSegue", sender: self)
         }
         
         if Session.CheckDatabase == true
         {
             
-            let userPrompt: UIAlertController = UIAlertController(title: "Synchronising", message: "The application is downloading data from COMPASS.  This process may take some time if this is the first time you have attempted to synchronise", preferredStyle: UIAlertControllerStyle.Alert)
+            let userPrompt: UIAlertController = UIAlertController(title: "Synchronising", message: "The application is downloading data from COMPASS.  This process may take some time if this is the first time you have attempted to synchronise", preferredStyle: UIAlertControllerStyle.alert)
             
             //the default action
             userPrompt.addAction(UIAlertAction(
                 title: "Ok",
-                style: UIAlertActionStyle.Default,
+                style: UIAlertActionStyle.default,
                 handler: self.DoSynchronise))
             
-            self.presentViewController(userPrompt, animated: true, completion: nil)
+            self.present(userPrompt, animated: true, completion: nil)
 
             Session.CheckDatabase = false
         }
     }
     
-    func DoSynchronise(actionTarget: UIAlertAction?)
+    func DoSynchronise(_ actionTarget: UIAlertAction?)
     {
         HUD = MBProgressHUD(view: self.navigationController!.view)
         
         self.navigationController!.view.addSubview(HUD!)
         
         //set the HUD mode
-        HUD!.mode = .DeterminateHorizontalBar;
+        HUD!.mode = .determinateHorizontalBar;
         
         // Register for HUD callbacks so we can remove it from the window at the right time
         HUD!.delegate = self
@@ -117,7 +126,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         getTaskData(nil, pageNumber: nil)
     }
     
-    func getTaskData( pageSize: Int32?,  pageNumber: Int32?)
+    func getTaskData( _ pageSize: Int32?,  pageNumber: Int32?)
     {
         var page: Int32
         var size: Int32
@@ -136,7 +145,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         //store the tasks count in the session
         Session.TaskCount = count
-        Session.MaxPage = (Int(Session.TaskCount / Session.PageSize) + 1)
+        Session.MaxPage = (Int32(Int(Session.TaskCount / Session.PageSize) + 1))
         
         //reload the table
         taskTable.reloadData()
@@ -144,13 +153,13 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     //MARK: UITableView delegate methods
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return taskData.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell: TaskCell = tableView.dequeueReusableCellWithIdentifier("TaskCell") as! TaskCell
+        let cell: TaskCell = tableView.dequeueReusableCell(withIdentifier: "TaskCell") as! TaskCell
         
         let task: Task = taskData[indexPath.row]
        
@@ -177,7 +186,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         if (indexPath.row % 2 == 1)
         {
-            cell.backgroundColor = UIColor.whiteColor()
+            cell.backgroundColor = UIColor.white
         }
         else
         {
@@ -187,21 +196,21 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         return cell
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let cell: TaskCell = tableView.cellForRowAtIndexPath(indexPath) as! TaskCell
+        let cell: TaskCell = tableView.cellForRow(at: indexPath) as! TaskCell
         switch (cell.taskName.text!)
         {
         case RemedialTask:
-            self.performSegueWithIdentifier("RemedialTaskSegue", sender: cell)
+            self.performSegue(withIdentifier: "RemedialTaskSegue", sender: cell)
         default:
-            self.performSegueWithIdentifier("TaskSegue", sender: cell)
+            self.performSegue(withIdentifier: "TaskSegue", sender: cell)
         }
         
     }
     
     //MARK: Navigation Methods
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier != nil)
         {
             switch segue.identifier!

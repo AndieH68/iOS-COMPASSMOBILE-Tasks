@@ -14,8 +14,8 @@ class TaskTemplateParameterFormItem
     var Enabled: Bool = false
     var Dependencies: [TaskTemplateParameterFormItem] = []
     var SelectedItem: String? = nil
-    var LabelColour: UIColor = UIColor.whiteColor()
-    var ControlBackgroundColor: UIColor = UIColor.whiteColor()
+    var LabelColour: UIColor = UIColor.white
+    var ControlBackgroundColor: UIColor = UIColor.white
     
     init (taskTemplateParameter: TaskTemplateParameter)
     {

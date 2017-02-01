@@ -9,19 +9,19 @@
 import UIKit
 
 enum EntityType: Int32 {
-    case ReferenceData = 1, Organisation = 2, Site = 3, Property = 4, Location = 5, LocationGroup = 6, LocationGroupMembership = 7, Asset = 8, Operative = 9, TaskTemplate = 10, TaskTemplateParameter = 11, Task = 12, TaskParameter = 13
+    case referenceData = 1, organisation = 2, site = 3, property = 4, location = 5, locationGroup = 6, locationGroupMembership = 7, asset = 8, operative = 9, taskTemplate = 10, taskTemplateParameter = 11, task = 12, taskParameter = 13
 }
 
 enum ReferenceDataSortOrder: Int32 {
-    case Display = 1, Ordinal = 2
+    case display = 1, ordinal = 2
 }
 
 enum TaskSortOrder: Int32 {
-    case Date = 1, Location = 2, AssetType = 3, Task = 4 //, Route = 5
+    case date = 1, location = 2, assetType = 3, task = 4 //, Route = 5
 }
 
 enum TaskPeriod: Int32 {
-    case All = 0, DueToday = 1, DueNext7Days = 2, DueCalendarMonth = 3, DueThisMonth = 4
+    case all = 0, dueToday = 1, dueNext7Days = 2, dueCalendarMonth = 3, dueThisMonth = 4
 }
 
 let All: String = "All"
@@ -30,8 +30,8 @@ let DueNext7DaysText: String = "Due This Week"
 let DueCalendarMonthText: String = "Due This Month"
 let DueThisMonthText: String = "Due by the End of Next Month"
 
-let formatString: NSString = NSDateFormatter.dateFormatFromTemplate("j", options: 0, locale: NSLocale.currentLocale())!
-let hasAMPM = formatString.containsString("a")
+let formatString: NSString = DateFormatter.dateFormat(fromTemplate: "j", options: 0, locale: Locale.current)! as NSString
+let hasAMPM = formatString.contains("a")
 
 let DateFormat24: String = "yyyy-MM-dd'T'HH:mm:ss.SSS"
 let DateFormat24NoNano: String = "yyyy-MM-dd'T'HH:mm:ss"
@@ -47,7 +47,7 @@ let DateFormatNoTime: String = "yyyy-MM-dd"
 let DateFormatForView: String = "dd/MM/yyyy"
 let DateFormatForTaskName: String = "yyMMddhhmm"
 
-let BaseDate: NSDate = NSDate(dateString: hasAMPM ? "2000-01-01T12:00:00 PM" : "2000-01-01T00:00:00.000")
+let BaseDate: Date = Date(dateString: hasAMPM ? "2000-01-01T12:00:00 PM" : "2000-01-01T00:00:00.000")
 
 let EmptyGuid: String = "00000000-0000-0000-0000-000000000000"
 

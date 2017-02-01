@@ -21,80 +21,80 @@ class AddViewController: UIViewController {
 
     var Sites: [String] = []
     var SiteDictionary: Dictionary<String, String> = [:] //name, id
-    var SiteId: String? = String?()
+    var SiteId: String? = nil
     
     var Properties: [String] = []
     var PropertyDictionary: Dictionary<String, String> = [:] //name, id
-    var PropertyId: String? = String?()
+    var PropertyId: String? = nil
     
     var LocationGroups: [String] = []
     var LocationGroupDictionary: Dictionary<String, String> = [:] //name, id
-    var LocationGroupId: String? = String?()
-    var LocationGroupName: String? = String?()
+    var LocationGroupId: String? = nil
+    var LocationGroupName: String? = nil
     
     var Locations: [String] = []
     var LocationDictionary: Dictionary<String, String> = [:] //name, id
-    var LocationId: String? = String?()
-    var LocationName: String? = String?()
-    var Room: String? = String?()
+    var LocationId: String? = nil
+    var LocationName: String? = nil
+    var Room: String? = nil
     
     var AssetTypes: [String] = []
     var AssetTypeDictionary: Dictionary<String, String> = [:] //name, id
-    var AssetType: String? = String?()
+    var AssetType: String? = nil
     
     var AssetGroups: [String] = []
     var AssetGroupDictionary: Dictionary<String, String> = [:] //name, id
-    var AssetGroup: String? = String?()
+    var AssetGroup: String? = nil
     
     var TaskNames: [String] = []
     var TaskNameDictionary: Dictionary<String, String> = [:] //name, id
-    var TaskName: String? = String?()
-    var TaskTemplateId: String? = String?()
-    var EstimatedDuration: Int? = Int?()
+    var TaskName: String? = nil
+    var TaskTemplateId: String? = nil
+    var EstimatedDuration: Int? = nil
     var TaskRef: String = String()
     
     var AssetNumbers: [String] = []
     var AssetNumberDictionary: Dictionary<String, String> = [:] //name, id
-    var AssetId: String? = String?()
-    var AssetNumber: String? = String?()
+    var AssetId: String? = nil
+    var AssetNumber: String? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         PropertyPopupSelector.unselectedLabelText = NotApplicable
-        PropertyPopupSelector.enabled = false
+        PropertyPopupSelector.isEnabled = false
         
         LocationGroupPopupSelector.unselectedLabelText = NotApplicable
-        LocationGroupPopupSelector.enabled = false
+        LocationGroupPopupSelector.isEnabled = false
         
         LocationPopupSelector.unselectedLabelText = NotApplicable
-        LocationPopupSelector.enabled = false
+        LocationPopupSelector.isEnabled = false
         
         AssetTypePopupSelector.unselectedLabelText = NotApplicable
-        AssetTypePopupSelector.enabled = false
+        AssetTypePopupSelector.isEnabled = false
         
         AssetGroupPopupSelector.unselectedLabelText = NotApplicable
-        AssetGroupPopupSelector.enabled = false
+        AssetGroupPopupSelector.isEnabled = false
         
         TaskNamePopupSelector.unselectedLabelText = NotApplicable
-        TaskNamePopupSelector.enabled = false
+        TaskNamePopupSelector.isEnabled = false
         
         AssetNumberPopupSelector.unselectedLabelText = NotApplicable
-        AssetNumberPopupSelector.enabled = false
+        AssetNumberPopupSelector.isEnabled = false
         
         PopulateSiteSelector()
     }
     
-    @IBAction func Cancel(sender: UIBarButtonItem) {
-                self.navigationController?.popViewControllerAnimated(true)
+    @IBAction func Cancel(_ sender: UIBarButtonItem) {
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
-    @IBAction func Done(sender: UIBarButtonItem) {
+    @IBAction func Done(_ sender: UIBarButtonItem) {
         //based off the optons selected we can create the task
         if (AssetId == nil)
         {
@@ -102,10 +102,10 @@ class AddViewController: UIViewController {
             return
         }
         
-        var criteria: Dictionary<String, String> = [:]
-        criteria["OrganisationId"] = Session.OrganisationId!
-        criteria["AssetType"] = AssetGroup!
-        criteria["TaskName"] = TaskName!
+        var criteria: Dictionary<String, AnyObject> = [:]
+        criteria["OrganisationId"] = Session.OrganisationId! as AnyObject
+        criteria["AssetType"] = AssetGroup! as AnyObject
+        criteria["TaskName"] = TaskName! as AnyObject
         
         var TaskTemplateData: [TaskTemplate] = []
 
@@ -117,18 +117,18 @@ class AddViewController: UIViewController {
             break;
         }
         
-        TaskRef = "CMi" + Utility.DateToStringForTaskRef(NSDate())
+        TaskRef = "CMi" + Utility.DateToStringForTaskRef(Date())
     
         //create the task and go to the task form
-        let rowId: String = NSUUID().UUIDString
-        let now: NSDate = NSDate()
+        let rowId: String = UUID().uuidString
+        let now: Date = Date()
         let newTask: Task = Task(rowId: rowId, createdBy: Session.OperativeId!, createdOn: now, lastUpdatedBy: nil, lastUpdatedOn: nil, deleted: nil, organisationId: Session.OrganisationId!, siteId: SiteId!, propertyId: PropertyId!, locationId: LocationId!, locationGroupName: LocationGroupName!, locationName: LocationName!, room: Room, taskTemplateId: TaskTemplateId, taskRef: TaskRef, PPMGroup: AssetGroup, assetType: AssetType!, taskName: TaskName!, frequency: "Ad-hoc", assetId: AssetId!, assetNumber: AssetNumber!, scheduledDate: now, completedDate: nil, status: "Pending", priority: 30, estimatedDuration: EstimatedDuration, operativeId: Session.OperativeId, actualDuration: nil, travelDuration: nil, comments: nil, alternateAssetCode: nil)
         
-        ModelManager.getInstance().addTask(newTask)
+        _ = ModelManager.getInstance().addTask(newTask)
         
         Session.TaskId = newTask.RowId
             
-        self.navigationController?.popViewControllerAnimated(true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
 
     // MARK : populate the drop downs
@@ -140,8 +140,8 @@ class AddViewController: UIViewController {
         SiteDictionary = [:]
         
         // go and get the search/filter criteria from the values selected in the session
-        var criteria: Dictionary<String, String> = [:]
-        criteria["OrganisationId"] = Session.OrganisationId
+        var criteria: Dictionary<String, AnyObject> = [:]
+        criteria["OrganisationId"] = Session.OrganisationId as AnyObject
         
         var siteData: [Site] = [] //NSMutableArray!
         Sites.append("")
@@ -155,10 +155,10 @@ class AddViewController: UIViewController {
             SiteDictionary[currentSite.Name] = currentSite.RowId
         }
         
-        SitePopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
-        SitePopupSelector.setLabelFont(UIFont.systemFontOfSize(17))
-        SitePopupSelector.setTableFont(UIFont.systemFontOfSize(17))
-        SitePopupSelector.options = Sites.map { KFPopupSelector.Option.Text(text: $0) }
+        SitePopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.left
+        SitePopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
+        SitePopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
+        SitePopupSelector.options = Sites.map { KFPopupSelector.Option.text(text: $0) }
         SitePopupSelector.selectedIndex = nil
         SitePopupSelector.unselectedLabelText = "Select Site"
         SitePopupSelector.displaySelectedValueInLabel = true
@@ -171,8 +171,8 @@ class AddViewController: UIViewController {
         PropertyDictionary = [:]
         
         // go and get the search/filter criteria from the values selected in the session
-        var criteria: Dictionary<String, String> = [:]
-        criteria["SiteId"] = SiteId
+        var criteria: Dictionary<String, AnyObject> = [:]
+        criteria["SiteId"] = SiteId as AnyObject
         
         var PropertyData: [Property] = [] //NSMutableArray!
         Properties.append("")
@@ -186,10 +186,10 @@ class AddViewController: UIViewController {
             PropertyDictionary[currentProperty.Name] = currentProperty.RowId
         }
         
-        PropertyPopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
-        PropertyPopupSelector.setLabelFont(UIFont.systemFontOfSize(17))
-        PropertyPopupSelector.setTableFont(UIFont.systemFontOfSize(17))
-        PropertyPopupSelector.options = Properties.map { KFPopupSelector.Option.Text(text: $0) }
+        PropertyPopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.left
+        PropertyPopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
+        PropertyPopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
+        PropertyPopupSelector.options = Properties.map { KFPopupSelector.Option.text(text: $0) }
         PropertyPopupSelector.selectedIndex = nil
         PropertyPopupSelector.unselectedLabelText = "Select Property"
         PropertyPopupSelector.displaySelectedValueInLabel = true
@@ -202,8 +202,8 @@ class AddViewController: UIViewController {
         LocationGroupDictionary = [:]
         
         // go and get the search/filter criteria from the values selected in the session
-        var criteria: Dictionary<String, String> = [:]
-        criteria["PropertyId"] = PropertyId!
+        var criteria: Dictionary<String, AnyObject> = [:]
+        criteria["PropertyId"] = PropertyId! as AnyObject
         
         // go and get the search/filter criteria from the values selected in the session
         var LocationGroupData: [LocationGroup] = [] //NSMutableArray!
@@ -219,10 +219,10 @@ class AddViewController: UIViewController {
             LocationGroupDictionary[currentLocationGroup.Name!] = currentLocationGroup.RowId
         }
         
-        LocationGroupPopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
-        LocationGroupPopupSelector.setLabelFont(UIFont.systemFontOfSize(17))
-        LocationGroupPopupSelector.setTableFont(UIFont.systemFontOfSize(17))
-        LocationGroupPopupSelector.options = LocationGroups.map { KFPopupSelector.Option.Text(text: $0) }
+        LocationGroupPopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.left
+        LocationGroupPopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
+        LocationGroupPopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
+        LocationGroupPopupSelector.options = LocationGroups.map { KFPopupSelector.Option.text(text: $0) }
         LocationGroupPopupSelector.selectedIndex = nil
         LocationGroupPopupSelector.unselectedLabelText = "Select Area"
         LocationGroupPopupSelector.displaySelectedValueInLabel = true
@@ -235,8 +235,8 @@ class AddViewController: UIViewController {
         LocationDictionary = [:]
         
         // go and get the search/filter criteria from the values selected in the session
-        var criteria: Dictionary<String, String> = [:]
-        criteria["PropertyId"] = PropertyId
+        var criteria: Dictionary<String, AnyObject> = [:]
+        criteria["PropertyId"] = PropertyId as AnyObject
         
         // go and get the search/filter criteria from the values selected in the session
         var LocationData: [Location] = [] //NSMutableArray!
@@ -252,10 +252,10 @@ class AddViewController: UIViewController {
             LocationDictionary[currentLocation.Name] = currentLocation.RowId
         }
         
-        LocationPopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
-        LocationPopupSelector.setLabelFont(UIFont.systemFontOfSize(17))
-        LocationPopupSelector.setTableFont(UIFont.systemFontOfSize(17))
-        LocationPopupSelector.options = Locations.map { KFPopupSelector.Option.Text(text: $0) }
+        LocationPopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.left
+        LocationPopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
+        LocationPopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
+        LocationPopupSelector.options = Locations.map { KFPopupSelector.Option.text(text: $0) }
         LocationPopupSelector.selectedIndex = nil
         LocationPopupSelector.unselectedLabelText = "Select Location"
         LocationPopupSelector.displaySelectedValueInLabel = true
@@ -268,8 +268,8 @@ class AddViewController: UIViewController {
         AssetGroupDictionary = [:]
         
         // go and get the search/filter criteria from the values selected in the session
-        var criteria: Dictionary<String, String> = [:]
-        criteria["LocationId"] = LocationId
+        var criteria: Dictionary<String, AnyObject> = [:]
+        criteria["LocationId"] = LocationId as AnyObject
         
         // go and get the search/filter criteria from the values selected in the session
         var AssetData: [Asset] = [] //NSMutableArray!
@@ -288,10 +288,10 @@ class AddViewController: UIViewController {
             }
         }
         
-        AssetTypePopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
-        AssetTypePopupSelector.setLabelFont(UIFont.systemFontOfSize(17))
-        AssetTypePopupSelector.setTableFont(UIFont.systemFontOfSize(17))
-        AssetTypePopupSelector.options = AssetTypes.map { KFPopupSelector.Option.Text(text: $0) }
+        AssetTypePopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.left
+        AssetTypePopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
+        AssetTypePopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
+        AssetTypePopupSelector.options = AssetTypes.map { KFPopupSelector.Option.text(text: $0) }
         AssetTypePopupSelector.selectedIndex = nil
         AssetTypePopupSelector.unselectedLabelText = "Select Asset Type"
         AssetTypePopupSelector.displaySelectedValueInLabel = true
@@ -305,10 +305,10 @@ class AddViewController: UIViewController {
         AssetGroupDictionary = [:]
         
         // go and get the search/filter criteria from the values selected in the session
-        var criteria: Dictionary<String, String> = [:]
-        criteria["Type"] = "PPMAssetType"
-        criteria["Value"] = AssetType
-        criteria["ParentType"] = "PPMAssetGroup"
+        var criteria: Dictionary<String, AnyObject> = [:]
+        criteria["Type"] = "PPMAssetType" as AnyObject
+        criteria["Value"] = AssetType as AnyObject
+        criteria["ParentType"] = "PPMAssetGroup" as AnyObject
         
         // go and get the search/filter criteria from the values selected in the session
         var AssetGroupData: [ReferenceData] = [] //NSMutableArray!
@@ -327,10 +327,10 @@ class AddViewController: UIViewController {
             }
          }
         
-        AssetGroupPopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
-        AssetGroupPopupSelector.setLabelFont(UIFont.systemFontOfSize(17))
-        AssetGroupPopupSelector.setTableFont(UIFont.systemFontOfSize(17))
-        AssetGroupPopupSelector.options = AssetGroups.map { KFPopupSelector.Option.Text(text: $0) }
+        AssetGroupPopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.left
+        AssetGroupPopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
+        AssetGroupPopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
+        AssetGroupPopupSelector.options = AssetGroups.map { KFPopupSelector.Option.text(text: $0) }
         AssetGroupPopupSelector.selectedIndex = nil
         AssetGroupPopupSelector.unselectedLabelText = "Select Asset Group"
         AssetGroupPopupSelector.displaySelectedValueInLabel = true
@@ -343,10 +343,10 @@ class AddViewController: UIViewController {
         TaskNameDictionary = [:]
         
         // go and get the search/filter criteria from the values selected in the session
-        var criteria: Dictionary<String, String> = [:]
-        criteria["Type"] = "PPMTaskType"
-        criteria["ParentValue"] = AssetGroup
-        criteria["ParentType"] = "PPMAssetGroup"
+        var criteria: Dictionary<String, AnyObject> = [:]
+        criteria["Type"] = "PPMTaskType" as AnyObject
+        criteria["ParentValue"] = AssetGroup as AnyObject
+        criteria["ParentType"] = "PPMAssetGroup" as AnyObject
         
         // go and get the search/filter criteria from the values selected in the session
         var TaskNameData: [ReferenceData] = [] //NSMutableArray!
@@ -361,10 +361,10 @@ class AddViewController: UIViewController {
             TaskNameDictionary[currentTaskName.Display] = currentTaskName.Value
         }
         
-        TaskNamePopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
-        TaskNamePopupSelector.setLabelFont(UIFont.systemFontOfSize(17))
-        TaskNamePopupSelector.setTableFont(UIFont.systemFontOfSize(17))
-        TaskNamePopupSelector.options = TaskNames.map { KFPopupSelector.Option.Text(text: $0) }
+        TaskNamePopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.left
+        TaskNamePopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
+        TaskNamePopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
+        TaskNamePopupSelector.options = TaskNames.map { KFPopupSelector.Option.text(text: $0) }
         TaskNamePopupSelector.selectedIndex = nil
         TaskNamePopupSelector.unselectedLabelText = "Select Task Name"
         TaskNamePopupSelector.displaySelectedValueInLabel = true
@@ -377,10 +377,10 @@ class AddViewController: UIViewController {
         AssetNumberDictionary = [:]
         
         // go and get the search/filter criteria from the values selected in the session
-        var criteria: Dictionary<String, String> = [:]
-        criteria["PropertyId"] = PropertyId
-        criteria["LocationId"] = LocationId
-        criteria["AssetType"] = AssetType
+        var criteria: Dictionary<String, AnyObject> = [:]
+        criteria["PropertyId"] = PropertyId as AnyObject
+        criteria["LocationId"] = LocationId as AnyObject
+        criteria["AssetType"] = AssetType as AnyObject
         
         // go and get the search/filter criteria from the values selected in the session
         var AssetNumberData: [Asset] = [] //NSMutableArray!
@@ -396,17 +396,17 @@ class AddViewController: UIViewController {
             AssetNumberDictionary[AssetNumber] = currentAsset.RowId
         }
         
-        AssetNumberPopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
-        AssetNumberPopupSelector.setLabelFont(UIFont.systemFontOfSize(17))
-        AssetNumberPopupSelector.setTableFont(UIFont.systemFontOfSize(17))
-        AssetNumberPopupSelector.options = AssetNumbers.map { KFPopupSelector.Option.Text(text: $0) }
+        AssetNumberPopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.left
+        AssetNumberPopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
+        AssetNumberPopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
+        AssetNumberPopupSelector.options = AssetNumbers.map { KFPopupSelector.Option.text(text: $0) }
         AssetNumberPopupSelector.selectedIndex = nil
         AssetNumberPopupSelector.unselectedLabelText = "Select Asset Number"
         AssetNumberPopupSelector.displaySelectedValueInLabel = true
     }
     
     
-    @IBAction func SiteChanged(sender: KFPopupSelector) {
+    @IBAction func SiteChanged(_ sender: KFPopupSelector) {
         //set the site
         if (SitePopupSelector.selectedIndex != nil && Sites[SitePopupSelector.selectedIndex!] != "")
         {
@@ -414,18 +414,18 @@ class AddViewController: UIViewController {
             
             //do the property stuff
             PopulatePropertySelector()
-            PropertyPopupSelector.enabled = true
+            PropertyPopupSelector.isEnabled = true
         }
         else
         {
             if (SitePopupSelector.selectedIndex != nil) { SitePopupSelector.selectedIndex = nil }
             SiteId = nil
             PropertyPopupSelector.unselectedLabelText = NotApplicable
-            PropertyPopupSelector.enabled = false
+            PropertyPopupSelector.isEnabled = false
         }
     }
     
-    @IBAction func PropertyChanged(sender: KFPopupSelector) {
+    @IBAction func PropertyChanged(_ sender: KFPopupSelector) {
         //set the property
         if (PropertyPopupSelector.selectedIndex != nil  && Properties[PropertyPopupSelector.selectedIndex!] != "")
         {
@@ -433,18 +433,18 @@ class AddViewController: UIViewController {
             
             //do the locationgroup stuff
             PopulateLocationGroupSelector()
-            LocationGroupPopupSelector.enabled = true
+            LocationGroupPopupSelector.isEnabled = true
         }
         else
         {
             if (PropertyPopupSelector.selectedIndex != nil) { PropertyPopupSelector.selectedIndex = nil }
             PropertyId = nil
             LocationGroupPopupSelector.unselectedLabelText = NotApplicable
-            LocationGroupPopupSelector.enabled = false
+            LocationGroupPopupSelector.isEnabled = false
         }
     }
 
-    @IBAction func LocationGroupChanged(sender: KFPopupSelector) {
+    @IBAction func LocationGroupChanged(_ sender: KFPopupSelector) {
         //set the location group
         if (LocationGroupPopupSelector.selectedIndex != nil && LocationGroups[LocationGroupPopupSelector.selectedIndex!] != "")
         {
@@ -453,7 +453,7 @@ class AddViewController: UIViewController {
             
             //do the location stuff
             PopulateLocationSelector()
-            LocationPopupSelector.enabled = true
+            LocationPopupSelector.isEnabled = true
         }
         else
         {
@@ -461,11 +461,11 @@ class AddViewController: UIViewController {
             LocationGroupId = nil
             LocationGroupName = nil
             LocationPopupSelector.unselectedLabelText = NotApplicable
-            LocationPopupSelector.enabled = false
+            LocationPopupSelector.isEnabled = false
         }
     }
     
-    @IBAction func LocationChanged(sender: KFPopupSelector) {
+    @IBAction func LocationChanged(_ sender: KFPopupSelector) {
         //set the location
         if (LocationPopupSelector.selectedIndex != nil && Locations[LocationPopupSelector.selectedIndex!] != "")
         {
@@ -473,7 +473,7 @@ class AddViewController: UIViewController {
             LocationName = Locations[LocationPopupSelector.selectedIndex!]
             //do the asset type stuff
             PopulateAssetTypeSelector()
-            AssetTypePopupSelector.enabled = true
+            AssetTypePopupSelector.isEnabled = true
         }
         else
         {
@@ -481,11 +481,11 @@ class AddViewController: UIViewController {
             LocationId = nil
             LocationName = nil
             AssetTypePopupSelector.unselectedLabelText = NotApplicable
-            AssetTypePopupSelector.enabled = false
+            AssetTypePopupSelector.isEnabled = false
         }
     }
     
-    @IBAction func AssetTypeChanged(sender: KFPopupSelector) {
+    @IBAction func AssetTypeChanged(_ sender: KFPopupSelector) {
         //set the asset type
         if (AssetTypePopupSelector.selectedIndex != nil && AssetTypes[AssetTypePopupSelector.selectedIndex!] != "")
         {
@@ -493,18 +493,18 @@ class AddViewController: UIViewController {
             
             //do the asset group stuff
             PopulateAssetGroupSelector()
-            AssetGroupPopupSelector.enabled = true
+            AssetGroupPopupSelector.isEnabled = true
         }
         else
         {
             if (AssetTypePopupSelector.selectedIndex != nil) { AssetTypePopupSelector.selectedIndex = nil }
             AssetType = nil
             AssetGroupPopupSelector.unselectedLabelText = NotApplicable
-            AssetGroupPopupSelector.enabled = false
+            AssetGroupPopupSelector.isEnabled = false
         }
     }
     
-    @IBAction func AssetGroupChanged(sender: KFPopupSelector) {
+    @IBAction func AssetGroupChanged(_ sender: KFPopupSelector) {
         //set the asset group
         if (AssetGroupPopupSelector.selectedIndex != nil && AssetGroups[AssetGroupPopupSelector.selectedIndex!] != "")
         {
@@ -512,18 +512,18 @@ class AddViewController: UIViewController {
             
             //do the Task name stuff
             PopulateTaskNameSelector()
-            TaskNamePopupSelector.enabled = true
+            TaskNamePopupSelector.isEnabled = true
         }
         else
         {
             if (AssetGroupPopupSelector.selectedIndex != nil) { AssetGroupPopupSelector.selectedIndex = nil }
             AssetGroup = nil
             TaskNamePopupSelector.unselectedLabelText = NotApplicable
-            TaskNamePopupSelector.enabled = false
+            TaskNamePopupSelector.isEnabled = false
         }
     }
     
-    @IBAction func TaskNameChanged(sender: KFPopupSelector) {
+    @IBAction func TaskNameChanged(_ sender: KFPopupSelector) {
         //set the task name
         if (TaskNamePopupSelector.selectedIndex != nil && TaskNames[TaskNamePopupSelector.selectedIndex!] != "")
         {
@@ -531,18 +531,18 @@ class AddViewController: UIViewController {
             
             //do the AssetNumber stuff
             PopulateAssetNumberSelector()
-            AssetNumberPopupSelector.enabled = true
+            AssetNumberPopupSelector.isEnabled = true
         }
         else
         {
             if (TaskNamePopupSelector.selectedIndex != nil) { TaskNamePopupSelector.selectedIndex = nil }
             TaskName = nil
             AssetNumberPopupSelector.unselectedLabelText = NotApplicable
-            AssetNumberPopupSelector.enabled = false
+            AssetNumberPopupSelector.isEnabled = false
         }
     }
     
-    @IBAction func AssetNumberChanged(sender: KFPopupSelector) {
+    @IBAction func AssetNumberChanged(_ sender: KFPopupSelector) {
         //set the AssetNumber
         if (AssetNumberPopupSelector.selectedIndex != nil && AssetNumbers[AssetNumberPopupSelector.selectedIndex!] != "")
         {
