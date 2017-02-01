@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "TaskViewController.AnswerPopupChanged(KFPopupSelector) -&gt; ():TaskViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "TaskViewController.EnableControl(String, enabled : Bool) -&gt; ():TaskViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "TaskViewController.textFieldDidEndEditing(UITextField) -&gt; ():TaskViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "TaskViewController.textFieldDidBeginEditing(UITextField) -&gt; ():TaskViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "TaskViewController.tableView(UITableView, cellForRowAtIndexPath : NSIndexPath) -&gt; UITableViewCell:TaskViewController.swift">
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

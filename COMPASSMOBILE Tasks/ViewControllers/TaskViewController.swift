@@ -144,7 +144,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
     override func viewWillAppear(animated: Bool) {
         if (Session.GettingProfile)
         {
-            if (Session.CurrentProfileControl != nil)
+            if (Session.CurrentProfileControl != nil && !Session.CancelFromProfile)
             {
                 taskTemperatureProfiles[Session.CurrentProfileControl!.restorationIdentifier!] = Session.Profile
                 Session.CurrentProfileControl!.text = Session.Profile?.ToStringForDisplay()
@@ -152,6 +152,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
                 Session.Profile = nil
                 Session.GettingProfile = false
             }
+            Session.CancelFromProfile = false
         }
     }
     
@@ -459,11 +460,6 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
                 Session.CurrentProfileControl = sender as? UITextField
             }
          
-            if (Session.CurrentProfileControl!.text != String())
-            {
-                return
-            }
-            
             let temperatureProfileViewController = segue.destinationViewController as! TemperatureProfileViewController
             temperatureProfileViewController.hot = (Session.CurrentProfileControl!.tag == TemperatureProfileCellHot)
             Session.GettingProfile = true
@@ -475,9 +471,39 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
         {
             return false
         }
+        
+        if (identifier == "TemperatureProfileSegue")
+        {
+            if (sender is UIButton)
+            {
+                let cell: TaskTemplateParameterCellTemperature = (sender as! UIButton).superview!.superview as! TaskTemplateParameterCellTemperature
+                if (cell.Answer.text != String())
+                {
+                    let userPrompt: UIAlertController = UIAlertController(title: "Overwrite Profile?", message: "Are you sure you want to overwrite the current profile?", preferredStyle: UIAlertControllerStyle.Alert)
+                    
+                    //the cancel action
+                    userPrompt.addAction(UIAlertAction(
+                        title: "Cancel",
+                        style: UIAlertActionStyle.Cancel,
+                        handler: nil))
+                    
+                    //the destructive option
+                    userPrompt.addAction(UIAlertAction(
+                        title: "OK",
+                        style: UIAlertActionStyle.Destructive,
+                        handler: self.ShowProfile(sender)))
+                    
+                    presentViewController(userPrompt, animated: true, completion: nil)
+                }
+            }
+        }
+        
         return true
     }
     
+    func ShowProfile(sender: AnyObject?)(actionTarget: UIAlertAction) -> () {
+        self.performSegueWithIdentifier("TemperatureProfileSegue", sender: sender)
+    }
     
     //MARK: - UITextFieldDelegate
     
@@ -489,7 +515,28 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
         
         if (textField.tag >= TemperatureProfileCellHot && Session.UseTemperatureProfile)
         {
-            self.performSegueWithIdentifier("TemperatureProfileSegue", sender: textField)
+            if (textField.text != String())
+            {
+                let userPrompt: UIAlertController = UIAlertController(title: "Overwrite Profile?", message: "Are you sure you want to overwrite the current profile?", preferredStyle: UIAlertControllerStyle.Alert)
+                
+                //the cancel action
+                userPrompt.addAction(UIAlertAction(
+                    title: "Cancel",
+                    style: UIAlertActionStyle.Cancel,
+                    handler: nil))
+                
+                //the destructive option
+                userPrompt.addAction(UIAlertAction(
+                    title: "OK",
+                    style: UIAlertActionStyle.Destructive,
+                    handler: self.ShowProfile(textField)))
+                
+                presentViewController(userPrompt, animated: true, completion: nil)
+            }
+            else
+            {
+                self.performSegueWithIdentifier("TemperatureProfileSegue", sender: textField)
+            }
             return false
         }
 

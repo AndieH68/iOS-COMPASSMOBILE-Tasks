@@ -27,8 +27,9 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @IBOutlet weak var taskTable: UITableView!
     
     @IBAction func Refresh(sender: UIBarButtonItem) {
-        HUD!.labelText = "Downloading"
-        HUD!.showWhileExecuting({Utility.DownloadAll(self, HUD: self.HUD)}, animated: true)
+//        HUD!.labelText = "Downloading"
+//        HUD!.showWhileExecuting({Utility.DownloadAll(self, HUD: self.HUD,}, animated: true)
+        DoSynchronise(nil)
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -91,7 +92,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
     
-    func DoSynchronise (actionTarget: UIAlertAction)
+    func DoSynchronise(actionTarget: UIAlertAction?)
     {
         HUD = MBProgressHUD(view: self.navigationController!.view)
         

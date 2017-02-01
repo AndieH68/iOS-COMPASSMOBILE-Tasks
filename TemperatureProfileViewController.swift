@@ -14,7 +14,7 @@ class TemperatureProfileViewController: UITableViewController, UITextFieldDelega
     
     //MARK: - Variables
     
-    let MinuteLength: Int = 2
+    let MinuteLength: Int = 60
     
     @IBOutlet var TemperatureProfileTableView: UITableView!
     @IBOutlet var HeaderCell: UITableViewCell!
@@ -94,16 +94,17 @@ class TemperatureProfileViewController: UITableViewController, UITextFieldDelega
             userPrompt.addAction(UIAlertAction(
                 title: "OK",
                 style: UIAlertActionStyle.Destructive,
-                handler: self.LeaveTask))
+                handler: self.CancelTask))
             
             presentViewController(userPrompt, animated: true, completion: nil)
         }
     }
     
-    func LeaveTask (actionTarget: UIAlertAction) {
+    func CancelTask (actionTarget: UIAlertAction) {
+        Session.CancelFromProfile = true;
         self.navigationController?.popViewControllerAnimated(true)
     }
-    
+
     @IBAction func DonePressed(sender: UIBarButtonItem) {
         if(Session.TimerRunning)
         {
@@ -157,7 +158,10 @@ class TemperatureProfileViewController: UITableViewController, UITextFieldDelega
         }
     }
     
-    
+    func LeaveTask (actionTarget: UIAlertAction) {
+        self.navigationController?.popViewControllerAnimated(true)
+    }
+  
     //MARK: - Form Actions
     
     @IBAction func ManualButton(sender: UIButton) {

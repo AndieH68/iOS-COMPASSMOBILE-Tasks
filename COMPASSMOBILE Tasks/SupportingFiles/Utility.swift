@@ -48,9 +48,13 @@ class Utility: NSObject {
 
         let userPrompt: UIAlertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
         
+//        userPrompt.addAction(UIAlertAction(
+//            title: "OK",
+//            style: UIAlertActionStyle.Cancel,
+//            handler: nil))
+        
         //the default action
-        let addAction = UIAlertAction( title: "Ok", style: UIAlertActionStyle.Default) {UIAlertAction in delegate}
-        userPrompt.addAction(addAction)
+        userPrompt.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: {UIAlertAction in delegate}))
         
         dispatch_async(dispatch_get_main_queue(), {viewController.presentViewController(userPrompt, animated: true, completion: nil)})
     }

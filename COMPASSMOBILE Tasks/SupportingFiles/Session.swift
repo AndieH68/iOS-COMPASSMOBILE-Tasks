@@ -110,4 +110,6 @@ class Session : NSObject
     static var CurrentProfileControl: UITextField? = nil
     static var Profile: TemperatureProfile? = nil
     static var GettingProfile: Bool = false
+    static var CancelFromProfile: Bool = false
 }
+
