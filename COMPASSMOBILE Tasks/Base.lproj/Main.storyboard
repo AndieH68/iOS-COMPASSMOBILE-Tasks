@@ -3072,7 +3072,7 @@
                 <navigationController title="Task Navigator" automaticallyAdjustsScrollViewInsets="NO" id="PEr-qw-l05" customClass="MainNavigationController" customModule="COMPASSMOBILE_Tasks" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Tasks" id="2y2-z5-Ufb"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Wml-xW-eYT">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Wml-xW-eYT">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
