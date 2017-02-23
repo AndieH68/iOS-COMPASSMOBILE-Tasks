@@ -15,7 +15,7 @@ class WebService : NSObject {
         var data: Data?
         NSLog("Validate Operative started")
         autoreleasepool{
-            let urlString = "http://" + Session.Server + "/services/servicepdautility2osx.asmx"
+            let urlString = Session.WebProtocol + Session.Server + "/services/servicepdautility2osx.asmx"
             let url = URL(string: urlString)
             
             let theSession = URLSession.shared
@@ -59,7 +59,7 @@ class WebService : NSObject {
         var data: Data?
         NSLog("Synch Package download started")
         autoreleasepool{
-            let urlString = "http://" + Session.Server + "/services/servicepdautility2osx.asmx"
+            let urlString = Session.WebProtocol + Session.Server + "/services/servicepdautility2osx.asmx"
             let url = URL(string: urlString)
         
             let theSession = URLSession.shared
@@ -106,7 +106,7 @@ class WebService : NSObject {
         var data: Data?
         NSLog("Synch Package upload started")
         autoreleasepool{
-            let urlString = "http://" + Session.Server + "/services/servicepdautility2osx.asmx"
+            let urlString = Session.WebProtocol + Session.Server + "/services/servicepdautility2osx.asmx"
             let url = URL(string: urlString)
             
             let theSession = URLSession.shared

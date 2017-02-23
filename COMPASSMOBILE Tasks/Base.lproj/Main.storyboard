@@ -2215,7 +2215,6 @@
                                         <constraint firstAttribute="trailing" secondItem="SzN-wL-cTc" secondAttribute="trailing" id="UAh-bu-VIZ"/>
                                         <constraint firstItem="KWe-Fa-2Xj" firstAttribute="leading" secondItem="KsN-en-nDZ" secondAttribute="trailing" id="WsC-rX-MEu"/>
                                         <constraint firstItem="KsN-en-nDZ" firstAttribute="centerY" secondItem="D68-fK-ze6" secondAttribute="centerY" id="c6F-iY-MKa"/>
-                                        <constraint firstItem="KsN-en-nDZ" firstAttribute="leading" secondItem="D68-fK-ze6" secondAttribute="leadingMargin" id="uCv-95-Ey2"/>
                                     </constraints>
                                 </stackView>
                                 <stackView opaque="NO" contentMode="scaleToFill" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="b5M-Cd-G9Z" userLabel="Travel Time Stack View">
@@ -2252,7 +2251,6 @@
                                         <constraint firstItem="rc0-pu-ryC" firstAttribute="centerY" secondItem="b5M-Cd-G9Z" secondAttribute="centerY" id="CHo-px-uib"/>
                                         <constraint firstAttribute="trailing" secondItem="601-a5-pjP" secondAttribute="trailing" id="IsY-bm-ef5"/>
                                         <constraint firstItem="601-a5-pjP" firstAttribute="centerY" secondItem="b5M-Cd-G9Z" secondAttribute="centerY" id="XEN-Pn-Z6K"/>
-                                        <constraint firstItem="P0Y-CO-AmD" firstAttribute="leading" secondItem="b5M-Cd-G9Z" secondAttribute="leadingMargin" id="qTf-gq-DjI"/>
                                         <constraint firstItem="P0Y-CO-AmD" firstAttribute="centerY" secondItem="b5M-Cd-G9Z" secondAttribute="centerY" id="uHr-8h-bOc"/>
                                     </constraints>
                                 </stackView>
@@ -2264,9 +2262,9 @@
                                 <constraint firstItem="b5M-Cd-G9Z" firstAttribute="leading" secondItem="8dD-eN-adL" secondAttribute="leading" constant="8" id="CHd-EH-ft9"/>
                                 <constraint firstItem="D68-fK-ze6" firstAttribute="leading" secondItem="8dD-eN-adL" secondAttribute="leadingMargin" id="DuM-Vr-abD"/>
                                 <constraint firstItem="9my-Lh-Ter" firstAttribute="leading" secondItem="8dD-eN-adL" secondAttribute="leadingMargin" id="EEZ-OG-aPY"/>
-                                <constraint firstAttribute="trailingMargin" secondItem="D68-fK-ze6" secondAttribute="trailing" id="Et3-Q4-Rqx"/>
+                                <constraint firstItem="D68-fK-ze6" firstAttribute="trailing" secondItem="8dD-eN-adL" secondAttribute="trailingMargin" id="Et3-Q4-Rqx"/>
                                 <constraint firstItem="ozT-LF-7AO" firstAttribute="trailing" secondItem="8dD-eN-adL" secondAttribute="trailingMargin" id="Gw0-Gh-87C"/>
-                                <constraint firstAttribute="trailing" secondItem="b5M-Cd-G9Z" secondAttribute="trailing" constant="8" id="K7S-52-ST0"/>
+                                <constraint firstItem="b5M-Cd-G9Z" firstAttribute="trailing" secondItem="8dD-eN-adL" secondAttribute="trailing" constant="-8" id="K7S-52-ST0"/>
                                 <constraint firstItem="9my-Lh-Ter" firstAttribute="top" secondItem="Geq-3w-kVS" secondAttribute="bottom" constant="8" id="OZa-kQ-li1"/>
                                 <constraint firstItem="b5M-Cd-G9Z" firstAttribute="top" secondItem="D68-fK-ze6" secondAttribute="bottom" constant="8" id="SYI-UM-jPH"/>
                                 <constraint firstItem="9my-Lh-Ter" firstAttribute="trailing" secondItem="8dD-eN-adL" secondAttribute="trailingMargin" id="VHe-ba-U4r"/>

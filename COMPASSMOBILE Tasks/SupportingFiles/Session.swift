@@ -11,6 +11,7 @@ import UIKit
 class Session : NSObject
 {
     //static var RootViewController: UIViewController = UIViewController()
+    static var WebProtocol: String = String("https://")
     static var Server: String = String()
     static var CheckDatabase: Bool = false
     
@@ -86,21 +87,21 @@ class Session : NSObject
     
     class func ClearFilter()
     {
-        FilterSiteId = String()
-        FilterSiteName = String()
-        FilterPropertyId = String()
-        FilterPropertyName = String()
-        FilterFrequency = String()
+        FilterSiteId = nil
+        FilterSiteName = nil
+        FilterPropertyId = nil
+        FilterPropertyName = nil
+        FilterFrequency = nil
         FilterPeriod = String?(DueCalendarMonthText)
         
         FilterJustMyTasks = false
         
-        FilterAssetGroup = String()
-        FilterTaskName = String()
-        FilterAssetType = String()
-        FilterLocationGroup = String()
-        FilterLocation = String()
-        FilterAssetNumber = String()
+        FilterAssetGroup = nil
+        FilterTaskName = nil
+        FilterAssetType = nil
+        FilterLocationGroup = nil
+        FilterLocation = nil
+        FilterAssetNumber = nil
     }
     
     static var CurrentReading: String? = nil
