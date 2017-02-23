@@ -328,10 +328,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nSc-1T-OFr">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nSc-1T-OFr" userLabel="scroller">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kNB-K4-OeK" userLabel="Content View">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kNB-K4-OeK" userLabel="content">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="616"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="j6Y-st-p5j" userLabel="Asset Type Stack View">
@@ -3070,7 +3070,7 @@
                 <navigationController title="Task Navigator" automaticallyAdjustsScrollViewInsets="NO" id="PEr-qw-l05" customClass="MainNavigationController" customModule="COMPASSMOBILE_Tasks" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Tasks" id="2y2-z5-Ufb"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Wml-xW-eYT">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Wml-xW-eYT">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -3100,6 +3100,6 @@
         <image name="Upload" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="nE1-QS-cpL"/>
+        <segue reference="gBG-Cj-Y6h"/>
     </inferredMetricsTieBreakers>
 </document>

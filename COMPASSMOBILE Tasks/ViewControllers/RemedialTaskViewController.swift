@@ -13,7 +13,7 @@ class RemedialTaskViewController: UIViewController, UITextFieldDelegate, UITextV
     
     var task: Task = Task()
     var taskParameters: [TaskParameter] = [TaskParameter]()
-
+    
     //header fields
     @IBOutlet var AssetType: UILabel!
     @IBOutlet var TaskName: UILabel!
@@ -33,6 +33,7 @@ class RemedialTaskViewController: UIViewController, UITextFieldDelegate, UITextV
     //standard actions
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         Session.CodeScanned = nil
         
         task = ModelManager.getInstance().getTask(Session.TaskId!)!

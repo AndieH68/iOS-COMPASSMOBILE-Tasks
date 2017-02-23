@@ -28,6 +28,8 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
     
     var probeTimer: Timer = Timer()
     
+    var activeField: UITextField?
+    
     //parameter table
     @IBOutlet var taskParameterTable: UITableView!
         
@@ -57,6 +59,8 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
     //standard actions
     override func viewDidLoad() {
         super.viewDidLoad()
+        registerForKeyboardNotifications()
+        
         Session.CodeScanned = nil
         
         task = ModelManager.getInstance().getTask(Session.TaskId!)!
@@ -141,6 +145,10 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
         taskParameterTable.reloadData()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        deregisterFromKeyboardNotifications()
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         if (Session.GettingProfile)
         {
@@ -195,7 +203,51 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
             EAController.shared().callBack = self
         }
     }
-
+    
+    //MARK: Keyboard handling methods
+    func registerForKeyboardNotifications(){
+        //Adding notifies on keyboard appearing
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    }
+    
+    func deregisterFromKeyboardNotifications(){
+        //Removing notifies on keyboard appearing
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    }
+    
+    func keyboardWasShown(notification: NSNotification){
+        //Need to calculate keyboard exact size due to Apple suggestions
+        self.tableView.isScrollEnabled = true
+        var info = notification.userInfo!
+        let keyboardSize = (info[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.size
+        let contentInsets : UIEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, keyboardSize!.height, 0.0)
+        
+        self.tableView.contentInset = contentInsets
+        self.tableView.scrollIndicatorInsets = contentInsets
+        
+        var aRect : CGRect = self.view.frame
+        aRect.size.height -= keyboardSize!.height
+        if let activeField = self.activeField {
+            if (!aRect.contains(activeField.frame.origin)){
+                self.tableView.scrollRectToVisible(activeField.frame, animated: true)
+            }
+        }
+    }
+    
+    func keyboardWillBeHidden(notification: NSNotification){
+        //Once keyboard disappears, restore original positions
+        var info = notification.userInfo!
+        let keyboardSize = (info[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.size
+        let contentInsets : UIEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, -keyboardSize!.height, 0.0)
+        self.tableView.contentInset = contentInsets
+        self.tableView.scrollIndicatorInsets = contentInsets
+        self.view.endEditing(true)
+        self.tableView.contentInset = UIEdgeInsets.zero
+    }
+    
+    
     //MARK: UITableView delegate methods
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -558,6 +610,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
             }
         }
         self.addDoneButtonOnKeyboard(textField)
+        activeField = textField
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
@@ -574,6 +627,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
                 currentTaskTemplateParameterFormItem.SelectedItem = textField.text
             }
         }
+        activeField = nil
         textField.resignFirstResponder()
     }
     
