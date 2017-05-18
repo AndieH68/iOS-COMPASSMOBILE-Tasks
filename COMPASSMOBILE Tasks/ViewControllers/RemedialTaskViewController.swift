@@ -48,6 +48,7 @@ class RemedialTaskViewController: UIViewController, UITextFieldDelegate, UITextV
             TaskName.text  = ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMTaskType", key: task.TaskName, parentType: "PPMAssetGroup", parentValue: task.PPMGroup)
         }
         
+        Location.text = task.LocationName
         if let assetNumber: String = task.AssetNumber {AssetNumber.text = assetNumber} else {AssetNumber.text = "no asset"}
         TaskReference.text = task.TaskRef
         
@@ -234,6 +235,7 @@ class RemedialTaskViewController: UIViewController, UITextFieldDelegate, UITextV
         task.LastUpdatedBy = Session.OperativeId!
         task.LastUpdatedOn = now
         task.CompletedDate = now
+        task.OperativeId = Session.OperativeId!
         task.Status = "Complete"
         
         _ = ModelManager.getInstance().updateTask(task)

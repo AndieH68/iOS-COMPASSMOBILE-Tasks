@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		A40BB55E1C4FE9D7005C2AE6 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A40BB55D1C4FE9D7005C2AE6 /* libsqlite3.0.tbd */; };
+		A41B81421ECB0A0300822D25 /* TemperatureProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A41B81411ECB0A0300822D25 /* TemperatureProfileViewController.swift */; };
 		A432E92D1D2D1809002FE138 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A432E92A1D2D1809002FE138 /* AppDelegate.swift */; };
 		A432E92E1D2D1809002FE138 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A432E92B1D2D1809002FE138 /* Assets.xcassets */; };
 		A432E9361D2D19D5002FE138 /* blueThermLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A432E9311D2D19D5002FE138 /* blueThermLibrary.a */; };
@@ -62,13 +63,13 @@
 		A49A746A1D2FBE580006F220 /* COMPASSDB.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = A4CBC52F1D2FB94500E1D3CE /* COMPASSDB.sqlite */; };
 		A4A25F5F1D22D63A00027FA6 /* Default-568.png in Resources */ = {isa = PBXBuildFile; fileRef = A4A25F5E1D22D63A00027FA6 /* Default-568.png */; };
 		A4AF07661E326A6E00D09CA8 /* TemperatureProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4AF07651E326A6E00D09CA8 /* TemperatureProfile.swift */; };
-		A4D2E4C01E362A4100B71AA8 /* TemperatureProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D2E4BF1E362A4100B71AA8 /* TemperatureProfileViewController.swift */; };
 		A4D4A2D61D2D2097009287F8 /* COMPASSMOBILE Tasks.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A4D4A2D41D2D2097009287F8 /* COMPASSMOBILE Tasks.xcdatamodeld */; };
 		A4E425431D2D22870088EF64 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4E425411D2D22870088EF64 /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		A40BB55D1C4FE9D7005C2AE6 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
+		A41B81411ECB0A0300822D25 /* TemperatureProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TemperatureProfileViewController.swift; path = "COMPASSMOBILE Tasks/ViewControllers/TemperatureProfileViewController.swift"; sourceTree = SOURCE_ROOT; };
 		A432E92A1D2D1809002FE138 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = "COMPASSMOBILE Tasks/AppDelegate.swift"; sourceTree = SOURCE_ROOT; };
 		A432E92B1D2D1809002FE138 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "COMPASSMOBILE Tasks/Assets.xcassets"; sourceTree = SOURCE_ROOT; };
 		A432E92F1D2D19D5002FE138 /* AlertMessageDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AlertMessageDelegate.h; path = "COMPASSMOBILE Tasks/Bluetooth/AlertMessageDelegate.h"; sourceTree = SOURCE_ROOT; };
@@ -138,7 +139,6 @@
 		A4A522EC1C43F4A500D16A9A /* COMPASSMOBILE Tasks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "COMPASSMOBILE Tasks.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4AF07651E326A6E00D09CA8 /* TemperatureProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TemperatureProfile.swift; path = "COMPASSMOBILE Tasks/SupportingFiles/TemperatureProfile.swift"; sourceTree = SOURCE_ROOT; };
 		A4CBC52F1D2FB94500E1D3CE /* COMPASSDB.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = COMPASSDB.sqlite; path = "COMPASSMOBILE Tasks/COMPASSDB.sqlite"; sourceTree = SOURCE_ROOT; };
-		A4D2E4BF1E362A4100B71AA8 /* TemperatureProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemperatureProfileViewController.swift; sourceTree = SOURCE_ROOT; };
 		A4D4A2D51D2D2097009287F8 /* COMPASSMOBILE Tasks.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "COMPASSMOBILE Tasks.xcdatamodel"; sourceTree = "<group>"; };
 		A4E425421D2D22870088EF64 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "COMPASSMOBILE Tasks/Base.lproj/Main.storyboard"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -254,6 +254,7 @@
 		A49455E71C7CBEB600BE6247 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				A41B81411ECB0A0300822D25 /* TemperatureProfileViewController.swift */,
 				A432E9591D2D1AF0002FE138 /* AddViewController.swift */,
 				A432E9491D2D1A4E002FE138 /* FilterViewController.swift */,
 				A432E94A1D2D1A4E002FE138 /* LoginViewController.swift */,
@@ -263,7 +264,6 @@
 				A432E94E1D2D1A4E002FE138 /* SearchViewController.swift */,
 				A432E94F1D2D1A4E002FE138 /* SettingsViewController.swift */,
 				A432E9501D2D1A4E002FE138 /* TaskViewController.swift */,
-				A4D2E4BF1E362A4100B71AA8 /* TemperatureProfileViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -458,6 +458,7 @@
 				A432E9421D2D19F8002FE138 /* FMDatabase.m in Sources */,
 				A432E9461D2D19F8002FE138 /* FMResultSet.m in Sources */,
 				A439198E1D2D1DB500C31CA0 /* Operative.swift in Sources */,
+				A41B81421ECB0A0300822D25 /* TemperatureProfileViewController.swift in Sources */,
 				A432E9561D2D1A4E002FE138 /* SearchViewController.swift in Sources */,
 				A432E9581D2D1A4E002FE138 /* TaskViewController.swift in Sources */,
 				A43919A51D2D1E7900C31CA0 /* WebService.swift in Sources */,
@@ -481,7 +482,6 @@
 				A439196C1D2D1D2E00C31CA0 /* KFPopupSelector.swift in Sources */,
 				A439198F1D2D1DB500C31CA0 /* Organisation.swift in Sources */,
 				A43919A41D2D1E7900C31CA0 /* Utility.swift in Sources */,
-				A4D2E4C01E362A4100B71AA8 /* TemperatureProfileViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
