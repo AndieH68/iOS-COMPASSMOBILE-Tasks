@@ -27,10 +27,9 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @IBOutlet weak var taskTable: UITableView!
     
     @IBAction func Refresh(_ sender: UIBarButtonItem) {
-//        HUD!.labelText = "Downloading"
-//        HUD!.showWhileExecuting({Utility.DownloadAll(self, HUD: self.HUD,}, animated: true)
         DoSynchronise(nil)
     }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -40,7 +39,6 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
         if Session.OperativeId == nil
         {
             // we don't yet have an operative and therefore the operative hasn't logged in
@@ -53,7 +51,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         if(Session.FilterPropertyName == nil) { SelectedProperty.text = "All" } else { SelectedProperty.text = Session.FilterPropertyName }
         if(Session.OperativeId != nil)
         {
-            self.getTaskData()
+            self.getTaskData(MainThread: true)
         }
     }
 
@@ -63,22 +61,12 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
 
     override func viewDidAppear(_ animated: Bool) {
-        
         if !Session.DatabasePresent
         {
             Utility.invokeAlertMethod(self, title: "Fatal Exception", message: Session.DatabaseMessage, delegate: nil)
             Session.OperativeId = nil
         }
         
-        
-        //check that we have already populated the operativeid for the session.
-//        if Session.OperativeId == nil
-//        {
-//            // we don't yet have an operative and therefore the operative hasn't logged in
-//            // take the user to the login screen
-//            self.performSegue(withIdentifier: "loginView", sender: self)
-//        }
-//        
         if Session.TaskId != nil
         {
             self.performSegue(withIdentifier: "TaskSegue", sender: self)
@@ -116,17 +104,21 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         HUD!.showWhileExecuting({
                 Utility.CheckSynchronisation(self, HUD: self.HUD!);
-                self.getTaskData()
+                self.getTaskData(MainThread: false)
             }, animated: true)
+        
+        
+        //reload the table
+        taskTable.reloadData()
     }
  
     //MARK: Other methods
     
-    func getTaskData() {
-        getTaskData(nil, pageNumber: nil)
+    func getTaskData(MainThread: Bool) {
+        getTaskData(nil, pageNumber: nil, MainThread: MainThread)
     }
     
-    func getTaskData( _ pageSize: Int32?,  pageNumber: Int32?)
+    func getTaskData( _ pageSize: Int32?,  pageNumber: Int32?, MainThread: Bool)
     {
         var page: Int32
         var size: Int32
@@ -147,8 +139,11 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         Session.TaskCount = count
         Session.MaxPage = (Int32(Int(Session.TaskCount / Session.PageSize) + 1))
         
-        //reload the table
-        taskTable.reloadData()
+        if(MainThread)
+        {
+            //reload the table
+            taskTable.reloadData()
+        }
     }
     
     //MARK: UITableView delegate methods

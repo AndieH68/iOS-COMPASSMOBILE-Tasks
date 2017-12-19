@@ -1155,8 +1155,12 @@ class Utility: NSObject {
                 return
             }
         }
+        else
+        {
+            message += " : " + Session.AlertMessage!
+        }
         
-        DispatchQueue.main.async(execute: {invokeAlertMethod(viewController, title: "Tasks Sent", message: message, delegate: nil)})
+        DispatchQueue.main.async(execute: {invokeAlertMethod(viewController, title: "Send Tasks", message: message, delegate: nil)})
     
     }
     
@@ -1179,7 +1183,7 @@ class Utility: NSObject {
             
             var lastRowId: String = String("00000000-0000-0000-0000-000000000000")
             
-            let taskQuery: String = "SELECT RowId, '<Task Id=\"' || CAST(RowId AS VARCHAR(40)) || '\">' || COALESCE('<CreatedBy>' || CAST(CreatedBy AS VARCHAR(40)) || '</CreatedBy>','<CreatedBy />') || COALESCE('<CreatedOn>' || DATETIME(CreatedOn,'unixepoch') || '</CreatedOn>','<CreatedOn />') || COALESCE('<LastUpdatedBy>' || CAST(LastUpdatedBy AS VARCHAR(40)) || '</LastUpdatedBy>','<LastUpdatedBy />') || COALESCE('<LastUpdatedOn>' || DATETIME(LastUpdatedOn,'unixepoch') || '</LastUpdatedOn>','<LastUpdatedOn />') || COALESCE('<Deleted>' || CAST(Deleted AS VARCHAR(20)) || '</Deleted>','<Deleted />') || COALESCE('<OrganisationId>' || CAST(OrganisationId AS VARCHAR(40)) || '</OrganisationId>','<OrganisationId />') || COALESCE('<SiteId>' || CAST(SiteId AS VARCHAR(40)) || '</SiteId>','<SiteId />') || COALESCE('<PropertyId>' || CAST(PropertyId AS VARCHAR(40)) || '</PropertyId>','<PropertyId />') || COALESCE('<LocationId>' || CAST(LocationId AS VARCHAR(40)) || '</LocationId>','<LocationId />') || COALESCE('<TaskTemplateId>' || CAST(TaskTemplateId AS VARCHAR(40)) || '</TaskTemplateId>','<TaskTemplateId />') || COALESCE('<TaskRef>' || TaskRef || '</TaskRef>','<TaskRef />') || COALESCE('<PPMGroup>' || PPMGroup || '</PPMGroup>','<PPMGroup />') || COALESCE('<AssetType>' || AssetType || '</AssetType>','<AssetType />') || COALESCE('<TaskName>' || TaskName || '</TaskName>','<TaskName />') || COALESCE('<Frequency>' || Frequency || '</Frequency>','<Frequency />') || COALESCE('<AssetId>' || CAST(AssetId AS VARCHAR(40)) || '</AssetId>','<AssetId />') || COALESCE('<ScheduledDate>' || DATETIME(ScheduledDate,'unixepoch') || '</ScheduledDate>','<ScheduledDate />') || COALESCE('<CompletedDate>' || DATETIME(CompletedDate,'unixepoch') || '</CompletedDate>','<CompletedDate />') || COALESCE('<Status>' || Status || '</Status>','<Status />') || COALESCE('<Priority>' || CAST(Priority AS VARCHAR(20)) || '</Priority>','<Priority />') || COALESCE('<EstimatedDuration>' || CAST(EstimatedDuration AS VARCHAR(20)) || '</EstimatedDuration>','<EstimatedDuration />') || COALESCE('<OperativeId>' || CAST(OperativeId AS VARCHAR(40)) || '</OperativeId>','<OperativeId />') || COALESCE('<ActualDuration>' || CAST(ActualDuration AS VARCHAR(20)) || '</ActualDuration>','<ActualDuration />') || COALESCE('<TravelDuration>' || CAST(TravelDuration AS VARCHAR(20)) || '</TravelDuration>','<TravelDuration />') || '<Docked>False</Docked>' || COALESCE('<Comments>' || Comments || '</Comments>','<Comments />') || '</Task>' FROM Task WHERE (Status = 'Complete' OR Status = 'Outstanding') AND COALESCE(LastUpdatedOn, CreatedOn) >= ? AND RowId > ? ORDER BY RowId "
+            let taskQuery: String = "SELECT RowId, '<Task Id=\"' || CAST(RowId AS VARCHAR(40)) || '\">' || COALESCE('<CreatedBy>' || CAST(CreatedBy AS VARCHAR(40)) || '</CreatedBy>','<CreatedBy />') || COALESCE('<CreatedOn>' || DATETIME(CreatedOn,'unixepoch') || '</CreatedOn>','<CreatedOn />') || COALESCE('<LastUpdatedBy>' || CAST(LastUpdatedBy AS VARCHAR(40)) || '</LastUpdatedBy>','<LastUpdatedBy />') || COALESCE('<LastUpdatedOn>' || DATETIME(LastUpdatedOn,'unixepoch') || '</LastUpdatedOn>','<LastUpdatedOn />') || COALESCE('<Deleted>' || CAST(Deleted AS VARCHAR(20)) || '</Deleted>','<Deleted />') || COALESCE('<OrganisationId>' || CAST(OrganisationId AS VARCHAR(40)) || '</OrganisationId>','<OrganisationId />') || COALESCE('<SiteId>' || CAST(SiteId AS VARCHAR(40)) || '</SiteId>','<SiteId />') || COALESCE('<PropertyId>' || CAST(PropertyId AS VARCHAR(40)) || '</PropertyId>','<PropertyId />') || COALESCE('<LocationId>' || CAST(LocationId AS VARCHAR(40)) || '</LocationId>','<LocationId />') || COALESCE('<TaskTemplateId>' || CAST(TaskTemplateId AS VARCHAR(40)) || '</TaskTemplateId>','<TaskTemplateId />') || COALESCE('<TaskRef>' || TaskRef || '</TaskRef>','<TaskRef />') || COALESCE('<PPMGroup>' || PPMGroup || '</PPMGroup>','<PPMGroup />') || COALESCE('<AssetType>' || AssetType || '</AssetType>','<AssetType />') || COALESCE('<TaskName>' || TaskName || '</TaskName>','<TaskName />') || COALESCE('<Frequency>' || Frequency || '</Frequency>','<Frequency />') || COALESCE('<AssetId>' || CAST(AssetId AS VARCHAR(40)) || '</AssetId>','<AssetId />') || COALESCE('<ScheduledDate>' || DATETIME(ScheduledDate,'unixepoch') || '</ScheduledDate>','<ScheduledDate />') || COALESCE('<CompletedDate>' || DATETIME(CompletedDate,'unixepoch') || '</CompletedDate>','<CompletedDate />') || COALESCE('<Status>' || Status || '</Status>','<Status />') || COALESCE('<Priority>' || CAST(Priority AS VARCHAR(20)) || '</Priority>','<Priority />') || COALESCE('<EstimatedDuration>' || CAST(EstimatedDuration AS VARCHAR(20)) || '</EstimatedDuration>','<EstimatedDuration />') || COALESCE('<OperativeId>' || CAST(OperativeId AS VARCHAR(40)) || '</OperativeId>','<OperativeId />') || COALESCE('<ActualDuration>' || CAST(ActualDuration AS VARCHAR(20)) || '</ActualDuration>','<ActualDuration />') || COALESCE('<TravelDuration>' || CAST(TravelDuration AS VARCHAR(20)) || '</TravelDuration>','<TravelDuration />') || '<Docked>False</Docked>' || COALESCE('<Comments>' || Comments || '</Comments>','<Comments />') || '</Task>' FROM Task WHERE (Status = 'Dockable' OR Status = 'Outstanding') AND COALESCE(LastUpdatedOn, CreatedOn) >= ? AND RowId > ? ORDER BY RowId "
 
             let taskParameterQuery: String = "SELECT '<TaskParameter Id=\"' || CAST(TaskParameter.RowId AS VARCHAR(40)) || '\">' || COALESCE('<CreatedBy>' || CAST(TaskParameter.CreatedBy AS VARCHAR(40)) || '</CreatedBy>','<CreatedBy />') || COALESCE('<CreatedOn>' || DATETIME(TaskParameter.CreatedOn,'unixepoch') || '</CreatedOn>','<CreatedOn />') || COALESCE('<LastUpdatedBy>' || CAST(TaskParameter.LastUpdatedBy AS VARCHAR(40)) || '</LastUpdatedBy>','<LastUpdatedBy />') || COALESCE('<LastUpdatedOn>' || DATETIME(TaskParameter.LastUpdatedOn,'unixepoch') || '</LastUpdatedOn>','<LastUpdatedOn />') || COALESCE('<Deleted>' || CAST(TaskParameter.Deleted AS VARCHAR(20)) || '</Deleted>','<Deleted />') || COALESCE('<TaskTemplateParameterId>' || CAST(TaskParameter.TaskTemplateParameterId AS VARCHAR(40)) || '</TaskTemplateParameterId>','<TaskTemplateParameterId />') || COALESCE('<TaskId>' || CAST(TaskParameter.TaskId AS VARCHAR(40)) || '</TaskId>','<TaskId />') || COALESCE('<ParameterName>' || TaskParameter.ParameterName || '</ParameterName>','<ParameterName />') || COALESCE('<ParameterType>' || TaskParameter.ParameterType || '</ParameterType>','<ParameterType />') || COALESCE('<ParameterDisplay>' || TaskParameter.ParameterDisplay || '</ParameterDisplay>','<ParameterDisplay />') || COALESCE('<Collect>' || CASE WHEN TaskParameter.Collect = 1 THEN 'True' ELSE 'False' END || '</Collect>','<Collect />') || COALESCE('<ParameterValue>' || TaskParameter.ParameterValue || '</ParameterValue>','<ParameterValue />') || '</TaskParameter>' FROM TaskParameter WHERE TaskParameter.TaskId = ? "
             
@@ -1201,14 +1205,15 @@ class Utility: NSObject {
                 {
                     while resultSet.next()
                     {
-                        let rowId = resultSet.string(forColumnIndex: 0)
-                        let taskRecord = resultSet.string(forColumnIndex: 1)
+                        let rowId = resultSet.string(forColumnIndex: 0)!
+                        let taskRecord = resultSet.string(forColumnIndex: 1)!.replacingOccurrences(of: "<Status>Dockable</Status>", with: "<Status>Complete</Status>")
                         
                         taskCounter += 1
-                        taskList.append(rowId!)
-                        taskData += taskRecord!
-                    }
-                }
+                        taskList.append(rowId)
+                        taskData += taskRecord
+                    } //while resultSet.next()
+                } //if (resultSet != nil)
+                
                 taskData += "</Tasks>"
             
                 if (taskData == "<Tasks></Tasks>")
@@ -1234,9 +1239,10 @@ class Utility: NSObject {
                         {
                             let taskParameterRecord = resultSet.string(forColumnIndex: 0)
                             taskParameterData += taskParameterRecord!
-                        }
-                    }
-                }
+                        } //while resultSet.next()
+                    } //if (resultSet != nil)
+                } //for taskId in taskList
+                
                 taskParameterData += "</TaskParameters>"
                 
                 if (taskParameterData == "<TaskParameters></TaskParameters>")
@@ -1254,7 +1260,7 @@ class Utility: NSObject {
                 NSLog("SendTaskDetails - process response")
                 if data == nil{
                     Session.AlertTitle = "Error"
-                    Session.AlertMessage =  "Error with web service"
+                    Session.AlertMessage =  "Error with web service - no data"
                     return (false, 0)
                 }
                 
@@ -1263,14 +1269,14 @@ class Utility: NSObject {
                 if response.name == "soap:Fault"
                 {
                     Session.AlertTitle = "Error"
-                    Session.AlertMessage =  "Error with web service"
+                    Session.AlertMessage =  "Error with web service - soap fault"
                     return (false, 0)
                 }
                 
                 NSLog("SendTaskDetails - update tasks")
                 let updateStatement = "UPDATE Task SET LastUpdatedBy = ?,LastUpdatedOn = ?, Status = 'Docked' WHERE RowId = ?";
                 
-                //set the status of all the tsks to docked
+                //set the status of all the tasks sent to Docked
                 for taskId in taskList
                 {
                     var taskUpdateParameters: [AnyObject] = [AnyObject]()
@@ -1279,7 +1285,7 @@ class Utility: NSObject {
                     taskUpdateParameters.append(taskId as AnyObject)
                     
                     sharedModelManager.database!.executeUpdate(updateStatement, withArgumentsIn: taskUpdateParameters)
-                }
+                } //for taskId in taskList
                 
                 NSLog("SendTaskDetails - update synchronisation status")
                 SQLStatement = "DELETE FROM [Synchronisation] WHERE [Type] = ?"
@@ -1304,7 +1310,7 @@ class Utility: NSObject {
                 SQLParameterValues.append("Success" as NSObject)
                 _ = ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
                 
-            }
+            } //while (!noMore)
         }
         NSLog("SendTaskDetails - ended")
         return (isRemoteAvailable, taskCounter)
@@ -1399,7 +1405,7 @@ class Utility: NSObject {
             var SQLStatement: String
             var SQLParameterValues: [NSObject]
             
-            SQLStatement = "DELETE FROM [Task] WHERE [OrganisationId] = ? AND [Status] IN ('Complete','Incomplete','Rescheduled')"
+            SQLStatement = "DELETE FROM [Task] WHERE [OrganisationId] = ? AND [Status] IN ('Complete','Incomplete','Rescheduled') OR [Deleted] IS NOT NULL"
             SQLParameterValues = [NSObject]()
             SQLParameterValues.append(Session.OrganisationId! as NSObject)
             _ = ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
@@ -1729,5 +1735,16 @@ extension String
         ("<",  "&lt;")]
 
         return self.simpleReplace(mapList)
+    }
+}
+
+extension URL {
+    func value(for parameter: String) -> String? {
+        
+        let queryItems = URLComponents(string: self.absoluteString)?.queryItems
+        let queryItem = queryItems?.filter({$0.name == parameter}).first
+        let value = queryItem?.value
+        
+        return value
     }
 }

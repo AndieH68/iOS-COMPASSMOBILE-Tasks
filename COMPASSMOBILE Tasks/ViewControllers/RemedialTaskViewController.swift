@@ -236,7 +236,7 @@ class RemedialTaskViewController: UIViewController, UITextFieldDelegate, UITextV
         task.LastUpdatedOn = now
         task.CompletedDate = now
         task.OperativeId = Session.OperativeId!
-        task.Status = "Complete"
+        task.Status = "Dockable"
         
         _ = ModelManager.getInstance().updateTask(task)
         

@@ -294,13 +294,11 @@ open class AEXMLDocument: AEXMLElement {
     /// Root (the first child element) element of XML Document **(AEXMLError element if not exists)**.
     open var root: AEXMLElement { return children.count == 1 ? children.first! : AEXMLElement(AEXMLElement.errorElementName, value: "XML Document must have root element.") }
     
-    fileprivate struct Defaults {
-        static let version = 1.0
-        static let encoding = "utf-8"
-        static let standalone = "no"
-        static let documentName = "AEXMLDocument"
-    }
-    
+    public static let DefaultVersion: Double = 1.0
+    public static let DefaultEncoding: String = "utf-8"
+    public static let DefaultStandalone: String = "no"
+    public static let DefaultDocumentName: String = "AEXMLDocument"
+
     // MARK: Lifecycle
     
     /**
@@ -313,14 +311,14 @@ open class AEXMLDocument: AEXMLElement {
     
     :returns: An initialized XML Document object.
     */
-    public init(version: Double = Defaults.version, encoding: String = Defaults.encoding, standalone: String = Defaults.standalone, root: AEXMLElement? = nil) {
+    public init(version: Double = DefaultVersion, encoding: String = DefaultEncoding, standalone: String = DefaultStandalone, root: AEXMLElement? = nil) {
         // set document properties
         self.version = version
         self.encoding = encoding
         self.standalone = standalone
         
         // init super with default name
-        super.init(Defaults.documentName)
+        super.init()
         
         // document has no parent element
         parent = nil
@@ -342,7 +340,7 @@ open class AEXMLDocument: AEXMLElement {
      
      :returns: An initialized XML Document object containing the parsed data. Returns `nil` if the data could not be parsed.
      */
-    public convenience init(version: Double = Defaults.version, encoding: String = Defaults.encoding, standalone: String = Defaults.standalone, xmlData: Data) throws {
+    public convenience init(version: Double = DefaultVersion, encoding: String = DefaultEncoding, standalone: String = DefaultStandalone, xmlData: Data) throws {
         self.init(version: version, encoding: encoding, standalone: standalone)
         try loadXMLData(xmlData)
     }

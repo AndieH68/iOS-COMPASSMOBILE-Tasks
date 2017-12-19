@@ -1,4 +1,4 @@
- //
+//
 //  AppDelegate.swift
 //  COMPASSMOBILE
 //
@@ -16,7 +16,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        Crittercism.enable(withAppID: "75f852fe22aa4932bf4f09db905f288400555300")
         
         var result: Bool = false
         var message: String = String()
@@ -45,6 +44,67 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
+    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool{
+        
+        if (sourceApplication != nil && sourceApplication! == "com.apple.mobilesafari")
+        {
+            print("Calling Application Bundle ID: \(sourceApplication!)")
+            print("URL scheme:\(url.scheme!)")
+            print("URL query: \(url.query!)")
+            
+            let operativeId: String = url.value(for: "operativeId")!
+            let taskId: String = url.value(for: "taskId")!
+            
+            
+            //validate the operative
+            let operative: Operative? = ModelManager.getInstance().getOperative(operativeId)
+            
+            if (operative == nil)
+            {
+                return false
+            }
+            
+            //validate the task
+            let task: Task? = ModelManager.getInstance().getTask(taskId)
+            
+            if (task == nil)
+            {
+                return false
+            }
+            
+            Session.OperativeId = operative?.RowId
+            Session.OrganisationId = operative?.OrganisationId
+            Session.TaskId = taskId
+            
+            if let window = self.window{
+                let currentViewController = window.rootViewController
+                
+                
+                if (currentViewController is MainViewController)
+                {
+                    currentViewController!.performSegue(withIdentifier: "TaskSegue", sender: self)
+                }
+                else if (currentViewController is TaskViewController)
+                {
+                    _ = currentViewController?.navigationController?.popViewController(animated: true)
+                    //Utility.invokeAlertMethod(currentViewController!, title: "Task open", message: TaskOpenMessage, delegate: nil)
+                }
+                else
+                {
+
+                    return false
+                }
+            }
+
+            return true
+        }
+        else
+        {
+            print("Calling Application Bundle ID: \(sourceApplication!)")
+            return false
+        }
+    }
+    
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.

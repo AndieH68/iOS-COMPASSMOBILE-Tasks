@@ -55,6 +55,7 @@ let RemedialTask: String = "Remedial Task"
 let Accessible: String = "Accessible"
 let NotApplicable: String = "Not applicable"
 let PleaseSelect: String = "Please select"
+let TaskOpenMessage: String = "A different task is already open"
 
 let TemperatureCell: Int = 1
 let TemperatureProfileCellHot: Int = 2

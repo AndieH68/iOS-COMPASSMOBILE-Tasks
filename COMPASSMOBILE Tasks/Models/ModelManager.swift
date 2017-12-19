@@ -3188,7 +3188,7 @@ class ModelManager: NSObject {
         }
         else
         {
-            whereClausePredicate = "WHERE [Status] IN ('Complete') AND "
+            whereClausePredicate = "WHERE [Status] IN ('Complete','Dockable') AND "
         }
         
         if (whereClause != "")

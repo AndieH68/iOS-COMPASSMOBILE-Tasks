@@ -14,20 +14,27 @@ class SettingsViewController: UITableViewController, MBProgressHUDDelegate
     
     var headsUpDisplay: MBProgressHUD?
     var eac: EAController?
+    var showDebug: Int = 0
 
     @IBOutlet var SelectedProbeName: UILabel!
     @IBOutlet var CompletedTasks: UILabel!
     @IBOutlet var TaskTimingsSwitch: UISwitch!
     @IBOutlet var TemperatureProfileSwitch: UISwitch!
     @IBOutlet var VersionNumber: UILabel!
+    @IBOutlet weak var Debug: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        CompletedTasks.text = String(ModelUtility.getInstance().GetCompletedTaskCount())
+        let DebugValue: String = String(ModelUtility.getInstance().GetTaskCountByStatus(Status: "Dockable")) + " : " + String(ModelUtility.getInstance().GetTaskCountByStatus(Status: "Docked")) + " : " + String(ModelUtility.getInstance().GetTaskCountByStatus(Status: "Outstanding")) + " : " + String(ModelUtility.getInstance().GetTaskCountByStatus(Status: "Complete"))
+        Debug.text = DebugValue
+        CompletedTasks.text = String(ModelUtility.getInstance().GetTaskCountByStatus(Status: "Dockable"))
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
         {
             VersionNumber.text = version
         }
+        
+        let debugTap = UITapGestureRecognizer(target: self, action: #selector(SettingsViewController.debugTapFunction))
+        VersionNumber.addGestureRecognizer(debugTap)
         
         TaskTimingsSwitch.isOn = Session.UseTaskTiming
         TemperatureProfileSwitch.isOn = Session.UseTemperatureProfile
@@ -61,6 +68,7 @@ class SettingsViewController: UITableViewController, MBProgressHUDDelegate
     
   
     // MARK: - Navigation
+    
     
     @IBAction func Done(_ sender: UIBarButtonItem) {
         _ = self.navigationController?.popViewController(animated: true)
@@ -171,10 +179,18 @@ class SettingsViewController: UITableViewController, MBProgressHUDDelegate
             }
             
         case 3:
-            let urlString = Session.WebProtocol + Session.Server + "/HelpDocuments/COMPASSMOBILE/COMPASSMOBILE-Tasks-User-Guide-for-iOS.pdf"
-            let url = URL(string: urlString)
-            let application = UIApplication.shared
-            application.openURL(url!)
+            switch indexPath.row
+            {
+            case 0:
+                let urlString = Session.WebProtocol + Session.Server + "/HelpDocuments/COMPASSMOBILE/COMPASSMOBILE-Tasks-User-Guide-for-iOS.pdf"
+                let url = URL(string: urlString)
+                let application = UIApplication.shared
+                application.openURL(url!)
+            case 1:
+                debugTapFunction()
+            default:
+                print("default")
+            }
         
         default:
             print("default")
@@ -256,5 +272,10 @@ class SettingsViewController: UITableViewController, MBProgressHUDDelegate
         Session.UseTemperatureProfile = TemperatureProfileSwitch.isOn
         let defaults = UserDefaults.standard
         defaults.set(Session.UseTemperatureProfile, forKey: "TemperatureProfile")
+    }
+    
+    @objc func debugTapFunction(){
+        showDebug = showDebug + 1
+        if(showDebug>4) {Debug.isHidden = false}
     }
 }

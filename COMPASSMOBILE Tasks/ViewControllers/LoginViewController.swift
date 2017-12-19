@@ -57,18 +57,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-    
+   
     //MARK: - UITextFieldDelegate
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -197,6 +186,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
             while (lastRowId != EmptyGuid || count == 0) {
                 count += 1
+                //get the Operative data from the web service
                 let data: Data? = WebService.getSynchronisationPackageSync(Session.OperativeId!, synchronisationDate: synchronisationDate, lastRowId: lastRowId, stage: stage)
 
                 if data == nil{
@@ -225,7 +215,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                     SynchronisationPackageDocument = nil
                 }
                 
-                //check for empty pacakage
+                //import the data
                 (lastRowId, _, _, _) = Utility.importData(SynchronisationPackageDocument!.children[0], entityType: .operative)
             }
         
@@ -243,10 +233,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         Session.CheckDatabase = true;
  
+        //set the package defaults
         let defaults = UserDefaults.standard
         defaults.set(Session.Server, forKey: "Server")
         defaults.set(username, forKey: "Username")
         
+        //close te login view
         self.dismiss(animated: true, completion: nil)
      }
 

@@ -373,7 +373,7 @@ class TemperatureProfileViewController: UITableViewController, UITextFieldDelega
         profileTimer = Timer.scheduledTimer(timeInterval: timerInterval, target: self, selector: #selector(processTimeInterval), userInfo: nil, repeats: true)
     }
     
-    func processTimeInterval()
+    @objc func processTimeInterval()
     {
         //update the display time
         processInterval += 1
@@ -557,7 +557,7 @@ class TemperatureProfileViewController: UITableViewController, UITextFieldDelega
         Session.TimerRunning = false
     }
     
-    func doSend()
+    @objc func doSend()
     {
         EAController.doSend()
     }

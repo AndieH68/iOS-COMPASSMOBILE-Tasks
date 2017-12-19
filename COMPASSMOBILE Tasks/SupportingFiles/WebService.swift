@@ -37,7 +37,7 @@ class WebService : NSObject {
             theRequest.httpMethod = "POST"
             theRequest.addValue(Session.Server, forHTTPHeaderField: "Host")
             theRequest.addValue("text/xml; charset=utf-8", forHTTPHeaderField: "Content-Type")
-            theRequest.addValue(String(soapMessage.characters.count), forHTTPHeaderField: "Content-Length")
+            theRequest.addValue(String(soapMessage.count), forHTTPHeaderField: "Content-Length")
             theRequest.addValue(soapAction, forHTTPHeaderField: "SOAPAction")
             theRequest.httpBody = soapMessage.data(using: String.Encoding.utf8)
             
@@ -84,7 +84,7 @@ class WebService : NSObject {
             theRequest.httpMethod = "POST"
             theRequest.addValue(Session.Server, forHTTPHeaderField: "Host")
             theRequest.addValue("text/xml; charset=utf-8", forHTTPHeaderField: "Content-Type")
-            theRequest.addValue(String(soapMessage.characters.count), forHTTPHeaderField: "Content-Length")
+            theRequest.addValue(String(soapMessage.count), forHTTPHeaderField: "Content-Length")
             theRequest.addValue(soapAction, forHTTPHeaderField: "SOAPAction")
             theRequest.httpBody = soapMessage.data(using: String.Encoding.utf8)
             
@@ -129,7 +129,7 @@ class WebService : NSObject {
             theRequest.httpMethod = "POST"
             theRequest.addValue(Session.Server, forHTTPHeaderField: "Host")
             theRequest.addValue("text/xml; charset=utf-8", forHTTPHeaderField: "Content-Type")
-            theRequest.addValue(String(soapMessage.characters.count), forHTTPHeaderField: "Content-Length")
+            theRequest.addValue(String(soapMessage.count), forHTTPHeaderField: "Content-Length")
             theRequest.addValue(soapAction, forHTTPHeaderField: "SOAPAction")
             theRequest.httpBody = soapMessage.data(using: String.Encoding.utf8)
             

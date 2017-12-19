@@ -218,7 +218,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
-    func keyboardWasShown(notification: NSNotification){
+    @objc func keyboardWasShown(notification: NSNotification){
         //Need to calculate keyboard exact size due to Apple suggestions
         self.tableView.isScrollEnabled = true
         var info = notification.userInfo!
@@ -237,7 +237,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
         }
     }
     
-    func keyboardWillBeHidden(notification: NSNotification){
+    @objc func keyboardWillBeHidden(notification: NSNotification){
         //Once keyboard disappears, restore original positions
         var info = notification.userInfo!
         let keyboardSize = (info[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.size
@@ -1009,7 +1009,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
             }
 
             let now = Date()
-            
+            var accessbile: Bool = true
             
             //add the removea asset and alternate asset code parameters
             var currentTaskParameter: TaskParameter = TaskParameter()
@@ -1038,7 +1038,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
             currentTaskParameter.ParameterValue = AlternateAssetCode.text!
             _ = ModelManager.getInstance().addTaskParameter(currentTaskParameter)
             
-            //commit the vales
+            //commit the values
             for taskTemplateParameter in formTaskTemplateParameters
             {
                 currentTaskParameter = TaskParameter()
@@ -1060,6 +1060,10 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
                     currentTaskParameter.ParameterValue = GetParameterValue(currentTaskParameter.TaskTemplateParameterId!)!
                 }
                 _ = ModelManager.getInstance().addTaskParameter(currentTaskParameter)
+                if (currentTaskParameter.ParameterName == "Accessible" && currentTaskParameter.ParameterValue == "No")
+                {
+                    accessbile = false;
+                }
             }
             
             //add the additional notes parameter
@@ -1086,7 +1090,14 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
                 task.ActualDuration = Int(TaskTime.text!)
                 task.TravelDuration = Int(TravelTime.text!)
             }
-            task.Status = "Complete"
+            if(accessbile)
+            {
+                task.Status = "Dockable"
+            }
+            else
+            {
+                task.Status = "Outstanding"
+            }
 
             _ = ModelManager.getInstance().updateTask(task)
             
@@ -1142,7 +1153,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
         Session.TimerRunning = false
     }
     
-    func doSend()
+    @objc func doSend()
     {
         EAController.doSend()
     }

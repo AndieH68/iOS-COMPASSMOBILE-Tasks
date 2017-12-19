@@ -15,7 +15,7 @@ class KFPopupSelector: UIControl, UIPopoverPresentationControllerDelegate {
         
         func intrinsicWidthWithFont(_ font: UIFont) -> CGFloat {
             switch(self) {
-            case .text(let t): return NSString(string:t).boundingRect(with: CGSize(width:1000, height:1000), options:[], attributes:[NSFontAttributeName: font], context:nil).width
+            case .text(let t): return NSString(string:t).boundingRect(with: CGSize(width:1000, height:1000), options:[], attributes:[NSAttributedStringKey.font: font], context:nil).width
             }
         }
      }
@@ -253,7 +253,7 @@ class KFPopupSelector: UIControl, UIPopoverPresentationControllerDelegate {
 //        return nil
     }
     
-    func dragged(_ sender: UIPanGestureRecognizer!) {
+    @objc func dragged(_ sender: UIPanGestureRecognizer!) {
         if let tableView = currentlyPresentedPopup?.tableView {
             switch(sender.state) {
             case .changed:
@@ -275,7 +275,7 @@ class KFPopupSelector: UIControl, UIPopoverPresentationControllerDelegate {
         }
     }
     
-    func buttonPressed(_ sender: AnyObject?) {
+    @objc func buttonPressed(_ sender: AnyObject?) {
         if(!Session.TimerRunning)
         {
             willOpenPopup?()

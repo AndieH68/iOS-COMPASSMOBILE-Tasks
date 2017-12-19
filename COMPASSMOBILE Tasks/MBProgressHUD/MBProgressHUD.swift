@@ -52,19 +52,19 @@ let kLabelFontSize: CGFloat = 16.0
 let kDetailsLabelFontSize: CGFloat = 12.0
 
 func MB_TEXTSIZE(_ text: String?, font: UIFont) -> CGSize {
-    guard let textTemp = text, textTemp.characters.count > 0 else {
+    guard let textTemp = text, textTemp.count > 0 else {
         return CGSize.zero
     }
     
-    return textTemp.size(attributes: [NSFontAttributeName: font])
+    return textTemp.size(withAttributes: [NSAttributedStringKey.font: font])
 }
 
 func MB_MULTILINE_TEXTSIZE(_ text: String?, font: UIFont, maxSize: CGSize, mode: NSLineBreakMode) -> CGSize {
-    guard let textTemp = text, textTemp.characters.count > 0 else {
+    guard let textTemp = text, textTemp.count > 0 else {
         return CGSize.zero
     }
     
-    return textTemp.boundingRect(with: maxSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSFontAttributeName: font], context: nil).size
+    return textTemp.boundingRect(with: maxSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font: font], context: nil).size
 }
 
 //MARK: - MBProgressHUD
@@ -309,7 +309,7 @@ class MBProgressHUD: UIView {
         self.showStarted = nil
     }
     
-    func animationFinished(_ animationID: String?, finished: Bool, context: UnsafeMutableRawPointer) {
+    @objc func animationFinished(_ animationID: String?, finished: Bool, context: UnsafeMutableRawPointer) {
         self.done()
     }
     
@@ -366,7 +366,7 @@ class MBProgressHUD: UIView {
         self.show(animated)
     }
     
-    func launchExecution() {
+    @objc func launchExecution() {
         autoreleasepool { () -> () in
             closureForExecution!()
             DispatchQueue.main.async(execute: { () -> Void in
@@ -646,10 +646,10 @@ class MBProgressHUD: UIView {
         let radius = cornerRadius
         context.beginPath()
         context.move(to: CGPoint(x: boxRect.minX + CGFloat(radius), y: boxRect.minY))
-        context.addArc(center: CGPoint(x: boxRect.maxX - CGFloat(radius), y: boxRect.minY + CGFloat(radius)), radius: CGFloat(radius), startAngle: 3 * CGFloat(M_PI) / 2, endAngle: 0, clockwise: false)
-        context.addArc(center: CGPoint(x: boxRect.maxX - CGFloat(radius), y: boxRect.maxY - CGFloat(radius)), radius: CGFloat(radius), startAngle: 0, endAngle: CGFloat(M_PI) / 2, clockwise: false)
-        context.addArc(center: CGPoint(x: boxRect.minX + CGFloat(radius), y: boxRect.maxY - CGFloat(radius)), radius: CGFloat(radius), startAngle: CGFloat(M_PI) / 2, endAngle: CGFloat(M_PI), clockwise: false)
-        context.addArc(center: CGPoint(x: boxRect.minX + CGFloat(radius), y: boxRect.minY + CGFloat(radius)), radius: CGFloat(radius), startAngle: CGFloat(M_PI), endAngle: 3 * CGFloat(M_PI) / 2, clockwise: false)
+        context.addArc(center: CGPoint(x: boxRect.maxX - CGFloat(radius), y: boxRect.minY + CGFloat(radius)), radius: CGFloat(radius), startAngle: 3 * CGFloat(Double.pi) / 2, endAngle: 0, clockwise: false)
+        context.addArc(center: CGPoint(x: boxRect.maxX - CGFloat(radius), y: boxRect.maxY - CGFloat(radius)), radius: CGFloat(radius), startAngle: 0, endAngle: CGFloat(Double.pi) / 2, clockwise: false)
+        context.addArc(center: CGPoint(x: boxRect.minX + CGFloat(radius), y: boxRect.maxY - CGFloat(radius)), radius: CGFloat(radius), startAngle: CGFloat(Double.pi) / 2, endAngle: CGFloat(Double.pi), clockwise: false)
+        context.addArc(center: CGPoint(x: boxRect.minX + CGFloat(radius), y: boxRect.minY + CGFloat(radius)), radius: CGFloat(radius), startAngle: CGFloat(Double.pi), endAngle: 3 * CGFloat(Double.pi) / 2, clockwise: false)
         
         context.closePath()
         context.fillPath()
@@ -772,8 +772,8 @@ class MBRoundProgressView: UIView {
             
             let center: CGPoint = CGPoint(x: self.bounds.size.width / 2, y: self.bounds.size.height / 2)
             let radius: CGFloat = (self.bounds.size.width - lineWidth) / 2
-            let startAngle: CGFloat = -(CGFloat(M_PI) / 2)
-            var endAngle: CGFloat = (2 * CGFloat(M_PI)) + startAngle
+            let startAngle: CGFloat = -(CGFloat(Double.pi) / 2)
+            var endAngle: CGFloat = (2 * CGFloat(Double.pi)) + startAngle
             processBackgroundPath.addArc(withCenter: center, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: true)
             backgroundTintColor.set()
             processBackgroundPath.stroke()
@@ -782,7 +782,7 @@ class MBRoundProgressView: UIView {
             let processPath: UIBezierPath = UIBezierPath()
             processPath.lineCapStyle = CGLineCap.square
             processPath.lineWidth = lineWidth
-            endAngle = CGFloat(progress) * 2 * CGFloat(M_PI) + startAngle
+            endAngle = CGFloat(progress) * 2 * CGFloat(Double.pi) + startAngle
             processPath.addArc(withCenter: center, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: true)
             progressTintColor.set()
             processPath.stroke()
@@ -797,8 +797,8 @@ class MBRoundProgressView: UIView {
             // Draw progress
             let center: CGPoint = CGPoint(x: allRect.size.width / 2, y: allRect.size.height / 2)
             let radius: CGFloat = (allRect.size.width - 4) / 2
-            let startAngle: CGFloat = -(CGFloat(M_PI) / 2)
-            let endAngle: CGFloat = CGFloat(progress) * 2 * CGFloat(M_PI) + startAngle
+            let startAngle: CGFloat = -(CGFloat(Double.pi) / 2)
+            let endAngle: CGFloat = CGFloat(progress) * 2 * CGFloat(Double.pi) + startAngle
             progressTintColor.setFill()
             context.move(to: CGPoint(x: center.x, y: center.y))
             //CGContextAddArc(context, center.x, center.y, radius, startAngle, endAngle, 0)
@@ -811,6 +811,7 @@ class MBRoundProgressView: UIView {
 
 
 // MARK: - MBBarProgressView
+//@objc(MBBarProgressView)
 class MBBarProgressView: UIView {
     var progress: Float {
         didSet {
@@ -914,7 +915,7 @@ class MBBarProgressView: UIView {
             var angle: CGFloat = -acos(x / radius)
             if (angle.isNaN) { angle = 0 }
             //CGContextAddArc(context, rect.size.width - radius - 4, rect.size.height / 2, radius, CGFloat(M_PI), angle, 0)
-            context.addArc(center: CGPoint(x: rect.size.width - radius - 4, y: rect.size.height / 2),radius: radius, startAngle: CGFloat(M_PI), endAngle: angle, clockwise: false)
+            context.addArc(center: CGPoint(x: rect.size.width - radius - 4, y: rect.size.height / 2),radius: radius, startAngle: CGFloat(Double.pi), endAngle: angle, clockwise: false)
             context.addLine(to: CGPoint(x: amount, y: rect.size.height / 2))
             
             context.move(to: CGPoint(x: 4, y: rect.size.height/2))
@@ -923,7 +924,7 @@ class MBBarProgressView: UIView {
             angle = acos(x/radius)
             if (angle.isNaN) { angle = 0 }
             //CGContextAddArc(context, rect.size.width - radius - 4, rect.size.height / 2, radius, CGFloat(-M_PI), angle, 1)
-            context.addArc(center: CGPoint(x: rect.size.width - radius - 4, y: rect.size.height / 2), radius: radius, startAngle: CGFloat(-M_PI), endAngle: angle, clockwise: true)
+            context.addArc(center: CGPoint(x: rect.size.width - radius - 4, y: rect.size.height / 2), radius: radius, startAngle: CGFloat(-Double.pi), endAngle: angle, clockwise: true)
             context.addLine(to: CGPoint(x: amount, y: rect.size.height / 2))
             
             context.fillPath()

@@ -97,6 +97,12 @@
       "idiom" : "ipad",
       "filename" : "apple-touch-icon-167x167.png",
       "scale" : "2x"
+    },
+    {
+      "size" : "1024x1024",
+      "idiom" : "ios-marketing",
+      "filename" : "compass-logo-blue copy.png",
+      "scale" : "1x"
     }
   ],
   "info" : {

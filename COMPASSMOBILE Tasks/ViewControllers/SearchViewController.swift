@@ -23,11 +23,11 @@ class SearchViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
         view.backgroundColor = UIColor.black
         captureSession = AVCaptureSession()
         
-        let videoCaptureDevice = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo)
+        let videoCaptureDevice = AVCaptureDevice.default(for: AVMediaType.video)
         let videoInput: AVCaptureDeviceInput
         
         do {
-            videoInput = try AVCaptureDeviceInput(device: videoCaptureDevice)
+            videoInput = try AVCaptureDeviceInput(device: videoCaptureDevice!)
         } catch {
             return
         }
@@ -45,7 +45,7 @@ class SearchViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
             captureSession.addOutput(metadataOutput)
             
             metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
-            metadataOutput.metadataObjectTypes = [AVMetadataObjectTypeCode39Code, AVMetadataObjectTypeEAN8Code,AVMetadataObjectTypeEAN13Code, AVMetadataObjectTypePDF417Code, AVMetadataObjectTypeCode128Code,AVMetadataObjectTypeUPCECode,AVMetadataObjectTypeCode93Code]
+            metadataOutput.metadataObjectTypes = [AVMetadataObject.ObjectType.code39, AVMetadataObject.ObjectType.ean8,AVMetadataObject.ObjectType.ean13, AVMetadataObject.ObjectType.pdf417, AVMetadataObject.ObjectType.code128,AVMetadataObject.ObjectType.upce,AVMetadataObject.ObjectType.code93]
         } else {
             failed()
             return
@@ -53,7 +53,7 @@ class SearchViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
         
         previewLayer = AVCaptureVideoPreviewLayer(session: captureSession);
         previewLayer.frame = view.layer.bounds;
-        previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+        previewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill;
         view.layer.addSublayer(previewLayer);
 
         captureSession.startRunning();
@@ -86,14 +86,14 @@ class SearchViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
         }
     }
 
-    func captureOutput(_ captureOutput: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [Any]!, from connection: AVCaptureConnection!) {
+    func metadataOutput(captureOutput: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
         captureSession.stopRunning()
         
         if let metadataObject = metadataObjects.first {
             let readableObject = metadataObject as! AVMetadataMachineReadableCodeObject;
             
             AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
-            foundCode(readableObject.stringValue);
+            foundCode(readableObject.stringValue!);
         }
         
         dismiss(animated: true, completion: nil)
