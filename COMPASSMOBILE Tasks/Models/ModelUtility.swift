@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FMDB
 
 let sharedModelUtility = ModelUtility()
 
@@ -211,11 +212,11 @@ class ModelUtility: NSObject {
 
         Query +=  " ORDER BY [Site].[Name]"
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: nil)
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: [])
         if (resultSet != nil) {
             while resultSet.next()
             {
-                Sites.append(resultSet.string(forColumn: "RowId"))
+                Sites.append(resultSet.string(forColumn: "RowId")!)
             }
         }
         return Sites
@@ -229,11 +230,11 @@ class ModelUtility: NSObject {
         Query +=  " ORDER BY [Property].[Name]"
     
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: nil)
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: [])
         if (resultSet != nil) {
             while resultSet.next()
             {
-                Properties.append(resultSet.string(forColumn: "RowId"))
+                Properties.append(resultSet.string(forColumn: "RowId")!)
             }
         }
         return Properties
@@ -255,13 +256,13 @@ class ModelUtility: NSObject {
         }
         Query +=  " ORDER BY [PPMGroup]"
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: nil)
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: [])
         if (resultSet != nil) {
             while resultSet.next()
             {
                 if (resultSet.string(forColumn: "PPMGroup") != nil)
                 {
-                    AssetGroups.append(resultSet.string(forColumn: "PPMGroup"))
+                    AssetGroups.append(resultSet.string(forColumn: "PPMGroup")!)
                 }
             }
         }
@@ -286,13 +287,13 @@ class ModelUtility: NSObject {
         }
         Query +=  " ORDER BY [TaskName]"
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: nil)
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: [])
         if (resultSet != nil) {
             while resultSet.next()
             {
                 if (resultSet.string(forColumn: "TaskName") != nil)
                 {
-                    TaskNames.append(resultSet.string(forColumn: "TaskName"))
+                    TaskNames.append(resultSet.string(forColumn: "TaskName")!)
                 }
             }
         }
@@ -317,13 +318,13 @@ class ModelUtility: NSObject {
         }
         Query += " ORDER BY [AssetType]"
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: nil)
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: [])
         if (resultSet != nil) {
             while resultSet.next()
             {
                 if (resultSet.string(forColumn: "AssetType") != nil)
                 {
-                    AssetTypes.append(resultSet.string(forColumn: "AssetType"))
+                    AssetTypes.append(resultSet.string(forColumn: "AssetType")!)
                 }
             }
         }
@@ -348,13 +349,13 @@ class ModelUtility: NSObject {
         }
         Query += " ORDER BY [LocationGroupName]"
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: nil)
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: [])
         if (resultSet != nil) {
             while resultSet.next()
             {
                 if (resultSet.string(forColumn: "LocationGroupName") != nil)
                 {
-                    LocationGroups.append(resultSet.string(forColumn: "LocationGroupName"))
+                    LocationGroups.append(resultSet.string(forColumn: "LocationGroupName")!)
                 }
             }
         }
@@ -382,13 +383,13 @@ class ModelUtility: NSObject {
         Query += " AND [LocationGroupName] = '" + LocationGroupName + "'"
         Query += " ORDER BY [LocationName]"
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: nil)
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: [])
         if (resultSet != nil) {
             while resultSet.next()
             {
                 if (resultSet.string(forColumn: "LocationName") != nil)
                 {
-                    Locations.append(resultSet.string(forColumn: "LocationName"))
+                    Locations.append(resultSet.string(forColumn: "LocationName")!)
                 }
             }
         }
@@ -425,13 +426,13 @@ class ModelUtility: NSObject {
         }
         Query += " ORDER BY [AssetNumber]"
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: nil)
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: [])
         if (resultSet != nil) {
             while resultSet.next()
             {
                 if (resultSet.string(forColumn: "AssetNumber") != nil)
                 {
-                    AssetNumbers.append(resultSet.string(forColumn: "AssetNumber"))
+                    AssetNumbers.append(resultSet.string(forColumn: "AssetNumber")!)
                 }
             }
         }
@@ -443,7 +444,7 @@ class ModelUtility: NSObject {
         var count: Int32 = 0
         let Query: String = "SELECT COUNT(RowId) FROM [Task] WHERE [Status] = '" + Status + "' AND [OrganisationId] = '" + Session.OrganisationId! + "'"
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: nil)
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: [])
         if (resultSet != nil) {
             while resultSet.next()
             {

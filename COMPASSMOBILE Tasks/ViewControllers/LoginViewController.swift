@@ -7,11 +7,12 @@
 //
 
 import UIKit
+import AEXML
 
 class LoginViewController: UIViewController, UITextFieldDelegate {
 
     // MARK: - Properties
-   
+    let gradientLayer = CAGradientLayer()
     @IBOutlet var VersionNumber: UILabel!
     @IBOutlet weak var ServerTextField: UITextField!
     @IBOutlet weak var UsernameTextField: UITextField!
@@ -22,6 +23,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        Utility.lockOrientation(.portrait, andRotateTo: .portrait)
         
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
         {
@@ -40,7 +43,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         if !Session.DatabasePresent
         {
-            Utility.invokeAlertMethod(self, title: "Fatal Exception", message: Session.DatabaseMessage, delegate: nil)
+            Utility.invokeAlertMethod(self, title: "Fatal Exception", message: Session.DatabaseMessage)
             Session.OperativeId = nil
 
             ValidationLabel.text = "Database not present - contact support"
@@ -50,9 +53,23 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             UsernameTextField.isEnabled = false
             PasswordTextField.isEnabled = false
         }
-        
+        // 1
+        self.view.backgroundColor = UIColor.white
+        gradientLayer.frame = self.view.bounds
+        let color1 = UIColor(red:0.00, green:0.60, blue:0.85, alpha:1.0).cgColor as CGColor
+        let color3 = UIColor.clear.cgColor as CGColor
+        gradientLayer.colors = [color1, color3]
+        gradientLayer.locations = [0.355,0.355]
+        self.view.layer.insertSublayer(gradientLayer, at: 0)
+       
     }
-
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        // Reset when view is being removed
+        Utility.lockOrientation(.all)
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -78,8 +95,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func LoginButton(_ sender: UIButton) {
         
-        var isRemoteAvailable: Bool = true
-        
         ValidationLabel.text = "Invalid username or password"
         ValidationLabel.isHidden = true
         
@@ -102,7 +117,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         let password: String = PasswordTextField.text!
         
         var remoteValidation: Bool = false
-        isRemoteAvailable = Reachability().connectedToNetwork()
+        let isRemoteAvailable: Bool = (Bool)(Reachability().connectedToNetwork())
        
         if isRemoteAvailable {
             let data: Data? = WebService.validateOperative(username, password: password)
@@ -209,7 +224,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 
                 var SynchronisationPackageDocument: AEXMLDocument?
                 do {
-                    SynchronisationPackageDocument = try AEXMLDocument(xmlData: SynchronisationPackageData)
+                    SynchronisationPackageDocument = try AEXMLDocument(xml: SynchronisationPackageData)
                 }
                 catch {
                     SynchronisationPackageDocument = nil
@@ -241,6 +256,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         //close te login view
         self.dismiss(animated: true, completion: nil)
      }
-
+    func draw(_ rect: CGRect) {
+        let bottomRect = CGRect(
+            origin: CGPoint(x: rect.origin.x, y: rect.height / 2),
+            size: CGSize(width: rect.size.width, height: rect.size.height / 2)
+        )
+        UIColor.red.set()
+        guard let context = UIGraphicsGetCurrentContext() else { return }
+        context.fill(bottomRect)
+    }
     
 }

@@ -15,7 +15,7 @@ class KFPopupSelector: UIControl, UIPopoverPresentationControllerDelegate {
         
         func intrinsicWidthWithFont(_ font: UIFont) -> CGFloat {
             switch(self) {
-            case .text(let t): return NSString(string:t).boundingRect(with: CGSize(width:1000, height:1000), options:[], attributes:[NSAttributedStringKey.font: font], context:nil).width
+            case .text(let t): return NSString(string:t).boundingRect(with: CGSize(width:1000, height:1000), options:[], attributes:[NSAttributedString.Key.font: font], context:nil).width
             }
         }
      }
@@ -49,7 +49,7 @@ class KFPopupSelector: UIControl, UIPopoverPresentationControllerDelegate {
     var displaySelectedValueInLabel: Bool = true
     
     /** the horizontal alignment for the button text */
-    var buttonContentHorizontalAlignment: UIControlContentHorizontalAlignment = UIControlContentHorizontalAlignment.left
+    var buttonContentHorizontalAlignment: UIControl.ContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
     
     /** the size of font for th etable to use*/
     fileprivate var tableFont: UIFont = UIFont.systemFont(ofSize: 15.0)
@@ -166,7 +166,7 @@ class KFPopupSelector: UIControl, UIPopoverPresentationControllerDelegate {
         }
         
         override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-            let cell = (tableView.dequeueReusableCell(withIdentifier: KFPopupSelectorCellReuseId) ?? UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: KFPopupSelectorCellReuseId)) 
+            let cell = (tableView.dequeueReusableCell(withIdentifier: KFPopupSelectorCellReuseId) ?? UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: KFPopupSelectorCellReuseId)) 
             switch options[indexPath.row]  {
             case .text(let text): 
                 cell.textLabel?.text = text
@@ -195,10 +195,10 @@ class KFPopupSelector: UIControl, UIPopoverPresentationControllerDelegate {
     
     fileprivate var buttonText: String? {
         get {
-            return button.title(for: UIControlState())
+            return button.title(for: UIControl.State())
         }
         set {
-            button.setTitle(newValue.map { self.labelDecoration.apply($0) }, for: UIControlState())
+            button.setTitle(newValue.map { self.labelDecoration.apply($0) }, for: UIControl.State())
             invalidateIntrinsicContentSize()
         }
     }
@@ -208,7 +208,7 @@ class KFPopupSelector: UIControl, UIPopoverPresentationControllerDelegate {
     }
     
     fileprivate func setupView() {
-        button.setTitle(labelDecoration.apply(unselectedLabelText), for: UIControlState())
+        button.setTitle(labelDecoration.apply(unselectedLabelText), for: UIControl.State())
         button.contentHorizontalAlignment = buttonContentHorizontalAlignment
         self.addSubview(button)
         button.frame = self.bounds
@@ -260,7 +260,7 @@ class KFPopupSelector: UIControl, UIPopoverPresentationControllerDelegate {
                 if tableView.superview != nil {
                     let pos = sender.location(in: tableView)
                     if let ip = tableView.indexPathForRow(at: pos) {
-                        tableView.selectRow(at: ip, animated: false, scrollPosition: UITableViewScrollPosition.none)
+                        tableView.selectRow(at: ip, animated: false, scrollPosition: UITableView.ScrollPosition.none)
                     }
                 }
             case .ended:
@@ -280,7 +280,7 @@ class KFPopupSelector: UIControl, UIPopoverPresentationControllerDelegate {
         {
             willOpenPopup?()
             if options.count > 0 {
-                let pvc = PopupViewController(style: UITableViewStyle.plain)
+                let pvc = PopupViewController(style: UITableView.Style.plain)
                 pvc.tableViewFont = tableFont
                 pvc.minWidth = self.bounds.width
                 pvc.options = options

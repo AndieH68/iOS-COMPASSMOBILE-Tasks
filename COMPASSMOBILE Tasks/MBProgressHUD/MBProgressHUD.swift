@@ -56,7 +56,7 @@ func MB_TEXTSIZE(_ text: String?, font: UIFont) -> CGSize {
         return CGSize.zero
     }
     
-    return textTemp.size(withAttributes: [NSAttributedStringKey.font: font])
+    return textTemp.size(withAttributes: [NSAttributedString.Key.font: font])
 }
 
 func MB_MULTILINE_TEXTSIZE(_ text: String?, font: UIFont, maxSize: CGSize, mode: NSLineBreakMode) -> CGSize {
@@ -64,7 +64,7 @@ func MB_MULTILINE_TEXTSIZE(_ text: String?, font: UIFont, maxSize: CGSize, mode:
         return CGSize.zero
     }
     
-    return textTemp.boundingRect(with: maxSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font: font], context: nil).size
+    return textTemp.boundingRect(with: maxSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: font], context: nil).size
 }
 
 //MARK: - MBProgressHUD
@@ -154,7 +154,10 @@ class MBProgressHUD: UIView {
     
     var progress: Float = 0.0 {
         didSet {
-            indicator?.setValue(progress, forKey: "progress")
+            if (self.indicator is MBBarProgressView)
+            {
+                (self.indicator as! MBBarProgressView).progress = progress
+            }
         }
     }
     
@@ -166,8 +169,8 @@ class MBProgressHUD: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.contentMode = UIViewContentMode.center
-        self.autoresizingMask = [UIViewAutoresizing.flexibleTopMargin, UIViewAutoresizing.flexibleBottomMargin, UIViewAutoresizing.flexibleLeftMargin, UIViewAutoresizing.flexibleRightMargin]
+        self.contentMode = UIView.ContentMode.center
+        self.autoresizingMask = [UIView.AutoresizingMask.flexibleTopMargin, UIView.AutoresizingMask.flexibleBottomMargin, UIView.AutoresizingMask.flexibleLeftMargin, UIView.AutoresizingMask.flexibleRightMargin]
         self.isOpaque = false
         self.backgroundColor = UIColor.clear
         self.alpha = 0.0
@@ -200,7 +203,7 @@ class MBProgressHUD: UIView {
         useAnimation = animated
         if graceTime > 0.0 {
             let newGraceTimer: Timer = Timer(timeInterval: graceTime, target: self, selector: #selector(MBProgressHUD.handleGraceTimer), userInfo: nil, repeats: false)
-            RunLoop.current.add(newGraceTimer, forMode: RunLoopMode.commonModes)
+            RunLoop.current.add(newGraceTimer, forMode: RunLoop.Mode.common)
             graceTimer = newGraceTimer
         }
             // ... otherwise show the HUD imediately
@@ -414,7 +417,7 @@ class MBProgressHUD: UIView {
         
         switch self.mode {
         case .indeterminate:
-            let activityIndicator = isActivityIndicator ? (self.indicator as! UIActivityIndicatorView) : UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+            let activityIndicator = isActivityIndicator ? (self.indicator as! UIActivityIndicatorView) : UIActivityIndicatorView(style: UIActivityIndicatorView.Style.whiteLarge)
             
             if !isActivityIndicator {
                 self.indicator?.removeFromSuperview()
@@ -503,11 +506,11 @@ class MBProgressHUD: UIView {
     
     // MARK: - Notificaiton
     fileprivate func registerForNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(MBProgressHUD.statusBarOrientationDidChange), name: NSNotification.Name.UIApplicationDidChangeStatusBarOrientation, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MBProgressHUD.statusBarOrientationDidChange), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
     }
     
     fileprivate func unregisterFromNotifications() {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidChangeStatusBarOrientation, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
     }
     
     @objc fileprivate func statusBarOrientationDidChange(_ notification: Notification) {
@@ -979,7 +982,7 @@ class MBIndeterminatedRoundProgressView: UIView {
         circleLayer.strokeColor = lineColor.cgColor
         circleLayer.lineWidth = 2.0
         circleLayer.fillColor = UIColor.clear.cgColor
-        circleLayer.lineCap = kCALineCapRound
+        circleLayer.lineCap = CAShapeLayerLineCap.round
         
         self.layer.addSublayer(circleLayer)
         
@@ -991,14 +994,14 @@ class MBIndeterminatedRoundProgressView: UIView {
         animationForStrokeEnd.fromValue = 0.0
         animationForStrokeEnd.toValue = 1.0
         animationForStrokeEnd.duration = 0.4
-        animationForStrokeEnd.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+        animationForStrokeEnd.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
         
         let animationForStrokeStart = CABasicAnimation(keyPath: "strokeStart")
         animationForStrokeStart.fromValue = 0.0
         animationForStrokeStart.toValue = 1.0
         animationForStrokeStart.duration = 0.4
         animationForStrokeStart.beginTime = 0.5
-        animationForStrokeStart.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
+        animationForStrokeStart.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeIn)
         
         let animationGroup = CAAnimationGroup()
         animationGroup.animations = [animationForStrokeEnd, animationForStrokeStart]

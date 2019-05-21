@@ -100,7 +100,7 @@ open class AEXMLElement: NSObject {
     // MARK: XML Read
     
     /// This element name is used when unable to find element.
-    open static let errorElementName = "AEXMLError"
+    public static let errorElementName = "AEXMLError"
     
     // The first element with given name **(AEXMLError element if not exists)**.
     open subscript(key: String) -> AEXMLElement {
@@ -207,7 +207,7 @@ open class AEXMLElement: NSObject {
     }
     
     fileprivate func removeChild(_ child: AEXMLElement) {
-        if let childIndex = children.index(of: child) {
+        if let childIndex = children.firstIndex(of: child) {
             children.remove(at: childIndex)
         }
     }
@@ -283,16 +283,16 @@ open class AEXMLDocument: AEXMLElement {
     // MARK: Properties
     
     /// This is only used for XML Document header (default value is 1.0).
-    open let version: Double
+    public let version: Double
     
     /// This is only used for XML Document header (default value is "utf-8").
-    open let encoding: String
+    public let encoding: String
     
     /// This is only used for XML Document header (default value is "no").
-    open let standalone: String
+    public let standalone: String
     
     /// Root (the first child element) element of XML Document **(AEXMLError element if not exists)**.
-    open var root: AEXMLElement { return children.count == 1 ? children.first! : AEXMLElement(AEXMLElement.errorElementName, value: "XML Document must have root element.") }
+    public var root: AEXMLElement { return children.count == 1 ? children.first! : AEXMLElement(AEXMLElement.errorElementName, value: "XML Document must have root element.") }
     
     public static let DefaultVersion: Double = 1.0
     public static let DefaultEncoding: String = "utf-8"

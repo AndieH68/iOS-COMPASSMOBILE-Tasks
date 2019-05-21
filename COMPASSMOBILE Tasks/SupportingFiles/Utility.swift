@@ -1,4 +1,4 @@
-                                                                       //
+//
 //  Utility.swift
 //  COMPASSMOBILE
 //
@@ -7,8 +7,26 @@
 //
 
 import UIKit
+import AEXML
+import FMDB
+import MBProgressHUD
 
 class Utility: NSObject {
+    
+    static func lockOrientation(_ orientation: UIInterfaceOrientationMask) {
+        
+        if let delegate = UIApplication.shared.delegate as? AppDelegate {
+            delegate.orientationLock = orientation
+        }
+    }
+    
+    /// OPTIONAL Added method to adjust lock and rotate to the desired orientation
+    static func lockOrientation(_ orientation: UIInterfaceOrientationMask, andRotateTo rotateOrientation:UIInterfaceOrientation) {
+        
+        self.lockOrientation(orientation)
+        
+        UIDevice.current.setValue(rotateOrientation.rawValue, forKey: "orientation")
+    }
     
     class func getPath(_ fileName: String) -> String {
         
@@ -44,23 +62,24 @@ class Utility: NSObject {
         return (true, String())
     }
     
-    class func invokeAlertMethod(_ viewController: UIViewController, title: String, message: String, delegate: AnyObject?) {
+    //class func invokeAlertMethod(_ viewController: UIViewController, title: String, message: String, delegate: AnyObject?) {
+    class func invokeAlertMethod(_ viewController: UIViewController, title: String, message: String) {
 
-        let userPrompt: UIAlertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        let userPrompt: UIAlertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
         
         //the default action
-        let addAction = UIAlertAction( title: "Ok", style: UIAlertActionStyle.default) {action in delegate}
+        let addAction = UIAlertAction( title: "Ok", style: UIAlertAction.Style.default)
         userPrompt.addAction(addAction)
         
         DispatchQueue.main.async(execute: {viewController.present(userPrompt, animated: true, completion: nil)})
     }
 
-    class func invokeAlertMethodDirect(_ viewController: UIViewController, title: String, message: String, delegate: AnyObject?) {
+    class func invokeAlertMethodDirect(_ viewController: UIViewController, title: String, message: String) {
 
-        let userPrompt: UIAlertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        let userPrompt: UIAlertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
         
         //the default action
-        let addAction = UIAlertAction( title: "Ok", style: UIAlertActionStyle.default) {action in delegate}
+        let addAction = UIAlertAction( title: "Ok", style: UIAlertAction.Style.default)
         userPrompt.addAction(addAction)
         
         viewController.present(userPrompt, animated: true, completion: nil)
@@ -73,7 +92,7 @@ class Utility: NSObject {
         
         var result: AEXMLDocument?
         do {
-            result = try AEXMLDocument(xmlData: data!)
+            result = try AEXMLDocument(xml: data!)
         }
         catch {
             result = nil
@@ -81,7 +100,7 @@ class Utility: NSObject {
         
         if result == nil
         {
-            return AEXMLElement("soap:Fault", value: "invalid URL")
+            return AEXMLElement(name: "soap:Fault", value: "invalid URL")
         }
         
         var response: AEXMLElement?
@@ -94,7 +113,7 @@ class Utility: NSObject {
             response = SOAPBody.children[0]
         }
         else{
-            response = AEXMLElement("soap:Fault", value: "invalid URL")
+            response = AEXMLElement(name: "soap:Fault", value: "invalid URL")
         }
       
         return response
@@ -121,6 +140,7 @@ class Utility: NSObject {
             countNode = countNode["Relevant"]
             if (countNode.attributes["Count"] != nil)
             {
+                
                 total = Int32(countNode.attributes["Count"]!)!
                 current = 0
             }
@@ -190,9 +210,10 @@ class Utility: NSObject {
                             
                         }
                         
+                        
                         if (progressBar != nil)
                         {
-                            DispatchQueue.main.async(execute: {progressBar!.labelText = "Asset"; progressBar!.progress = (Float(current) / Float(total))})
+                            DispatchQueue.main.async(execute: {progressBar!.label.text = "Asset"; progressBar!.progress = (Float(current) / Float(total))})
                         }
                     }
                 }
@@ -254,7 +275,7 @@ class Utility: NSObject {
                     
                     if (progressBar != nil)
                     {
-                        DispatchQueue.main.async(execute: {progressBar!.labelText = "Location"; progressBar!.progress = (Float(current) / Float(total))})
+                        DispatchQueue.main.async(execute: {progressBar!.label.text = "Location"; progressBar!.progress = (Float(current) / Float(total))})
                     }
                     }
                 }
@@ -316,7 +337,7 @@ class Utility: NSObject {
                     
                     if (progressBar != nil)
                     {
-                        DispatchQueue.main.async(execute: {progressBar!.labelText = "Area"; progressBar!.progress = (Float(current) / Float(total))})
+                        DispatchQueue.main.async(execute: {progressBar!.label.text = "Area"; progressBar!.progress = (Float(current) / Float(total))})
                     }
                     }
                 }
@@ -378,7 +399,7 @@ class Utility: NSObject {
                     
                     if (progressBar != nil)
                     {
-                        DispatchQueue.main.async(execute: {progressBar!.labelText = "Area Link"; progressBar!.progress = (Float(current) / Float(total))})
+                        DispatchQueue.main.async(execute: {progressBar!.label.text = "Area Link"; progressBar!.progress = (Float(current) / Float(total))})
                     }
                     }
                 }
@@ -440,7 +461,7 @@ class Utility: NSObject {
                     
                     if (progressBar != nil)
                     {
-                        DispatchQueue.main.async(execute: {progressBar!.labelText = "Operative"; progressBar!.progress = (Float(current) / Float(total))})
+                        DispatchQueue.main.async(execute: {progressBar!.label.text = "Operative"; progressBar!.progress = (Float(current) / Float(total))})
                     }
                     //}
                 }
@@ -502,7 +523,7 @@ class Utility: NSObject {
                     
                     if (progressBar != nil)
                     {
-                        DispatchQueue.main.async(execute: {progressBar!.labelText = "Organisation"; progressBar!.progress = (Float(current) / Float(total))})
+                        DispatchQueue.main.async(execute: {progressBar!.label.text = "Organisation"; progressBar!.progress = (Float(current) / Float(total))})
                     }
                     }
                 }
@@ -564,7 +585,7 @@ class Utility: NSObject {
                     
                     if (progressBar != nil)
                     {
-                        DispatchQueue.main.async(execute: {progressBar!.labelText = "Site"; progressBar!.progress = (Float(current) / Float(total))})
+                        DispatchQueue.main.async(execute: {progressBar!.label.text = "Site"; progressBar!.progress = (Float(current) / Float(total))})
                     }
                     }
                 }
@@ -626,7 +647,7 @@ class Utility: NSObject {
                     
                     if (progressBar != nil)
                     {
-                        DispatchQueue.main.async(execute: {progressBar!.labelText = "Property"; progressBar!.progress = (Float(current) / Float(total))})
+                        DispatchQueue.main.async(execute: {progressBar!.label.text = "Property"; progressBar!.progress = (Float(current) / Float(total))})
                     }
                     }
                 }
@@ -687,7 +708,7 @@ class Utility: NSObject {
                     
                     if (progressBar != nil)
                     {
-                        DispatchQueue.main.async(execute: {progressBar!.labelText = "Reference"; progressBar!.progress = (Float(current) / Float(total))})
+                        DispatchQueue.main.async(execute: {progressBar!.label.text = "Reference"; progressBar!.progress = (Float(current) / Float(total))})
                     }
                     }
                 }
@@ -749,7 +770,7 @@ class Utility: NSObject {
                     
                     if (progressBar != nil)
                     {
-                        DispatchQueue.main.async(execute: {progressBar!.labelText = "Task"; progressBar!.progress = (Float(current) / Float(total))})
+                        DispatchQueue.main.async(execute: {progressBar!.label.text = "Task"; progressBar!.progress = (Float(current) / Float(total))})
                     }
                     }
                 }
@@ -811,7 +832,7 @@ class Utility: NSObject {
                     
                     if (progressBar != nil)
                     {
-                        DispatchQueue.main.async(execute: {progressBar!.labelText = "Task Parameters"; progressBar!.progress = (Float(current) / Float(total))})
+                        DispatchQueue.main.async(execute: {progressBar!.label.text = "Task Parameters"; progressBar!.progress = (Float(current) / Float(total))})
                     }
                     }
                 }
@@ -873,7 +894,7 @@ class Utility: NSObject {
                     
                     if (progressBar != nil)
                     {
-                        DispatchQueue.main.async(execute: {progressBar!.labelText = "Templates"; progressBar!.progress = (Float(current) / Float(total))})
+                        DispatchQueue.main.async(execute: {progressBar!.label.text = "Templates"; progressBar!.progress = (Float(current) / Float(total))})
                     }
                     }
                 }
@@ -935,7 +956,7 @@ class Utility: NSObject {
                     
                     if (progressBar != nil)
                     {
-                        DispatchQueue.main.async(execute: {progressBar!.labelText = "Template Parameters"; progressBar!.progress = (Float(current) / Float(total))})
+                        DispatchQueue.main.async(execute: {progressBar!.label.text = "Template Parameters"; progressBar!.progress = (Float(current) / Float(total))})
                     }
                     }
                 }
@@ -961,7 +982,7 @@ class Utility: NSObject {
         
         SQLStatement = "SELECT [LastSynchronisationDate] FROM [Synchronisation] WHERE [Type] = '" + synchronisationType + "'"
         
-        if let lastSynchronisationDate = ModelManager.getInstance().executeSingleDateReader(SQLStatement, SQLParameterValues: nil) {
+        if let lastSynchronisationDate = ModelManager.getInstance().executeSingleDateReader(SQLStatement, SQLParameterValues: []) {
             synchronisationDateToUse = lastSynchronisationDate
         }
         
@@ -1096,7 +1117,7 @@ class Utility: NSObject {
                         
                         var SynchronisationPackageDocument: AEXMLDocument?
                         do {
-                            SynchronisationPackageDocument = try AEXMLDocument(xmlData: SynchronisationPackageData)
+                            SynchronisationPackageDocument = try AEXMLDocument(xml: SynchronisationPackageData)
                         }
                         catch {
                             SynchronisationPackageDocument = nil
@@ -1160,7 +1181,7 @@ class Utility: NSObject {
             message += " : " + Session.AlertMessage!
         }
         
-        DispatchQueue.main.async(execute: {invokeAlertMethod(viewController, title: "Send Tasks", message: message, delegate: nil)})
+        DispatchQueue.main.async(execute: {invokeAlertMethod(viewController, title: "Send Tasks", message: message)})
     
     }
     
@@ -1177,7 +1198,7 @@ class Utility: NSObject {
             
             SQLStatement = "SELECT [LastSynchronisationDate] FROM [Synchronisation] WHERE [Type] = '" + synchronisationType + "'"
             
-            if let lastSynchronisationDate = ModelManager.getInstance().executeSingleDateReader(SQLStatement, SQLParameterValues: nil) {
+            if let lastSynchronisationDate = ModelManager.getInstance().executeSingleDateReader(SQLStatement, SQLParameterValues: []) {
                 synchronisationDateToUse = lastSynchronisationDate
             }
             
@@ -1288,7 +1309,7 @@ class Utility: NSObject {
                 } //for taskId in taskList
                 
                 NSLog("SendTaskDetails - update synchronisation status")
-                SQLStatement = "DELETE FROM [Synchronisation] WHERE [Type] = ?"
+                SQLStatement = "DELETE FROM [Synchronisati on] WHERE [Type] = ?"
                 SQLParameterValues = [NSObject]()
                 SQLParameterValues.append(synchronisationType as NSObject)
                 _ = ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
@@ -1320,7 +1341,7 @@ class Utility: NSObject {
     {
         self.DownloadAllDetails(viewController, HUD: HUD)
         
-        DispatchQueue.main.async(execute: {invokeAlertMethod(viewController, title: "Synchronise", message: "Download complete", delegate: nil)})
+        DispatchQueue.main.async(execute: {invokeAlertMethod(viewController, title: "Synchronise", message: "Download complete")})
         
     }
     
@@ -1332,73 +1353,73 @@ class Utility: NSObject {
         success = Utility.SynchroniseAllData(viewController, stage: 1, progressBar: HUD)
         if(!success)
         {
-            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Reference Data", message: Session.AlertMessage!, delegate: nil)
+            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Reference Data", message: Session.AlertMessage!)
         }
             
         success = Utility.SynchroniseAllData(viewController, stage: 10, progressBar: HUD)
         if(!success)
         {
-            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Task Templates", message: Session.AlertMessage!, delegate: nil)
+            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Task Templates", message: Session.AlertMessage!)
         }
         
         success = Utility.SynchroniseAllData(viewController, stage: 11, progressBar: HUD)
         if(!success)
         {
-            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Task Template Parameters", message: Session.AlertMessage!, delegate: nil)
+            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Task Template Parameters", message: Session.AlertMessage!)
         }
         
         success = Utility.SynchroniseAllData(viewController, stage: 9, progressBar: HUD)
         if(!success)
         {
-            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Operatives", message: Session.AlertMessage!, delegate: nil)
+            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Operatives", message: Session.AlertMessage!)
         }
         
         success = Utility.SynchroniseAllData(viewController, stage: 2, progressBar: HUD)
         if(!success)
         {
-            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Organisations", message: Session.AlertMessage!, delegate: nil)
+            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Organisations", message: Session.AlertMessage!)
         }
         
         success = Utility.SynchroniseAllData(viewController, stage: 3, progressBar: HUD)
         if(!success)
         {
-            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Sites", message: Session.AlertMessage!, delegate: nil)
+            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Sites", message: Session.AlertMessage!)
         }
         
         success = Utility.SynchroniseAllData(viewController, stage: 4, progressBar: HUD)
         if(!success)
         {
-            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Properties", message: Session.AlertMessage!, delegate: nil)
+            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Properties", message: Session.AlertMessage!)
         }
         
         success = Utility.SynchroniseAllData(viewController, stage: 6, progressBar: HUD)
         if(!success)
         {
-            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Areas", message: Session.AlertMessage!, delegate: nil)
+            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Areas", message: Session.AlertMessage!)
         }
         
         success = Utility.SynchroniseAllData(viewController, stage: 5, progressBar: HUD)
         if(!success)
         {
-            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Locations", message: Session.AlertMessage!, delegate: nil)
+            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Locations", message: Session.AlertMessage!)
         }
         
         success = Utility.SynchroniseAllData(viewController, stage: 7, progressBar: HUD)
         if(!success)
         {
-            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Area Links", message: Session.AlertMessage!, delegate: nil)
+            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Area Links", message: Session.AlertMessage!)
         }
         
         success = Utility.SynchroniseAllData(viewController, stage: 8, progressBar: HUD)
         if(!success)
         {
-            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Assets", message: Session.AlertMessage!, delegate: nil)
+            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Assets", message: Session.AlertMessage!)
         }
         
         success = Utility.SynchroniseAllData(viewController, stage: 12, progressBar: HUD)
         if(!success)
         {
-            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Tasks", message: Session.AlertMessage!, delegate: nil)
+            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Tasks", message: Session.AlertMessage!)
         }
         else
         {
@@ -1414,7 +1435,7 @@ class Utility: NSObject {
         success = Utility.SynchroniseAllData(viewController, stage: 13, progressBar: HUD)
         if(!success)
         {
-            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Task Parameters", message: Session.AlertMessage!, delegate: nil)
+            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Task Parameters", message: Session.AlertMessage!)
         }
         else
         {
@@ -1431,7 +1452,7 @@ class Utility: NSObject {
     {
         self.ResetSynchronisationDatesDetails(HUD)
         
-        DispatchQueue.main.async(execute: {invokeAlertMethod(viewController, title: "Synchronise", message: "Synchronisation complete", delegate: nil)})
+        DispatchQueue.main.async(execute: {invokeAlertMethod(viewController, title: "Synchronise", message: "Synchronisation complete")})
     }
     
     class func ResetSynchronisationDatesDetails(_ HUD: MBProgressHUD?)
@@ -1450,7 +1471,7 @@ class Utility: NSObject {
     {
         self.ResetTasksDetails(HUD)
         
-        DispatchQueue.main.async(execute: {invokeAlertMethod(viewController, title: "Synchronise", message: "Synchronisation complete", delegate: nil)})
+        DispatchQueue.main.async(execute: {invokeAlertMethod(viewController, title: "Synchronise", message: "Synchronisation complete")})
 
     }
     
@@ -1483,7 +1504,7 @@ class Utility: NSObject {
     {
         self.ResetAllDataDetails(HUD)
         
-        DispatchQueue.main.async(execute: {invokeAlertMethod(viewController, title: "Synchronise", message: "Synchronisation complete", delegate: nil)})
+        DispatchQueue.main.async(execute: {invokeAlertMethod(viewController, title: "Synchronise", message: "Synchronisation complete")})
     }
     
     class func ResetAllDataDetails(_ HUD: MBProgressHUD?)

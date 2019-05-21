@@ -98,7 +98,7 @@ class AddViewController: UIViewController {
         //based off the optons selected we can create the task
         if (AssetId == nil)
         {
-            Utility.invokeAlertMethod(self, title: "Error", message: "Please select all options", delegate: nil)
+            Utility.invokeAlertMethod(self, title: "Error", message: "Please select all options")
             return
         }
         
@@ -155,7 +155,7 @@ class AddViewController: UIViewController {
             SiteDictionary[currentSite.Name] = currentSite.RowId
         }
         
-        SitePopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.left
+        SitePopupSelector.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
         SitePopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
         SitePopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
         SitePopupSelector.options = Sites.map { KFPopupSelector.Option.text(text: $0) }
@@ -186,7 +186,7 @@ class AddViewController: UIViewController {
             PropertyDictionary[currentProperty.Name] = currentProperty.RowId
         }
         
-        PropertyPopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.left
+        PropertyPopupSelector.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
         PropertyPopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
         PropertyPopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
         PropertyPopupSelector.options = Properties.map { KFPopupSelector.Option.text(text: $0) }
@@ -219,7 +219,7 @@ class AddViewController: UIViewController {
             LocationGroupDictionary[currentLocationGroup.Name!] = currentLocationGroup.RowId
         }
         
-        LocationGroupPopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.left
+        LocationGroupPopupSelector.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
         LocationGroupPopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
         LocationGroupPopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
         LocationGroupPopupSelector.options = LocationGroups.map { KFPopupSelector.Option.text(text: $0) }
@@ -252,7 +252,7 @@ class AddViewController: UIViewController {
             LocationDictionary[currentLocation.Name] = currentLocation.RowId
         }
         
-        LocationPopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.left
+        LocationPopupSelector.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
         LocationPopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
         LocationPopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
         LocationPopupSelector.options = Locations.map { KFPopupSelector.Option.text(text: $0) }
@@ -288,7 +288,7 @@ class AddViewController: UIViewController {
             }
         }
         
-        AssetTypePopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.left
+        AssetTypePopupSelector.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
         AssetTypePopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
         AssetTypePopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
         AssetTypePopupSelector.options = AssetTypes.map { KFPopupSelector.Option.text(text: $0) }
@@ -327,7 +327,7 @@ class AddViewController: UIViewController {
             }
          }
         
-        AssetGroupPopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.left
+        AssetGroupPopupSelector.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
         AssetGroupPopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
         AssetGroupPopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
         AssetGroupPopupSelector.options = AssetGroups.map { KFPopupSelector.Option.text(text: $0) }
@@ -361,7 +361,7 @@ class AddViewController: UIViewController {
             TaskNameDictionary[currentTaskName.Display] = currentTaskName.Value
         }
         
-        TaskNamePopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.left
+        TaskNamePopupSelector.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
         TaskNamePopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
         TaskNamePopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
         TaskNamePopupSelector.options = TaskNames.map { KFPopupSelector.Option.text(text: $0) }
@@ -396,7 +396,7 @@ class AddViewController: UIViewController {
             AssetNumberDictionary[AssetNumber] = currentAsset.RowId
         }
         
-        AssetNumberPopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.left
+        AssetNumberPopupSelector.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
         AssetNumberPopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
         AssetNumberPopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
         AssetNumberPopupSelector.options = AssetNumbers.map { KFPopupSelector.Option.text(text: $0) }

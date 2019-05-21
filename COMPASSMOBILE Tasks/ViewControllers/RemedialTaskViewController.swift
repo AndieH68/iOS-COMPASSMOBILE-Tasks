@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import MBProgressHUD
 
 class RemedialTaskViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate, MBProgressHUDDelegate {
     
@@ -112,18 +113,18 @@ class RemedialTaskViewController: UIViewController, UITextFieldDelegate, UITextV
     //MARK: Actions
     
     @IBAction func CancelPressed(_ sender: UIBarButtonItem) {
-        let userPrompt: UIAlertController = UIAlertController(title: "Leave task?", message: "Are you sure you want to leave this task?  Any unsaved data will be lost.", preferredStyle: UIAlertControllerStyle.alert)
+        let userPrompt: UIAlertController = UIAlertController(title: "Leave task?", message: "Are you sure you want to leave this task?  Any unsaved data will be lost.", preferredStyle: UIAlertController.Style.alert)
         
         //the cancel action
         userPrompt.addAction(UIAlertAction(
             title: "Cancel",
-            style: UIAlertActionStyle.cancel,
+            style: UIAlertAction.Style.cancel,
             handler: nil))
         
         //the destructive option
         userPrompt.addAction(UIAlertAction(
             title: "OK",
-            style: UIAlertActionStyle.destructive,
+            style: UIAlertAction.Style.destructive,
             handler: self.LeaveTask))
        
         present(userPrompt, animated: true, completion: nil)
@@ -158,12 +159,12 @@ class RemedialTaskViewController: UIViewController, UITextFieldDelegate, UITextV
         //do all the vlaidation
         if (!Validate())
         {
-            let userPrompt: UIAlertController = UIAlertController(title: "Incomplete task!", message: "Please complete the fields highlighted with red.", preferredStyle: UIAlertControllerStyle.alert)
+            let userPrompt: UIAlertController = UIAlertController(title: "Incomplete task!", message: "Please complete the fields highlighted with red.", preferredStyle: UIAlertController.Style.alert)
             
             //the cancel action
             userPrompt.addAction(UIAlertAction(
                 title: "OK",
-                style: UIAlertActionStyle.default,
+                style: UIAlertAction.Style.default,
                 handler: nil))
             
             present(userPrompt, animated: true, completion: nil)
@@ -262,8 +263,8 @@ class RemedialTaskViewController: UIViewController, UITextFieldDelegate, UITextV
         
         let doneToolbar: UIToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: 320, height: 50))
         doneToolbar.barStyle = UIBarStyle.blackTranslucent
-        let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
-        let done: UIBarButtonItem = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.done, target: view, action: #selector(UIResponder.resignFirstResponder))
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
+        let done: UIBarButtonItem = UIBarButtonItem(title: "Done", style: UIBarButtonItem.Style.done, target: view, action: #selector(UIResponder.resignFirstResponder))
         var items: [UIBarButtonItem] = [UIBarButtonItem]()
         items.append(flexSpace)
         items.append(done)

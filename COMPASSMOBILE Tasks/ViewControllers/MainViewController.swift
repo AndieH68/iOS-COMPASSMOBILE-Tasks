@@ -8,6 +8,7 @@
 
 import UIKit
 import Foundation
+import MBProgressHUD
 
 class MainViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, MBProgressHUDDelegate {
 
@@ -15,7 +16,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         Session.OperativeId = nil
         viewDidAppear(true)
     }
-
+    
     var HUD: MBProgressHUD?
     
     var taskData: [Task] = [] //NSMutableArray!
@@ -36,6 +37,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         pageNumber = 1;
         Session.TaskSort = TaskSortOrder.date
         Session.PageNumber = pageNumber
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -63,7 +65,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     override func viewDidAppear(_ animated: Bool) {
         if !Session.DatabasePresent
         {
-            Utility.invokeAlertMethod(self, title: "Fatal Exception", message: Session.DatabaseMessage, delegate: nil)
+            Utility.invokeAlertMethod(self, title: "Fatal Exception", message: Session.DatabaseMessage)
             Session.OperativeId = nil
         }
         
@@ -75,41 +77,56 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         if Session.CheckDatabase == true
         {
             
-            let userPrompt: UIAlertController = UIAlertController(title: "Synchronising", message: "The application is downloading data from COMPASS.  This process may take some time if this is the first time you have attempted to synchronise", preferredStyle: UIAlertControllerStyle.alert)
+            let userPrompt: UIAlertController = UIAlertController(title: "Synchronising", message: "The application is downloading data from COMPASS.  This process may take some time if this is the first time you have attempted to synchronise", preferredStyle: UIAlertController.Style.alert)
             
             //the default action
             userPrompt.addAction(UIAlertAction(
                 title: "Ok",
-                style: UIAlertActionStyle.default,
+                style: UIAlertAction.Style.default,
                 handler: self.DoSynchronise))
             
             self.present(userPrompt, animated: true, completion: nil)
 
             Session.CheckDatabase = false
+            
         }
     }
     
     func DoSynchronise(_ actionTarget: UIAlertAction?)
     {
-        HUD = MBProgressHUD(view: self.navigationController!.view)
+        //HUD = MBProgressHUD(view: self.navigationController!.view)
+        //self.navigationController!.view.addSubview(HUD!)
         
-        self.navigationController!.view.addSubview(HUD!)
+        ////set the HUD mode
+        //HUD!.mode = .determinateHorizontalBar;
         
-        //set the HUD mode
-        HUD!.mode = .determinateHorizontalBar;
+        //// Register for HUD callbacks so we can remove it from the window at the right time
+        //HUD!.delegate = self
+        //HUD!.label.text = "Synchronising"
         
-        // Register for HUD callbacks so we can remove it from the window at the right time
-        HUD!.delegate = self
-        HUD!.labelText = "Synchronising"
+        //HUD!.showWhileExecuting({
+        //        Utility.CheckSynchronisation(self, HUD: self.HUD!);
+        //        self.getTaskData(MainThread: false)
+        //}, animated: true)
         
-        HUD!.showWhileExecuting({
-                Utility.CheckSynchronisation(self, HUD: self.HUD!);
-                self.getTaskData(MainThread: false)
-            }, animated: true)
+        HUD = MBProgressHUD.showAdded(to: self.navigationController!.view, animated: true)
+        HUD!.mode = .determinateHorizontalBar
+        HUD!.label.text = "Synchronising"
         
-        
-        //reload the table
-        taskTable.reloadData()
+        DispatchQueue.global().async
+        {
+            Utility.CheckSynchronisation(self, HUD: self.HUD!)
+            self.getTaskData(MainThread: false)
+            
+            //reload the table
+            self.taskTable.reloadData()
+
+            DispatchQueue.main.async
+            {
+                self.HUD!.hide(animated: true)
+            }
+        }
+
     }
  
     //MARK: Other methods

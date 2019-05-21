@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FMDB
 
 let sharedModelManager = ModelManager()
 
@@ -32,14 +33,14 @@ class ModelManager: NSObject {
         return isExecuted
     }
     
-    func executeDirect(_ SQLStatement: String, SQLParameterValues: [NSObject]?) -> Bool{
+    func executeDirect(_ SQLStatement: String, SQLParameterValues: [NSObject]) -> Bool{
         sharedModelManager.database!.open()
         let isExecuted: Bool = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
         sharedModelManager.database!.close()
         return isExecuted
     }
     
-    func executeSingleValueReader(_ SQLStatement: String, SQLParameterValues: [NSObject]?) -> NSObject?{
+    func executeSingleValueReader(_ SQLStatement: String, SQLParameterValues: [NSObject]) -> NSObject?{
         var returnValue: NSObject = NSObject()
         sharedModelManager.database!.open()
         let resultSet = sharedModelManager.database!.executeQuery(SQLStatement, withArgumentsIn: SQLParameterValues)
@@ -52,7 +53,7 @@ class ModelManager: NSObject {
         return returnValue
     }
     
-    func executeSingleDateReader(_ SQLStatement: String, SQLParameterValues: [NSObject]?) -> Date?{
+    func executeSingleDateReader(_ SQLStatement: String, SQLParameterValues: [NSObject]) -> Date?{
         sharedModelManager.database!.open()
         let resultSet = sharedModelManager.database!.executeQuery(SQLStatement, withArgumentsIn: SQLParameterValues)
         if (resultSet != nil) {
@@ -244,7 +245,7 @@ class ModelManager: NSObject {
                 resultAsset = Asset()
                 resultAsset.RowId = (resultSet?.string(forColumn: "RowId"))!
                 resultAsset.CreatedBy = (resultSet?.string(forColumn: "CreatedBy"))!
-                resultAsset.CreatedOn = resultSet!.date(forColumn: "CreatedOn")
+                resultAsset.CreatedOn = (resultSet?.date(forColumn: "CreatedOn"))!
                 if !(resultSet?.columnIsNull("LastUpdatedBy"))!
                 {
                     resultAsset.LastUpdatedBy = resultSet?.string(forColumn: "LastUpdatedBy")
@@ -285,14 +286,14 @@ class ModelManager: NSObject {
     
     func getAllAsset() -> [Asset] {
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [AssetType], [PropertyId], [LocationId], [HydropName], [ClientName], [ScanCode], [HotType], [ColdType] FROM [Asset]", withArgumentsIn: nil)
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [AssetType], [PropertyId], [LocationId], [HydropName], [ClientName], [ScanCode], [HotType], [ColdType] FROM [Asset]", withArgumentsIn: [])
         var assetList: [Asset] = [Asset]()
         if (resultSet != nil) {
             while resultSet.next() {
                 let asset : Asset = Asset()
-                asset.RowId = resultSet.string(forColumn: "RowId")
-                asset.CreatedBy = resultSet.string(forColumn: "CreatedBy")
-                asset.CreatedOn = resultSet.date(forColumn: "CreatedOn")
+                asset.RowId = resultSet.string(forColumn: "RowId")!
+                asset.CreatedBy = resultSet.string(forColumn: "CreatedBy")!
+                asset.CreatedOn = resultSet.date(forColumn: "CreatedOn")!
                 if !resultSet.columnIsNull("LastUpdatedBy")
                 {
                     asset.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
@@ -305,9 +306,9 @@ class ModelManager: NSObject {
                 {
                     asset.Deleted = resultSet.date(forColumn: "Deleted")
                 }
-                asset.AssetType = resultSet.string(forColumn: "AssetType")
-                asset.PropertyId = resultSet.string(forColumn: "PropertyId")
-                asset.LocationId = resultSet.string(forColumn: "LocationId")
+                asset.AssetType = resultSet.string(forColumn: "AssetType")!
+                asset.PropertyId = resultSet.string(forColumn: "PropertyId")!
+                asset.LocationId = resultSet.string(forColumn: "LocationId")!
                 if !resultSet.columnIsNull("HydropName") {
                     asset.HydropName = resultSet.string(forColumn: "HydropName")
                 }
@@ -375,9 +376,9 @@ class ModelManager: NSObject {
             if (resultSet != nil) {
                 while resultSet.next() {
                     let asset : Asset = Asset()
-                    asset.RowId = resultSet.string(forColumn: "RowId")
-                    asset.CreatedBy = resultSet.string(forColumn: "CreatedBy")
-                    asset.CreatedOn = resultSet.date(forColumn: "CreatedOn")
+                    asset.RowId = resultSet.string(forColumn: "RowId")!
+                    asset.CreatedBy = resultSet.string(forColumn: "CreatedBy")!
+                    asset.CreatedOn = resultSet.date(forColumn: "CreatedOn")!
                     if !resultSet.columnIsNull("LastUpdatedBy")
                     {
                         asset.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
@@ -390,9 +391,9 @@ class ModelManager: NSObject {
                     {
                         asset.Deleted = resultSet.date(forColumn: "Deleted")
                     }
-                    asset.AssetType = resultSet.string(forColumn: "AssetType")
-                    asset.PropertyId = resultSet.string(forColumn: "PropertyId")
-                    asset.LocationId = resultSet.string(forColumn: "LocationId")
+                    asset.AssetType = resultSet.string(forColumn: "AssetType")!
+                    asset.PropertyId = resultSet.string(forColumn: "PropertyId")!
+                    asset.LocationId = resultSet.string(forColumn: "LocationId")!
                     if !resultSet.columnIsNull("HydropName") {
                         asset.HydropName = resultSet.string(forColumn: "HydropName")
                     }
@@ -581,7 +582,7 @@ class ModelManager: NSObject {
                 resultLocation = Location()
                 resultLocation.RowId = (resultSet?.string(forColumn: "RowId"))!
                 resultLocation.CreatedBy = (resultSet?.string(forColumn: "CreatedBy"))!
-                resultLocation.CreatedOn = resultSet!.date(forColumn: "CreatedOn")
+                resultLocation.CreatedOn = resultSet!.date(forColumn: "CreatedOn")!
                 if !(resultSet?.columnIsNull("LastUpdatedBy"))!
                 {
                     resultLocation.LastUpdatedBy = resultSet?.string(forColumn: "LastUpdatedBy")
@@ -624,14 +625,14 @@ class ModelManager: NSObject {
     
     func getAllLocation() -> [Location] {
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [PropertyId], [Name], [Description], [Level], [Number], [SubNumber], [Use], [ClientLocationName] FROM [Location]", withArgumentsIn: nil)
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [PropertyId], [Name], [Description], [Level], [Number], [SubNumber], [Use], [ClientLocationName] FROM [Location]", withArgumentsIn: [])
         var locationList : [Location] = [Location]()
         if (resultSet != nil) {
             while resultSet.next() {
                 let location : Location = Location()
-                location.RowId = resultSet.string(forColumn: "RowId")
-                location.CreatedBy = resultSet.string(forColumn: "CreatedBy")
-                location.CreatedOn = resultSet.date(forColumn: "CreatedOn")
+                location.RowId = resultSet.string(forColumn: "RowId")!
+                location.CreatedBy = resultSet.string(forColumn: "CreatedBy")!
+                location.CreatedOn = resultSet.date(forColumn: "CreatedOn")!
                 if !resultSet.columnIsNull("LastUpdatedBy")
                 {
                     location.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
@@ -644,8 +645,8 @@ class ModelManager: NSObject {
                 {
                     location.Deleted = resultSet.date(forColumn: "Deleted")
                 }
-                location.PropertyId = resultSet.string(forColumn: "PropertyId")
-                location.Name = resultSet.string(forColumn: "Name")
+                location.PropertyId = resultSet.string(forColumn: "PropertyId")!
+                location.Name = resultSet.string(forColumn: "Name")!
                 if !resultSet.columnIsNull("Description") {
                     location.Description = resultSet.string(forColumn: "Description")
                 }
@@ -719,9 +720,9 @@ class ModelManager: NSObject {
             if (resultSet != nil) {
                 while resultSet.next() {
                     let location : Location = Location()
-                    location.RowId = resultSet.string(forColumn: "RowId")
-                    location.CreatedBy = resultSet.string(forColumn: "CreatedBy")
-                    location.CreatedOn = resultSet.date(forColumn: "CreatedOn")
+                    location.RowId = resultSet.string(forColumn: "RowId")!
+                    location.CreatedBy = resultSet.string(forColumn: "CreatedBy")!
+                    location.CreatedOn = resultSet.date(forColumn: "CreatedOn")!
                     if !resultSet.columnIsNull("LastUpdatedBy") {
                         location.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
                     }
@@ -733,8 +734,8 @@ class ModelManager: NSObject {
                     {
                         location.Deleted = resultSet.date(forColumn: "Deleted")
                     }
-                    location.PropertyId = resultSet.string(forColumn: "PropertyId")
-                    location.Name = resultSet.string(forColumn: "Name")
+                    location.PropertyId = resultSet.string(forColumn: "PropertyId")!
+                    location.Name = resultSet.string(forColumn: "Name")!
                     if !resultSet.columnIsNull("Description") {
                         location.Description = resultSet.string(forColumn: "Description")
                     }
@@ -805,9 +806,9 @@ class ModelManager: NSObject {
             if (resultSet != nil) {
                 while resultSet.next() {
                     let location : Location = Location()
-                    location.RowId = resultSet.string(forColumn: "RowId")
-                    location.CreatedBy = resultSet.string(forColumn: "CreatedBy")
-                    location.CreatedOn = resultSet.date(forColumn: "CreatedOn")
+                    location.RowId = resultSet.string(forColumn: "RowId")!
+                    location.CreatedBy = resultSet.string(forColumn: "CreatedBy")!
+                    location.CreatedOn = resultSet.date(forColumn: "CreatedOn")!
                     if !resultSet.columnIsNull("LastUpdatedBy") {
                         location.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
                     }
@@ -819,8 +820,8 @@ class ModelManager: NSObject {
                     {
                         location.Deleted = resultSet.date(forColumn: "Deleted")
                     }
-                    location.PropertyId = resultSet.string(forColumn: "PropertyId")
-                    location.Name = resultSet.string(forColumn: "Name")
+                    location.PropertyId = resultSet.string(forColumn: "PropertyId")!
+                    location.Name = resultSet.string(forColumn: "Name")!
                     if !resultSet.columnIsNull("Description") {
                         location.Description = resultSet.string(forColumn: "Description")
                     }
@@ -985,7 +986,7 @@ class ModelManager: NSObject {
                 resultLocationGroup = LocationGroup()
                 resultLocationGroup.RowId = (resultSet?.string(forColumn: "RowId"))!
                 resultLocationGroup.CreatedBy = (resultSet?.string(forColumn: "CreatedBy"))!
-                resultLocationGroup.CreatedOn = resultSet!.date(forColumn: "CreatedOn")
+                resultLocationGroup.CreatedOn = resultSet!.date(forColumn: "CreatedOn")!
                 if !(resultSet?.columnIsNull("LastUpdatedBy"))!
                 {
                     resultLocationGroup.LastUpdatedBy = resultSet?.string(forColumn: "LastUpdatedBy")
@@ -1022,14 +1023,14 @@ class ModelManager: NSObject {
     
     func getAllLocationGroup() -> [LocationGroup] {
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [PropertyId], [Type], [Name], [Description], [OccupantRiskFactor] FROM [LocationGroup]", withArgumentsIn: nil)
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [PropertyId], [Type], [Name], [Description], [OccupantRiskFactor] FROM [LocationGroup]", withArgumentsIn: [])
         var locationGroupList : [LocationGroup] = [LocationGroup]()
         if (resultSet != nil) {
             while resultSet.next() {
                 let locationGroup : LocationGroup = LocationGroup()
-                locationGroup.RowId = resultSet.string(forColumn: "RowId")
-                locationGroup.CreatedBy = resultSet.string(forColumn: "CreatedBy")
-                locationGroup.CreatedOn = resultSet.date(forColumn: "CreatedOn")
+                locationGroup.RowId = resultSet.string(forColumn: "RowId")!
+                locationGroup.CreatedBy = resultSet.string(forColumn: "CreatedBy")!
+                locationGroup.CreatedOn = resultSet.date(forColumn: "CreatedOn")!
                 if !resultSet.columnIsNull("LastUpdatedBy")
                 {
                     locationGroup.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
@@ -1042,7 +1043,7 @@ class ModelManager: NSObject {
                 {
                     locationGroup.Deleted = resultSet.date(forColumn: "Deleted")
                 }
-                locationGroup.PropertyId = resultSet.string(forColumn: "PropertyId")
+                locationGroup.PropertyId = resultSet.string(forColumn: "PropertyId")!
                 if !resultSet.columnIsNull("Type") {
                     locationGroup.LocationGroupType = resultSet.string(forColumn: "Type")
                 }
@@ -1110,9 +1111,9 @@ class ModelManager: NSObject {
             if (resultSet != nil) {
                 while resultSet.next() {
                     let locationGroup : LocationGroup = LocationGroup()
-                    locationGroup.RowId = resultSet.string(forColumn: "RowId")
-                    locationGroup.CreatedBy = resultSet.string(forColumn: "CreatedBy")
-                    locationGroup.CreatedOn = resultSet.date(forColumn: "CreatedOn")
+                    locationGroup.RowId = resultSet.string(forColumn: "RowId")!
+                    locationGroup.CreatedBy = resultSet.string(forColumn: "CreatedBy")!
+                    locationGroup.CreatedOn = resultSet.date(forColumn: "CreatedOn")!
                     if !resultSet.columnIsNull("LastUpdatedBy")
                     {
                         locationGroup.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
@@ -1125,7 +1126,7 @@ class ModelManager: NSObject {
                     {
                         locationGroup.Deleted = resultSet.date(forColumn: "Deleted")
                     }
-                    locationGroup.PropertyId = resultSet.string(forColumn: "PropertyId")
+                    locationGroup.PropertyId = resultSet.string(forColumn: "PropertyId")!
                     if !resultSet.columnIsNull("Type") {
                         locationGroup.LocationGroupType = resultSet.string(forColumn: "Type")
                     }
@@ -1253,7 +1254,7 @@ class ModelManager: NSObject {
                 resultLocationGroupMembership = LocationGroupMembership()
                 resultLocationGroupMembership.RowId = (resultSet?.string(forColumn: "RowId"))!
                 resultLocationGroupMembership.CreatedBy = (resultSet?.string(forColumn: "CreatedBy"))!
-                resultLocationGroupMembership.CreatedOn = resultSet!.date(forColumn: "CreatedOn")
+                resultLocationGroupMembership.CreatedOn = resultSet!.date(forColumn: "CreatedOn")!
                 if !(resultSet?.columnIsNull("LastUpdatedBy"))!
                 {
                     resultLocationGroupMembership.LastUpdatedBy = resultSet?.string(forColumn: "LastUpdatedBy")
@@ -1278,14 +1279,14 @@ class ModelManager: NSObject {
     
     func getAllLocationGroupMembership() -> [LocationGroupMembership] {
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [LocationGroupId], [LocationId] FROM [LocationGroupMembership]", withArgumentsIn: nil)
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [LocationGroupId], [LocationId] FROM [LocationGroupMembership]", withArgumentsIn: [])
         var locationGroupMembershipList : [LocationGroupMembership] = [LocationGroupMembership]()
         if (resultSet != nil) {
             while resultSet.next() {
                 let locationGroupMembership : LocationGroupMembership = LocationGroupMembership()
-                locationGroupMembership.RowId = resultSet.string(forColumn: "RowId")
-                locationGroupMembership.CreatedBy = resultSet.string(forColumn: "CreatedBy")
-                locationGroupMembership.CreatedOn = resultSet.date(forColumn: "CreatedOn")
+                locationGroupMembership.RowId = resultSet.string(forColumn: "RowId")!
+                locationGroupMembership.CreatedBy = resultSet.string(forColumn: "CreatedBy")!
+                locationGroupMembership.CreatedOn = resultSet.date(forColumn: "CreatedOn")!
                 if !resultSet.columnIsNull("LastUpdatedBy")
                 {
                     locationGroupMembership.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
@@ -1298,8 +1299,8 @@ class ModelManager: NSObject {
                 {
                     locationGroupMembership.Deleted = resultSet.date(forColumn: "Deleted")
                 }
-                locationGroupMembership.LocationGroupId = resultSet.string(forColumn: "LocationGroupId")
-                locationGroupMembership.LocationId = resultSet.string(forColumn: "LocationId")
+                locationGroupMembership.LocationGroupId = resultSet.string(forColumn: "LocationGroupId")!
+                locationGroupMembership.LocationId = resultSet.string(forColumn: "LocationId")!
                 
                 locationGroupMembershipList.append(locationGroupMembership)
             }
@@ -1351,9 +1352,9 @@ class ModelManager: NSObject {
             if (resultSet != nil) {
                 while resultSet.next() {
                     let locationGroupMembership : LocationGroupMembership = LocationGroupMembership()
-                    locationGroupMembership.RowId = resultSet.string(forColumn: "RowId")
-                    locationGroupMembership.CreatedBy = resultSet.string(forColumn: "CreatedBy")
-                    locationGroupMembership.CreatedOn = resultSet.date(forColumn: "CreatedOn")
+                    locationGroupMembership.RowId = resultSet.string(forColumn: "RowId")!
+                    locationGroupMembership.CreatedBy = resultSet.string(forColumn: "CreatedBy")!
+                    locationGroupMembership.CreatedOn = resultSet.date(forColumn: "CreatedOn")!
                     if !resultSet.columnIsNull("LastUpdatedBy")
                     {
                         locationGroupMembership.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
@@ -1366,8 +1367,8 @@ class ModelManager: NSObject {
                     {
                         locationGroupMembership.Deleted = resultSet.date(forColumn: "Deleted")
                     }
-                    locationGroupMembership.LocationGroupId = resultSet.string(forColumn: "LocationGroupId")
-                    locationGroupMembership.LocationId = resultSet.string(forColumn: "LocationId")
+                    locationGroupMembership.LocationGroupId = resultSet.string(forColumn: "LocationGroupId")!
+                    locationGroupMembership.LocationId = resultSet.string(forColumn: "LocationId")!
                     
                     locationGroupMembershipList.append(locationGroupMembership)
                 }
@@ -1482,7 +1483,7 @@ class ModelManager: NSObject {
                 resultOperative = Operative()
                 resultOperative.RowId = (resultSet?.string(forColumn: "RowId"))!
                 resultOperative.CreatedBy = (resultSet?.string(forColumn: "CreatedBy"))!
-                resultOperative.CreatedOn = resultSet!.date(forColumn: "CreatedOn")
+                resultOperative.CreatedOn = resultSet!.date(forColumn: "CreatedOn")!
                 if !(resultSet?.columnIsNull("LastUpdatedBy"))!
                 {
                     resultOperative.LastUpdatedBy = resultSet?.string(forColumn: "LastUpdatedBy")
@@ -1508,14 +1509,14 @@ class ModelManager: NSObject {
     
     func getAllOperative() -> [Operative] {
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [Username], [Password] FROM [Operative]", withArgumentsIn: nil)
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [Username], [Password] FROM [Operative]", withArgumentsIn: [])
         var operativeList: [Operative] = [Operative]()
         if (resultSet != nil) {
             while resultSet.next() {
                 let operative : Operative = Operative()
-                operative.RowId = resultSet.string(forColumn: "RowId")
-                operative.CreatedBy = resultSet.string(forColumn: "CreatedBy")
-                operative.CreatedOn = resultSet.date(forColumn: "CreatedOn")
+                operative.RowId = resultSet.string(forColumn: "RowId")!
+                operative.CreatedBy = resultSet.string(forColumn: "CreatedBy")!
+                operative.CreatedOn = resultSet.date(forColumn: "CreatedOn")!
                 if !resultSet.columnIsNull("LastUpdatedBy")
                 {
                     operative.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
@@ -1528,9 +1529,9 @@ class ModelManager: NSObject {
                 {
                     operative.Deleted = resultSet.date(forColumn: "Deleted")
                 }
-                operative.OrganisationId = resultSet.string(forColumn: "OrganisationId")
-                operative.Username = resultSet.string(forColumn: "Username")
-                operative.Password = resultSet.string(forColumn: "Password")
+                operative.OrganisationId = resultSet.string(forColumn: "OrganisationId")!
+                operative.Username = resultSet.string(forColumn: "Username")!
+                operative.Password = resultSet.string(forColumn: "Password")!
                 
                 operativeList.append(operative)
             }
@@ -1585,9 +1586,9 @@ class ModelManager: NSObject {
             if (resultSet != nil) {
                 while resultSet.next() {
                     let operative : Operative = Operative()
-                    operative.RowId = resultSet.string(forColumn: "RowId")
-                    operative.CreatedBy = resultSet.string(forColumn: "CreatedBy")
-                    operative.CreatedOn = resultSet.date(forColumn: "CreatedOn")
+                    operative.RowId = resultSet.string(forColumn: "RowId")!
+                    operative.CreatedBy = resultSet.string(forColumn: "CreatedBy")!
+                    operative.CreatedOn = resultSet.date(forColumn: "CreatedOn")!
                     if !resultSet.columnIsNull("LastUpdatedBy")
                     {
                         operative.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
@@ -1600,9 +1601,9 @@ class ModelManager: NSObject {
                     {
                         operative.Deleted = resultSet.date(forColumn: "Deleted")
                     }
-                    operative.OrganisationId = resultSet.string(forColumn: "OrganisationId")
-                    operative.Username = resultSet.string(forColumn: "Username")
-                    operative.Password = resultSet.string(forColumn: "Password")
+                    operative.OrganisationId = resultSet.string(forColumn: "OrganisationId")!
+                    operative.Username = resultSet.string(forColumn: "Username")!
+                    operative.Password = resultSet.string(forColumn: "Password")!
                     
                     operativeList.append(operative)
                 }
@@ -1720,7 +1721,7 @@ class ModelManager: NSObject {
                 resultOrganisation = Organisation()
                 resultOrganisation.RowId = (resultSet?.string(forColumn: "RowId"))!
                 resultOrganisation.CreatedBy = (resultSet?.string(forColumn: "CreatedBy"))!
-                resultOrganisation.CreatedOn = resultSet!.date(forColumn: "CreatedOn")
+                resultOrganisation.CreatedOn = resultSet!.date(forColumn: "CreatedOn")!
                 if !(resultSet?.columnIsNull("LastUpdatedBy"))!
                 {
                     resultOrganisation.LastUpdatedBy = resultSet?.string(forColumn: "LastUpdatedBy")
@@ -1745,14 +1746,14 @@ class ModelManager: NSObject {
     
     func getAllOrganisation() -> [Organisation] {
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [ParentOrganisationId], [Name] FROM [Organisation]", withArgumentsIn: nil)
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [ParentOrganisationId], [Name] FROM [Organisation]", withArgumentsIn: [])
         var organisationList: [Organisation] = [Organisation]()
         if (resultSet != nil) {
             while resultSet.next() {
                 let organisation : Organisation = Organisation()
-                organisation.RowId = resultSet.string(forColumn: "RowId")
-                organisation.CreatedBy = resultSet.string(forColumn: "CreatedBy")
-                organisation.CreatedOn = resultSet.date(forColumn: "CreatedOn")
+                organisation.RowId = resultSet.string(forColumn: "RowId")!
+                organisation.CreatedBy = resultSet.string(forColumn: "CreatedBy")!
+                organisation.CreatedOn = resultSet.date(forColumn: "CreatedOn")!
                 if !resultSet.columnIsNull("LastUpdatedBy")
                 {
                     organisation.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
@@ -1765,8 +1766,8 @@ class ModelManager: NSObject {
                 {
                     organisation.Deleted = resultSet.date(forColumn: "Deleted")
                 }
-                organisation.ParentOrganisationId = resultSet.string(forColumn: "ParentOrganisationId")
-                organisation.Name = resultSet.string(forColumn: "Name")
+                organisation.ParentOrganisationId = resultSet.string(forColumn: "ParentOrganisationId")!
+                organisation.Name = resultSet.string(forColumn: "Name")!
                 
                 organisationList.append(organisation)
             }
@@ -1821,9 +1822,9 @@ class ModelManager: NSObject {
             if (resultSet != nil) {
                 while resultSet.next() {
                     let organisation : Organisation = Organisation()
-                    organisation.RowId = resultSet.string(forColumn: "RowId")
-                    organisation.CreatedBy = resultSet.string(forColumn: "CreatedBy")
-                    organisation.CreatedOn = resultSet.date(forColumn: "CreatedOn")
+                    organisation.RowId = resultSet.string(forColumn: "RowId")!
+                    organisation.CreatedBy = resultSet.string(forColumn: "CreatedBy")!
+                    organisation.CreatedOn = resultSet.date(forColumn: "CreatedOn")!
                     if !resultSet.columnIsNull("LastUpdatedBy")
                     {
                         organisation.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
@@ -1836,8 +1837,8 @@ class ModelManager: NSObject {
                     {
                         organisation.Deleted = resultSet.date(forColumn: "Deleted")
                     }
-                    organisation.ParentOrganisationId = resultSet.string(forColumn: "ParentOrganisationId")
-                    organisation.Name = resultSet.string(forColumn: "Name")
+                    organisation.ParentOrganisationId = resultSet.string(forColumn: "ParentOrganisationId")!
+                    organisation.Name = resultSet.string(forColumn: "Name")!
                     
                     organisationList.append(organisation)
                 }
@@ -1957,7 +1958,7 @@ class ModelManager: NSObject {
                 resultProperty = Property()
                 resultProperty.RowId = (resultSet?.string(forColumn: "RowId"))!
                 resultProperty.CreatedBy = (resultSet?.string(forColumn: "CreatedBy"))!
-                resultProperty.CreatedOn = resultSet!.date(forColumn: "CreatedOn")
+                resultProperty.CreatedOn = resultSet!.date(forColumn: "CreatedOn")!
                 if !(resultSet?.columnIsNull("LastUpdatedBy"))!
                 {
                     resultProperty.LastUpdatedBy = resultSet?.string(forColumn: "LastUpdatedBy")
@@ -1983,14 +1984,14 @@ class ModelManager: NSObject {
     
     func getAllProperty() -> [Property] {
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [SiteId], [Name], [Healthcare] FROM [Property]", withArgumentsIn: nil)
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [SiteId], [Name], [Healthcare] FROM [Property]", withArgumentsIn: [])
         var propertyList: [Property] = [Property]()
         if (resultSet != nil) {
             while resultSet.next() {
                 let property : Property = Property()
-                property.RowId = resultSet.string(forColumn: "RowId")
-                property.CreatedBy = resultSet.string(forColumn: "CreatedBy")
-                property.CreatedOn = resultSet.date(forColumn: "CreatedOn")
+                property.RowId = resultSet.string(forColumn: "RowId")!
+                property.CreatedBy = resultSet.string(forColumn: "CreatedBy")!
+                property.CreatedOn = resultSet.date(forColumn: "CreatedOn")!
                 if !resultSet.columnIsNull("LastUpdatedBy")
                 {
                     property.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
@@ -2003,8 +2004,8 @@ class ModelManager: NSObject {
                 {
                     property.Deleted = resultSet.date(forColumn: "Deleted")
                 }
-                property.SiteId = resultSet.string(forColumn: "SiteId")
-                property.Name = resultSet.string(forColumn: "Name")
+                property.SiteId = resultSet.string(forColumn: "SiteId")!
+                property.Name = resultSet.string(forColumn: "Name")!
                 property.Healthcare = resultSet.bool(forColumn: "Healthcare")
                 
                 propertyList.append(property)
@@ -2060,9 +2061,9 @@ class ModelManager: NSObject {
             if (resultSet != nil) {
                 while resultSet.next() {
                     let property : Property = Property()
-                    property.RowId = resultSet.string(forColumn: "RowId")
-                    property.CreatedBy = resultSet.string(forColumn: "CreatedBy")
-                    property.CreatedOn = resultSet.date(forColumn: "CreatedOn")
+                    property.RowId = resultSet.string(forColumn: "RowId")!
+                    property.CreatedBy = resultSet.string(forColumn: "CreatedBy")!
+                    property.CreatedOn = resultSet.date(forColumn: "CreatedOn")!
                     if !resultSet.columnIsNull("LastUpdatedBy")
                     {
                         property.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
@@ -2075,8 +2076,8 @@ class ModelManager: NSObject {
                     {
                         property.Deleted = resultSet.date(forColumn: "Deleted")
                     }
-                    property.SiteId = resultSet.string(forColumn: "SiteId")
-                    property.Name = resultSet.string(forColumn: "Name")
+                    property.SiteId = resultSet.string(forColumn: "SiteId")!
+                    property.Name = resultSet.string(forColumn: "Name")!
                     property.Healthcare = resultSet.bool(forColumn: "Healthcare")
                     
                     propertyList.append(property)
@@ -2240,7 +2241,7 @@ class ModelManager: NSObject {
                 resultReferenceData = ReferenceData()
                 resultReferenceData.RowId = (resultSet?.string(forColumn: "RowId"))!
                 resultReferenceData.CreatedBy = (resultSet?.string(forColumn: "CreatedBy"))!
-                resultReferenceData.CreatedOn = resultSet!.date(forColumn: "CreatedOn")
+                resultReferenceData.CreatedOn = resultSet!.date(forColumn: "CreatedOn")!
                 if !(resultSet?.columnIsNull("LastUpdatedBy"))!
                 {
                     resultReferenceData.LastUpdatedBy = resultSet?.string(forColumn: "LastUpdatedBy")
@@ -2253,7 +2254,7 @@ class ModelManager: NSObject {
                 {
                     resultReferenceData.Deleted = resultSet?.date(forColumn: "Deleted")
                 }
-                resultReferenceData.StartDate = resultSet!.date(forColumn: "StartDate")
+                resultReferenceData.StartDate = resultSet!.date(forColumn: "StartDate")!
                 if !(resultSet?.columnIsNull("EndDate"))! {
                     resultReferenceData.EndDate = resultSet?.date(forColumn: "EndDate")
                 }
@@ -2279,14 +2280,14 @@ class ModelManager: NSObject {
     
     func getAllReferenceData() -> [ReferenceData] {
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [StartDate], [EndDate], [Type], [Value], [Ordinal], [Display], [System], [ParentType], [ParentValue] FROM [ReferenceData]", withArgumentsIn: nil)
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [StartDate], [EndDate], [Type], [Value], [Ordinal], [Display], [System], [ParentType], [ParentValue] FROM [ReferenceData]", withArgumentsIn: [])
         var referenceDataList: [ReferenceData] = [ReferenceData]()
         if (resultSet != nil) {
             while resultSet.next() {
                 let referenceData : ReferenceData = ReferenceData()
-                referenceData.RowId = resultSet.string(forColumn: "RowId")
-                referenceData.CreatedBy = resultSet.string(forColumn: "CreatedBy")
-                referenceData.CreatedOn = resultSet.date(forColumn: "CreatedOn")
+                referenceData.RowId = resultSet.string(forColumn: "RowId")!
+                referenceData.CreatedBy = resultSet.string(forColumn: "CreatedBy")!
+                referenceData.CreatedOn = resultSet.date(forColumn: "CreatedOn")!
                 if !resultSet.columnIsNull("LastUpdatedBy")
                 {
                     referenceData.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
@@ -2299,14 +2300,14 @@ class ModelManager: NSObject {
                 {
                     referenceData.Deleted = resultSet.date(forColumn: "Deleted")
                 }
-                referenceData.StartDate = resultSet.date(forColumn: "StartDate")
+                referenceData.StartDate = resultSet.date(forColumn: "StartDate")!
                 if !resultSet.columnIsNull("EndDate") {
                     referenceData.EndDate = resultSet.date(forColumn: "EndDate")
                 }
-                referenceData.ReferenceType = resultSet.string(forColumn: "Type")
-                referenceData.Value = resultSet.string(forColumn: "Value")
+                referenceData.ReferenceType = resultSet.string(forColumn: "Type")!
+                referenceData.Value = resultSet.string(forColumn: "Value")!
                 referenceData.Ordinal = Int(resultSet.int(forColumn: "Ordinal"))
-                referenceData.Display = resultSet.string(forColumn: "Display")
+                referenceData.Display = resultSet.string(forColumn: "Display")!
                 referenceData.System = resultSet.bool(forColumn: "System")
                 if !resultSet.columnIsNull("ParentType") {
                     referenceData.ParentType = resultSet.string(forColumn: "ParentType")
@@ -2385,9 +2386,9 @@ class ModelManager: NSObject {
             if (resultSet != nil) {
                 while resultSet.next() {
                     let referenceData : ReferenceData = ReferenceData()
-                    referenceData.RowId = resultSet.string(forColumn: "RowId")
-                    referenceData.CreatedBy = resultSet.string(forColumn: "CreatedBy")
-                    referenceData.CreatedOn = resultSet.date(forColumn: "CreatedOn")
+                    referenceData.RowId = resultSet.string(forColumn: "RowId")!
+                    referenceData.CreatedBy = resultSet.string(forColumn: "CreatedBy")!
+                    referenceData.CreatedOn = resultSet.date(forColumn: "CreatedOn")!
                     if !resultSet.columnIsNull("LastUpdatedBy")
                     {
                         referenceData.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
@@ -2400,14 +2401,14 @@ class ModelManager: NSObject {
                     {
                         referenceData.Deleted = resultSet.date(forColumn: "Deleted")
                     }
-                    referenceData.StartDate = resultSet.date(forColumn: "StartDate")
+                    referenceData.StartDate = resultSet.date(forColumn: "StartDate")!
                     if !resultSet.columnIsNull("EndDate") {
                         referenceData.EndDate = resultSet.date(forColumn: "EndDate")
                     }
-                    referenceData.ReferenceType = resultSet.string(forColumn: "Type")
-                    referenceData.Value = resultSet.string(forColumn: "Value")
+                    referenceData.ReferenceType = resultSet.string(forColumn: "Type")!
+                    referenceData.Value = resultSet.string(forColumn: "Value")!
                     referenceData.Ordinal = Int(resultSet.int(forColumn: "Ordinal"))
-                    referenceData.Display = resultSet.string(forColumn: "Display")
+                    referenceData.Display = resultSet.string(forColumn: "Display")!
                     referenceData.System = resultSet.bool(forColumn: "System")
                     if !resultSet.columnIsNull("ParentType") {
                         referenceData.ParentType = resultSet.string(forColumn: "ParentType")
@@ -2529,7 +2530,7 @@ class ModelManager: NSObject {
                 resultSite = Site()
                 resultSite.RowId = (resultSet?.string(forColumn: "RowId"))!
                 resultSite.CreatedBy = (resultSet?.string(forColumn: "CreatedBy"))!
-                resultSite.CreatedOn = resultSet!.date(forColumn: "CreatedOn")
+                resultSite.CreatedOn = resultSet!.date(forColumn: "CreatedOn")!
                 if !(resultSet?.columnIsNull("LastUpdatedBy"))!
                 {
                     resultSite.LastUpdatedBy = resultSet?.string(forColumn: "LastUpdatedBy")
@@ -2554,14 +2555,14 @@ class ModelManager: NSObject {
     
     func getAllSite() -> [Site] {
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [Name] FROM [Site]", withArgumentsIn: nil)
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [Name] FROM [Site]", withArgumentsIn: [])
         var siteList: [Site] = [Site]()
         if (resultSet != nil) {
             while resultSet.next() {
                 let site : Site = Site()
-                site.RowId = resultSet.string(forColumn: "RowId")
-                site.CreatedBy = resultSet.string(forColumn: "CreatedBy")
-                site.CreatedOn = resultSet.date(forColumn: "CreatedOn")
+                site.RowId = resultSet.string(forColumn: "RowId")!
+                site.CreatedBy = resultSet.string(forColumn: "CreatedBy")!
+                site.CreatedOn = resultSet.date(forColumn: "CreatedOn")!
                 if !resultSet.columnIsNull("LastUpdatedBy")
                 {
                     site.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
@@ -2574,8 +2575,8 @@ class ModelManager: NSObject {
                 {
                     site.Deleted = resultSet.date(forColumn: "Deleted")
                 }
-                site.OrganisationId = resultSet.string(forColumn: "OrganisationId")
-                site.Name = resultSet.string(forColumn: "Name")
+                site.OrganisationId = resultSet.string(forColumn: "OrganisationId")!
+                site.Name = resultSet.string(forColumn: "Name")!
                 
                 siteList.append(site)
             }
@@ -2630,9 +2631,9 @@ class ModelManager: NSObject {
             if (resultSet != nil) {
                 while resultSet.next() {
                     let site : Site = Site()
-                    site.RowId = resultSet.string(forColumn: "RowId")
-                    site.CreatedBy = resultSet.string(forColumn: "CreatedBy")
-                    site.CreatedOn = resultSet.date(forColumn: "CreatedOn")
+                    site.RowId = resultSet.string(forColumn: "RowId")!
+                    site.CreatedBy = resultSet.string(forColumn: "CreatedBy")!
+                    site.CreatedOn = resultSet.date(forColumn: "CreatedOn")!
                     if !resultSet.columnIsNull("LastUpdatedBy")
                     {
                         site.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
@@ -2645,8 +2646,8 @@ class ModelManager: NSObject {
                     {
                         site.Deleted = resultSet.date(forColumn: "Deleted")
                     }
-                    site.OrganisationId = resultSet.string(forColumn: "OrganisationId")
-                    site.Name = resultSet.string(forColumn: "Name")
+                    site.OrganisationId = resultSet.string(forColumn: "OrganisationId")!
+                    site.Name = resultSet.string(forColumn: "Name")!
                     
                     siteList.append(site)
                 }
@@ -2931,7 +2932,7 @@ class ModelManager: NSObject {
                 resultTask = Task()
                 resultTask.RowId = (resultSet?.string(forColumn: "RowId"))!
                 resultTask.CreatedBy = (resultSet?.string(forColumn: "CreatedBy"))!
-                resultTask.CreatedOn = resultSet!.date(forColumn: "CreatedOn")
+                resultTask.CreatedOn = resultSet!.date(forColumn: "CreatedOn")!
                 if !(resultSet?.columnIsNull("LastUpdatedBy"))!
                 {
                     resultTask.LastUpdatedBy = resultSet?.string(forColumn: "LastUpdatedBy")
@@ -2971,7 +2972,7 @@ class ModelManager: NSObject {
                 if !(resultSet?.columnIsNull("AssetNumber"))! {
                     resultTask.AssetNumber = resultSet?.string(forColumn: "AssetNumber")
                 }
-                resultTask.ScheduledDate = resultSet!.date(forColumn: "ScheduledDate")
+                resultTask.ScheduledDate = resultSet!.date(forColumn: "ScheduledDate")!
                 if !(resultSet?.columnIsNull("CompletedDate"))! {
                     resultTask.CompletedDate = resultSet?.date(forColumn: "CompletedDate")
                 }
@@ -3005,14 +3006,14 @@ class ModelManager: NSObject {
     
     func getAllTask() -> [Task] {
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [SiteId], [PropertyId], [LocationId], [LocationGroupName], [LocationName], [Room], [TaskTemplateId], [TaskRef], [PPMGroup], [AssetType], [TaskName], [Frequency], [AssetId], [AssetNumber], [ScheduledDate], [CompletedDate], [Status], [Priority], [EstimatedDuration], [OperativeId], [ActualDuration], [TravelDuration], [Comments], [AlternateAssetCode] FROM [Task]", withArgumentsIn: nil)
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [SiteId], [PropertyId], [LocationId], [LocationGroupName], [LocationName], [Room], [TaskTemplateId], [TaskRef], [PPMGroup], [AssetType], [TaskName], [Frequency], [AssetId], [AssetNumber], [ScheduledDate], [CompletedDate], [Status], [Priority], [EstimatedDuration], [OperativeId], [ActualDuration], [TravelDuration], [Comments], [AlternateAssetCode] FROM [Task]", withArgumentsIn: [])
         var taskList: [Task] = [Task]()
         if (resultSet != nil) {
             while resultSet.next() {
                 let task : Task = Task()
-                task.RowId = resultSet.string(forColumn: "RowId")
-                task.CreatedBy = resultSet.string(forColumn: "CreatedBy")
-                task.CreatedOn = resultSet.date(forColumn: "CreatedOn")
+                task.RowId = resultSet.string(forColumn: "RowId")!
+                task.CreatedBy = resultSet.string(forColumn: "CreatedBy")!
+                task.CreatedOn = resultSet.date(forColumn: "CreatedOn")!
                 if !resultSet.columnIsNull("LastUpdatedBy")
                 {
                     task.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
@@ -3025,38 +3026,38 @@ class ModelManager: NSObject {
                 {
                     task.Deleted = resultSet.date(forColumn: "Deleted")
                 }
-                task.OrganisationId = resultSet.string(forColumn: "OrganisationId")
-                task.SiteId = resultSet.string(forColumn: "SiteId")
-                task.PropertyId = resultSet.string(forColumn: "PropertyId")
-                task.LocationId = resultSet.string(forColumn: "LocationId")
-                task.LocationGroupName = resultSet.string(forColumn: "LocationGroupName")
-                task.LocationName = resultSet.string(forColumn: "LocationName")
+                task.OrganisationId = resultSet.string(forColumn: "OrganisationId")!
+                task.SiteId = resultSet.string(forColumn: "SiteId")!
+                task.PropertyId = resultSet.string(forColumn: "PropertyId")!
+                task.LocationId = resultSet.string(forColumn: "LocationId")!
+                task.LocationGroupName = resultSet.string(forColumn: "LocationGroupName")!
+                task.LocationName = resultSet.string(forColumn: "LocationName")!
                 if !resultSet.columnIsNull("Room") {
                     task.Room = resultSet.string(forColumn: "Room")
                 }
                 if !resultSet.columnIsNull("TaskTemplateId") {
                     task.TaskTemplateId = resultSet.string(forColumn: "TaskTemplateId")
                 }
-                task.TaskRef = resultSet.string(forColumn: "TaskRef")
+                task.TaskRef = resultSet.string(forColumn: "TaskRef")!
                 if !resultSet.columnIsNull("PPMGroup") {
                     task.PPMGroup = resultSet.string(forColumn: "PPMGroup")
                 }
                 if !resultSet.columnIsNull("AssetType") {
                     task.AssetType = resultSet.string(forColumn: "AssetType")
                 }
-                task.TaskName = resultSet.string(forColumn: "TaskName")
-                task.Frequency = resultSet.string(forColumn: "Frequency")
+                task.TaskName = resultSet.string(forColumn: "TaskName")!
+                task.Frequency = resultSet.string(forColumn: "Frequency")!
                 if !resultSet.columnIsNull("AssetId") {
                     task.AssetId = resultSet.string(forColumn: "AssetId")
                 }
                 if !resultSet.columnIsNull("AssetNumber") {
                     task.AssetNumber = resultSet.string(forColumn: "AssetNumber")
                 }
-                task.ScheduledDate = resultSet.date(forColumn: "ScheduledDate")
+                task.ScheduledDate = resultSet.date(forColumn: "ScheduledDate")!
                 if !resultSet.columnIsNull("CompletedDate") {
                     task.CompletedDate = resultSet.date(forColumn: "CompletedDate")
                 }
-                task.Status = resultSet.string(forColumn: "Status")
+                task.Status = resultSet.string(forColumn: "Status")!
                 task.Priority = Int(resultSet.int(forColumn: "Priority"))
                 if !resultSet.columnIsNull("EstimatedDuration") {
                     task.EstimatedDuration = Int(resultSet.int(forColumn: "EstimatedDuration"))
@@ -3221,9 +3222,9 @@ class ModelManager: NSObject {
             if (resultSet != nil) {
                 while resultSet.next() {
                     let task : Task = Task()
-                    task.RowId = resultSet.string(forColumn: "RowId")
-                    task.CreatedBy = resultSet.string(forColumn: "CreatedBy")
-                    task.CreatedOn = resultSet.date(forColumn: "CreatedOn")
+                    task.RowId = resultSet.string(forColumn: "RowId")!
+                    task.CreatedBy = resultSet.string(forColumn: "CreatedBy")!
+                    task.CreatedOn = resultSet.date(forColumn: "CreatedOn")!
                     if !resultSet.columnIsNull("LastUpdatedBy")
                     {
                         task.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
@@ -3236,38 +3237,38 @@ class ModelManager: NSObject {
                     {
                         task.Deleted = resultSet.date(forColumn: "Deleted")
                     }
-                    task.OrganisationId = resultSet.string(forColumn: "OrganisationId")
-                    task.SiteId = resultSet.string(forColumn: "SiteId")
-                    task.PropertyId = resultSet.string(forColumn: "PropertyId")
-                    task.LocationId = resultSet.string(forColumn: "LocationId")
-                    task.LocationGroupName = resultSet.string(forColumn: "LocationGroupName")
-                    task.LocationName = resultSet.string(forColumn: "LocationName")
+                    task.OrganisationId = resultSet.string(forColumn: "OrganisationId")!
+                    task.SiteId = resultSet.string(forColumn: "SiteId")!
+                    task.PropertyId = resultSet.string(forColumn: "PropertyId")!
+                    task.LocationId = resultSet.string(forColumn: "LocationId")!
+                    task.LocationGroupName = resultSet.string(forColumn: "LocationGroupName")!
+                    task.LocationName = resultSet.string(forColumn: "LocationName")!
                     if !resultSet.columnIsNull("Room") {
                         task.Room = resultSet.string(forColumn: "Room")
                     }
                     if !resultSet.columnIsNull("TaskTemplateId") {
                         task.TaskTemplateId = resultSet.string(forColumn: "TaskTemplateId")
                     }
-                    task.TaskRef = resultSet.string(forColumn: "TaskRef")
+                    task.TaskRef = resultSet.string(forColumn: "TaskRef")!
                     if !resultSet.columnIsNull("PPMGroup") {
                         task.PPMGroup = resultSet.string(forColumn: "PPMGroup")
                     }
                     if !resultSet.columnIsNull("AssetType") {
                         task.AssetType = resultSet.string(forColumn: "AssetType")
                     }
-                    task.TaskName = resultSet.string(forColumn: "TaskName")
-                    task.Frequency = resultSet.string(forColumn: "Frequency")
+                    task.TaskName = resultSet.string(forColumn: "TaskName")!
+                    task.Frequency = resultSet.string(forColumn: "Frequency")!
                     if !resultSet.columnIsNull("AssetId") {
                         task.AssetId = resultSet.string(forColumn: "AssetId")
                     }
                     if !resultSet.columnIsNull("AssetNumber") {
                         task.AssetNumber = resultSet.string(forColumn: "AssetNumber")
                     }
-                    task.ScheduledDate = resultSet.date(forColumn: "ScheduledDate")
+                    task.ScheduledDate = resultSet.date(forColumn: "ScheduledDate")!
                     if !resultSet.columnIsNull("CompletedDate") {
                         task.CompletedDate = resultSet.date(forColumn: "CompletedDate")
                     }
-                    task.Status = resultSet.string(forColumn: "Status")
+                    task.Status = resultSet.string(forColumn: "Status")!
                     task.Priority = Int(resultSet.int(forColumn: "Priority"))
                     if !resultSet.columnIsNull("EstimatedDuration") {
                         task.EstimatedDuration = Int(resultSet.int(forColumn: "EstimatedDuration"))
@@ -3432,7 +3433,7 @@ class ModelManager: NSObject {
                 resultTaskParameter = TaskParameter()
                 resultTaskParameter.RowId = (resultSet?.string(forColumn: "RowId"))!
                 resultTaskParameter.CreatedBy = (resultSet?.string(forColumn: "CreatedBy"))!
-                resultTaskParameter.CreatedOn = resultSet!.date(forColumn: "CreatedOn")
+                resultTaskParameter.CreatedOn = resultSet!.date(forColumn: "CreatedOn")!
                 if !(resultSet?.columnIsNull("LastUpdatedBy"))!
                 {
                     resultTaskParameter.LastUpdatedBy = resultSet?.string(forColumn: "LastUpdatedBy")
@@ -3464,14 +3465,14 @@ class ModelManager: NSObject {
     
     func getAllTaskParameter() -> [TaskParameter] {
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TaskTemplateParameterId], [TaskId], [ParameterName], [ParameterType], [ParameterDisplay], [Collect], [ParameterValue] FROM [TaskParameter]", withArgumentsIn: nil)
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TaskTemplateParameterId], [TaskId], [ParameterName], [ParameterType], [ParameterDisplay], [Collect], [ParameterValue] FROM [TaskParameter]", withArgumentsIn: [])
         var taskParameterList: [TaskParameter] = [TaskParameter]()
         if (resultSet != nil) {
             while resultSet.next() {
                 let taskParameter : TaskParameter = TaskParameter()
-                taskParameter.RowId = resultSet.string(forColumn: "RowId")
-                taskParameter.CreatedBy = resultSet.string(forColumn: "CreatedBy")
-                taskParameter.CreatedOn = resultSet.date(forColumn: "CreatedOn")
+                taskParameter.RowId = resultSet.string(forColumn: "RowId")!
+                taskParameter.CreatedBy = resultSet.string(forColumn: "CreatedBy")!
+                taskParameter.CreatedOn = resultSet.date(forColumn: "CreatedOn")!
                 if !resultSet.columnIsNull("LastUpdatedBy")
                 {
                     taskParameter.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
@@ -3487,12 +3488,12 @@ class ModelManager: NSObject {
                 if !resultSet.columnIsNull("TaskTemplateParameterId") {
                     taskParameter.TaskTemplateParameterId = resultSet.string(forColumn: "TaskTemplateParameterId")
                 }
-                taskParameter.TaskId = resultSet.string(forColumn: "TaskId")
-                taskParameter.ParameterName = resultSet.string(forColumn: "ParameterName")
-                taskParameter.ParameterType = resultSet.string(forColumn: "ParameterType")
-                taskParameter.ParameterDisplay = resultSet.string(forColumn: "ParameterDisplay")
+                taskParameter.TaskId = resultSet.string(forColumn: "TaskId")!
+                taskParameter.ParameterName = resultSet.string(forColumn: "ParameterName")!
+                taskParameter.ParameterType = resultSet.string(forColumn: "ParameterType")!
+                taskParameter.ParameterDisplay = resultSet.string(forColumn: "ParameterDisplay")!
                 taskParameter.Collect = resultSet.bool(forColumn: "Collect")
-                taskParameter.ParameterValue = resultSet.string(forColumn: "ParameterValue")
+                taskParameter.ParameterValue = resultSet.string(forColumn: "ParameterValue")!
                 
                 taskParameterList.append(taskParameter)
             }
@@ -3547,9 +3548,9 @@ class ModelManager: NSObject {
             if (resultSet != nil) {
                 while resultSet.next() {
                     let taskParameter : TaskParameter = TaskParameter()
-                    taskParameter.RowId = resultSet.string(forColumn: "RowId")
-                    taskParameter.CreatedBy = resultSet.string(forColumn: "CreatedBy")
-                    taskParameter.CreatedOn = resultSet.date(forColumn: "CreatedOn")
+                    taskParameter.RowId = resultSet.string(forColumn: "RowId")!
+                    taskParameter.CreatedBy = resultSet.string(forColumn: "CreatedBy")!
+                    taskParameter.CreatedOn = resultSet.date(forColumn: "CreatedOn")!
                     if !resultSet.columnIsNull("LastUpdatedBy")
                     {
                         taskParameter.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
@@ -3565,12 +3566,12 @@ class ModelManager: NSObject {
                     if !resultSet.columnIsNull("TaskTemplateParameterId") {
                         taskParameter.TaskTemplateParameterId = resultSet.string(forColumn: "TaskTemplateParameterId")
                     }
-                    taskParameter.TaskId = resultSet.string(forColumn: "TaskId")
-                    taskParameter.ParameterName = resultSet.string(forColumn: "ParameterName")
-                    taskParameter.ParameterType = resultSet.string(forColumn: "ParameterType")
-                    taskParameter.ParameterDisplay = resultSet.string(forColumn: "ParameterDisplay")
+                    taskParameter.TaskId = resultSet.string(forColumn: "TaskId")!
+                    taskParameter.ParameterName = resultSet.string(forColumn: "ParameterName")!
+                    taskParameter.ParameterType = resultSet.string(forColumn: "ParameterType")!
+                    taskParameter.ParameterDisplay = resultSet.string(forColumn: "ParameterDisplay")!
                     taskParameter.Collect = resultSet.bool(forColumn: "Collect")
-                    taskParameter.ParameterValue = resultSet.string(forColumn: "ParameterValue")
+                    taskParameter.ParameterValue = resultSet.string(forColumn: "ParameterValue")!
                     
                     taskParameterList.append(taskParameter)
                 }
@@ -3702,7 +3703,7 @@ class ModelManager: NSObject {
                 resultTaskTemplate = TaskTemplate()
                 resultTaskTemplate.RowId = (resultSet?.string(forColumn: "RowId"))!
                 resultTaskTemplate.CreatedBy = (resultSet?.string(forColumn: "CreatedBy"))!
-                resultTaskTemplate.CreatedOn = resultSet!.date(forColumn: "CreatedOn")
+                resultTaskTemplate.CreatedOn = resultSet!.date(forColumn: "CreatedOn")!
                 if !(resultSet?.columnIsNull("LastUpdatedBy"))!
                 {
                     resultTaskTemplate.LastUpdatedBy = resultSet?.string(forColumn: "LastUpdatedBy")
@@ -3730,14 +3731,14 @@ class ModelManager: NSObject {
     
     func getAllTaskTemplate() -> [TaskTemplate] {
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [AssetType], [TaskName], [Priority], [EstimatedDuration] FROM [TaskTemplate]", withArgumentsIn: nil)
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [AssetType], [TaskName], [Priority], [EstimatedDuration] FROM [TaskTemplate]", withArgumentsIn: [])
         var taskTemplateList: [TaskTemplate] = [TaskTemplate]()
         if (resultSet != nil) {
             while resultSet.next() {
                 let taskTemplate : TaskTemplate = TaskTemplate()
-                taskTemplate.RowId = resultSet.string(forColumn: "RowId")
-                taskTemplate.CreatedBy = resultSet.string(forColumn: "CreatedBy")
-                taskTemplate.CreatedOn = resultSet.date(forColumn: "CreatedOn")
+                taskTemplate.RowId = resultSet.string(forColumn: "RowId")!
+                taskTemplate.CreatedBy = resultSet.string(forColumn: "CreatedBy")!
+                taskTemplate.CreatedOn = resultSet.date(forColumn: "CreatedOn")!
                 if !resultSet.columnIsNull("LastUpdatedBy")
                 {
                     taskTemplate.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
@@ -3750,9 +3751,9 @@ class ModelManager: NSObject {
                 {
                     taskTemplate.Deleted = resultSet.date(forColumn: "Deleted")
                 }
-                taskTemplate.OrganisationId = resultSet.string(forColumn: "OrganisationId")
-                taskTemplate.AssetType = resultSet.string(forColumn: "AssetType")
-                taskTemplate.TaskName = resultSet.string(forColumn: "TaskName")
+                taskTemplate.OrganisationId = resultSet.string(forColumn: "OrganisationId")!
+                taskTemplate.AssetType = resultSet.string(forColumn: "AssetType")!
+                taskTemplate.TaskName = resultSet.string(forColumn: "TaskName")!
                 taskTemplate.Priority = Int(resultSet.int(forColumn: "Priority"))
                 taskTemplate.EstimatedDuration = Int(resultSet.int(forColumn: "EstimatedDuration"))
                 
@@ -3809,9 +3810,9 @@ class ModelManager: NSObject {
             if (resultSet != nil) {
                 while resultSet.next() {
                     let taskTemplate : TaskTemplate = TaskTemplate()
-                    taskTemplate.RowId = resultSet.string(forColumn: "RowId")
-                    taskTemplate.CreatedBy = resultSet.string(forColumn: "CreatedBy")
-                    taskTemplate.CreatedOn = resultSet.date(forColumn: "CreatedOn")
+                    taskTemplate.RowId = resultSet.string(forColumn: "RowId")!
+                    taskTemplate.CreatedBy = resultSet.string(forColumn: "CreatedBy")!
+                    taskTemplate.CreatedOn = resultSet.date(forColumn: "CreatedOn")!
                     if !resultSet.columnIsNull("LastUpdatedBy")
                     {
                         taskTemplate.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
@@ -3824,9 +3825,9 @@ class ModelManager: NSObject {
                     {
                         taskTemplate.Deleted = resultSet.date(forColumn: "Deleted")
                     }
-                    taskTemplate.OrganisationId = resultSet.string(forColumn: "OrganisationId")
-                    taskTemplate.AssetType = resultSet.string(forColumn: "AssetType")
-                    taskTemplate.TaskName = resultSet.string(forColumn: "TaskName")
+                    taskTemplate.OrganisationId = resultSet.string(forColumn: "OrganisationId")!
+                    taskTemplate.AssetType = resultSet.string(forColumn: "AssetType")!
+                    taskTemplate.TaskName = resultSet.string(forColumn: "TaskName")!
                     taskTemplate.Priority = Int(resultSet.int(forColumn: "Priority"))
                     taskTemplate.EstimatedDuration = Int(resultSet.int(forColumn: "EstimatedDuration"))
                     
@@ -4006,7 +4007,7 @@ class ModelManager: NSObject {
                 resultTaskTemplateParameter = TaskTemplateParameter()
                 resultTaskTemplateParameter.RowId = (resultSet?.string(forColumn: "RowId"))!
                 resultTaskTemplateParameter.CreatedBy = (resultSet?.string(forColumn: "CreatedBy"))!
-                resultTaskTemplateParameter.CreatedOn = resultSet!.date(forColumn: "CreatedOn")
+                resultTaskTemplateParameter.CreatedOn = resultSet!.date(forColumn: "CreatedOn")!
                 if !(resultSet?.columnIsNull("LastUpdatedBy"))!
                 {
                     resultTaskTemplateParameter.LastUpdatedBy = resultSet?.string(forColumn: "LastUpdatedBy")
@@ -4046,14 +4047,14 @@ class ModelManager: NSObject {
     
     func getAllTaskTemplateParameter() -> [TaskTemplateParameter] {
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TaskTemplateId], [ParameterName], [ParameterType], [ParameterDisplay], [Collect], [ReferenceDataType], [ReferenceDataExtendedType], [Ordinal], [Predecessor], [PredecessorTrueValue] FROM [TaskTemplateParameter]", withArgumentsIn: nil)
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TaskTemplateId], [ParameterName], [ParameterType], [ParameterDisplay], [Collect], [ReferenceDataType], [ReferenceDataExtendedType], [Ordinal], [Predecessor], [PredecessorTrueValue] FROM [TaskTemplateParameter]", withArgumentsIn: [])
         var taskTemplateParameterList: [TaskTemplateParameter] = [TaskTemplateParameter]()
         if (resultSet != nil) {
             while resultSet.next() {
                 let taskTemplateParameter : TaskTemplateParameter = TaskTemplateParameter()
-                taskTemplateParameter.RowId = resultSet.string(forColumn: "RowId")
-                taskTemplateParameter.CreatedBy = resultSet.string(forColumn: "CreatedBy")
-                taskTemplateParameter.CreatedOn = resultSet.date(forColumn: "CreatedOn")
+                taskTemplateParameter.RowId = resultSet.string(forColumn: "RowId")!
+                taskTemplateParameter.CreatedBy = resultSet.string(forColumn: "CreatedBy")!
+                taskTemplateParameter.CreatedOn = resultSet.date(forColumn: "CreatedOn")!
                 if !resultSet.columnIsNull("LastUpdatedBy")
                 {
                     taskTemplateParameter.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
@@ -4066,10 +4067,10 @@ class ModelManager: NSObject {
                 {
                     taskTemplateParameter.Deleted = resultSet.date(forColumn: "Deleted")
                 }
-                taskTemplateParameter.TaskTemplateId = resultSet.string(forColumn: "TaskTemplateId")
-                taskTemplateParameter.ParameterName = resultSet.string(forColumn: "ParameterName")
-                taskTemplateParameter.ParameterType = resultSet.string(forColumn: "ParameterType")
-                taskTemplateParameter.ParameterDisplay = resultSet.string(forColumn: "ParameterDisplay")
+                taskTemplateParameter.TaskTemplateId = resultSet.string(forColumn: "TaskTemplateId")!
+                taskTemplateParameter.ParameterName = resultSet.string(forColumn: "ParameterName")!
+                taskTemplateParameter.ParameterType = resultSet.string(forColumn: "ParameterType")!
+                taskTemplateParameter.ParameterDisplay = resultSet.string(forColumn: "ParameterDisplay")!
                 taskTemplateParameter.Collect = resultSet.bool(forColumn: "Collect")
                 if !resultSet.columnIsNull("ReferenceDataType") {
                     taskTemplateParameter.ReferenceDataType = resultSet.string(forColumn: "ReferenceDataType")
@@ -4137,9 +4138,9 @@ class ModelManager: NSObject {
             if (resultSet != nil) {
                 while resultSet.next() {
                     let taskTemplateParameter : TaskTemplateParameter = TaskTemplateParameter()
-                    taskTemplateParameter.RowId = resultSet.string(forColumn: "RowId")
-                    taskTemplateParameter.CreatedBy = resultSet.string(forColumn: "CreatedBy")
-                    taskTemplateParameter.CreatedOn = resultSet.date(forColumn: "CreatedOn")
+                    taskTemplateParameter.RowId = resultSet.string(forColumn: "RowId")!
+                    taskTemplateParameter.CreatedBy = resultSet.string(forColumn: "CreatedBy")!
+                    taskTemplateParameter.CreatedOn = resultSet.date(forColumn: "CreatedOn")!
                     if !resultSet.columnIsNull("LastUpdatedBy")
                     {
                         taskTemplateParameter.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
@@ -4152,10 +4153,10 @@ class ModelManager: NSObject {
                     {
                         taskTemplateParameter.Deleted = resultSet.date(forColumn: "Deleted")
                     }
-                    taskTemplateParameter.TaskTemplateId = resultSet.string(forColumn: "TaskTemplateId")
-                    taskTemplateParameter.ParameterName = resultSet.string(forColumn: "ParameterName")
-                    taskTemplateParameter.ParameterType = resultSet.string(forColumn: "ParameterType")
-                    taskTemplateParameter.ParameterDisplay = resultSet.string(forColumn: "ParameterDisplay")
+                    taskTemplateParameter.TaskTemplateId = resultSet.string(forColumn: "TaskTemplateId")!
+                    taskTemplateParameter.ParameterName = resultSet.string(forColumn: "ParameterName")!
+                    taskTemplateParameter.ParameterType = resultSet.string(forColumn: "ParameterType")!
+                    taskTemplateParameter.ParameterDisplay = resultSet.string(forColumn: "ParameterDisplay")!
                     taskTemplateParameter.Collect = resultSet.bool(forColumn: "Collect")
                     if !resultSet.columnIsNull("ReferenceDataType") {
                         taskTemplateParameter.ReferenceDataType = resultSet.string(forColumn: "ReferenceDataType")

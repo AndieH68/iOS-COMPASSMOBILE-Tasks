@@ -6,6 +6,8 @@
 //  Copyright © 2016 HYDOP E.C.S. All rights reserved.
 //
 
+import AEXML
+
 class Organisation: NSObject {
  
     // MARK: - Properties

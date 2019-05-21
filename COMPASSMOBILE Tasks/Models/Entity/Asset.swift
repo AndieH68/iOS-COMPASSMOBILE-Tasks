@@ -6,7 +6,7 @@
 //  Copyright © 2016 HYDOP E.C.S. All rights reserved.
 //
 
-import UIKit
+import AEXML
 
 class Asset: NSObject {
 

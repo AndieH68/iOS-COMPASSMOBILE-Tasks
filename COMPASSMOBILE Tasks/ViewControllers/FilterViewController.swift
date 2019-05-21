@@ -138,6 +138,25 @@ class FilterViewController: UIViewController {
     }
     
     @IBAction func Done(_ sender: UIBarButtonItem) {
+        if(Session.RememberFilterSettings)
+        {
+            let defaults = UserDefaults.standard
+            defaults.set(Session.FilterSiteId, forKey: "FilterSiteId")
+            defaults.set(Session.FilterSiteName, forKey: "FilterSiteName")
+            defaults.set(Session.FilterPropertyId, forKey: "FilterPropertyId")
+            defaults.set(Session.FilterPropertyName, forKey: "FilterPropertyName")
+            defaults.set(Session.FilterFrequency, forKey: "FilterFrequency")
+            defaults.set(Session.FilterPeriod, forKey: "FilterPeriod")
+            
+            defaults.set(Session.FilterJustMyTasks, forKey: "FilterJustMyTasks")
+            
+            defaults.set(Session.FilterAssetGroup, forKey: "FilterAssetGroup")
+            defaults.set(Session.FilterTaskName, forKey: "FilterTaskName")
+            defaults.set(Session.FilterAssetType, forKey: "FilterAssetType")
+            defaults.set(Session.FilterLocationGroup, forKey: "FilterLocationGroup")
+            defaults.set(Session.FilterLocation, forKey: "FilterLocation")
+            defaults.set(Session.FilterAssetNumber, forKey: "FilterAssetNumber")
+        }
         _ = self.navigationController?.popViewController(animated: true)
     }
     
@@ -167,27 +186,6 @@ class FilterViewController: UIViewController {
         var criteria: Dictionary<String, String> = [:]
         criteria["OrganisationId"] = Session.OrganisationId
         
-//        var siteData: [Site] = [] //NSMutableArray!
-//        var selectedIndex: Int? = 0
-//        Sites.append("")
-//        
-//        // go and get the site data based on the criteria built
-//        siteData = ModelManager.getInstance().findSiteList(criteria)
-//        
-//        var count: Int = 1 //we already have the blank row
-//        for currentSite: Site in siteData
-//        {
-//            Sites.append(currentSite.Name)
-//            SiteDictionary[currentSite.Name] = currentSite.RowId
-//            if( Session.FilterSiteId != nil)
-//            {
-//                if (currentSite.RowId == Session.FilterSiteId!) { selectedIndex = count }
-//            }
-//            count += 1
-//        }
-//        if (selectedIndex == 0) { Session.FilterSiteId = nil }
-        
-        
         // go and get the search/filter criteria from the values selected in the session
         var SiteIds: [String] = [] //NSMutableArray!
         var selectedIndex: Int? = 0
@@ -208,7 +206,7 @@ class FilterViewController: UIViewController {
         }
         if (selectedIndex == 0) { Session.FilterSiteId = nil }
         
-        SitePopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.left
+        SitePopupSelector.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
         SitePopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
         SitePopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
         SitePopupSelector.options = Sites.map { KFPopupSelector.Option.text(text: $0) }
@@ -222,27 +220,6 @@ class FilterViewController: UIViewController {
         //Get this list of Propertys currently available for this user
         Properties = []
         PropertyDictionary = [:]
-        
-        // go and get the search/filter criteria from the values selected in the session
-//        var criteria: Dictionary<String, String> = [:]
-//        criteria["SiteId"] = Session.FilterSiteId
-//        
-//        var PropertyData: [Property] = [] //NSMutableArray!
-//        var selectedIndex: Int? = 0
-//        Properties.append("")
-//        
-//        // go and get the Property data based on the criteria built
-//        PropertyData = ModelManager.getInstance().findPropertyList(criteria)
-//        
-//        var count: Int = 1 //we already have the blank row
-//        for currentProperty: Property in PropertyData
-//        {
-//            Properties.append(currentProperty.Name)
-//            PropertyDictionary[currentProperty.Name] = currentProperty.RowId
-//            if (currentProperty.RowId == Session.FilterPropertyId) { selectedIndex = count }
-//            count += 1
-//        }
-//        if (selectedIndex == 0) { Session.FilterPropertyId = nil }
         
         var PropertyIds: [String] = [] //NSMutableArray!
         var selectedIndex: Int? = 0
@@ -263,7 +240,7 @@ class FilterViewController: UIViewController {
         }
         if (selectedIndex == 0) { Session.FilterPropertyId = nil }
         
-        PropertyPopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.left
+        PropertyPopupSelector.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
         PropertyPopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
         PropertyPopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
         PropertyPopupSelector.options = Properties.map { KFPopupSelector.Option.text(text: $0) }
@@ -302,7 +279,7 @@ class FilterViewController: UIViewController {
         Frequencies.append("All")
         FrequencyDictionary["All"] = "All"
         
-        FrequencyPopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.left
+        FrequencyPopupSelector.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
         FrequencyPopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
         FrequencyPopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
         FrequencyPopupSelector.options = Frequencies.map { KFPopupSelector.Option.text(text: $0) }
@@ -324,7 +301,7 @@ class FilterViewController: UIViewController {
         }
         if (selectedIndex == 0) { Session.FilterPeriod = nil }
         
-        PeriodPopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.left
+        PeriodPopupSelector.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
         PeriodPopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
         PeriodPopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
         PeriodPopupSelector.options = Periods.map { KFPopupSelector.Option.text(text: $0) }
@@ -358,7 +335,7 @@ class FilterViewController: UIViewController {
         }
         if (selectedIndex == 0) { Session.FilterAssetGroup = nil }
         
-        AssetGroupPopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.left
+        AssetGroupPopupSelector.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
         AssetGroupPopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
         AssetGroupPopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
         AssetGroupPopupSelector.options = AssetGroups.map { KFPopupSelector.Option.text(text: $0) }
@@ -396,7 +373,7 @@ class FilterViewController: UIViewController {
         }
         if (selectedIndex == 0) { Session.FilterTaskName = nil }
         
-        TaskNamePopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.left
+        TaskNamePopupSelector.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
         TaskNamePopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
         TaskNamePopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
         TaskNamePopupSelector.options = TaskNames.map { KFPopupSelector.Option.text(text: $0) }
@@ -430,7 +407,7 @@ class FilterViewController: UIViewController {
         }
         if (selectedIndex == 0) { Session.FilterAssetType = nil }
         
-        AssetTypePopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.left
+        AssetTypePopupSelector.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
         AssetTypePopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
         AssetTypePopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
         AssetTypePopupSelector.options = AssetTypes.map { KFPopupSelector.Option.text(text: $0) }
@@ -464,7 +441,7 @@ class FilterViewController: UIViewController {
         }
         if (selectedIndex == 0) { Session.FilterLocationGroup = nil }
         
-        LocationGroupPopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.left
+        LocationGroupPopupSelector.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
         LocationGroupPopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
         LocationGroupPopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
         LocationGroupPopupSelector.options = LocationGroups.map { KFPopupSelector.Option.text(text: $0) }
@@ -498,7 +475,7 @@ class FilterViewController: UIViewController {
         }
         if (selectedIndex == 0) { Session.FilterLocation = nil }
         
-        LocationPopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.left
+        LocationPopupSelector.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
         LocationPopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
         LocationPopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
         LocationPopupSelector.options = Locations.map { KFPopupSelector.Option.text(text: $0) }
@@ -532,7 +509,7 @@ class FilterViewController: UIViewController {
         }
         if (selectedIndex == 0) { Session.FilterAssetNumber = nil }
         
-        AssetNumberPopupSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.left
+        AssetNumberPopupSelector.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
         AssetNumberPopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
         AssetNumberPopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
         AssetNumberPopupSelector.options = AssetNumbers.map { KFPopupSelector.Option.text(text: $0) }

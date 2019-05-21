@@ -13,8 +13,10 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    /// set orientations you want to be allowed in this property by default
+    var orientationLock = UIInterfaceOrientationMask.all
+    
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
         var result: Bool = false
@@ -36,9 +38,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             let defaults = UserDefaults.standard
             Session.Server = defaults.object(forKey: "Server") as? String ?? String()
+            Session.UseBlueToothProbe = defaults.bool(forKey: "UseBlueToothProbe")
             Session.UseTaskTiming = defaults.bool(forKey: "TaskTimng")
             Session.UseTemperatureProfile = defaults.bool(forKey: "TemperatureProfile")
-     
+            Session.RememberFilterSettings = defaults.bool(forKey: "RememberFilterSettings")
+            
+            if(Session.RememberFilterSettings)
+            {
+                Session.FilterSiteId = defaults.object(forKey: "FilterSiteId") as? String ?? String()
+                Session.FilterSiteName = defaults.object(forKey: "FilterSiteName") as? String ?? String()
+                Session.FilterPropertyId = defaults.object(forKey: "FilterPropertyId") as? String ?? String()
+                Session.FilterPropertyName = defaults.object(forKey: "FilterPropertyName") as? String ?? String()
+                Session.FilterFrequency = defaults.object(forKey: "FilterFrequency") as? String ?? String()
+                Session.FilterPeriod = defaults.object(forKey: "FilterPeriod") as? String ??  String?(DueCalendarMonthText)
+                
+                Session.FilterJustMyTasks = defaults.bool(forKey: "FilterJustMyTasks")
+                
+                Session.FilterAssetGroup = defaults.object(forKey: "FilterAssetGroup") as? String ?? String()
+                Session.FilterTaskName = defaults.object(forKey: "FilterTaskName") as? String ?? String()
+                Session.FilterAssetType = defaults.object(forKey: "FilterAssetType") as? String ?? String()
+                Session.FilterLocationGroup = defaults.object(forKey: "FilterLocationGroup") as? String ?? String()
+                Session.FilterLocation = defaults.object(forKey: "FilterLocation") as? String ?? String()
+                Session.FilterAssetNumber = defaults.object(forKey: "FilterAssetNumber") as? String ?? String()
+               
+            }
+            
             Session.OrganisationId = "00000000-0000-0000-0000-000000000000"
         }
         return true
@@ -190,6 +214,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 abort()
             }
         }
+    }
+    
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        return self.orientationLock
     }
 
 }

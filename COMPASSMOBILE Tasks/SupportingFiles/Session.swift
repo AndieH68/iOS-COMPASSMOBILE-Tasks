@@ -18,8 +18,10 @@ class Session : NSObject
     static var DatabasePresent: Bool = false
     static var DatabaseMessage: String = String()
     
+    static var UseBlueToothProbe: Bool = false
     static var UseTaskTiming: Bool = false
     static var UseTemperatureProfile: Bool = false
+    static var RememberFilterSettings: Bool = false
     
     static var OperativeId: String? = nil
     static var OrganisationId: String? = nil
@@ -62,6 +64,9 @@ class Session : NSObject
     static var MaxPage: Int32 = 1
     
     static var BluetoothProbeConnected: Bool = false
+    static var ThermaQBluetoothProbeConnected: Bool = false
+    static var CurrentDevice: TLDevice?
+    static var ReadingDevice: Int32 = 1
     
     static var TaskId: String? = nil
     

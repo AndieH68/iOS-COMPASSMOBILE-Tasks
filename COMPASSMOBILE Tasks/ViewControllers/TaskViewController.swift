@@ -1,6 +1,4 @@
 //
-//  TaskViewController.swift
-//  COMPASSMOBILE
 //
 //  Created by Andrew Harper on 20/05/2016.
 //  Copyright © 2016 HYDOP E.C.S. All rights reserved.
@@ -8,15 +6,17 @@
 
 import Foundation
 import UIKit
-
+import BRYXBanner
+import MBProgressHUD
 
 class TaskViewController: UITableViewController, UITextFieldDelegate, UITextViewDelegate, MBProgressHUDDelegate, ETIPassingData, AlertMessageDelegate {
-
+    
     //MARK: Variables
+    var instanceOfCustomObject: ThermaLib = ThermaLib()
     
     var task: Task = Task()
     var asset: Asset = Asset()
-
+    
     var taskTemplateParameterFormItems: Dictionary<String, TaskTemplateParameterFormItem> = Dictionary<String, TaskTemplateParameterFormItem>()
     var formTaskTemplateParameters: [TaskTemplateParameter] = [TaskTemplateParameter]()
     
@@ -32,7 +32,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
     
     //parameter table
     @IBOutlet var taskParameterTable: UITableView!
-        
+    
     //header fields
     @IBOutlet var AssetType: UILabel!
     @IBOutlet var TaskName: UILabel!
@@ -50,24 +50,39 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
     @IBOutlet var TaskTime: UITextField!
     @IBOutlet var TravelTimeLabel: UILabel!
     @IBOutlet var TravelTime: UITextField!
-
+    
     var HotType: String? = nil
     var ColdType: String? = nil
     
     //MARK: Form load & show
-    
+    deinit {
+        if(Session.UseBlueToothProbe)
+        {
+            NotificationCenter.default.removeObserver(self)
+        }
+    }
     //standard actions
     override func viewDidLoad() {
         super.viewDidLoad()
         registerForKeyboardNotifications()
         
+        //self.device = Session.CurrentDevice
+        
+        if(Session.UseBlueToothProbe)
+        {
+            self.instanceOfCustomObject = ThermaLib.sharedInstance()
+            NotificationCenter.default.addObserver(self, selector: #selector(newDeviceFound), name: Notification.Name(rawValue: ThermaLibNewDeviceFoundNotificationName), object: nil)
+            // Listen for sensor updates
+            NotificationCenter.default.addObserver(self, selector: #selector(sensorUpdatedNotificationReceived), name: Notification.Name(rawValue: ThermaLibSensorUpdatedNotificationName), object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(self.deviceNotificationReceived), name: Notification.Name(ThermaLibNotificationReceivedNotificationName), object: nil)
+        }
         Session.CodeScanned = nil
         
         task = ModelManager.getInstance().getTask(Session.TaskId!)!
         
         if (task.AssetId != nil)
         {
-           //get the hot cold details for the task
+            //get the hot cold details for the task
             let asset: Asset? = ModelManager.getInstance().getAsset(task.AssetId!)
             if (asset != nil)
             {
@@ -77,12 +92,12 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
             else
             {
                 //asset is missing - need to notify user to resync assets
-                let userPrompt: UIAlertController = UIAlertController(title: "Missing asset", message: "The asset record for this task is missing", preferredStyle: UIAlertControllerStyle.alert)
+                let userPrompt: UIAlertController = UIAlertController(title: "Missing asset", message: "The asset record for this task is missing", preferredStyle: UIAlertController.Style.alert)
                 
                 //the destructive option
                 userPrompt.addAction(UIAlertAction(
                     title: "OK",
-                    style: UIAlertActionStyle.destructive,
+                    style: UIAlertAction.Style.destructive,
                     handler: self.LeaveTask))
                 
                 present(userPrompt, animated: true, completion: nil)
@@ -102,7 +117,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
         {
             TaskName.text  = ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMTaskType", key: task.TaskName, parentType: "PPMAssetGroup", parentValue: task.PPMGroup)
         }
-
+        
         Location.text = task.LocationName
         if let assetNumber: String = task.AssetNumber {AssetNumber.text = assetNumber} else {AssetNumber.text = "no asset"}
         TaskReference.text = task.TaskRef
@@ -119,7 +134,21 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
             
             for taskTemplateParameter: TaskTemplateParameter in formTaskTemplateParameters
             {
-               taskTemplateParameterFormItems[taskTemplateParameter.RowId] = TaskTemplateParameterFormItem(taskTemplateParameter: taskTemplateParameter)
+                taskTemplateParameterFormItems[taskTemplateParameter.RowId] = TaskTemplateParameterFormItem(taskTemplateParameter: taskTemplateParameter)
+                if (taskTemplateParameter.Predecessor != nil)
+                {
+                    let keyExists = taskTemplateParameterFormItems[taskTemplateParameter.Predecessor!] != nil
+                    
+                    if (!keyExists)
+                    {
+                        //the predecessor item does not yet exist
+                        taskTemplateParameterFormItems[taskTemplateParameter.Predecessor!] = TaskTemplateParameterFormItem(taskTemplateParameter: TaskTemplateParameter())
+                    }
+
+                    //the predecessor item already exists
+                    let taskTemplateParameterFormItem: TaskTemplateParameterFormItem = taskTemplateParameterFormItems[taskTemplateParameter.Predecessor!]!
+                    taskTemplateParameterFormItem.Dependencies.append(taskTemplateParameterFormItems[taskTemplateParameter.RowId]!)
+                }
             }
             
             if (formTaskTemplateParameters.count > 3)
@@ -144,6 +173,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
         
         //reload the table
         taskParameterTable.reloadData()
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -172,58 +202,192 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
         
         NewScancode()
         
-        if EAController.shared().callBack == nil
+        if(Session.UseBlueToothProbe)
         {
-            let eac: EAController =  EAController.shared()
-            eac.notificationCallBack = self
             
-            if !(eac.selectedAccessory.isAwaitingUI || eac.selectedAccessory.isNoneAvailable)
-            {
-                if (eac.selectedAccessory == nil || !(eac.openSession()))
-                {
-                    NSLog("No BlueTherm Connected")
+            //Start scanning for devices
+            let banner:Banner
+            if !(Session.ThermaQBluetoothProbeConnected){
+                if !(Session.BluetoothProbeConnected) {
+                    NSLog("Scanning for new ThermaQ Device")
+                    banner = Banner(title: "Scanning", subtitle: "Scanning for ThermaQ Device",image: nil,backgroundColor:UIColor(red:48.00/255.0, green:174.0/255.0, blue:51.5/255.0, alpha:1.000))
+                    banner.show(duration: 4.0)
+                    
+                    self.self.instanceOfCustomObject.startDeviceScan()
+                }else if (Session.BluetoothProbeConnected && EAController.shared().selectedAccessory.isAwaitingUI){
+                    
+                    stopProbeTimer()
                     Session.BluetoothProbeConnected = false
-                    readingAndDisplaying()
+                    
+                    NSLog("Scanning for new ThermaQ Device")
+                    banner = Banner(title: "Scanning", subtitle: "Scanning for ThermaQ Device",image: nil,backgroundColor:UIColor(red:48.00/255.0, green:174.0/255.0, blue:51.5/255.0, alpha:1.000))
+                    banner.show(duration: 4.0)
+                    self.self.instanceOfCustomObject.startDeviceScan()
                 }
-                else
-                {
-                    NSLog("BlueThermConnected")
-                    Session.BluetoothProbeConnected = true
-                    eac.callBack = self
-                }
-            }
-            else
-            {
-                //readingAndDisplaying()
-                return
+                
+                let scantimer = DispatchTime.now() + 4
+                DispatchQueue.main.asyncAfter(deadline: scantimer, execute: {
+                    let devicelist = self.instanceOfCustomObject.deviceList()
+                    if devicelist!.count == 0 {
+                        let bannerFound = Banner(title: "Scanning",subtitle: "No New ThermaQ device found. Scanning now for old Probe",image:nil,backgroundColor:UIColor(red:0.78, green:0.12, blue:0.12, alpha:1.0))
+                        bannerFound.dismissesOnTap = true
+                        bannerFound.show(duration:2)
+                        bannerFound.dismiss()
+                        if EAController.shared().callBack == nil
+                        {
+                            let eac: EAController =  EAController.shared()
+                            eac.notificationCallBack = nil
+                            
+                            if !(eac.selectedAccessory.isAwaitingUI || eac.selectedAccessory.isNoneAvailable)
+                            {
+                                
+                                if (eac.selectedAccessory == nil || !(eac.openSession()))
+                                {
+                                    NSLog("No BlueTherm Connected")
+                                    Session.BluetoothProbeConnected = false
+                                    self.readingAndDisplaying()
+                                }
+                                else
+                                {
+                                    if !(Session.BluetoothProbeConnected){
+                                        let bannerFound = Banner(title: "Connected",subtitle: "Connected to old " + eac.selectedAccessory.getAccessory().name,image:nil,backgroundColor:UIColor(red:48.00/255.0, green:174.0/255.0, blue:51.5/255.0, alpha:1.000))
+                                        bannerFound.dismissesOnTap = true
+                                        bannerFound.show(duration:2)
+                                    }
+                                    NSLog("BlueThermConnected")
+                                    Session.BluetoothProbeConnected = true
+                                    eac.callBack = self
+                                }
+                            }
+                            else
+                            {
+                                //readingAndDisplaying()
+                                return
+                            }
+                        }
+                        else
+                        {
+                            EAController.shared().notificationCallBack = self
+                            EAController.shared().callBack = self
+                        }
+                        
+                    }else{
+                        if !(Session.ThermaQBluetoothProbeConnected) && Session.CurrentDevice == nil{
+                            let devicelist = self.instanceOfCustomObject.deviceList()
+                            for device in devicelist!{
+                                if device.deviceName.contains("ThermaQ"){
+                                    Session.ThermaQBluetoothProbeConnected = true
+                                    Session.CurrentDevice = device
+                                }
+                            }
+                            self.instanceOfCustomObject.connect(to: Session.CurrentDevice)
+                            let banner = Banner(title: "Connected", subtitle: "Connected to " + (Session.CurrentDevice?.deviceName)!,image: nil,backgroundColor:UIColor(red:48.00/255.0, green:174.0/255.0, blue:51.5/255.0, alpha:1.000))
+                            banner.dismissesOnTap = true
+                            banner.show(duration: 3.0)
+                        }
+                        return
+                    }
+                })
+                
             }
         }
-        else
-        {
-            EAController.shared().notificationCallBack = self
-            EAController.shared().callBack = self
+    }
+    
+    //MARK: New proble notifications
+    @objc func newDeviceFound(_ sender: Notification) {
+        // A new device has been found so refresh the table
+        let devicelist = instanceOfCustomObject.deviceList()
+        for device in devicelist!{
+            if device.deviceName.contains("ThermaQ"){
+                Session.ThermaQBluetoothProbeConnected = true
+                Session.CurrentDevice = device
+            }
+        }
+        if Session.CurrentDevice?.isConnected() == false{
+            instanceOfCustomObject.connect(to: Session.CurrentDevice)
+            var connectionState:TLDeviceConnectionState? = Session.CurrentDevice?.connectionState
+            while connectionState != TLDeviceConnectionState.connected{
+                connectionState = Session.CurrentDevice?.connectionState
+            }
+            if connectionState == TLDeviceConnectionState.connected{
+                let banner = Banner(title: "Connected", subtitle: "Connected to " + (Session.CurrentDevice?.deviceName)!,image: nil,backgroundColor:UIColor(red:48.00/255.0, green:174.0/255.0, blue:51.5/255.0, alpha:1.000))
+                banner.dismissesOnTap = true
+                banner.show(duration: 3.0)
+            }
+        }
+    }
+    
+    @objc func sensorUpdatedNotificationReceived(_ sender: Notification) {
+        if Session.ReadingDevice != 0 {
+            var SensorIndex: UInt = 0
+            let Sensor1: Bool = (Session.CurrentDevice?.isSensorEnabled(at: 0))!
+            let Sensor2: Bool = (Session.CurrentDevice?.isSensorEnabled(at: 1))!
+            if Sensor1{
+                SensorIndex = 0
+            }else if Sensor2{
+                SensorIndex = 1
+            }else{
+                let banner = Banner(title: "Sensor", subtitle: "Sensors not Enabled",image: nil,backgroundColor:UIColor(red:48.00/255.0, green:174.0/255.0, blue:51.5/255.0, alpha:1.000))
+                banner.dismissesOnTap = true
+                banner.show(duration: 2.0)
+            }
+            let currentSensor:TLSensor = (Session.CurrentDevice?.sensor(at: SensorIndex))!
+            let reading = currentSensor.reading
+            Session.CurrentTemperatureControl?.text = String(format: "%.1f", reading)
+            
+        }
+    }
+    
+    @objc func deviceNotificationReceived(sender: Notification){
+        
+        let cDevice: TLDevice = sender.object as! TLDevice
+        var connectionState:TLDeviceConnectionState? = cDevice.connectionState
+        sleep(3)
+        connectionState = cDevice.connectionState
+        if connectionState == TLDeviceConnectionState.disconnected || connectionState == TLDeviceConnectionState.disconnecting{
+            self.instanceOfCustomObject.remove(Session.CurrentDevice)
+            Session.ThermaQBluetoothProbeConnected = false
+            Session.CurrentDevice = nil
+            return
+        }
+        //        let scantimer = DispatchTime.now() + 0
+        //        DispatchQueue.main.asyncAfter(deadline: scantimer, execute: {
+        //            connectionState = cDevice.connectionState
+        //            if connectionState == TLDeviceConnectionState.disconnected || connectionState == TLDeviceConnectionState.disconnecting{
+        //                self.instanceOfCustomObject.remove(Session.CurrentDevice)
+        //                Session.ThermaQBluetoothProbeConnected = false
+        //                Session.CurrentDevice = nil
+        //                return
+        //            }
+        //        })
+        
+        if Session.ReadingDevice == 1{
+            Session.ReadingDevice = 0
+            probeButtonHasBeenPressed()
+        }else{
+            Session.ReadingDevice = 1
         }
     }
     
     //MARK: Keyboard handling methods
     func registerForKeyboardNotifications(){
         //Adding notifies on keyboard appearing
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     func deregisterFromKeyboardNotifications(){
         //Removing notifies on keyboard appearing
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     @objc func keyboardWasShown(notification: NSNotification){
         //Need to calculate keyboard exact size due to Apple suggestions
         self.tableView.isScrollEnabled = true
         var info = notification.userInfo!
-        let keyboardSize = (info[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.size
-        let contentInsets : UIEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, keyboardSize!.height, 0.0)
+        let keyboardSize = (info[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.size
+        let contentInsets : UIEdgeInsets = UIEdgeInsets.init(top: 0.0, left: 0.0, bottom: keyboardSize!.height, right: 0.0)
         
         self.tableView.contentInset = contentInsets
         self.tableView.scrollIndicatorInsets = contentInsets
@@ -240,8 +404,8 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
     @objc func keyboardWillBeHidden(notification: NSNotification){
         //Once keyboard disappears, restore original positions
         var info = notification.userInfo!
-        let keyboardSize = (info[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.size
-        let contentInsets : UIEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, -keyboardSize!.height, 0.0)
+        let keyboardSize = (info[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.size
+        let contentInsets : UIEdgeInsets = UIEdgeInsets.init(top: 0.0, left: 0.0, bottom: -keyboardSize!.height, right: 0.0)
         self.tableView.contentInset = contentInsets
         self.tableView.scrollIndicatorInsets = contentInsets
         self.view.endEditing(true)
@@ -250,7 +414,6 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
     
     
     //MARK: UITableView delegate methods
-    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return formTaskTemplateParameters.count
     }
@@ -260,7 +423,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
         
         let taskTemplateParameter: TaskTemplateParameter = formTaskTemplateParameters[indexPath.row]
         let taskTemplateParameterFormItem: TaskTemplateParameterFormItem = taskTemplateParameterFormItems[taskTemplateParameter.RowId]!
-
+        
         var predecessor: String? = nil
         if (taskTemplateParameter.Predecessor != nil)
         {
@@ -275,7 +438,8 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
         {
             let currentTaskTemplateParameterFormItem: TaskTemplateParameterFormItem = taskTemplateParameterFormItems[predecessor!]!
             
-            currentTaskTemplateParameterFormItem.Dependencies.append(taskTemplateParameterFormItem)
+            //we did this when the form was loaded.
+            //currentTaskTemplateParameterFormItem.Dependencies.append(taskTemplateParameterFormItem)
             
             if (currentTaskTemplateParameterFormItem.SelectedItem == taskTemplateParameter.PredecessorTrueValue)
             {
@@ -286,7 +450,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
         
         if taskTemplateParameter.ParameterName.hasPrefix("Temperature") && !taskTemplateParameter.ParameterName.hasSuffix("Set")
         {
-
+            
             let cell = tableView.dequeueReusableCell(withIdentifier: "TemperatureCell", for: indexPath) as! TaskTemplateParameterCellTemperature
             cell.restorationIdentifier = taskTemplateParameter.RowId
             if (HotType == "Blended" && taskTemplateParameter.ParameterDisplay == "Hot Temperature")
@@ -299,7 +463,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
             }
             cell.Question.textColor =  taskTemplateParameterFormItem.LabelColour
             cell.Answer.backgroundColor = taskTemplateParameterFormItem.ControlBackgroundColor
-        
+            
             cell.Answer.restorationIdentifier = taskTemplateParameter.RowId
             cell.Answer.delegate = self
             
@@ -346,11 +510,11 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
                 cell.restorationIdentifier = taskTemplateParameter.RowId
                 cell.Question.text = taskTemplateParameter.ParameterDisplay
                 cell.Question.textColor =  taskTemplateParameterFormItem.LabelColour
-
+                
                 cell.Answer.restorationIdentifier = taskTemplateParameter.RowId
                 cell.Answer.delegate = self
                 cell.Answer.backgroundColor = taskTemplateParameterFormItem.ControlBackgroundColor
-
+                
                 if taskTemplateParameterFormItem.SelectedItem != nil
                 {
                     cell.Answer.text = taskTemplateParameterFormItem.SelectedItem
@@ -363,11 +527,11 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
                 cell.restorationIdentifier = taskTemplateParameter.RowId
                 cell.Question.text = taskTemplateParameter.ParameterDisplay
                 cell.Question.textColor =  taskTemplateParameterFormItem.LabelColour
-
+                
                 cell.Answer.restorationIdentifier = taskTemplateParameter.RowId
                 cell.Answer.delegate = self
                 cell.Answer.backgroundColor = taskTemplateParameterFormItem.ControlBackgroundColor
-
+                
                 
                 if taskTemplateParameterFormItem.SelectedItem != nil
                 {
@@ -389,13 +553,13 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
                 dropdownData.append(NotApplicable)
                 
                 cell.AnswerSelector.restorationIdentifier = taskTemplateParameter.RowId
-                cell.AnswerSelector.buttonContentHorizontalAlignment = UIControlContentHorizontalAlignment.left
+                cell.AnswerSelector.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
                 cell.AnswerSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
                 cell.AnswerSelector.setTableFont(UIFont.systemFont(ofSize: 17))
                 cell.AnswerSelector.options = dropdownData.map { KFPopupSelector.Option.text(text: $0) }
                 cell.AnswerSelector.backgroundColor = taskTemplateParameterFormItem.ControlBackgroundColor
-
-
+                
+                
                 var selectedItem: Int = 0
                 
                 if taskTemplateParameterFormItem.SelectedItem != nil
@@ -410,9 +574,9 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
                         }
                         count += 1
                     }
-
+                    
                 }
-
+                
                 cell.AnswerSelector.selectedIndex = selectedItem
                 cell.AnswerSelector.unselectedLabelText = PleaseSelect
                 cell.AnswerSelector.displaySelectedValueInLabel = true
@@ -432,7 +596,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
                 cell.restorationIdentifier = taskTemplateParameter.RowId
                 cell.Question.text = taskTemplateParameter.ParameterDisplay
                 cell.Question.textColor =  taskTemplateParameterFormItem.LabelColour
-
+                
                 cell.Answer.restorationIdentifier = taskTemplateParameter.RowId
                 cell.Answer.delegate = self
                 cell.Answer.backgroundColor = taskTemplateParameterFormItem.ControlBackgroundColor
@@ -444,7 +608,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
                 
                 return cell
             }
-
+            
         }
     }
     
@@ -456,10 +620,44 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
     
     //MARK: Control handling
     
+    fileprivate func ProcessDependencies(_ thisTaskTemplateParameterFormItem: TaskTemplateParameterFormItem) {
+        
+        debugPrint("ProcessDependencies: " + thisTaskTemplateParameterFormItem.TemplateParameter.RowId)
+        
+        for currentTaskTemplateParameterFormItem in thisTaskTemplateParameterFormItem.Dependencies
+        {
+            if (currentTaskTemplateParameterFormItem.TemplateParameter.PredecessorTrueValue == thisTaskTemplateParameterFormItem.SelectedItem)
+                &&
+                (
+                    !(
+                        (currentTaskTemplateParameterFormItem.TemplateParameter.ParameterName == "TemperatureHot" && HotType == "None") || (currentTaskTemplateParameterFormItem.TemplateParameter.ParameterName == "TemperatureCold" && ColdType == "None")
+                    )
+                )
+            {
+                currentTaskTemplateParameterFormItem.Enabled = true
+                EnableControl(currentTaskTemplateParameterFormItem.TemplateParameter.RowId, enabled: true)
+                currentTaskTemplateParameterFormItem.SelectedItem = nil
+                SetParameterValue(currentTaskTemplateParameterFormItem.TemplateParameter.RowId, value: nil)
+            }
+            else
+            {
+                currentTaskTemplateParameterFormItem.Enabled = false
+                EnableControl(currentTaskTemplateParameterFormItem.TemplateParameter.RowId, enabled: false)
+                currentTaskTemplateParameterFormItem.SelectedItem =  NotApplicable
+                SetParameterValue(currentTaskTemplateParameterFormItem.TemplateParameter.RowId, value: NotApplicable)
+            }
+            
+            //Handle the dependencies dependents
+            ProcessDependencies(currentTaskTemplateParameterFormItem)
+        }
+    }
+    
     @IBAction func AnswerPopupChanged(_ sender: KFPopupSelector) {
         
         if let thisTaskTemplateParameterId: String = sender.restorationIdentifier
         {
+            debugPrint("AnswerPopupChanged: " + thisTaskTemplateParameterId)
+            
             if let thisTaskTemplateParameterFormItem: TaskTemplateParameterFormItem = taskTemplateParameterFormItems[thisTaskTemplateParameterId]
             {
                 //record the selected value
@@ -467,30 +665,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
                 {
                     thisTaskTemplateParameterFormItem.SelectedItem = sender.selectedValue
                     
-                    //start up any dependent controls
-                    for currentTaskTemplateParameterFormItem in thisTaskTemplateParameterFormItem.Dependencies
-                    {
-                        if (currentTaskTemplateParameterFormItem.TemplateParameter.PredecessorTrueValue == sender.selectedValue)
-                        &&
-                        (
-                            !(
-                                (currentTaskTemplateParameterFormItem.TemplateParameter.ParameterName == "TemperatureHot" && HotType == "None") || (currentTaskTemplateParameterFormItem.TemplateParameter.ParameterName == "TemperatureCold" && ColdType == "None")
-                              )
-                        )
-                        {
-                            currentTaskTemplateParameterFormItem.Enabled = true
-                            EnableControl(currentTaskTemplateParameterFormItem.TemplateParameter.RowId, enabled: true)
-                            currentTaskTemplateParameterFormItem.SelectedItem = nil
-                            SetParameterValue(currentTaskTemplateParameterFormItem.TemplateParameter.RowId, value: nil)
-                        }
-                        else
-                        {
-                            currentTaskTemplateParameterFormItem.Enabled = false
-                            EnableControl(currentTaskTemplateParameterFormItem.TemplateParameter.RowId, enabled: false)
-                            currentTaskTemplateParameterFormItem.SelectedItem =  NotApplicable
-                            SetParameterValue(currentTaskTemplateParameterFormItem.TemplateParameter.RowId, value: NotApplicable)
-                        }
-                    }
+                    ProcessDependencies(thisTaskTemplateParameterFormItem)
                 }
             }
         }
@@ -511,13 +686,14 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
             {
                 Session.CurrentProfileControl = sender as? UITextField
             }
-         
+            
             let temperatureProfileViewController = segue.destination as! TemperatureProfileViewController
             temperatureProfileViewController.hot = (Session.CurrentProfileControl!.tag == TemperatureProfileCellHot)
             Session.GettingProfile = true
         }
+        
     }
-
+    
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         if (Session.TimerRunning)
         {
@@ -531,19 +707,19 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
                 let cell: TaskTemplateParameterCellTemperature = (sender as! UIButton).superview!.superview as! TaskTemplateParameterCellTemperature
                 if (cell.Answer.text != String())
                 {
-                    let userPrompt: UIAlertController = UIAlertController(title: "Overwrite Profile?", message: "Are you sure you want to overwrite the current profile?", preferredStyle: UIAlertControllerStyle.alert)
+                    let userPrompt: UIAlertController = UIAlertController(title: "Overwrite Profile?", message: "Are you sure you want to overwrite the current profile?", preferredStyle: UIAlertController.Style.alert)
                     
                     
-                    let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel) {
+                    let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel) {
                         action in
                         //do nothing
                     }
-
-                    let OKAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.destructive) {
+                    
+                    let OKAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.destructive) {
                         action in
                         self.performSegue(withIdentifier: "TemperatureProfileSegue", sender: sender)
                     }
-
+                    
                     userPrompt.addAction(cancelAction)
                     userPrompt.addAction(OKAction)
                     
@@ -554,7 +730,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
         return true
     }
     
-   
+    
     //MARK: - UITextFieldDelegate
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
@@ -567,14 +743,14 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
         {
             if (textField.text != String())
             {
-                let userPrompt: UIAlertController = UIAlertController(title: "Overwrite Profile?", message: "Are you sure you want to overwrite the current profile?", preferredStyle: UIAlertControllerStyle.alert)
+                let userPrompt: UIAlertController = UIAlertController(title: "Overwrite Profile?", message: "Are you sure you want to overwrite the current profile?", preferredStyle: UIAlertController.Style.alert)
                 
-                let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel) {
+                let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel) {
                     action in
                     //do nothing
                 }
                 
-                let OKAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.destructive) {
+                let OKAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.destructive) {
                     action in
                     self.performSegue(withIdentifier: "TemperatureProfileSegue", sender: textField)
                 }
@@ -590,7 +766,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
             }
             return false
         }
-
+        
         return true
     }
     
@@ -600,27 +776,45 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        if (textField.tag >= TemperatureCell && Session.BluetoothProbeConnected)
-        {
+        if (textField.tag >= TemperatureCell && Session.ThermaQBluetoothProbeConnected){
             if (!Session.TimerRunning)
             {
+                Session.ReadingDevice = 1
                 Session.CurrentTemperatureControl = textField
                 Session.CurrentTemperatureControl!.isEnabled = false
                 Session.CurrentTemperatureControl!.backgroundColor = UIColor.green
-                startProbeTimer(0.25)
+                Session.TimerRunning = true
             }
+            addDoneButtonOnKeyboard(textField)
+            activeField = textField
+        }else{
+            if (textField.tag >= TemperatureCell && Session.BluetoothProbeConnected)
+            {
+                if !(EAController.shared().selectedAccessory.isAwaitingUI){
+                    if (!Session.TimerRunning)
+                    {
+                        Session.CurrentTemperatureControl = textField
+                        Session.CurrentTemperatureControl!.isEnabled = false
+                        Session.CurrentTemperatureControl!.backgroundColor = UIColor.green
+                        startProbeTimer(0.25)
+                    }
+                }
+                
+            }
+            addDoneButtonOnKeyboard(textField)
+            activeField = textField
         }
-        self.addDoneButtonOnKeyboard(textField)
-        activeField = textField
+        
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        if (textField.tag >= TemperatureCell && Session.BluetoothProbeConnected)
+        if (textField.tag >= TemperatureCell && Session.BluetoothProbeConnected || textField.tag >= TemperatureCell && Session.ThermaQBluetoothProbeConnected)
         {
             stopProbeTimer()
             Session.CurrentTemperatureControl!.isEnabled = true
             Session.CurrentTemperatureControl!.backgroundColor = UIColor.white
         }
+        
         if (textField.restorationIdentifier != nil)
         {
             if let currentTaskTemplateParameterFormItem: TaskTemplateParameterFormItem = taskTemplateParameterFormItems[textField.restorationIdentifier!]
@@ -630,6 +824,8 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
         }
         activeField = nil
         textField.resignFirstResponder()
+        
+        
     }
     
     //MARK: UITextViewDelegate
@@ -655,36 +851,36 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
     }
     
     @IBOutlet var BluetoothButton: UIBarButtonItem!
-
+    
     
     //MARK: Actions
     
     @IBAction func CancelPressed(_ sender: UIBarButtonItem) {
         if(Session.TimerRunning)
         {
-            let userPrompt: UIAlertController = UIAlertController(title: "Probe Active", message: "You have an active connection to the probe.  Please close the connection before proceeding", preferredStyle: UIAlertControllerStyle.alert)
-  
+            let userPrompt: UIAlertController = UIAlertController(title: "Probe Active", message: "You have an active connection to the probe.  Please close the connection before proceeding", preferredStyle: UIAlertController.Style.alert)
+            
             userPrompt.addAction(UIAlertAction(
                 title: "OK",
-                style: UIAlertActionStyle.cancel,
+                style: UIAlertAction.Style.cancel,
                 handler: nil))
-
+            
             present(userPrompt, animated: true, completion: nil)
         }
         else
         {
-            let userPrompt: UIAlertController = UIAlertController(title: "Leave task?", message: "Are you sure you want to leave this task?  Any unsaved data will be lost.", preferredStyle: UIAlertControllerStyle.alert)
+            let userPrompt: UIAlertController = UIAlertController(title: "Leave task?", message: "Are you sure you want to leave this task?  Any unsaved data will be lost.", preferredStyle: UIAlertController.Style.alert)
             
             //the cancel action
             userPrompt.addAction(UIAlertAction(
                 title: "Cancel",
-                style: UIAlertActionStyle.cancel,
+                style: UIAlertAction.Style.cancel,
                 handler: nil))
             
             //the destructive option
             userPrompt.addAction(UIAlertAction(
                 title: "OK",
-                style: UIAlertActionStyle.destructive,
+                style: UIAlertAction.Style.destructive,
                 handler: self.LeaveTask))
             
             present(userPrompt, animated: true, completion: nil)
@@ -692,15 +888,21 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
     }
     
     func LeaveTask (_ actionTarget: UIAlertAction) {
-        Session.CodeScanned = nil
-        Session.TaskId = nil
-        EAController.shared().callBack = nil
-        _ = self.navigationController?.popViewController(animated: true)
+        if Session.BluetoothProbeConnected{
+            Session.CodeScanned = nil
+            Session.TaskId = nil
+            EAController.shared().callBack = nil
+            _ = self.navigationController?.popViewController(animated: true)
+        }else{
+            Session.CodeScanned = nil
+            Session.TaskId = nil
+            _ = self.navigationController?.popViewController(animated: true)
+        }
     }
-
+    
     func Validate() -> Bool{
         var valid: Bool = true;
-
+        
         for (_,taskTemplateParameterFormItem) in taskTemplateParameterFormItems
         {
             let taskTemplateParameter: TaskTemplateParameter = taskTemplateParameterFormItem.TemplateParameter
@@ -767,7 +969,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
         
         return valid
     }
-   
+    
     func GetParameterValue(_ taskTemplateParameterId: String) -> String?
     {
         return taskTemplateParameterFormItems[taskTemplateParameterId]?.SelectedItem
@@ -775,6 +977,8 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
     
     func SetParameterValue(_ taskTemplateParameterId: String, value: String?)
     {
+        debugPrint("SetParameterValue: " + taskTemplateParameterId + " = " + (value != nil ? value! : "nil"))
+        
         for tableCell in tableView.visibleCells
         {
             if tableCell.restorationIdentifier == taskTemplateParameterId
@@ -804,14 +1008,14 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
                     return
                     
                 case"Reference Data":
-
+                    
                     let cell: TaskTemplateParameterCellDropdown = tableCell as! TaskTemplateParameterCellDropdown
                     let options: [KFPopupSelector.Option] = cell.AnswerSelector.options
                     if (value != nil)
                     {
                         for index in 0...options.count - 1
                         {
-                            if (String(describing: options[index])  == "Text(\"" + value! + "\")")
+                            if (String(describing: options[index])  == "text(\"" + value! + "\")")
                             {
                                 if (cell.AnswerSelector.selectedIndex != index)
                                 {
@@ -858,7 +1062,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
                         let cell: TaskTemplateParameterCellTemperature = tableCell as! TaskTemplateParameterCellTemperature
                         
                         if (
-                                (taskTemplateParameter.ParameterName == "TemperatureHot" && HotType == "Hot")
+                            (taskTemplateParameter.ParameterName == "TemperatureHot" && HotType == "Hot")
                                 || (taskTemplateParameter.ParameterName == "TemperatureCold" && ColdType == "Cold")
                                 || (taskTemplateParameter.ParameterName == "TemperatureFeedHot")
                                 || (taskTemplateParameter.ParameterName == "TemperatureFeedCold")
@@ -904,33 +1108,33 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
                 
                 switch (taskTemplateParameter.ParameterType)
                 {
-                
-                    case "Freetext":
-                        let cell: TaskTemplateParameterCellFreetext = tableCell as! TaskTemplateParameterCellFreetext
+                    
+                case "Freetext":
+                    let cell: TaskTemplateParameterCellFreetext = tableCell as! TaskTemplateParameterCellFreetext
+                    cell.Question.textColor = colour
+                    return
+                    
+                    
+                case "Number":
+                    if taskTemplateParameter.ParameterName.hasPrefix("Temperature") && !taskTemplateParameter.ParameterName.hasSuffix("Set")
+                    {
+                        let cell: TaskTemplateParameterCellTemperature = tableCell as! TaskTemplateParameterCellTemperature
                         cell.Question.textColor = colour
-                        return
-
-                        
-                    case "Number":
-                        if taskTemplateParameter.ParameterName.hasPrefix("Temperature") && !taskTemplateParameter.ParameterName.hasSuffix("Set")
-                        {
-                            let cell: TaskTemplateParameterCellTemperature = tableCell as! TaskTemplateParameterCellTemperature
-                            cell.Question.textColor = colour
-                        }
-                        else
-                        {
-                            let cell: TaskTemplateParameterCellNumber = tableCell as! TaskTemplateParameterCellNumber
-                            cell.Question.textColor = colour
-                        }
-                        return
-                   
-                    case"Reference Data":
-                        let cell: TaskTemplateParameterCellDropdown = tableCell as! TaskTemplateParameterCellDropdown
+                    }
+                    else
+                    {
+                        let cell: TaskTemplateParameterCellNumber = tableCell as! TaskTemplateParameterCellNumber
                         cell.Question.textColor = colour
-                        return
-                        
-                    default:
-                        return
+                    }
+                    return
+                    
+                case"Reference Data":
+                    let cell: TaskTemplateParameterCellDropdown = tableCell as! TaskTemplateParameterCellDropdown
+                    cell.Question.textColor = colour
+                    return
+                    
+                default:
+                    return
                 }
             }
         }
@@ -981,11 +1185,11 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
     @IBAction func DonePressed(_ sender: UIBarButtonItem) {
         if(Session.TimerRunning)
         {
-            let userPrompt: UIAlertController = UIAlertController(title: "Probe Active", message: "You have an active connection to the probe.  Please close the connection before proceeding", preferredStyle: UIAlertControllerStyle.alert)
+            let userPrompt: UIAlertController = UIAlertController(title: "Probe Active", message: "You have an active connection to the probe.  Please close the connection before proceeding", preferredStyle: UIAlertController.Style.alert)
             
             userPrompt.addAction(UIAlertAction(
                 title: "OK",
-                style: UIAlertActionStyle.cancel,
+                style: UIAlertAction.Style.cancel,
                 handler: nil))
             
             present(userPrompt, animated: true, completion: nil)
@@ -995,19 +1199,19 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
             //do all the vlaidation
             if (!Validate())
             {
-                let userPrompt: UIAlertController = UIAlertController(title: "Incomplete task!", message: "Please complete the fields highlighted with red.", preferredStyle: UIAlertControllerStyle.alert)
+                let userPrompt: UIAlertController = UIAlertController(title: "Incomplete task!", message: "Please complete the fields highlighted with red.", preferredStyle: UIAlertController.Style.alert)
                 
                 //the cancel action
                 userPrompt.addAction(UIAlertAction(
                     title: "OK",
-                    style: UIAlertActionStyle.default,
+                    style: UIAlertAction.Style.default,
                     handler: nil))
                 
                 present(userPrompt, animated: true, completion: nil)
                 
                 return
             }
-
+            
             let now = Date()
             var accessbile: Bool = true
             
@@ -1024,7 +1228,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
             currentTaskParameter.Collect = removeAssetParameter.Collect
             currentTaskParameter.ParameterValue = (RemoveAsset.isOn ? "true" : "false")
             _ = ModelManager.getInstance().addTaskParameter(currentTaskParameter)
-
+            
             currentTaskParameter = TaskParameter()
             currentTaskParameter.RowId = UUID().uuidString
             currentTaskParameter.CreatedBy = Session.OperativeId!
@@ -1098,7 +1302,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
             {
                 task.Status = "Outstanding"
             }
-
+            
             _ = ModelManager.getInstance().updateTask(task)
             
             Utility.SendTasks(self.navigationController!, HUD: nil)
@@ -1208,14 +1412,14 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
         print("Emissivity value: %@",emissivity)
     }
     
-
+    
     //MARK: Alert Messages Delegate
     func alertMessagesCreateAlertViewNoConnectionFoundSHOW() {
         Session.BluetoothProbeConnected = false
     }
     
     func alertMessagesCreateAlertViewNoConnectionFoundDISMISS() {
-        Session.BluetoothProbeConnected = true
+        Session.BluetoothProbeConnected = false
     }
     
     func alertViewConnectionHasBeenLostSHOW() {
@@ -1223,7 +1427,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
     }
     
     func alertViewConnectionHasBeenLostDISMISS() {
-        Session.BluetoothProbeConnected = true
+        Session.BluetoothProbeConnected = false
     }
     
     func addDoneButtonOnKeyboard(_ view: UIView?)
@@ -1231,8 +1435,8 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
         
         let doneToolbar: UIToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: 320, height: 50))
         doneToolbar.barStyle = UIBarStyle.blackTranslucent
-        let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
-        let done: UIBarButtonItem = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.done, target: view, action: #selector(UIResponder.resignFirstResponder))
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
+        let done: UIBarButtonItem = UIBarButtonItem(title: "Done", style: UIBarButtonItem.Style.done, target: view, action: #selector(UIResponder.resignFirstResponder))
         var items: [UIBarButtonItem] = [UIBarButtonItem]()
         items.append(flexSpace)
         items.append(done)
