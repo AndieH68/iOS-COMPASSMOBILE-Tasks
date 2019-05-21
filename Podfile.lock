@@ -1,0 +1,30 @@
+PODS:
+  - AEXML (4.4.0)
+  - BRYXBanner (0.8.3)
+  - FMDB (2.7.5):
+    - FMDB/standard (= 2.7.5)
+  - FMDB/standard (2.7.5)
+  - MBProgressHUD (1.1.0)
+
+DEPENDENCIES:
+  - AEXML
+  - BRYXBanner
+  - FMDB
+  - MBProgressHUD
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - AEXML
+    - BRYXBanner
+    - FMDB
+    - MBProgressHUD
+
+SPEC CHECKSUMS:
+  AEXML: 16fb739dfb3809e91ebf9e9dc391482c3a6aaebf
+  BRYXBanner: 8cf1b119792e1cee8d7ba107297ef89f7409bc53
+  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
+
+PODFILE CHECKSUM: 4f3099038b1ae93f2765e76eaba1a02c70cce77b
+
+COCOAPODS: 1.6.2
