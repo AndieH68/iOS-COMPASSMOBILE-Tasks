@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var result: Bool = false
         var message: String = String()
         
-        (result, message) = Utility.copyFile((self.window?.rootViewController)!, fileName: "COMPASSDB.sqlite")
+        (result, message) = Utility.copyFile("COMPASSDB.sqlite")
         
         if(!result)
         {
@@ -35,6 +35,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         {
             Session.DatabasePresent = true
             Session.DatabaseMessage = String()
+            
+            _ = ModelManager.getInstance().CheckDatabaseStructure()
             
             let defaults = UserDefaults.standard
             Session.Server = defaults.object(forKey: "Server") as? String ?? String()

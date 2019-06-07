@@ -127,9 +127,33 @@ class FilterViewController: UIViewController {
         AssetNumberPopupSelector.unselectedLabelText = NotApplicable
         AssetNumberPopupSelector.isEnabled = false
         
-        PopulateSiteSelector()
-        PopulateFrequencySelector()
-        PopulatePeriodSelector()
+        if(!Session.FilterOnTasks)
+        {
+            PopulateSiteSelector()
+            PopulateFrequencySelector()
+            PopulatePeriodSelector()
+        }
+        else
+        {
+            PopulateSiteSelector()
+            SitePopupSelector.isEnabled = true
+            PopulatePropertySelector()
+            PropertyPopupSelector.isEnabled = true
+            PopulateFrequencySelector()
+            FrequencyPopupSelector.isEnabled = true
+            PopulatePeriodSelector()
+            PeriodPopupSelector.isEnabled = true
+            PopulateAssetGroupSelector()
+            AssetGroupPopupSelector.isEnabled = true
+            PopulateTaskNameSelector()
+            TaskNamePopupSelector.isEnabled = true
+            PopulateAssetTypeSelector()
+            AssetTypePopupSelector.isEnabled = true
+            PopulateLocationGroupSelector()
+            LocationGroupPopupSelector.isEnabled = true
+            PopulateLocationSelector()
+            LocationPopupSelector.isEnabled = true
+        }
     }
 
     @IBAction func Cancel(_ sender: UIBarButtonItem) {
@@ -192,7 +216,14 @@ class FilterViewController: UIViewController {
         Sites.append("")
         
         // go and get the AssetGroup data based on the criteria built
-        SiteIds = ModelUtility.getInstance().GetFilterSiteList(Session.OrganisationId!)
+        if (Session.FilterOnTasks)
+        {
+            SiteIds = ModelUtility.getInstance().GetTaskFilterSiteList(Session.OrganisationId!)
+        }
+        else
+        {
+            SiteIds = ModelUtility.getInstance().GetFilterSiteList(Session.OrganisationId!)
+        }
         
         var count: Int = 1 //we already have the blank row
         for currentSiteId: String in SiteIds
@@ -226,7 +257,14 @@ class FilterViewController: UIViewController {
         Properties.append("")
         
         // go and get the AssetGroup data based on the criteria built
-        PropertyIds = ModelUtility.getInstance().GetFilterPropertyList(Session.FilterSiteId!)
+        if (Session.FilterOnTasks)
+        {
+            PropertyIds = ModelUtility.getInstance().GetTaskFilterPropertyList(Session.OrganisationId!)
+        }
+        else
+        {
+            PropertyIds = ModelUtility.getInstance().GetFilterPropertyList(Session.FilterSiteId!)
+        }
         
         var count: Int = 1 //we already have the blank row
         for currentPropertyId: String in PropertyIds
@@ -322,7 +360,14 @@ class FilterViewController: UIViewController {
         AssetGroups.append("")
         
         // go and get the AssetGroup data based on the criteria built
-        AssetGroupData = ModelUtility.getInstance().GetFilterAssetGroupList(Session.FilterPropertyId!, LocationGroupName: Session.FilterLocationGroup, Location: Session.FilterLocation)
+        if (Session.FilterOnTasks)
+        {
+            AssetGroupData = ModelUtility.getInstance().GetTaskFilterAssetGroupList(Session.OrganisationId!)
+        }
+        else
+        {
+            AssetGroupData = ModelUtility.getInstance().GetFilterAssetGroupList(Session.FilterPropertyId!, LocationGroupName: Session.FilterLocationGroup, Location: Session.FilterLocation)
+        }
         
         var count: Int = 1 //we already have the blank row
         for currentAssetGroup: String in AssetGroupData
@@ -356,7 +401,14 @@ class FilterViewController: UIViewController {
         TaskNames.append("")
         
         // go and get the TaskName data based on the criteria built
-        TaskNameData = ModelUtility.getInstance().GetFilterTaskNameList(Session.FilterPropertyId!, AssetGroup: Session.FilterAssetGroup!, AssetType: Session.FilterAssetType, LocationGroupName: Session.FilterLocationGroup, Location: Session.FilterLocation)
+        if (Session.FilterOnTasks)
+        {
+            TaskNameData = ModelUtility.getInstance().GetTaskFilterTaskNameList(Session.OrganisationId!)
+        }
+        else
+        {
+            TaskNameData = ModelUtility.getInstance().GetFilterTaskNameList(Session.FilterPropertyId!, AssetGroup: Session.FilterAssetGroup!, AssetType: Session.FilterAssetType, LocationGroupName: Session.FilterLocationGroup, Location: Session.FilterLocation)
+        }
         
         var count: Int = 1 //we already have the blank row
         for currentTaskName: String in TaskNameData
@@ -394,7 +446,14 @@ class FilterViewController: UIViewController {
         AssetTypes.append("")
         
         // go and get the AssetType data based on the criteria built
-        AssetTypeData = ModelUtility.getInstance().GetFilterAssetTypeList(Session.FilterPropertyId!, AssetGroup: Session.FilterAssetGroup!, TaskName: Session.FilterTaskName, LocationGroupName: Session.FilterLocationGroup, Location: Session.FilterLocation)
+        if (Session.FilterOnTasks)
+        {
+            AssetTypeData = ModelUtility.getInstance().GetTaskFilterAssetTypeList(Session.OrganisationId!)
+        }
+        else
+        {
+            AssetTypeData = ModelUtility.getInstance().GetFilterAssetTypeList(Session.FilterPropertyId!, AssetGroup: Session.FilterAssetGroup!, TaskName: Session.FilterTaskName, LocationGroupName: Session.FilterLocationGroup, Location: Session.FilterLocation)
+        }
         
         var count: Int = 1 //we already have the blank row
         for currentAssetType: String in AssetTypeData
@@ -428,7 +487,14 @@ class FilterViewController: UIViewController {
         LocationGroups.append("")
         
         // go and get the LocationGroup data based on the criteria built
-        LocationGroupData = ModelUtility.getInstance().GetFilterLocationGroupList(Session.FilterPropertyId!, AssetGroup: Session.FilterAssetGroup, TaskName: Session.FilterTaskName, AssetType: Session.FilterAssetType)
+        if (Session.FilterOnTasks)
+        {
+            LocationGroupData = ModelUtility.getInstance().GetTaskFilterLocationGroupList(Session.OrganisationId!)
+        }
+        else
+        {
+            LocationGroupData = ModelUtility.getInstance().GetFilterLocationGroupList(Session.FilterPropertyId!, AssetGroup: Session.FilterAssetGroup, TaskName: Session.FilterTaskName, AssetType: Session.FilterAssetType)
+        }
         
         var count: Int = 1 //we already have the blank row
         for currentLocationGroup: String in LocationGroupData
@@ -461,8 +527,15 @@ class FilterViewController: UIViewController {
         var selectedIndex: Int? = 0
         Locations.append("")
         
-        // go and get the Location data based on the criteria built
-        LocationData = ModelUtility.getInstance().GetFilterLocationList(Session.FilterPropertyId!, AssetGroup: Session.FilterAssetGroup, TaskName: Session.FilterTaskName, AssetType: Session.FilterAssetType, LocationGroupName: Session.FilterLocationGroup!)
+        //p]]
+        if (Session.FilterOnTasks)
+        {
+            LocationData = ModelUtility.getInstance().GetTaskFilterLocationList(Session.OrganisationId!)
+        }
+        else
+        {
+            LocationData = ModelUtility.getInstance().GetFilterLocationList(Session.FilterPropertyId!, AssetGroup: Session.FilterAssetGroup, TaskName: Session.FilterTaskName, AssetType: Session.FilterAssetType, LocationGroupName: Session.FilterLocationGroup!)
+        }
         
         var count: Int = 1 //we already have the blank row
         for currentLocation: String in LocationData
@@ -520,53 +593,114 @@ class FilterViewController: UIViewController {
     
     
     //MARK : Action from selection
+    var inProcessSite: Bool = false
     
     @IBAction func SiteChanged(_ sender: KFPopupSelector) {
-        //set the site filter
-        if (SitePopupSelector.selectedIndex != nil && Sites[SitePopupSelector.selectedIndex!] != "")
+        if(!inProcessSite)
         {
-            Session.FilterSiteId = SiteDictionary[Sites[SitePopupSelector.selectedIndex!]]
-            Session.FilterSiteName = Sites[SitePopupSelector.selectedIndex!]
-        
-            //do the property stuff
-            PopulatePropertySelector()
-            PropertyPopupSelector.isEnabled = true
-        }
-        else
-        {
-            if (SitePopupSelector.selectedIndex != nil) { SitePopupSelector.selectedIndex = nil }
-            Session.FilterSiteId = nil
-            Session.FilterSiteName = nil
-            PropertyPopupSelector.unselectedLabelText = NotApplicable
-            PropertyPopupSelector.isEnabled = false
+            inProcessSite = true
+            //set the site filter
+            if (SitePopupSelector.selectedIndex != nil && Sites[SitePopupSelector.selectedIndex!] != "")
+            {
+                Session.FilterSiteId = SiteDictionary[Sites[SitePopupSelector.selectedIndex!]]
+                Session.FilterSiteName = Sites[SitePopupSelector.selectedIndex!]
+                
+                //do the property stuff
+                if (!Session.FilterOnTasks)
+                {
+                    PopulatePropertySelector()
+                    PropertyPopupSelector.isEnabled = true
+                }
+                else
+                {
+                    //PopulateSiteSelector()
+                    PopulatePropertySelector()
+                    PopulateAssetGroupSelector()
+                    PopulateTaskNameSelector()
+                    PopulateAssetTypeSelector()
+                    PopulateLocationGroupSelector()
+                    PopulateLocationSelector()
+                }
+            }
+            else
+            {
+                if (SitePopupSelector.selectedIndex != nil) { SitePopupSelector.selectedIndex = nil }
+                Session.FilterSiteId = nil
+                Session.FilterSiteName = nil
+                PropertyPopupSelector.unselectedLabelText = NotApplicable
+                if (!Session.FilterOnTasks) {PropertyPopupSelector.isEnabled = false}
+                
+                if (Session.FilterOnTasks)
+                {
+//                    //PopulateSiteSelector()
+//                    PopulatePropertySelector()
+//                    PopulateAssetGroupSelector()
+//                    PopulateTaskNameSelector()
+//                    PopulateAssetTypeSelector()
+//                    PopulateLocationGroupSelector()
+//                    PopulateLocationSelector()
+                }
+            }
+            inProcessSite = false
         }
     }
-    
+
+    var inProcessProperty: Bool = false
+
     @IBAction func PropertyChanged(_ sender: KFPopupSelector) {
-        //set the property filter
-        if (PropertyPopupSelector.selectedIndex != nil  && Properties[PropertyPopupSelector.selectedIndex!] != "")
+        if(!inProcessProperty)
         {
-            Session.FilterPropertyId = PropertyDictionary[Properties[PropertyPopupSelector.selectedIndex!]]
-            Session.FilterPropertyName = Properties[PropertyPopupSelector.selectedIndex!]
-        
-            //do the asset group stuff
-            PopulateAssetGroupSelector()
-            AssetGroupPopupSelector.isEnabled = true
-        
-            //do the are stuff
-            PopulateLocationGroupSelector()
-            LocationGroupPopupSelector.isEnabled = true
-        }
-        else
-        {
-            if (PropertyPopupSelector.selectedIndex != nil) { PropertyPopupSelector.selectedIndex = nil }
-            Session.FilterPropertyId = nil
-            Session.FilterPropertyName = nil
-            AssetGroupPopupSelector.unselectedLabelText = NotApplicable
-            AssetGroupPopupSelector.isEnabled = false
+            inProcessProperty = true       //set the property filter
             
-            LocationGroupPopupSelector.unselectedLabelText = NotApplicable
-            LocationGroupPopupSelector.isEnabled = false
+            if (PropertyPopupSelector.selectedIndex != nil  && Properties[PropertyPopupSelector.selectedIndex!] != "")
+            {
+                Session.FilterPropertyId = PropertyDictionary[Properties[PropertyPopupSelector.selectedIndex!]]
+                Session.FilterPropertyName = Properties[PropertyPopupSelector.selectedIndex!]
+                
+                if (!Session.FilterOnTasks)
+                {
+                    //do the asset group stuff
+                    PopulateAssetGroupSelector()
+                    AssetGroupPopupSelector.isEnabled = true
+                    
+                    //do the area stuff
+                    PopulateLocationGroupSelector()
+                    LocationGroupPopupSelector.isEnabled = true
+                }
+                else
+                {
+                    PopulateSiteSelector()
+                    //PopulatePropertySelector()
+                    PopulateAssetGroupSelector()
+                    PopulateTaskNameSelector()
+                    PopulateAssetTypeSelector()
+                    PopulateLocationGroupSelector()
+                    PopulateLocationSelector()
+                }
+            }
+            else
+            {
+                if (PropertyPopupSelector.selectedIndex != nil) { PropertyPopupSelector.selectedIndex = nil }
+                Session.FilterPropertyId = nil
+                Session.FilterPropertyName = nil
+                AssetGroupPopupSelector.unselectedLabelText = NotApplicable
+                if (!Session.FilterOnTasks) {AssetGroupPopupSelector.isEnabled = false}
+                
+                LocationGroupPopupSelector.unselectedLabelText = NotApplicable
+                if (!Session.FilterOnTasks) {LocationGroupPopupSelector.isEnabled = false}
+                
+                if (Session.FilterOnTasks)
+                {
+//                    PopulateSiteSelector()
+//                    //PopulatePropertySelector()
+//                    PopulateAssetGroupSelector()
+//                    PopulateTaskNameSelector()
+//                    PopulateAssetTypeSelector()
+//                    PopulateLocationGroupSelector()
+//                    PopulateLocationSelector()
+                }
+            }
+            inProcessProperty = false
         }
     }
  
@@ -597,99 +731,248 @@ class FilterViewController: UIViewController {
         Session.FilterJustMyTasks = sender.isOn
     }
     
-    @IBAction func AssetGroupChanged(_ sender: KFPopupSelector) {
-        //set the property filter
-        if (AssetGroupPopupSelector.selectedIndex != nil && AssetGroups[AssetGroupPopupSelector.selectedIndex!] != "")
-        {
-            Session.FilterAssetGroup = AssetGroupDictionary[AssetGroups[AssetGroupPopupSelector.selectedIndex!]]
-            
-            //do the Task name stuff
-            PopulateTaskNameSelector()
-            TaskNamePopupSelector.isEnabled = true
-        }
-        else
-        {
-            if (AssetGroupPopupSelector.selectedIndex != nil) { AssetGroupPopupSelector.selectedIndex = nil }
-            Session.FilterAssetGroup = nil
-            TaskNamePopupSelector.unselectedLabelText = NotApplicable
-            TaskNamePopupSelector.isEnabled = false
-        }
-    }
+    var inProcessAssetGroup: Bool = false
     
-    @IBAction func TaskNameChange(_ sender: KFPopupSelector) {
-        //set the property filter
-        if (TaskNamePopupSelector.selectedIndex != nil && TaskNames[TaskNamePopupSelector.selectedIndex!] != "")
+    @IBAction func AssetGroupChanged(_ sender: KFPopupSelector) {
+        if(!inProcessAssetGroup)
         {
-            if(TaskNames[TaskNamePopupSelector.selectedIndex!] == RemedialTask)
+            inProcessAssetGroup = true       //set the property filter
+            if (AssetGroupPopupSelector.selectedIndex != nil && AssetGroups[AssetGroupPopupSelector.selectedIndex!] != "")
             {
-                 Session.FilterTaskName = RemedialTask
+                Session.FilterAssetGroup = AssetGroupDictionary[AssetGroups[AssetGroupPopupSelector.selectedIndex!]]
+                
+                //do the Task name stuff
+                if (!Session.FilterOnTasks)
+                {
+                    PopulateTaskNameSelector()
+                    TaskNamePopupSelector.isEnabled = true
+                }
+                else
+                {
+                    PopulateSiteSelector()
+                    PopulatePropertySelector()
+                    //PopulateAssetGroupSelector()
+                    PopulateTaskNameSelector()
+                    PopulateAssetTypeSelector()
+                    PopulateLocationGroupSelector()
+                    PopulateLocationSelector()
+                }
             }
             else
             {
-                Session.FilterTaskName = TaskNameDictionary[TaskNames[TaskNamePopupSelector.selectedIndex!]]
+                if (AssetGroupPopupSelector.selectedIndex != nil) { AssetGroupPopupSelector.selectedIndex = nil }
+                Session.FilterAssetGroup = nil
+                TaskNamePopupSelector.unselectedLabelText = NotApplicable
+                if (!Session.FilterOnTasks) {TaskNamePopupSelector.isEnabled = false}
+                
+                if (Session.FilterOnTasks)
+                {
+//                    PopulateSiteSelector()
+//                    PopulatePropertySelector()
+//                    //PopulateAssetGroupSelector()
+//                    PopulateTaskNameSelector()
+//                    PopulateAssetTypeSelector()
+//                    PopulateLocationGroupSelector()
+//                    PopulateLocationSelector()
+                }
             }
-            
-            //do the AssetType stuff
-            PopulateAssetTypeSelector()
-            AssetTypePopupSelector.isEnabled = true
-        }
-        else
-        {
-            if (TaskNamePopupSelector.selectedIndex != nil) { TaskNamePopupSelector.selectedIndex = nil }
-            Session.FilterTaskName = nil
-            AssetTypePopupSelector.unselectedLabelText = NotApplicable
-            AssetTypePopupSelector.isEnabled = false
+            inProcessAssetGroup = false
         }
     }
+    
+    var inProcessTaskName: Bool = false
+    
+    @IBAction func TaskNameChange(_ sender: KFPopupSelector) {
+        if(!inProcessTaskName)
+        {
+            inProcessTaskName = true        //set the property filter
+            if (TaskNamePopupSelector.selectedIndex != nil && TaskNames[TaskNamePopupSelector.selectedIndex!] != "")
+            {
+                if(TaskNames[TaskNamePopupSelector.selectedIndex!] == RemedialTask)
+                {
+                    Session.FilterTaskName = RemedialTask
+                }
+                else
+                {
+                    Session.FilterTaskName = TaskNameDictionary[TaskNames[TaskNamePopupSelector.selectedIndex!]]
+                }
+                
+                if (!Session.FilterOnTasks)
+                {
+                    //do the AssetType stuff
+                    PopulateAssetTypeSelector()
+                    AssetTypePopupSelector.isEnabled = true
+                }
+                else
+                {
+                    PopulateSiteSelector()
+                    PopulatePropertySelector()
+                    PopulateAssetGroupSelector()
+                    //PopulateTaskNameSelector()
+                    PopulateAssetTypeSelector()
+                    PopulateLocationGroupSelector()
+                    PopulateLocationSelector()
+                }
+            }
+            else
+            {
+                if (TaskNamePopupSelector.selectedIndex != nil) { TaskNamePopupSelector.selectedIndex = nil }
+                Session.FilterTaskName = nil
+                AssetTypePopupSelector.unselectedLabelText = NotApplicable
+                if (!Session.FilterOnTasks) {AssetTypePopupSelector.isEnabled = false}
+                
+                if (Session.FilterOnTasks)
+                {
+//                    PopulateSiteSelector()
+//                    PopulatePropertySelector()
+//                    PopulateAssetGroupSelector()
+//                    //PopulateTaskNameSelector()
+//                    PopulateAssetTypeSelector()
+//                    PopulateLocationGroupSelector()
+//                    PopulateLocationSelector()
+                }
+            }
+            inProcessTaskName = false
+        }
+    }
+    
+    var inProcessAssetType: Bool = false
     
     @IBAction func AssetTypeChanged(_ sender: KFPopupSelector) {
-        //set the property filter
-        if (AssetTypePopupSelector.selectedIndex != nil && AssetTypes[AssetTypePopupSelector.selectedIndex!] != "")
+        if(!inProcessAssetType)
         {
-            Session.FilterAssetType = AssetTypeDictionary[AssetTypes[AssetTypePopupSelector.selectedIndex!]]
-        }
-        else
-        {
-            if (AssetTypePopupSelector.selectedIndex != nil) { AssetTypePopupSelector.selectedIndex = nil }
-            Session.FilterAssetType = nil
+            inProcessAssetType = true        //set the property filter
+            if (AssetTypePopupSelector.selectedIndex != nil && AssetTypes[AssetTypePopupSelector.selectedIndex!] != "")
+            {
+                Session.FilterAssetType = AssetTypeDictionary[AssetTypes[AssetTypePopupSelector.selectedIndex!]]
+                debugPrint(Session.FilterAssetType!)
+                if (Session.FilterOnTasks)
+                {
+                    PopulateSiteSelector()
+                    PopulatePropertySelector()
+                    PopulateAssetGroupSelector()
+                    PopulateTaskNameSelector()
+                    //PopulateAssetTypeSelector()
+                    PopulateLocationGroupSelector()
+                    PopulateLocationSelector()
+                }
+            }
+            else
+            {
+                if (AssetTypePopupSelector.selectedIndex != nil) { AssetTypePopupSelector.selectedIndex = nil }
+                Session.FilterAssetType = nil
+                
+                if (Session.FilterOnTasks)
+                {
+//                    PopulateSiteSelector()
+//                    PopulatePropertySelector()
+//                    PopulateAssetGroupSelector()
+//                    PopulateTaskNameSelector()
+//                    //PopulateAssetTypeSelector()
+//                    PopulateLocationGroupSelector()
+//                    PopulateLocationSelector()
+                }
+            }
+            inProcessAssetType = false
         }
     }
+    
+    var inProcessLocationGroup: Bool = false
     
     @IBAction func LocationGroupChanged(_ sender: KFPopupSelector) {
-        //set the property filter
-        if (LocationGroupPopupSelector.selectedIndex != nil && LocationGroups[LocationGroupPopupSelector.selectedIndex!] != "")
+        if (!inProcessLocationGroup)
         {
-            Session.FilterLocationGroup = LocationGroupDictionary[LocationGroups[LocationGroupPopupSelector.selectedIndex!]]
-            
-            //do the AssetType stuff
-            PopulateLocationSelector()
-            LocationPopupSelector.isEnabled = true
-        }
-        else
-        {
-            if (LocationGroupPopupSelector.selectedIndex != nil) { LocationGroupPopupSelector.selectedIndex = nil }
-            Session.FilterLocationGroup = nil
-            LocationPopupSelector.unselectedLabelText = NotApplicable
-            LocationPopupSelector.isEnabled = false
+            inProcessLocationGroup = true       //set the property filter
+            if (LocationGroupPopupSelector.selectedIndex != nil && LocationGroups[LocationGroupPopupSelector.selectedIndex!] != "")
+            {
+                Session.FilterLocationGroup = LocationGroupDictionary[LocationGroups[LocationGroupPopupSelector.selectedIndex!]]
+                
+                //do the AssetType stuff
+                if (!Session.FilterOnTasks)
+                {
+                    PopulateLocationSelector()
+                    LocationPopupSelector.isEnabled = true
+                }
+                else
+                {
+                    PopulateSiteSelector()
+                    PopulatePropertySelector()
+                    PopulateAssetGroupSelector()
+                    PopulateTaskNameSelector()
+                    PopulateAssetTypeSelector()
+                    //PopulateLocationGroupSelector()
+                    PopulateLocationSelector()
+                }
+            }
+            else
+            {
+                if (LocationGroupPopupSelector.selectedIndex != nil) { LocationGroupPopupSelector.selectedIndex = nil }
+                Session.FilterLocationGroup = nil
+                LocationPopupSelector.unselectedLabelText = NotApplicable
+                if (!Session.FilterOnTasks) {LocationPopupSelector.isEnabled = false}
+                
+                if (Session.FilterOnTasks)
+                {
+//                    PopulateSiteSelector()
+//                    PopulatePropertySelector()
+//                    PopulateAssetGroupSelector()
+//                    PopulateTaskNameSelector()
+//                    PopulateAssetTypeSelector()
+//                    //PopulateLocationGroupSelector()
+//                    PopulateLocationSelector()
+                }
+            }
+            inProcessLocationGroup = false
         }
     }
     
+    var inProcessLocation: Bool = false
+    
     @IBAction func LocationChanged(_ sender: KFPopupSelector) {
-        //set the property filter
-        if (LocationPopupSelector.selectedIndex != nil && Locations[LocationPopupSelector.selectedIndex!] != "")
+        if (!inProcessLocation)
         {
-            Session.FilterLocation = LocationDictionary[Locations[LocationPopupSelector.selectedIndex!]]
-            
-            //do the AssetNumber stuff
-            PopulateAssetNumberSelector()
-            AssetNumberPopupSelector.isEnabled = true
-        }
-        else
-        {
-            if (LocationPopupSelector.selectedIndex != nil) { LocationPopupSelector.selectedIndex = nil }
-            Session.FilterLocation = nil
-            AssetNumberPopupSelector.unselectedLabelText = NotApplicable
-            AssetNumberPopupSelector.isEnabled = false
+            inProcessLocation = true
+            //set the property filter
+            if (LocationPopupSelector.selectedIndex != nil && Locations[LocationPopupSelector.selectedIndex!] != "")
+            {
+                Session.FilterLocation = LocationDictionary[Locations[LocationPopupSelector.selectedIndex!]]
+                
+                //do the AssetNumber stuff
+                if (!Session.FilterOnTasks)
+                {
+                    PopulateAssetNumberSelector()
+                    AssetNumberPopupSelector.isEnabled = true
+                }
+                else
+                {
+                    PopulateSiteSelector()
+                    PopulatePropertySelector()
+                    PopulateAssetGroupSelector()
+                    PopulateTaskNameSelector()
+                    PopulateAssetTypeSelector()
+                    PopulateLocationGroupSelector()
+                    //PopulateLocationSelector()
+                }
+            }
+            else
+            {
+                if (LocationPopupSelector.selectedIndex != nil) { LocationPopupSelector.selectedIndex = nil }
+                Session.FilterLocation = nil
+                AssetNumberPopupSelector.unselectedLabelText = NotApplicable
+                if (!Session.FilterOnTasks) {AssetNumberPopupSelector.isEnabled = false}
+                
+                if (Session.FilterOnTasks)
+                {
+//                    PopulateSiteSelector()
+//                    PopulatePropertySelector()
+//                    PopulateAssetGroupSelector()
+//                    PopulateTaskNameSelector()
+//                    PopulateAssetTypeSelector()
+//                    PopulateLocationGroupSelector()
+//                    //PopulateLocationSelector()
+                }
+            }
+            inProcessLocation = false
         }
     }
     

@@ -25,6 +25,7 @@ class SettingsViewController: UITableViewController, MBProgressHUDDelegate
     @IBOutlet var TaskTimingsSwitch: UISwitch!
     @IBOutlet var TemperatureProfileSwitch: UISwitch!
     @IBOutlet var RememberFilterSettingsSwitch: UISwitch!
+    @IBOutlet var FilterOnTasksSwitch: UISwitch!
     @IBOutlet var VersionNumber: UILabel!
     @IBOutlet weak var Debug: UILabel!
     
@@ -48,6 +49,7 @@ class SettingsViewController: UITableViewController, MBProgressHUDDelegate
         TaskTimingsSwitch.isOn = Session.UseTaskTiming
         TemperatureProfileSwitch.isOn = Session.UseTemperatureProfile
         RememberFilterSettingsSwitch.isOn = Session.RememberFilterSettings
+        FilterOnTasksSwitch.isOn = Session.FilterOnTasks
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -99,9 +101,15 @@ class SettingsViewController: UITableViewController, MBProgressHUDDelegate
     @IBAction func RememberFilterSettingsSwitchValueChanged(_ sender: UISwitch) {
         Session.RememberFilterSettings = RememberFilterSettingsSwitch.isOn
         let defaults = UserDefaults.standard
-        defaults.set(Session.RememberFilterSettings, forKey: "TemperatureProfile")
+        defaults.set(Session.RememberFilterSettings, forKey: "RememberFilterSettings")
     }
     
+    @IBAction func FilterOnTasksSwitchValueChanged(_ sender: UISwitch) {
+        Session.FilterOnTasks = FilterOnTasksSwitch.isOn
+        let defaults = UserDefaults.standard
+        defaults.set(Session.FilterOnTasks, forKey: "FilterOnTasks")
+    }
+
     // MARK: - Navigationj7
     
     
@@ -209,6 +217,31 @@ class SettingsViewController: UITableViewController, MBProgressHUDDelegate
                 
                 present(userPrompt, animated: true, completion: nil)
 
+            case 5:
+                //backup database
+                var result: Bool
+                var message: String
+                (result, message) = Utility.backupDatabase("COMPASSDB.sqlite")
+                result = message == "";
+                if(!result){
+                    let userPrompt: UIAlertController = UIAlertController(title: "Backup failed", message: message, preferredStyle: UIAlertController.Style.alert)
+                    userPrompt.addAction(UIAlertAction(
+                        title: "Ok",
+                        style: UIAlertAction.Style.cancel,
+                        handler: nil))
+                    present(userPrompt, animated: true, completion: nil)
+                }
+                else
+                {
+                    let userPrompt: UIAlertController = UIAlertController(title: "Backup", message: "Backup successful", preferredStyle: UIAlertController.Style.alert)
+                    userPrompt.addAction(UIAlertAction(
+                        title: "Ok",
+                        style: UIAlertAction.Style.cancel,
+                        handler: nil))
+                    present(userPrompt, animated: true, completion: nil)
+                }
+                
+                
             default:
                 print("default")
             }

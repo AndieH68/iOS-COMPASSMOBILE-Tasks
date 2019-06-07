@@ -26,6 +26,50 @@ class ModelManager: NSObject {
         return sharedModelManager
     }
     
+    func CheckDatabaseStructure() -> Bool {
+        var returnValue: Bool = true;
+        sharedModelManager.database!.open()
+        var SQLStatement: String = String()
+        
+        let SQLParameterValues: [NSObject] = [NSObject]()
+        
+        //check for the OperativeGroupTable
+        if (returnValue){
+            SQLStatement = "SELECT name FOM sqlite_master WHERE type = 'table' and name = 'OperativeGroup'"
+            let resultSet = sharedModelManager.database!.executeQuery(SQLStatement, withArgumentsIn: SQLParameterValues)
+            if (resultSet == nil)
+            {
+                //create the table
+                SQLStatement = "CREATE TABLE OperativeGroup (RowId VARCHAR (36) NOT NULL CONSTRAINT PK_OperativeGroupId PRIMARY KEY COLLATE NOCASE, CreatedBy VARCHAR (36) NOT NULL COLLATE NOCASE, CreatedOn DATETIME NOT NULL, LastUpdatedBy VARCHAR (36) COLLATE NOCASE, LastUpdatedOn DATETIME, Deleted DATETIME, OrganisationId VARCHAR (36) NOT NULL COLLATE NOCASE, Name VARCHAR (50) COLLATE NOCASE);"
+                returnValue = sharedModelManager.database!.executeStatements(SQLStatement)
+            }
+        }
+        
+        if (returnValue){
+            SQLStatement = " SELECT name FOM sqlite_master WHERE type = 'table' and name='OperativeGroupMembership'"
+            let resultSet = sharedModelManager.database!.executeQuery(SQLStatement, withArgumentsIn: SQLParameterValues)
+            if (resultSet == nil)
+            {
+                //create the table
+                SQLStatement = "CREATE TABLE OperativeGroupMembership (RowId VARCHAR (36) NOT NULL CONSTRAINT PK_OperativeGroupMembershipId PRIMARY KEY COLLATE NOCASE, CreatedBy VARCHAR (36) NOT NULL COLLATE NOCASE, CreatedOn DATETIME NOT NULL, LastUpdatedBy VARCHAR (36) COLLATE NOCASE, LastUpdatedOn DATETIME, Deleted DATETIME, OperativeGroupId VARCHAR (36) NOT NULL COLLATE NOCASE, OperativeId VARCHAR (36) NOT NULL COLLATE NOCASE);"
+                returnValue = sharedModelManager.database!.executeStatements(SQLStatement)
+            }
+        }
+        
+        if (returnValue){
+            SQLStatement = " SELECT name FOM sqlite_master WHERE type = 'table' and name='OperativeGroupTaskTemplateMembership'"
+            let resultSet = sharedModelManager.database!.executeQuery(SQLStatement, withArgumentsIn: SQLParameterValues)
+            if (resultSet == nil)
+            {
+                //create the table
+                SQLStatement = "CREATE TABLE OperativeGroupTaskTemplateMembership (RowId VARCHAR (36) NOT NULL CONSTRAINT PK_OperativeGroupMembershipId PRIMARY KEY COLLATE NOCASE, CreatedBy VARCHAR (36) NOT NULL COLLATE NOCASE, CreatedOn DATETIME NOT NULL, LastUpdatedBy VARCHAR (36) COLLATE NOCASE, LastUpdatedOn DATETIME, Deleted DATETIME, OperativeGroupId VARCHAR (36) NOT NULL COLLATE NOCASE, TaskTemplateId VARCHAR (36) NOT NULL COLLATE NOCASE);"
+                returnValue = sharedModelManager.database!.executeStatements(SQLStatement)
+            }
+        }
+        
+        return returnValue
+    }
+    
     func executeDirectNoParameters(_ SQLStatement: String) -> Bool{
         sharedModelManager.database!.open()
         let isExecuted: Bool = sharedModelManager.database!.executeStatements(SQLStatement)
@@ -338,7 +382,7 @@ class ModelManager: NSObject {
         (list, _) = findAssetList(criteria, pageSize: nil, pageNumber: nil)
         return list
     }
-
+    
     func findAssetList(_ criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [Asset], Count: Int32) {
         
         //return variables
@@ -355,7 +399,7 @@ class ModelManager: NSObject {
         {
             whereClause = "WHERE " + whereClause
         }
-   
+        
         sharedModelManager.database!.open()
         let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [Asset] " + whereClause, withArgumentsIn: whereValues)
         if (countSet != nil) {
@@ -679,7 +723,7 @@ class ModelManager: NSObject {
         (list, _) = findLocationList(criteria, pageSize: nil, pageNumber: nil)
         return list
     }
-
+    
     func findLocationList(_ criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [Location], Count: Int32) {
         //return variables
         var count: Int32 = 0
@@ -698,7 +742,7 @@ class ModelManager: NSObject {
         {
             whereClause = "WHERE " + whereClause
         }
-
+        
         sharedModelManager.database!.open()
         let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [Location] " + whereClause + orderByClause, withArgumentsIn: whereValues)
         if (countSet != nil) {
@@ -763,7 +807,7 @@ class ModelManager: NSObject {
         sharedModelManager.database!.close()
         return (locationList, count)
     }
-
+    
     func findLocationListByLocationGroup(_ LocationGroupId: String, criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [Location], Count: Int32) {
         //return variables
         var count: Int32 = 0
@@ -849,7 +893,7 @@ class ModelManager: NSObject {
         sharedModelManager.database!.close()
         return (locationList, count)
     }
-
+    
     // MARK: - LocationGroup
     
     func addLocationGroup(_ locationGroup: LocationGroup) -> Bool {
@@ -1057,7 +1101,6 @@ class ModelManager: NSObject {
                     locationGroup.OccupantRiskFactor = resultSet.string(forColumn: "OccupantRiskFactor")
                 }
                 
-                
                 locationGroupList.append(locationGroup)
             }
         }
@@ -1071,7 +1114,7 @@ class ModelManager: NSObject {
         (list, _) = findLocationGroupList(criteria, pageSize: nil, pageNumber: nil)
         return list
     }
-
+    
     func findLocationGroupList(_ criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [LocationGroup], Count: Int32) {
         //return variables
         var count: Int32 = 0
@@ -1090,7 +1133,7 @@ class ModelManager: NSObject {
         {
             whereClause = "WHERE " + whereClause
         }
-
+        
         sharedModelManager.database!.open()
         let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [LocationGroup] " + whereClause + orderByClause, withArgumentsIn: whereValues)
         if (countSet != nil) {
@@ -1315,7 +1358,7 @@ class ModelManager: NSObject {
         (list, _) = findLocationGroupMembershipList(criteria, pageSize: nil, pageNumber: nil)
         return list
     }
-
+    
     func findLocationGroupMembershipList(_ criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [LocationGroupMembership], Count: Int32) {
         //return variables
         var count: Int32 = 0
@@ -1331,7 +1374,7 @@ class ModelManager: NSObject {
         {
             whereClause = "WHERE " + whereClause
         }
-
+        
         sharedModelManager.database!.open()
         let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [LocationGroupMembership] " + whereClause, withArgumentsIn: whereValues)
         if (countSet != nil) {
@@ -1546,7 +1589,7 @@ class ModelManager: NSObject {
         (list, _) = findOperativeList(criteria, pageSize: nil, pageNumber: nil)
         return list
     }
-
+    
     func findOperativeList(_ criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [Operative], Count: Int32) {
         //return variables
         var count: Int32 = 0
@@ -1565,7 +1608,7 @@ class ModelManager: NSObject {
         {
             whereClause = "WHERE " + whereClause
         }
-
+        
         sharedModelManager.database!.open()
         let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [Operative] " + whereClause + orderByClause, withArgumentsIn: whereValues)
         if (countSet != nil) {
@@ -1614,8 +1657,704 @@ class ModelManager: NSObject {
         return (operativeList, count)
     }
     
-    // MARK: - Organisation
+    // MARK: - OperativeGroup
     
+    func addOperativeGroup(_ operativeGroup: OperativeGroup) -> Bool {
+        //build the sql statemnt
+        var SQLStatement: String = String()
+        var SQLParameterNames: String = String()
+        var SQLParameterPlaceholders: String = String()
+        var SQLParameterValues: [NSObject] = [NSObject]()
+        
+        SQLParameterNames = "[RowId], [CreatedBy], [CreatedOn]"
+        SQLParameterPlaceholders = "?, ?, ?"
+        SQLParameterValues.append(operativeGroup.RowId as NSObject)
+        SQLParameterValues.append(operativeGroup.CreatedBy as NSObject)
+        SQLParameterValues.append(operativeGroup.CreatedOn as NSObject)
+        
+        if operativeGroup.LastUpdatedBy != nil {
+            SQLParameterNames += ", [LastUpdatedBy]"
+            SQLParameterPlaceholders += ", ?"
+            SQLParameterValues.append(operativeGroup.LastUpdatedBy! as NSObject)
+        }
+        
+        if operativeGroup.LastUpdatedOn != nil {
+            SQLParameterNames += ", [LastUpdatedOn]"
+            SQLParameterPlaceholders += ", ?"
+            SQLParameterValues.append(operativeGroup.LastUpdatedOn! as NSObject)
+        }
+        
+        if operativeGroup.Deleted != nil {
+            SQLParameterNames += ", [Deleted]"
+            SQLParameterPlaceholders += ", ?"
+            SQLParameterValues.append(operativeGroup.Deleted! as NSObject)
+        }
+        SQLParameterNames += ", [OrganisationId]"
+        SQLParameterPlaceholders += ", ?"
+        SQLParameterValues.append(operativeGroup.OrganisationId as NSObject)
+        if operativeGroup.Name != nil {
+            SQLParameterNames += ", [Name]"
+            SQLParameterPlaceholders += ", ?"
+            SQLParameterValues.append(operativeGroup.Name! as NSObject)
+        }
+        SQLStatement = "INSERT INTO [OperativeGroup] (" + SQLParameterNames + ") VALUES (" + SQLParameterPlaceholders + ")"
+        
+        sharedModelManager.database!.open()
+        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
+        sharedModelManager.database!.close()
+        return isInserted
+    }
+    
+    func updateOperativeGroup(_ operativeGroup: OperativeGroup) -> Bool {
+        //build the sql statemnt
+        var SQLStatement: String = String()
+        var SQLParameterNames: String = String()
+        var SQLParameterValues: [NSObject] = [NSObject]()
+        
+        SQLParameterNames = "[CreatedBy]=?, [CreatedOn]=?"
+        SQLParameterValues.append(operativeGroup.CreatedBy as NSObject)
+        SQLParameterValues.append(operativeGroup.CreatedOn as NSObject)
+        
+        if operativeGroup.LastUpdatedBy != nil {
+            SQLParameterNames += ", [LastUpdatedBy]=?"
+            SQLParameterValues.append(operativeGroup.LastUpdatedBy! as NSObject)
+        }
+        
+        if operativeGroup.LastUpdatedOn != nil {
+            SQLParameterNames += ", [LastUpdatedOn]=?"
+            SQLParameterValues.append(operativeGroup.LastUpdatedOn! as NSObject)
+        }
+        
+        if operativeGroup.Deleted != nil {
+            SQLParameterNames += ", [Deleted]=?"
+            SQLParameterValues.append(operativeGroup.Deleted! as NSObject)
+        }
+        SQLParameterNames += ", [OrganisationId]=?"
+        SQLParameterValues.append(operativeGroup.OrganisationId as NSObject)
+        if operativeGroup.Name != nil {
+            SQLParameterNames += ", [Name]=?"
+            SQLParameterValues.append(operativeGroup.Name! as NSObject)
+        }
+        
+        SQLParameterValues.append(operativeGroup.RowId as NSObject)
+        
+        SQLStatement = "UPDATE [OperativeGroup] SET " + SQLParameterNames + "WHERE [RowId]=?"
+        
+        sharedModelManager.database!.open()
+        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
+        sharedModelManager.database!.close()
+        return isUpdated
+    }
+    
+    func deleteOperativeGroup(_ operativeGroup: OperativeGroup) -> Bool {
+        sharedModelManager.database!.open()
+        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [OperativeGroup] WHERE [RowId]=?", withArgumentsIn: [operativeGroup.RowId])
+        sharedModelManager.database!.close()
+        return isDeleted
+    }
+    
+    func getOperativeGroup(_ operativeGroupId: String) -> OperativeGroup? {
+        sharedModelManager.database!.open()
+        var operativeGroup: OperativeGroup? = nil
+        
+        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [Name] FROM [OperativeGroup] WHERE [RowId]=?", withArgumentsIn: [operativeGroupId])
+        if (resultSet != nil) {
+            while (resultSet?.next())! {
+                var resultOperativeGroup: OperativeGroup = OperativeGroup()
+                resultOperativeGroup = OperativeGroup()
+                resultOperativeGroup.RowId = (resultSet?.string(forColumn: "RowId"))!
+                resultOperativeGroup.CreatedBy = (resultSet?.string(forColumn: "CreatedBy"))!
+                resultOperativeGroup.CreatedOn = resultSet!.date(forColumn: "CreatedOn")!
+                if !(resultSet?.columnIsNull("LastUpdatedBy"))!
+                {
+                    resultOperativeGroup.LastUpdatedBy = resultSet?.string(forColumn: "LastUpdatedBy")
+                }
+                if !(resultSet?.columnIsNull("LastUpdatedOn"))!
+                {
+                    resultOperativeGroup.LastUpdatedOn = resultSet?.date(forColumn: "LastUpdatedOn")
+                }
+                if !(resultSet?.columnIsNull("Deleted"))!
+                {
+                    resultOperativeGroup.Deleted = resultSet?.date(forColumn: "Deleted")
+                }
+                resultOperativeGroup.OrganisationId = (resultSet?.string(forColumn: "OrganisationId"))!
+                if !(resultSet?.columnIsNull("Name"))! {
+                    resultOperativeGroup.Name = resultSet?.string(forColumn: "Name")
+                }
+                
+                operativeGroup = resultOperativeGroup
+            }
+        }
+        sharedModelManager.database!.close()
+        return operativeGroup
+    }
+    
+    func getAllOperativeGroup() -> [OperativeGroup] {
+        sharedModelManager.database!.open()
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [Name] FROM [OperativeGroup]", withArgumentsIn: [])
+        var operativeGroupList : [OperativeGroup] = [OperativeGroup]()
+        if (resultSet != nil) {
+            while resultSet.next() {
+                let operativeGroup : OperativeGroup = OperativeGroup()
+                operativeGroup.RowId = resultSet.string(forColumn: "RowId")!
+                operativeGroup.CreatedBy = resultSet.string(forColumn: "CreatedBy")!
+                operativeGroup.CreatedOn = resultSet.date(forColumn: "CreatedOn")!
+                if !resultSet.columnIsNull("LastUpdatedBy")
+                {
+                    operativeGroup.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
+                }
+                if !resultSet.columnIsNull("LastUpdatedOn")
+                {
+                    operativeGroup.LastUpdatedOn = resultSet.date(forColumn: "LastUpdatedOn")
+                }
+                if !resultSet.columnIsNull("Deleted")
+                {
+                    operativeGroup.Deleted = resultSet.date(forColumn: "Deleted")
+                }
+                operativeGroup.OrganisationId = resultSet.string(forColumn: "OrganisationId")!
+                if !resultSet.columnIsNull("Name") {
+                    operativeGroup.Name = resultSet.string(forColumn: "Name")
+                }
+                operativeGroupList.append(operativeGroup)
+                
+            }
+        }
+        sharedModelManager.database!.close()
+        return operativeGroupList
+    }
+    
+    func findOperativeGroupList(_ criteria: Dictionary<String, AnyObject>) -> [OperativeGroup] {
+        var list: [OperativeGroup] = [OperativeGroup]()
+        //var count: Int32 = 0
+        (list, _) = findOperativeGroupList(criteria, pageSize: nil, pageNumber: nil)
+        return list
+    }
+    
+    func findOperativeGroupList(_ criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [OperativeGroup], Count: Int32) {
+        //return variables
+        var count: Int32 = 0
+        var operativeGroupList: [OperativeGroup] = [OperativeGroup]()
+        
+        //build the order clause
+        let orderByClause: String = " ORDER BY [Name]"
+        
+        //build the where clause
+        var whereClause: String = String()
+        var whereValues: [AnyObject] = [AnyObject]()
+        
+        (whereClause, whereValues) = buildWhereClause(criteria)
+        
+        if (whereClause != "")
+        {
+            whereClause = "WHERE " + whereClause
+        }
+        
+        sharedModelManager.database!.open()
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [OperativeGroup] " + whereClause + orderByClause, withArgumentsIn: whereValues)
+        if (countSet != nil) {
+            while countSet.next() {
+                count = countSet.int(forColumnIndex: 0)
+            }
+        }
+        
+        if (count > 0)
+        {
+            var pageClause: String = String()
+            if (pageSize != nil && pageNumber != nil)
+            {
+                pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
+            }
+            
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [Name] FROM [OperativeGroup] " + whereClause + orderByClause + pageClause, withArgumentsIn: whereValues)
+            if (resultSet != nil) {
+                while resultSet.next() {
+                    let operativeGroup : OperativeGroup = OperativeGroup()
+                    operativeGroup.RowId = resultSet.string(forColumn: "RowId")!
+                    operativeGroup.CreatedBy = resultSet.string(forColumn: "CreatedBy")!
+                    operativeGroup.CreatedOn = resultSet.date(forColumn: "CreatedOn")!
+                    if !resultSet.columnIsNull("LastUpdatedBy")
+                    {
+                        operativeGroup.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
+                    }
+                    if !resultSet.columnIsNull("LastUpdatedOn")
+                    {
+                        operativeGroup.LastUpdatedOn = resultSet.date(forColumn: "LastUpdatedOn")
+                    }
+                    if !resultSet.columnIsNull("Deleted")
+                    {
+                        operativeGroup.Deleted = resultSet.date(forColumn: "Deleted")
+                    }
+                    operativeGroup.OrganisationId = resultSet.string(forColumn: "OrganisationId")!
+                    if !resultSet.columnIsNull("Name") {
+                        operativeGroup.Name = resultSet.string(forColumn: "Name")
+                    }
+                    
+                    operativeGroupList.append(operativeGroup)
+                }
+            }
+        }
+        
+        sharedModelManager.database!.close()
+        return (operativeGroupList, count)
+    }
+    
+    // MARK: - OperativeGroupMembership
+    
+    func addOperativeGroupMembership(_ operativeGroupMembership: OperativeGroupMembership) -> Bool {
+        //build the sql statemnt
+        var SQLStatement: String = String()
+        var SQLParameterNames: String = String()
+        var SQLParameterPlaceholders: String = String()
+        var SQLParameterValues: [NSObject] = [NSObject]()
+        
+        SQLParameterNames = "[RowId], [CreatedBy], [CreatedOn]"
+        SQLParameterPlaceholders = "?, ?, ?"
+        SQLParameterValues.append(operativeGroupMembership.RowId as NSObject)
+        SQLParameterValues.append(operativeGroupMembership.CreatedBy as NSObject)
+        SQLParameterValues.append(operativeGroupMembership.CreatedOn as NSObject)
+        
+        if operativeGroupMembership.LastUpdatedBy != nil {
+            SQLParameterNames += ", [LastUpdatedBy]"
+            SQLParameterPlaceholders += ", ?"
+            SQLParameterValues.append(operativeGroupMembership.LastUpdatedBy! as NSObject)
+        }
+        
+        if operativeGroupMembership.LastUpdatedOn != nil {
+            SQLParameterNames += ", [LastUpdatedOn]"
+            SQLParameterPlaceholders += ", ?"
+            SQLParameterValues.append(operativeGroupMembership.LastUpdatedOn! as NSObject)
+        }
+        
+        if operativeGroupMembership.Deleted != nil {
+            SQLParameterNames += ", [Deleted]"
+            SQLParameterPlaceholders += ", ?"
+            SQLParameterValues.append(operativeGroupMembership.Deleted! as NSObject)
+        }
+        SQLParameterNames += ", [OperativeGroupId]"
+        SQLParameterPlaceholders += ", ?"
+        SQLParameterValues.append(operativeGroupMembership.OperativeGroupId as NSObject)
+        SQLParameterNames += ", [OperativeId]"
+        SQLParameterPlaceholders += ", ?"
+        SQLParameterValues.append(operativeGroupMembership.OperativeId as NSObject)
+        
+        SQLStatement = "INSERT INTO [OperativeGroupMembership] (" + SQLParameterNames + ") VALUES (" + SQLParameterPlaceholders + ")"
+        
+        sharedModelManager.database!.open()
+        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
+        sharedModelManager.database!.close()
+        return isInserted
+    }
+    
+    func updateOperativeGroupMembership(_ operativeGroupMembership: OperativeGroupMembership) -> Bool {
+        //build the sql statemnt
+        var SQLStatement: String = String()
+        var SQLParameterNames: String = String()
+        var SQLParameterValues: [NSObject] = [NSObject]()
+        
+        SQLParameterNames = "[CreatedBy]=?, [CreatedOn]=?"
+        SQLParameterValues.append(operativeGroupMembership.CreatedBy as NSObject)
+        SQLParameterValues.append(operativeGroupMembership.CreatedOn as NSObject)
+        
+        if operativeGroupMembership.LastUpdatedBy != nil {
+            SQLParameterNames += ", [LastUpdatedBy]=?"
+            SQLParameterValues.append(operativeGroupMembership.LastUpdatedBy! as NSObject)
+        }
+        
+        if operativeGroupMembership.LastUpdatedOn != nil {
+            SQLParameterNames += ", [LastUpdatedOn]=?"
+            SQLParameterValues.append(operativeGroupMembership.LastUpdatedOn! as NSObject)
+        }
+        
+        if operativeGroupMembership.Deleted != nil {
+            SQLParameterNames += ", [Deleted]=?"
+            SQLParameterValues.append(operativeGroupMembership.Deleted! as NSObject)
+        }
+        SQLParameterNames += ", [OperativeGroupId]=?"
+        SQLParameterValues.append(operativeGroupMembership.OperativeGroupId as NSObject)
+        SQLParameterNames += ", [OperativeId]=?"
+        SQLParameterValues.append(operativeGroupMembership.OperativeId as NSObject)
+        
+        SQLParameterValues.append(operativeGroupMembership.RowId as NSObject)
+        
+        SQLStatement = "UPDATE [OperativeGroupMembership] SET " + SQLParameterNames + "WHERE [RowId]=?"
+        
+        sharedModelManager.database!.open()
+        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
+        sharedModelManager.database!.close()
+        return isUpdated
+    }
+    
+    func deleteOperativeGroupMembership(_ operativeGroupMembership: OperativeGroupMembership) -> Bool {
+        sharedModelManager.database!.open()
+        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [OperativeGroupMembership] WHERE [RowId]=?", withArgumentsIn: [operativeGroupMembership.RowId])
+        sharedModelManager.database!.close()
+        return isDeleted
+    }
+    
+    func getOperativeGroupMembership(_ operativeGroupMembershipId: String) -> OperativeGroupMembership? {
+        sharedModelManager.database!.open()
+        var operativeGroupMembership: OperativeGroupMembership? = nil
+        
+        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OperativeGroupId], [OperativeId] FROM [OperativeGroupMembership] WHERE [RowId]=?", withArgumentsIn: [operativeGroupMembershipId])
+        if (resultSet != nil) {
+            while (resultSet?.next())! {
+                var resultOperativeGroupMembership: OperativeGroupMembership = OperativeGroupMembership()
+                resultOperativeGroupMembership = OperativeGroupMembership()
+                resultOperativeGroupMembership.RowId = (resultSet?.string(forColumn: "RowId"))!
+                resultOperativeGroupMembership.CreatedBy = (resultSet?.string(forColumn: "CreatedBy"))!
+                resultOperativeGroupMembership.CreatedOn = resultSet!.date(forColumn: "CreatedOn")!
+                if !(resultSet?.columnIsNull("LastUpdatedBy"))!
+                {
+                    resultOperativeGroupMembership.LastUpdatedBy = resultSet?.string(forColumn: "LastUpdatedBy")
+                }
+                if !(resultSet?.columnIsNull("LastUpdatedOn"))!
+                {
+                    resultOperativeGroupMembership.LastUpdatedOn = resultSet?.date(forColumn: "LastUpdatedOn")
+                }
+                if !(resultSet?.columnIsNull("Deleted"))!
+                {
+                    resultOperativeGroupMembership.Deleted = resultSet?.date(forColumn: "Deleted")
+                }
+                resultOperativeGroupMembership.OperativeGroupId = (resultSet?.string(forColumn: "OperativeGroupId"))!
+                resultOperativeGroupMembership.OperativeId = (resultSet?.string(forColumn: "OperativeId"))!
+                
+                operativeGroupMembership = resultOperativeGroupMembership
+            }
+        }
+        sharedModelManager.database!.close()
+        return operativeGroupMembership
+    }
+    
+    func getAllOperativeGroupMembership() -> [OperativeGroupMembership] {
+        sharedModelManager.database!.open()
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OperativeGroupId], [OperativeId] FROM [OperativeGroupMembership]", withArgumentsIn: [])
+        var operativeGroupMembershipList : [OperativeGroupMembership] = [OperativeGroupMembership]()
+        if (resultSet != nil) {
+            while resultSet.next() {
+                let operativeGroupMembership : OperativeGroupMembership = OperativeGroupMembership()
+                operativeGroupMembership.RowId = resultSet.string(forColumn: "RowId")!
+                operativeGroupMembership.CreatedBy = resultSet.string(forColumn: "CreatedBy")!
+                operativeGroupMembership.CreatedOn = resultSet.date(forColumn: "CreatedOn")!
+                if !resultSet.columnIsNull("LastUpdatedBy")
+                {
+                    operativeGroupMembership.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
+                }
+                if !resultSet.columnIsNull("LastUpdatedOn")
+                {
+                    operativeGroupMembership.LastUpdatedOn = resultSet.date(forColumn: "LastUpdatedOn")
+                }
+                if !resultSet.columnIsNull("Deleted")
+                {
+                    operativeGroupMembership.Deleted = resultSet.date(forColumn: "Deleted")
+                }
+                operativeGroupMembership.OperativeGroupId = resultSet.string(forColumn: "OperativeGroupId")!
+                operativeGroupMembership.OperativeId = resultSet.string(forColumn: "OperativeId")!
+                
+                operativeGroupMembershipList.append(operativeGroupMembership)
+            }
+        }
+        sharedModelManager.database!.close()
+        return operativeGroupMembershipList
+    }
+    
+    func findOperativeGroupMembershipList(_ criteria: Dictionary<String, AnyObject>) -> [OperativeGroupMembership] {
+        var list: [OperativeGroupMembership] = [OperativeGroupMembership]()
+        //var count: Int32 = 0
+        (list, _) = findOperativeGroupMembershipList(criteria, pageSize: nil, pageNumber: nil)
+        return list
+    }
+    
+    func findOperativeGroupMembershipList(_ criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [OperativeGroupMembership], Count: Int32) {
+        //return variables
+        var count: Int32 = 0
+        var operativeGroupMembershipList: [OperativeGroupMembership] = [OperativeGroupMembership]()
+        
+        //build the where clause
+        var whereClause: String = String()
+        var whereValues: [AnyObject] = [AnyObject]()
+        
+        (whereClause, whereValues) = buildWhereClause(criteria)
+        
+        if (whereClause != "")
+        {
+            whereClause = "WHERE " + whereClause
+        }
+        
+        sharedModelManager.database!.open()
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [OperativeGroupMembership] " + whereClause, withArgumentsIn: whereValues)
+        if (countSet != nil) {
+            while countSet.next() {
+                count = countSet.int(forColumnIndex: 0)
+            }
+        }
+        
+        if (count > 0)
+        {
+            var pageClause: String = String()
+            if (pageSize != nil && pageNumber != nil)
+            {
+                pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
+            }
+            
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OperativeGroupId], [OperativeId] FROM [OperativeGroupMembership] " + whereClause + pageClause, withArgumentsIn: whereValues)
+            if (resultSet != nil) {
+                while resultSet.next() {
+                    let operativeGroupMembership : OperativeGroupMembership = OperativeGroupMembership()
+                    operativeGroupMembership.RowId = resultSet.string(forColumn: "RowId")!
+                    operativeGroupMembership.CreatedBy = resultSet.string(forColumn: "CreatedBy")!
+                    operativeGroupMembership.CreatedOn = resultSet.date(forColumn: "CreatedOn")!
+                    if !resultSet.columnIsNull("LastUpdatedBy")
+                    {
+                        operativeGroupMembership.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
+                    }
+                    if !resultSet.columnIsNull("LastUpdatedOn")
+                    {
+                        operativeGroupMembership.LastUpdatedOn = resultSet.date(forColumn: "LastUpdatedOn")
+                    }
+                    if !resultSet.columnIsNull("Deleted")
+                    {
+                        operativeGroupMembership.Deleted = resultSet.date(forColumn: "Deleted")
+                    }
+                    operativeGroupMembership.OperativeGroupId = resultSet.string(forColumn: "OperativeGroupId")!
+                    operativeGroupMembership.OperativeId = resultSet.string(forColumn: "OperativeId")!
+                    
+                    operativeGroupMembershipList.append(operativeGroupMembership)
+                }
+            }
+        }
+        sharedModelManager.database!.close()
+        return (operativeGroupMembershipList, count)
+    }
+    
+    // MARK: - OperativeGroupTaskTemplateMembership
+    
+    func addOperativeGroupTaskTemplateMembership(_ operativeGroupTaskTemplateMembership: OperativeGroupTaskTemplateMembership) -> Bool {
+        //build the sql statemnt
+        var SQLStatement: String = String()
+        var SQLParameterNames: String = String()
+        var SQLParameterPlaceholders: String = String()
+        var SQLParameterValues: [NSObject] = [NSObject]()
+        
+        SQLParameterNames = "[RowId], [CreatedBy], [CreatedOn]"
+        SQLParameterPlaceholders = "?, ?, ?"
+        SQLParameterValues.append(operativeGroupTaskTemplateMembership.RowId as NSObject)
+        SQLParameterValues.append(operativeGroupTaskTemplateMembership.CreatedBy as NSObject)
+        SQLParameterValues.append(operativeGroupTaskTemplateMembership.CreatedOn as NSObject)
+        
+        if operativeGroupTaskTemplateMembership.LastUpdatedBy != nil {
+            SQLParameterNames += ", [LastUpdatedBy]"
+            SQLParameterPlaceholders += ", ?"
+            SQLParameterValues.append(operativeGroupTaskTemplateMembership.LastUpdatedBy! as NSObject)
+        }
+        
+        if operativeGroupTaskTemplateMembership.LastUpdatedOn != nil {
+            SQLParameterNames += ", [LastUpdatedOn]"
+            SQLParameterPlaceholders += ", ?"
+            SQLParameterValues.append(operativeGroupTaskTemplateMembership.LastUpdatedOn! as NSObject)
+        }
+        
+        if operativeGroupTaskTemplateMembership.Deleted != nil {
+            SQLParameterNames += ", [Deleted]"
+            SQLParameterPlaceholders += ", ?"
+            SQLParameterValues.append(operativeGroupTaskTemplateMembership.Deleted! as NSObject)
+        }
+        SQLParameterNames += ", [OperativeGroupId]"
+        SQLParameterPlaceholders += ", ?"
+        SQLParameterValues.append(operativeGroupTaskTemplateMembership.OperativeGroupId as NSObject)
+        SQLParameterNames += ", [TaskTemplateId]"
+        SQLParameterPlaceholders += ", ?"
+        SQLParameterValues.append(operativeGroupTaskTemplateMembership.TaskTemplateId as NSObject)
+        
+        SQLStatement = "INSERT INTO [OperativeGroupTaskTemplateMembership] (" + SQLParameterNames + ") VALUES (" + SQLParameterPlaceholders + ")"
+        
+        sharedModelManager.database!.open()
+        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
+        sharedModelManager.database!.close()
+        return isInserted
+    }
+    
+    func updateOperativeGroupTaskTemplateMembership(_ operativeGroupTaskTemplateMembership: OperativeGroupTaskTemplateMembership) -> Bool {
+        //build the sql statemnt
+        var SQLStatement: String = String()
+        var SQLParameterNames: String = String()
+        var SQLParameterValues: [NSObject] = [NSObject]()
+        
+        SQLParameterNames = "[CreatedBy]=?, [CreatedOn]=?"
+        SQLParameterValues.append(operativeGroupTaskTemplateMembership.CreatedBy as NSObject)
+        SQLParameterValues.append(operativeGroupTaskTemplateMembership.CreatedOn as NSObject)
+        
+        if operativeGroupTaskTemplateMembership.LastUpdatedBy != nil {
+            SQLParameterNames += ", [LastUpdatedBy]=?"
+            SQLParameterValues.append(operativeGroupTaskTemplateMembership.LastUpdatedBy! as NSObject)
+        }
+        
+        if operativeGroupTaskTemplateMembership.LastUpdatedOn != nil {
+            SQLParameterNames += ", [LastUpdatedOn]=?"
+            SQLParameterValues.append(operativeGroupTaskTemplateMembership.LastUpdatedOn! as NSObject)
+        }
+        
+        if operativeGroupTaskTemplateMembership.Deleted != nil {
+            SQLParameterNames += ", [Deleted]=?"
+            SQLParameterValues.append(operativeGroupTaskTemplateMembership.Deleted! as NSObject)
+        }
+        SQLParameterNames += ", [OperativeGroupId]=?"
+        SQLParameterValues.append(operativeGroupTaskTemplateMembership.OperativeGroupId as NSObject)
+        SQLParameterNames += ", [TaskTemplateId]=?"
+        SQLParameterValues.append(operativeGroupTaskTemplateMembership.TaskTemplateId as NSObject)
+        
+        SQLParameterValues.append(operativeGroupTaskTemplateMembership.RowId as NSObject)
+        
+        SQLStatement = "UPDATE [OperativeGroupTaskTemplateMembership] SET " + SQLParameterNames + "WHERE [RowId]=?"
+        
+        sharedModelManager.database!.open()
+        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
+        sharedModelManager.database!.close()
+        return isUpdated
+    }
+    
+    func deleteOperativeGroupTaskTemplateMembership(_ operativeGroupTaskTemplateMembership: OperativeGroupTaskTemplateMembership) -> Bool {
+        sharedModelManager.database!.open()
+        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [OperativeGroupTaskTemplateMembership] WHERE [RowId]=?", withArgumentsIn: [operativeGroupTaskTemplateMembership.RowId])
+        sharedModelManager.database!.close()
+        return isDeleted
+    }
+    
+    func getOperativeGroupTaskTemplateMembership(_ operativeGroupTaskTemplateMembershipId: String) -> OperativeGroupTaskTemplateMembership? {
+        sharedModelManager.database!.open()
+        var operativeGroupTaskTemplateMembership: OperativeGroupTaskTemplateMembership? = nil
+        
+        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OperativeGroupId], [TaskTemplateId] FROM [OperativeGroupTaskTemplateMembership] WHERE [RowId]=?", withArgumentsIn: [operativeGroupTaskTemplateMembershipId])
+        if (resultSet != nil) {
+            while (resultSet?.next())! {
+                var resultOperativeGroupTaskTemplateMembership: OperativeGroupTaskTemplateMembership = OperativeGroupTaskTemplateMembership()
+                resultOperativeGroupTaskTemplateMembership = OperativeGroupTaskTemplateMembership()
+                resultOperativeGroupTaskTemplateMembership.RowId = (resultSet?.string(forColumn: "RowId"))!
+                resultOperativeGroupTaskTemplateMembership.CreatedBy = (resultSet?.string(forColumn: "CreatedBy"))!
+                resultOperativeGroupTaskTemplateMembership.CreatedOn = resultSet!.date(forColumn: "CreatedOn")!
+                if !(resultSet?.columnIsNull("LastUpdatedBy"))!
+                {
+                    resultOperativeGroupTaskTemplateMembership.LastUpdatedBy = resultSet?.string(forColumn: "LastUpdatedBy")
+                }
+                if !(resultSet?.columnIsNull("LastUpdatedOn"))!
+                {
+                    resultOperativeGroupTaskTemplateMembership.LastUpdatedOn = resultSet?.date(forColumn: "LastUpdatedOn")
+                }
+                if !(resultSet?.columnIsNull("Deleted"))!
+                {
+                    resultOperativeGroupTaskTemplateMembership.Deleted = resultSet?.date(forColumn: "Deleted")
+                }
+                resultOperativeGroupTaskTemplateMembership.OperativeGroupId = (resultSet?.string(forColumn: "OperativeGroupId"))!
+                resultOperativeGroupTaskTemplateMembership.TaskTemplateId = (resultSet?.string(forColumn: "TaskTemplateId"))!
+                
+                operativeGroupTaskTemplateMembership = resultOperativeGroupTaskTemplateMembership
+            }
+        }
+        sharedModelManager.database!.close()
+        return operativeGroupTaskTemplateMembership
+    }
+    
+    func getAllOperativeGroupTaskTemplateMembership() -> [OperativeGroupTaskTemplateMembership] {
+        sharedModelManager.database!.open()
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OperativeGroupId], [TaskTemplateId] FROM [OperativeGroupTaskTemplateMembership]", withArgumentsIn: [])
+        var operativeGroupTaskTemplateMembershipList : [OperativeGroupTaskTemplateMembership] = [OperativeGroupTaskTemplateMembership]()
+        if (resultSet != nil) {
+            while resultSet.next() {
+                let operativeGroupTaskTemplateMembership : OperativeGroupTaskTemplateMembership = OperativeGroupTaskTemplateMembership()
+                operativeGroupTaskTemplateMembership.RowId = resultSet.string(forColumn: "RowId")!
+                operativeGroupTaskTemplateMembership.CreatedBy = resultSet.string(forColumn: "CreatedBy")!
+                operativeGroupTaskTemplateMembership.CreatedOn = resultSet.date(forColumn: "CreatedOn")!
+                if !resultSet.columnIsNull("LastUpdatedBy")
+                {
+                    operativeGroupTaskTemplateMembership.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
+                }
+                if !resultSet.columnIsNull("LastUpdatedOn")
+                {
+                    operativeGroupTaskTemplateMembership.LastUpdatedOn = resultSet.date(forColumn: "LastUpdatedOn")
+                }
+                if !resultSet.columnIsNull("Deleted")
+                {
+                    operativeGroupTaskTemplateMembership.Deleted = resultSet.date(forColumn: "Deleted")
+                }
+                operativeGroupTaskTemplateMembership.OperativeGroupId = resultSet.string(forColumn: "OperativeGroupId")!
+                operativeGroupTaskTemplateMembership.TaskTemplateId = resultSet.string(forColumn: "TaskTemplateId")!
+                
+                operativeGroupTaskTemplateMembershipList.append(operativeGroupTaskTemplateMembership)
+            }
+        }
+        sharedModelManager.database!.close()
+        return operativeGroupTaskTemplateMembershipList
+    }
+    
+    func findOperativeGroupTaskTemplateMembershipList(_ criteria: Dictionary<String, AnyObject>) -> [OperativeGroupTaskTemplateMembership] {
+        var list: [OperativeGroupTaskTemplateMembership] = [OperativeGroupTaskTemplateMembership]()
+        //var count: Int32 = 0
+        (list, _) = findOperativeGroupTaskTemplateMembershipList(criteria, pageSize: nil, pageNumber: nil)
+        return list
+    }
+    
+    func findOperativeGroupTaskTemplateMembershipList(_ criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [OperativeGroupTaskTemplateMembership], Count: Int32) {
+        //return variables
+        var count: Int32 = 0
+        var operativeGroupTaskTemplateMembershipList: [OperativeGroupTaskTemplateMembership] = [OperativeGroupTaskTemplateMembership]()
+        
+        //build the where clause
+        var whereClause: String = String()
+        var whereValues: [AnyObject] = [AnyObject]()
+        
+        (whereClause, whereValues) = buildWhereClause(criteria)
+        
+        if (whereClause != "")
+        {
+            whereClause = "WHERE " + whereClause
+        }
+        
+        sharedModelManager.database!.open()
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [OperativeGroupTaskTemplateMembership] " + whereClause, withArgumentsIn: whereValues)
+        if (countSet != nil) {
+            while countSet.next() {
+                count = countSet.int(forColumnIndex: 0)
+            }
+        }
+        
+        if (count > 0)
+        {
+            var pageClause: String = String()
+            if (pageSize != nil && pageNumber != nil)
+            {
+                pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
+            }
+            
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OperativeGroupId], [TaskTemplateId] FROM [OperativeGroupTaskTemplateMembership] " + whereClause + pageClause, withArgumentsIn: whereValues)
+            if (resultSet != nil) {
+                while resultSet.next() {
+                    let operativeGroupTaskTemplateMembership : OperativeGroupTaskTemplateMembership = OperativeGroupTaskTemplateMembership()
+                    operativeGroupTaskTemplateMembership.RowId = resultSet.string(forColumn: "RowId")!
+                    operativeGroupTaskTemplateMembership.CreatedBy = resultSet.string(forColumn: "CreatedBy")!
+                    operativeGroupTaskTemplateMembership.CreatedOn = resultSet.date(forColumn: "CreatedOn")!
+                    if !resultSet.columnIsNull("LastUpdatedBy")
+                    {
+                        operativeGroupTaskTemplateMembership.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
+                    }
+                    if !resultSet.columnIsNull("LastUpdatedOn")
+                    {
+                        operativeGroupTaskTemplateMembership.LastUpdatedOn = resultSet.date(forColumn: "LastUpdatedOn")
+                    }
+                    if !resultSet.columnIsNull("Deleted")
+                    {
+                        operativeGroupTaskTemplateMembership.Deleted = resultSet.date(forColumn: "Deleted")
+                    }
+                    operativeGroupTaskTemplateMembership.OperativeGroupId = resultSet.string(forColumn: "OperativeGroupId")!
+                    operativeGroupTaskTemplateMembership.TaskTemplateId = resultSet.string(forColumn: "TaskTemplateId")!
+                    
+                    operativeGroupTaskTemplateMembershipList.append(operativeGroupTaskTemplateMembership)
+                }
+            }
+        }
+        sharedModelManager.database!.close()
+        return (operativeGroupTaskTemplateMembershipList, count)
+    }
+    
+    // MARK: - Organisation
     
     func addOrganisation(_ organisation: Organisation) -> Bool {
         //build the sql statemnt
@@ -1782,7 +2521,7 @@ class ModelManager: NSObject {
         (list, _) = findOrganisationList(criteria, pageSize: nil, pageNumber: nil)
         return list
     }
-
+    
     func findOrganisationList(_ criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [Organisation], Count: Int32) {
         //return variables
         var count: Int32 = 0
@@ -1801,7 +2540,7 @@ class ModelManager: NSObject {
         {
             whereClause = "WHERE " + whereClause
         }
-
+        
         sharedModelManager.database!.open()
         let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [Organisation] " + whereClause + orderByClause, withArgumentsIn: whereValues)
         if (countSet != nil) {
@@ -2021,7 +2760,7 @@ class ModelManager: NSObject {
         (list, _) = findPropertyList(criteria, pageSize: nil, pageNumber: nil)
         return list
     }
-
+    
     func findPropertyList(_ criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [Property], Count: Int32) {
         //return variables
         var count: Int32 = 0
@@ -2040,7 +2779,7 @@ class ModelManager: NSObject {
         {
             whereClause = "WHERE " + whereClause
         }
-
+        
         sharedModelManager.database!.open()
         let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [Property] " + whereClause + orderByClause, withArgumentsIn: whereValues)
         if (countSet != nil) {
@@ -2329,7 +3068,7 @@ class ModelManager: NSObject {
         (list, _) = findReferenceDataList(criteria, pageSize: nil, pageNumber: nil)
         return list
     }
-
+    
     func findReferenceDataList(_ criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [ReferenceData], Count: Int32) {
         var list: [ReferenceData] = [ReferenceData]()
         var count: Int32 = 0
@@ -2354,7 +3093,7 @@ class ModelManager: NSObject {
             orderByClause += "[Ordinal] "
             
         }
-
+        
         //build the where clause
         var whereClause: String = String()
         var whereValues: [AnyObject] = [AnyObject]()
@@ -2365,7 +3104,7 @@ class ModelManager: NSObject {
         {
             whereClause = "WHERE " + whereClause
         }
-
+        
         sharedModelManager.database!.open()
         let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [ReferenceData] " + whereClause + orderByClause, withArgumentsIn: whereValues)
         if (countSet != nil) {
@@ -2591,7 +3330,7 @@ class ModelManager: NSObject {
         (list, _) = findSiteList(criteria, pageSize: nil, pageNumber: nil)
         return list
     }
-
+    
     func findSiteList(_ criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [Site], Count: Int32) {
         //return variables
         var count: Int32 = 0
@@ -3091,15 +3830,16 @@ class ModelManager: NSObject {
         (list, _) = findTaskList(criteria, onlyPending: true, pageSize: nil, pageNumber: nil, sortOrder: TaskSortOrder.date)
         return list
     }
-
+    
     func findTaskList(_ criteria: Dictionary<String, AnyObject>, onlyPending: Bool, pageSize: Int32?, pageNumber: Int32?) -> (List: [Task], Count: Int32) {
         var list: [Task] = [Task]()
         var count: Int32 = 0
         (list, count) = findTaskList(criteria, onlyPending: true, pageSize: nil, pageNumber: nil, sortOrder: TaskSortOrder.date)
         return (list, count)
-    }          
+    }
+    
     func findTaskList(_ criteria: Dictionary<String, AnyObject>, onlyPending: Bool, pageSize: Int32?, pageNumber: Int32?, sortOrder: TaskSortOrder) -> (List: [Task], Count: Int32) {
-       //return variables
+        //return variables
         var count: Int32 = 0
         var taskList: [Task] = [Task]()
         
@@ -3108,7 +3848,7 @@ class ModelManager: NSObject {
         
         switch sortOrder {
             
-        case .date: 
+        case .date:
             orderByClause += "[ScheduledDate] "
             
         case .location:
@@ -3116,7 +3856,7 @@ class ModelManager: NSObject {
             
         case .assetType:
             orderByClause += "[PPMGroup] "
-           
+            
         case .task:
             orderByClause += "[TaskName] "
             
@@ -3131,15 +3871,19 @@ class ModelManager: NSObject {
         var whereClause: String = String()
         var whereValues: [AnyObject] = [AnyObject]()
         
+        if(Session.FilterJustMyTasks)
+        {
+            whereCriteria["OperativeId"] = nil
+        }
+        
         (whereClause, whereValues) = buildWhereClause(whereCriteria)
-
         
         if (criteria.keys.contains("Period"))
         {
             switch criteria["Period"] as! String
             {
             case DueTodayText:
-                 
+                
                 let endOfToday: Date = Date().endOfDay()
                 
                 whereClause += (whereClause != "" ? " AND " : " ")
@@ -3149,7 +3893,7 @@ class ModelManager: NSObject {
             case DueNext7DaysText:
                 
                 let endOfThisWeek: Date = Date().endOfWeek()
-            
+                
                 whereClause += (whereClause != "" ? " AND " : " ")
                 whereClause += " [ScheduledDate] <= ? "
                 whereValues.append(endOfThisWeek as AnyObject)
@@ -3163,7 +3907,7 @@ class ModelManager: NSObject {
                 whereValues.append(endOfThisMonth as AnyObject)
                 
             case DueThisMonthText:
-  
+                
                 let startOfNextMonth: Date = Date().startOfNextMonth()
                 let endOfNextMonth: Date = Date().endOfNextMonth()
                 whereClause += (whereClause != "" ? " AND " : " ")
@@ -3174,7 +3918,7 @@ class ModelManager: NSObject {
             case "All":
                 //nothing to do
                 print("Catch All")
-            
+                
             default:
                 //nothing to do
                 print("Default")
@@ -3196,13 +3940,71 @@ class ModelManager: NSObject {
         {
             whereClause = whereClausePredicate + whereClause
         }
-         
-        if (!whereClause.contains("OperativeId"))
-        {
-            whereClause += " AND (OperativeId IS NULL OR OperativeId = '00000000-0000-0000-0000-000000000000' OR OperativeId = '" + Session.OperativeId! + "')"
-        }
         
         sharedModelManager.database!.open()
+        if(Session.FilterJustMyTasks)
+        {
+            var whereClauseMyTasks: String = String()
+            whereClauseMyTasks = " AND "
+            whereClauseMyTasks += "("
+            whereClauseMyTasks += "(OperativeId = '" + Session.OperativeId! + "')"
+            
+            var taskTemplateIds: [String] = [String]()
+            //get the groups for the operative
+            var operativeIds: [String] = [String]()
+            operativeIds.append(Session.OperativeId!)
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT OperativeGroupId FROM OperativeGroupMembership WHERE OperativeId = ?", withArgumentsIn: operativeIds)
+            if (resultSet != nil)
+            {
+                while resultSet.next() {
+                
+                    //get the templates for the operative group
+                    var operativeGroupIds: [String] = [String]()
+                    operativeGroupIds.append(resultSet.string(forColumn: "OperativeGroupId")!)
+                    let innerResultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT TaskTemplateId FROM OperativeGroupTaskTemplateMembership WHERE OperativeGroupId = ?", withArgumentsIn: operativeGroupIds)
+                    
+                    if (innerResultSet != nil)
+                    {
+                        while innerResultSet.next(){
+                        
+                            //add the templates to the array
+                            taskTemplateIds.append(innerResultSet.string(forColumn: "TaskTemplateId")!)
+                        }
+                    }
+                }
+
+                //build the where clause
+
+                if (taskTemplateIds.count > 0)
+                {
+                    var taskTemplateIdList: String = String()
+                    var first: Bool = true
+                    for taskTemplateId: String in taskTemplateIds
+                    {
+                        if (!first) {taskTemplateIdList += ", "} else {first = false}
+                        taskTemplateIdList += "'" + taskTemplateId + "'"
+                    }
+ 
+                    whereClauseMyTasks += " OR "
+                    whereClauseMyTasks += "("
+                    whereClauseMyTasks += "TaskTemplateId IN (" + taskTemplateIdList + ")"
+                    whereClauseMyTasks += " AND "
+                    whereClauseMyTasks += "(OperativeId IS NULL OR OperativeId = '00000000-0000-0000-0000-000000000000')"
+                    whereClauseMyTasks += ")"
+                }
+            }
+            whereClauseMyTasks += ")"
+            whereClause += whereClauseMyTasks
+        }
+        else
+        {
+            if (!whereClause.contains("OperativeId"))
+            {
+                whereClause += " AND (OperativeId IS NULL OR OperativeId = '00000000-0000-0000-0000-000000000000' OR OperativeId = '" + Session.OperativeId! + "')"
+            }
+        }
+        
+
         let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [Task] " + whereClause + orderByClause, withArgumentsIn: whereValues)
         if (countSet != nil) {
             while countSet.next() {
@@ -3508,7 +4310,7 @@ class ModelManager: NSObject {
         (list, _) = findTaskParameterList(criteria, pageSize: nil, pageNumber: nil)
         return list
     }
-
+    
     func findTaskParameterList(_ criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [TaskParameter], Count: Int32) {
         //return variables
         var count: Int32 = 0
@@ -3527,7 +4329,7 @@ class ModelManager: NSObject {
         {
             whereClause = "WHERE " + whereClause
         }
-
+        
         sharedModelManager.database!.open()
         let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [TaskParameter] " + whereClause + orderByClause, withArgumentsIn: whereValues)
         if (countSet != nil) {
@@ -3770,7 +4572,7 @@ class ModelManager: NSObject {
         (list, _) = findTaskTemplateList(criteria, pageSize: nil, pageNumber: nil)
         return list
     }
-
+    
     func findTaskTemplateList(_ criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [TaskTemplate], Count: Int32) {
         //return variables
         var count: Int32 = 0
@@ -3789,7 +4591,7 @@ class ModelManager: NSObject {
         {
             whereClause = "WHERE " + whereClause
         }
-
+        
         sharedModelManager.database!.open()
         let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [TaskTemplate] " + whereClause + orderByClause, withArgumentsIn: whereValues)
         if (countSet != nil) {
@@ -3913,7 +4715,7 @@ class ModelManager: NSObject {
             SQLParameterPlaceholders += ", ?"
             SQLParameterValues.append(taskTemplateParameter.PredecessorTrueValue! as NSObject)
         }
-
+        
         
         
         SQLStatement = "INSERT INTO [TaskTemplateParameter] (" + SQLParameterNames + ") VALUES (" + SQLParameterPlaceholders + ")"
@@ -3978,7 +4780,7 @@ class ModelManager: NSObject {
             SQLParameterNames += ", [PredecessorTrueValue]=?"
             SQLParameterValues.append(taskTemplateParameter.PredecessorTrueValue! as NSObject)
         }
-
+        
         SQLParameterValues.append(taskTemplateParameter.RowId as NSObject)
         
         SQLStatement = "UPDATE [TaskTemplateParameter] SET " + SQLParameterNames + "WHERE [RowId]=?"
@@ -4117,7 +4919,7 @@ class ModelManager: NSObject {
         {
             whereClause = "WHERE " + whereClause
         }
-
+        
         sharedModelManager.database!.open()
         let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [TaskTemplateParameter] " + whereClause + orderByClause, withArgumentsIn: whereValues)
         if (countSet != nil) {
@@ -4165,7 +4967,7 @@ class ModelManager: NSObject {
                         taskTemplateParameter.ReferenceDataExtendedType = resultSet.string(forColumn: "ReferenceDataExtendedType")
                     }
                     taskTemplateParameter.Ordinal = Int(resultSet.int(forColumn: "Ordinal"))
-
+                    
                     if !resultSet.columnIsNull("Predecessor") {
                         taskTemplateParameter.Predecessor = resultSet.string(forColumn: "Predecessor")
                     }
@@ -4181,5 +4983,6 @@ class ModelManager: NSObject {
         sharedModelManager.database!.close()
         return (taskTemplateParameterList, count)
     }
+    
 }
 

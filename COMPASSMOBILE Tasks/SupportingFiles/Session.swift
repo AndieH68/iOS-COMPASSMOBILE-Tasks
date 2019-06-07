@@ -22,6 +22,7 @@ class Session : NSObject
     static var UseTaskTiming: Bool = false
     static var UseTemperatureProfile: Bool = false
     static var RememberFilterSettings: Bool = false
+    static var FilterOnTasks: Bool = false
     
     static var OperativeId: String? = nil
     static var OrganisationId: String? = nil

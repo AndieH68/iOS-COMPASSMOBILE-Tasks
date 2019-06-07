@@ -9,7 +9,7 @@
 import UIKit
 
 enum EntityType: Int32 {
-    case referenceData = 1, organisation = 2, site = 3, property = 4, location = 5, locationGroup = 6, locationGroupMembership = 7, asset = 8, operative = 9, taskTemplate = 10, taskTemplateParameter = 11, task = 12, taskParameter = 13
+    case referenceData = 1, organisation = 2, site = 3, property = 4, location = 5, locationGroup = 6, locationGroupMembership = 7, asset = 8, operative = 9, taskTemplate = 10, taskTemplateParameter = 11, task = 12, taskParameter = 13, operativeGroup = 14, operativeGroupMembership = 15, operativeGroupTaskTemplateMembership = 16
 }
 
 enum ReferenceDataSortOrder: Int32 {

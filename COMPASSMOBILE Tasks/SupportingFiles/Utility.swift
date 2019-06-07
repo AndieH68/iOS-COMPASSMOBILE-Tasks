@@ -36,7 +36,7 @@ class Utility: NSObject {
         return fileURL.path
     }
     
-    class func copyFile(_ viewController: UIViewController, fileName: NSString) -> (Bool, String){
+    class func copyFile(_ fileName: NSString) -> (Bool, String){
         let dbPath: String = getPath(fileName as String)
         let fileManager = FileManager.default
         if !fileManager.fileExists(atPath: dbPath) {
@@ -60,6 +60,51 @@ class Utility: NSObject {
         }
 
         return (true, String())
+    }
+    
+    class func backupDatabase(_ fileName: NSString) -> (Bool, String){
+        var returnValue: Bool = true
+        var message: String = ""
+        let dbPath: String = getPath(fileName as String)
+        let fileManager = FileManager.default
+        if fileManager.fileExists(atPath: dbPath) {
+        
+            let documentsURL = try! FileManager.default.url(for: .documentDirectory,in: .userDomainMask,appropriateFor: nil, create: true)
+            let documentPath = documentsURL.appendingPathComponent((fileName as String) + ".backup")
+         
+            if fileManager.fileExists(atPath: documentPath.path) {
+                var error : NSError?
+                do {
+                    try fileManager.removeItem(atPath: documentPath.path)
+                } catch let error1 as NSError {
+                    error = error1
+                }
+                if (error != nil) {
+                    message = error!.localizedDescription
+                    returnValue = false
+                }
+            }
+            else
+            {
+                var error : NSError?
+                do {
+                    try fileManager.copyItem(atPath: dbPath, toPath: documentPath.path)
+                } catch let error1 as NSError {
+                    error = error1
+                }
+                if (error != nil) {
+                    message = error!.localizedDescription
+                    returnValue = false
+                }
+                
+                if !fileManager.fileExists(atPath: documentPath.path) {
+                    message = "Missing Backup file"
+                    returnValue = false
+                }
+            }
+        }
+        
+        return (returnValue, message)
     }
     
     //class func invokeAlertMethod(_ viewController: UIViewController, title: String, message: String, delegate: AnyObject?) {
@@ -466,6 +511,192 @@ class Utility: NSObject {
                     //}
                 }
                 
+            case .operativeGroup:
+                
+                //get the data nodes
+                let dataNode: AEXMLElement = packageData["OperativeGroup"]
+                
+                //total = dataNode.children.count
+                
+                for childNode in dataNode.children
+                {
+                    autoreleasepool{
+                        current += 1
+                        
+                        //get the first child
+                        let operativeGroup: OperativeGroup = OperativeGroup(XMLElement: childNode)
+                        
+                        var currentSynchDate: Date
+                        if operativeGroup.LastUpdatedOn == nil {
+                            currentSynchDate = operativeGroup.CreatedOn as Date
+                        }
+                        else {
+                            currentSynchDate = operativeGroup.LastUpdatedOn! as Date
+                        }
+                        
+                        lastDateInPackage = (lastDateInPackage as NSDate).laterDate(currentSynchDate)
+                        lastRowId = operativeGroup.RowId
+                        
+                        //does the record exists
+                        let currentOperativeGroup: OperativeGroup? = ModelManager.getInstance().getOperativeGroup(operativeGroup.RowId)
+                        if currentOperativeGroup == nil
+                        {
+                            //is the current record deleted
+                            if (operativeGroup.Deleted == nil)
+                            {
+                                //no insert it
+                                _ = ModelManager.getInstance().addOperativeGroup(operativeGroup)
+                            }
+                        }
+                        else
+                        {
+                            //yes
+                            
+                            //is the current record deleted
+                            if (operativeGroup.Deleted != nil)
+                            {
+                                //yes  - delete the OperativeGroup
+                                _ = ModelManager.getInstance().deleteOperativeGroup(operativeGroup)
+                            }
+                            else
+                            {
+                                //no  - update the OperativeGroup
+                                _ = ModelManager.getInstance().updateOperativeGroup(operativeGroup)
+                            }
+                            
+                        }
+                        
+                        if (progressBar != nil)
+                        {
+                            DispatchQueue.main.async(execute: {progressBar!.label.text = "Operative Group"; progressBar!.progress = (Float(current) / Float(total))})
+                        }
+                    }
+                }
+                
+            case .operativeGroupMembership:
+                
+                //get the data nodes
+                let dataNode: AEXMLElement = packageData["OperativeGroupMembership"]
+                
+                //total = dataNode.children.count
+                
+                for childNode in dataNode.children
+                {
+                    autoreleasepool{
+                        current += 1
+                        
+                        //get the first child
+                        let operativeGroupMembership: OperativeGroupMembership = OperativeGroupMembership(XMLElement: childNode)
+                        
+                        var currentSynchDate: Date
+                        if operativeGroupMembership.LastUpdatedOn == nil {
+                            currentSynchDate = operativeGroupMembership.CreatedOn as Date
+                        }
+                        else {
+                            currentSynchDate = operativeGroupMembership.LastUpdatedOn! as Date
+                        }
+                        
+                        lastDateInPackage = (lastDateInPackage as NSDate).laterDate(currentSynchDate)
+                        lastRowId = operativeGroupMembership.RowId
+                        
+                        //does the record exists
+                        let currentOperativeGroupMembership: OperativeGroupMembership? = ModelManager.getInstance().getOperativeGroupMembership(operativeGroupMembership.RowId)
+                        if currentOperativeGroupMembership == nil
+                        {
+                            //is the current record deleted
+                            if (operativeGroupMembership.Deleted == nil)
+                            {
+                                //no insert it
+                                _ = ModelManager.getInstance().addOperativeGroupMembership(operativeGroupMembership)
+                            }
+                        }
+                        else
+                        {
+                            //yes
+                            
+                            //is the current record deleted
+                            if (operativeGroupMembership.Deleted != nil)
+                            {
+                                //yes  - delete the OperativeGroupMembership
+                                _ = ModelManager.getInstance().deleteOperativeGroupMembership(operativeGroupMembership)
+                            }
+                            else
+                            {
+                                //no  - update the OperativeGroupMembership
+                                _ = ModelManager.getInstance().updateOperativeGroupMembership(operativeGroupMembership)
+                            }
+                            
+                        }
+                        
+                        if (progressBar != nil)
+                        {
+                            DispatchQueue.main.async(execute: {progressBar!.label.text = "OperativeGroup Link"; progressBar!.progress = (Float(current) / Float(total))})
+                        }
+                    }
+                }
+                
+            case .operativeGroupTaskTemplateMembership:
+                
+                //get the data nodes
+                let dataNode: AEXMLElement = packageData["OperativeGroupTaskTemplateMembership"]
+                
+                //total = dataNode.children.count
+                
+                for childNode in dataNode.children
+                {
+                    autoreleasepool{
+                        current += 1
+                        
+                        //get the first child
+                        let operativeGroupTaskTemplateMembership: OperativeGroupTaskTemplateMembership = OperativeGroupTaskTemplateMembership(XMLElement: childNode)
+                        
+                        var currentSynchDate: Date
+                        if operativeGroupTaskTemplateMembership.LastUpdatedOn == nil {
+                            currentSynchDate = operativeGroupTaskTemplateMembership.CreatedOn as Date
+                        }
+                        else {
+                            currentSynchDate = operativeGroupTaskTemplateMembership.LastUpdatedOn! as Date
+                        }
+                        
+                        lastDateInPackage = (lastDateInPackage as NSDate).laterDate(currentSynchDate)
+                        lastRowId = operativeGroupTaskTemplateMembership.RowId
+                        
+                        //does the record exists
+                        let currentOperativeGroupTaskTemplateMembership: OperativeGroupTaskTemplateMembership? = ModelManager.getInstance().getOperativeGroupTaskTemplateMembership(operativeGroupTaskTemplateMembership.RowId)
+                        if currentOperativeGroupTaskTemplateMembership == nil
+                        {
+                            //is the current record deleted
+                            if (operativeGroupTaskTemplateMembership.Deleted == nil)
+                            {
+                                //no insert it
+                                _ = ModelManager.getInstance().addOperativeGroupTaskTemplateMembership(operativeGroupTaskTemplateMembership)
+                            }
+                        }
+                        else
+                        {
+                            //yes
+                            
+                            //is the current record deleted
+                            if (operativeGroupTaskTemplateMembership.Deleted != nil)
+                            {
+                                //yes  - delete the OperativeGroupTaskTemplateMembership
+                                _ = ModelManager.getInstance().deleteOperativeGroupTaskTemplateMembership(operativeGroupTaskTemplateMembership)
+                            }
+                            else
+                            {
+                                //no  - update the OperativeGroupTaskTemplateMembership
+                                _ = ModelManager.getInstance().updateOperativeGroupTaskTemplateMembership(operativeGroupTaskTemplateMembership)
+                            }
+                            
+                        }
+                        
+                        if (progressBar != nil)
+                        {
+                            DispatchQueue.main.async(execute: {progressBar!.label.text = "OperativeGroup Task Link"; progressBar!.progress = (Float(current) / Float(total))})
+                        }
+                    }
+                }
+            
             case .organisation:
                 
                 //get the data nodes
@@ -1043,6 +1274,18 @@ class Utility: NSObject {
             (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 13, entityType: EntityType.taskParameter, progressBar: progressBar)
             if (!state){ return false }
 
+        case 14:
+            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 14, entityType: EntityType.operativeGroup, progressBar: progressBar)
+            if (!state){ return false }
+            
+        case 15:
+            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 15, entityType: EntityType.operativeGroupMembership, progressBar: progressBar)
+            if (!state){ return false }
+            
+        case 16:
+            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 16, entityType: EntityType.operativeGroupTaskTemplateMembership, progressBar: progressBar)
+            if (!state){ return false }
+
         default:
             //response = nil
             print ("Invalid Stage")
@@ -1204,7 +1447,7 @@ class Utility: NSObject {
             
             var lastRowId: String = String("00000000-0000-0000-0000-000000000000")
             
-            let taskQuery: String = "SELECT RowId, '<Task Id=\"' || CAST(RowId AS VARCHAR(40)) || '\">' || COALESCE('<CreatedBy>' || CAST(CreatedBy AS VARCHAR(40)) || '</CreatedBy>','<CreatedBy />') || COALESCE('<CreatedOn>' || DATETIME(CreatedOn,'unixepoch') || '</CreatedOn>','<CreatedOn />') || COALESCE('<LastUpdatedBy>' || CAST(LastUpdatedBy AS VARCHAR(40)) || '</LastUpdatedBy>','<LastUpdatedBy />') || COALESCE('<LastUpdatedOn>' || DATETIME(LastUpdatedOn,'unixepoch') || '</LastUpdatedOn>','<LastUpdatedOn />') || COALESCE('<Deleted>' || CAST(Deleted AS VARCHAR(20)) || '</Deleted>','<Deleted />') || COALESCE('<OrganisationId>' || CAST(OrganisationId AS VARCHAR(40)) || '</OrganisationId>','<OrganisationId />') || COALESCE('<SiteId>' || CAST(SiteId AS VARCHAR(40)) || '</SiteId>','<SiteId />') || COALESCE('<PropertyId>' || CAST(PropertyId AS VARCHAR(40)) || '</PropertyId>','<PropertyId />') || COALESCE('<LocationId>' || CAST(LocationId AS VARCHAR(40)) || '</LocationId>','<LocationId />') || COALESCE('<TaskTemplateId>' || CAST(TaskTemplateId AS VARCHAR(40)) || '</TaskTemplateId>','<TaskTemplateId />') || COALESCE('<TaskRef>' || TaskRef || '</TaskRef>','<TaskRef />') || COALESCE('<PPMGroup>' || PPMGroup || '</PPMGroup>','<PPMGroup />') || COALESCE('<AssetType>' || AssetType || '</AssetType>','<AssetType />') || COALESCE('<TaskName>' || TaskName || '</TaskName>','<TaskName />') || COALESCE('<Frequency>' || Frequency || '</Frequency>','<Frequency />') || COALESCE('<AssetId>' || CAST(AssetId AS VARCHAR(40)) || '</AssetId>','<AssetId />') || COALESCE('<ScheduledDate>' || DATETIME(ScheduledDate,'unixepoch') || '</ScheduledDate>','<ScheduledDate />') || COALESCE('<CompletedDate>' || DATETIME(CompletedDate,'unixepoch') || '</CompletedDate>','<CompletedDate />') || COALESCE('<Status>' || Status || '</Status>','<Status />') || COALESCE('<Priority>' || CAST(Priority AS VARCHAR(20)) || '</Priority>','<Priority />') || COALESCE('<EstimatedDuration>' || CAST(EstimatedDuration AS VARCHAR(20)) || '</EstimatedDuration>','<EstimatedDuration />') || COALESCE('<OperativeId>' || CAST(OperativeId AS VARCHAR(40)) || '</OperativeId>','<OperativeId />') || COALESCE('<ActualDuration>' || CAST(ActualDuration AS VARCHAR(20)) || '</ActualDuration>','<ActualDuration />') || COALESCE('<TravelDuration>' || CAST(TravelDuration AS VARCHAR(20)) || '</TravelDuration>','<TravelDuration />') || '<Docked>False</Docked>' || COALESCE('<Comments>' || Comments || '</Comments>','<Comments />') || '</Task>' FROM Task WHERE (Status = 'Dockable' OR Status = 'Outstanding') AND COALESCE(LastUpdatedOn, CreatedOn) >= ? AND RowId > ? ORDER BY RowId "
+            let taskQuery: String = "SELECT RowId, '<Task Id=\"' || CAST(RowId AS VARCHAR(40)) || '\">' || COALESCE('<CreatedBy>' || CAST(CreatedBy AS VARCHAR(40)) || '</CreatedBy>','<CreatedBy />') || COALESCE('<CreatedOn>' || DATETIME(CreatedOn,'unixepoch') || '</CreatedOn>','<CreatedOn />') || COALESCE('<LastUpdatedBy>' || CAST(LastUpdatedBy AS VARCHAR(40)) || '</LastUpdatedBy>','<LastUpdatedBy />') || COALESCE('<LastUpdatedOn>' || DATETIME(LastUpdatedOn,'unixepoch') || '</LastUpdatedOn>','<LastUpdatedOn />') || COALESCE('<Deleted>' || CAST(Deleted AS VARCHAR(20)) || '</Deleted>','<Deleted />') || COALESCE('<OrganisationId>' || CAST(OrganisationId AS VARCHAR(40)) || '</OrganisationId>','<OrganisationId />') || COALESCE('<SiteId>' || CAST(SiteId AS VARCHAR(40)) || '</SiteId>','<SiteId />') || COALESCE('<PropertyId>' || CAST(PropertyId AS VARCHAR(40)) || '</PropertyId>','<PropertyId />') || COALESCE('<LocationId>' || CAST(LocationId AS VARCHAR(40)) || '</LocationId>','<LocationId />') || COALESCE('<TaskTemplateId>' || CAST(TaskTemplateId AS VARCHAR(40)) || '</TaskTemplateId>','<TaskTemplateId />') || COALESCE('<TaskRef>' || TaskRef || '</TaskRef>','<TaskRef />') || COALESCE('<PPMGroup>' || PPMGroup || '</PPMGroup>','<PPMGroup />') || COALESCE('<AssetType>' || AssetType || '</AssetType>','<AssetType />') || COALESCE('<TaskName>' || TaskName || '</TaskName>','<TaskName />') || COALESCE('<Frequency>' || Frequency || '</Frequency>','<Frequency />') || COALESCE('<AssetId>' || CAST(AssetId AS VARCHAR(40)) || '</AssetId>','<AssetId />') || COALESCE('<ScheduledDate>' || DATETIME(ScheduledDate,'unixepoch') || '</ScheduledDate>','<ScheduledDate />') || COALESCE('<CompletedDate>' || DATETIME(CompletedDate,'unixepoch') || '</CompletedDate>','<CompletedDate />') || COALESCE('<Status>' || Status || '</Status>','<Status />') || COALESCE('<Priority>' || CAST(Priority AS VARCHAR(20)) || '</Priority>','<Priority />') || COALESCE('<EstimatedDuration>' || CAST(EstimatedDuration AS VARCHAR(20)) || '</EstimatedDuration>','<EstimatedDuration />') || COALESCE('<OperativeId>' || CAST(OperativeId AS VARCHAR(40)) || '</OperativeId>','<OperativeId />') || COALESCE('<ActualDuration>' || CAST(ActualDuration AS VARCHAR(20)) || '</ActualDuration>','<ActualDuration />') || COALESCE('<TravelDuration>' || CAST(TravelDuration AS VARCHAR(20)) || '</TravelDuration>','<TravelDuration />') || '<Docked>False</Docked>' || COALESCE('<Comments>' || Comments || '</Comments>','<Comments />') || '</Task>' FROM Task WHERE (Status = 'Dockable' OR (Status = 'Outstanding' AND OperativeId = '" + Session.OperativeId! + "')) AND COALESCE(LastUpdatedOn, CreatedOn) >= ? AND RowId > ? ORDER BY RowId "
 
             let taskParameterQuery: String = "SELECT '<TaskParameter Id=\"' || CAST(TaskParameter.RowId AS VARCHAR(40)) || '\">' || COALESCE('<CreatedBy>' || CAST(TaskParameter.CreatedBy AS VARCHAR(40)) || '</CreatedBy>','<CreatedBy />') || COALESCE('<CreatedOn>' || DATETIME(TaskParameter.CreatedOn,'unixepoch') || '</CreatedOn>','<CreatedOn />') || COALESCE('<LastUpdatedBy>' || CAST(TaskParameter.LastUpdatedBy AS VARCHAR(40)) || '</LastUpdatedBy>','<LastUpdatedBy />') || COALESCE('<LastUpdatedOn>' || DATETIME(TaskParameter.LastUpdatedOn,'unixepoch') || '</LastUpdatedOn>','<LastUpdatedOn />') || COALESCE('<Deleted>' || CAST(TaskParameter.Deleted AS VARCHAR(20)) || '</Deleted>','<Deleted />') || COALESCE('<TaskTemplateParameterId>' || CAST(TaskParameter.TaskTemplateParameterId AS VARCHAR(40)) || '</TaskTemplateParameterId>','<TaskTemplateParameterId />') || COALESCE('<TaskId>' || CAST(TaskParameter.TaskId AS VARCHAR(40)) || '</TaskId>','<TaskId />') || COALESCE('<ParameterName>' || TaskParameter.ParameterName || '</ParameterName>','<ParameterName />') || COALESCE('<ParameterType>' || TaskParameter.ParameterType || '</ParameterType>','<ParameterType />') || COALESCE('<ParameterDisplay>' || TaskParameter.ParameterDisplay || '</ParameterDisplay>','<ParameterDisplay />') || COALESCE('<Collect>' || CASE WHEN TaskParameter.Collect = 1 THEN 'True' ELSE 'False' END || '</Collect>','<Collect />') || COALESCE('<ParameterValue>' || TaskParameter.ParameterValue || '</ParameterValue>','<ParameterValue />') || '</TaskParameter>' FROM TaskParameter WHERE TaskParameter.TaskId = ? "
             
@@ -1309,7 +1552,7 @@ class Utility: NSObject {
                 } //for taskId in taskList
                 
                 NSLog("SendTaskDetails - update synchronisation status")
-                SQLStatement = "DELETE FROM [Synchronisati on] WHERE [Type] = ?"
+                SQLStatement = "DELETE FROM [Synchronisation] WHERE [Type] = ?"
                 SQLParameterValues = [NSObject]()
                 SQLParameterValues.append(synchronisationType as NSObject)
                 _ = ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
@@ -1372,6 +1615,24 @@ class Utility: NSObject {
         if(!success)
         {
             Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Operatives", message: Session.AlertMessage!)
+        }
+        
+        success = Utility.SynchroniseAllData(viewController, stage: 14, progressBar: HUD)
+        if(!success)
+        {
+            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise OperativeGroups", message: Session.AlertMessage!)
+        }
+
+        success = Utility.SynchroniseAllData(viewController, stage: 15, progressBar: HUD)
+        if(!success)
+        {
+            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise OperativeGroupMemberships", message: Session.AlertMessage!)
+        }
+
+        success = Utility.SynchroniseAllData(viewController, stage: 16, progressBar: HUD)
+        if(!success)
+        {
+            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise OperativeGroupTaskTemplateMemberships", message: Session.AlertMessage!)
         }
         
         success = Utility.SynchroniseAllData(viewController, stage: 2, progressBar: HUD)

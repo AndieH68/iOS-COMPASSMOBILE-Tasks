@@ -222,6 +222,52 @@ class ModelUtility: NSObject {
         return Sites
     }
     
+    func GetTaskFilterSiteList(_ OrganisationId: String) -> [String]
+    {
+        var Sites: [String] = [String]()
+        
+        var Query: String = "SELECT DISTINCT [Task].[SiteId] FROM [Task] INNER JOIN [Site] ON [Task].[SiteId] = [Site].[RowId] WHERE [Task].[Deleted] IS NULL AND [Site].[Deleted] IS NULL AND [Task].[Status] IN ('Pending','Outstanding') AND [Task].[OrganisationId] = '" + OrganisationId + "'"
+//        if (Session.FilterSiteId != nil)
+//        {
+//            Query +=  " AND [Task].[SiteId] = '" + Session.FilterSiteId! + "'"
+//        }
+        if (Session.FilterPropertyId != nil)
+        {
+            Query +=  " AND [Task].[PropertyId] = '" + Session.FilterPropertyId! + "'"
+        }
+        if (Session.FilterAssetGroup != nil)
+        {
+            Query += " AND [Task].[PPMGroup] = '" + Session.FilterAssetGroup! + "'"
+        }
+        if (Session.FilterTaskName != nil)
+        {
+            Query += " AND [Task].[TaskName] = '" + Session.FilterTaskName! + "'"
+        }
+        if (Session.FilterAssetType != nil)
+        {
+            Query += " AND [Task].[AssetType] = '" + Session.FilterAssetType! + "'"
+        }
+        if (Session.FilterLocationGroup != nil)
+        {
+            Query += " AND [Task].[LocationGroupName] = '" + Session.FilterLocationGroup! + "'"
+        }
+        if (Session.FilterLocation != nil)
+        {
+            Query += " AND [Task].[LocationName] = '" + Session.FilterLocationGroup! + "'"
+        }
+        Query +=  " ORDER BY [Site].[Name]"
+        
+        sharedModelManager.database!.open()
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: [])
+        if (resultSet != nil) {
+            while resultSet.next()
+            {
+                Sites.append(resultSet.string(forColumn: "SiteId")!)
+            }
+        }
+        return Sites
+    }
+    
     func GetFilterPropertyList(_ SiteId: String) -> [String]
     {
         var Properties: [String] = [String]()
@@ -235,6 +281,53 @@ class ModelUtility: NSObject {
             while resultSet.next()
             {
                 Properties.append(resultSet.string(forColumn: "RowId")!)
+            }
+        }
+        return Properties
+    }
+
+    func GetTaskFilterPropertyList(_ OrganisationId: String) -> [String]
+    {
+        var Properties: [String] = [String]()
+        
+        var Query: String = "SELECT DISTINCT [Task].[PropertyId] FROM [Task] INNER JOIN [Property] ON [Task].[PropertyId] = [Property].[RowId] WHERE [Task].[Deleted] IS NULL AND [Property].[Deleted] IS NULL AND [Task].[Status] IN ('Pending','Outstanding') AND [Task].[OrganisationId] = '" + OrganisationId + "'"
+        if (Session.FilterSiteId != nil)
+        {
+            Query +=  " AND [Task].[SiteId] = '" + Session.FilterSiteId! + "'"
+        }
+//        if (Session.FilterPropertyId != nil)
+//        {
+//            Query +=  " AND [Task].[PropertyId] = '" + Session.FilterPropertyId! + "'"
+//        }
+        if (Session.FilterAssetGroup != nil)
+        {
+            Query += " AND [Task].[PPMGroup] = '" + Session.FilterAssetGroup! + "'"
+        }
+        if (Session.FilterTaskName != nil)
+        {
+            Query += " AND [Task].[TaskName] = '" + Session.FilterTaskName! + "'"
+        }
+        if (Session.FilterAssetType != nil)
+        {
+            Query += " AND [Task].[AssetType] = '" + Session.FilterAssetType! + "'"
+        }
+        if (Session.FilterLocationGroup != nil)
+        {
+            Query += " AND [Task].[LocationGroupName] = '" + Session.FilterLocationGroup! + "'"
+        }
+        if (Session.FilterLocation != nil)
+        {
+            Query += " AND [Task].[LocationName] = '" + Session.FilterLocationGroup! + "'"
+        }
+        Query +=  " ORDER BY [Property].[Name]"
+        debugPrint(Query)
+        
+        sharedModelManager.database!.open()
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: [])
+        if (resultSet != nil) {
+            while resultSet.next()
+            {
+                Properties.append(resultSet.string(forColumn: "PropertyId")!)
             }
         }
         return Properties
@@ -269,6 +362,55 @@ class ModelUtility: NSObject {
         return AssetGroups
     }
     
+    func GetTaskFilterAssetGroupList(_ OrganisationId: String) -> [String]
+    {
+        var AssetGroups: [String] = [String]()
+        
+        var Query: String = "SELECT DISTINCT [PPMGroup] FROM [Task] WHERE [Deleted] IS NULL AND [Task].[Status] IN ('Pending','Outstanding') AND [Task].[OrganisationId] = '" + OrganisationId + "'"
+        if (Session.FilterSiteId != nil)
+        {
+            Query +=  " AND [Task].[SiteId] = '" + Session.FilterSiteId! + "'"
+        }
+        if (Session.FilterPropertyId != nil)
+        {
+            Query +=  " AND [Task].[PropertyId] = '" + Session.FilterPropertyId! + "'"
+        }
+//        if (Session.FilterAssetGroup != nil)
+//        {
+//            Query += " AND [Task].[PPMGroup] = '" + Session.FilterAssetGroup! + "'"
+//        }
+        if (Session.FilterTaskName != nil)
+        {
+            Query += " AND [Task].[TaskName] = '" + Session.FilterTaskName! + "'"
+        }
+        if (Session.FilterAssetType != nil)
+        {
+            Query += " AND [Task].[AssetType] = '" + Session.FilterAssetType! + "'"
+        }
+        if (Session.FilterLocationGroup != nil)
+        {
+            Query += " AND [Task].[LocationGroupName] = '" + Session.FilterLocationGroup! + "'"
+        }
+        if (Session.FilterLocation != nil)
+        {
+            Query += " AND [Task].[LocationName] = '" + Session.FilterLocationGroup! + "'"
+        }
+        Query +=  " ORDER BY [Task].[PPMGroup]"
+
+        sharedModelManager.database!.open()
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: [])
+        if (resultSet != nil) {
+            while resultSet.next()
+            {
+                if (resultSet.string(forColumn: "PPMGroup") != nil)
+                {
+                    AssetGroups.append(resultSet.string(forColumn: "PPMGroup")!)
+                }
+            }
+        }
+        return AssetGroups
+    }
+    
     func GetFilterTaskNameList(_ PropertyId: String, AssetGroup: String, AssetType: String?, LocationGroupName: String?, Location: String?) -> [String]
     {
         var TaskNames: [String] = [String]()
@@ -284,6 +426,53 @@ class ModelUtility: NSObject {
         if (Location != nil)
         {
             Query += " AND [LocationName] = '" + Location! + "'"
+        }
+        Query +=  " ORDER BY [TaskName]"
+        sharedModelManager.database!.open()
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: [])
+        if (resultSet != nil) {
+            while resultSet.next()
+            {
+                if (resultSet.string(forColumn: "TaskName") != nil)
+                {
+                    TaskNames.append(resultSet.string(forColumn: "TaskName")!)
+                }
+            }
+        }
+        return TaskNames
+    }
+    
+    func GetTaskFilterTaskNameList(_ OrganisationId: String) -> [String]
+    {
+        var TaskNames: [String] = [String]()
+        var Query: String = "SELECT DISTINCT [TaskName] FROM [Task] WHERE [Deleted] IS NULL AND [Task].[Status] IN ('Pending','Outstanding') AND [Task].[OrganisationId] = '" + OrganisationId + "'"
+        if (Session.FilterSiteId != nil)
+        {
+            Query +=  " AND [Task].[SiteId] = '" + Session.FilterSiteId! + "'"
+        }
+        if (Session.FilterPropertyId != nil)
+        {
+            Query +=  " AND [Task].[PropertyId] = '" + Session.FilterPropertyId! + "'"
+        }
+        if (Session.FilterAssetGroup != nil)
+        {
+            Query += " AND [Task].[PPMGroup] = '" + Session.FilterAssetGroup! + "'"
+        }
+//        if (Session.FilterTaskName != nil)
+//        {
+//            Query += " AND [Task].[TaskName] = '" + Session.FilterTaskName! + "'"
+//        }
+        if (Session.FilterAssetType != nil)
+        {
+            Query += " AND [Task].[AssetType] = '" + Session.FilterAssetType! + "'"
+        }
+        if (Session.FilterLocationGroup != nil)
+        {
+            Query += " AND [Task].[LocationGroupName] = '" + Session.FilterLocationGroup! + "'"
+        }
+        if (Session.FilterLocation != nil)
+        {
+            Query += " AND [Task].[LocationName] = '" + Session.FilterLocationGroup! + "'"
         }
         Query +=  " ORDER BY [TaskName]"
         sharedModelManager.database!.open()
@@ -331,6 +520,54 @@ class ModelUtility: NSObject {
         return AssetTypes
     }
     
+    func GetTaskFilterAssetTypeList(_ OrganisationId: String) -> [String]
+    {
+        var AssetTypes: [String] = [String]()
+        var Query: String = "SELECT DISTINCT [AssetType] FROM [Task] WHERE [Deleted] IS NULL AND [Task].[Status] IN ('Pending','Outstanding') AND [Task].[OrganisationId] = '" + OrganisationId + "'"
+        if (Session.FilterSiteId != nil)
+        {
+            Query +=  " AND [Task].[SiteId] = '" + Session.FilterSiteId! + "'"
+        }
+        if (Session.FilterPropertyId != nil)
+        {
+            Query +=  " AND [Task].[PropertyId] = '" + Session.FilterPropertyId! + "'"
+        }
+        if (Session.FilterAssetGroup != nil)
+        {
+            Query += " AND [Task].[PPMGroup] = '" + Session.FilterAssetGroup! + "'"
+        }
+        if (Session.FilterTaskName != nil)
+        {
+            Query += " AND [Task].[TaskName] = '" + Session.FilterTaskName! + "'"
+        }
+//        if (Session.FilterAssetType != nil)
+//        {
+//            Query += " AND [Task].[AssetType] = '" + Session.FilterAssetType! + "'"
+//        }
+        if (Session.FilterLocationGroup != nil)
+        {
+            Query += " AND [Task].[LocationGroupName] = '" + Session.FilterLocationGroup! + "'"
+        }
+        if (Session.FilterLocation != nil)
+        {
+            Query += " AND [Task].[LocationName] = '" + Session.FilterLocationGroup! + "'"
+        }
+        Query += " ORDER BY [AssetType]"
+        sharedModelManager.database!.open()
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: [])
+        if (resultSet != nil) {
+            while resultSet.next()
+            {
+                if (resultSet.string(forColumn: "AssetType") != nil)
+                {
+                    AssetTypes.append(resultSet.string(forColumn: "AssetType")!)
+                }
+            }
+        }
+        return AssetTypes
+    }
+    
+    
     func GetFilterLocationGroupList(_ PropertyId: String, AssetGroup: String?, TaskName: String?, AssetType: String?) -> [String]
     {
         var LocationGroups: [String] = [String]()
@@ -346,6 +583,53 @@ class ModelUtility: NSObject {
         if (AssetType != nil)
         {
             Query += " AND [AssetType] = '" + AssetType! + "'"
+        }
+        Query += " ORDER BY [LocationGroupName]"
+        sharedModelManager.database!.open()
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: [])
+        if (resultSet != nil) {
+            while resultSet.next()
+            {
+                if (resultSet.string(forColumn: "LocationGroupName") != nil)
+                {
+                    LocationGroups.append(resultSet.string(forColumn: "LocationGroupName")!)
+                }
+            }
+        }
+        return LocationGroups
+    }
+ 
+    func GetTaskFilterLocationGroupList(_ OrganisationId: String) -> [String]
+    {
+        var LocationGroups: [String] = [String]()
+        var Query: String = "SELECT DISTINCT [LocationGroupName] FROM [Task] WHERE [Deleted] IS NULL AND [Task].[Status] IN ('Pending','Outstanding') AND [Task].[OrganisationId] = '" + OrganisationId + "'"
+        if (Session.FilterSiteId != nil)
+        {
+            Query +=  " AND [Task].[SiteId] = '" + Session.FilterSiteId! + "'"
+        }
+        if (Session.FilterPropertyId != nil)
+        {
+            Query +=  " AND [Task].[PropertyId] = '" + Session.FilterPropertyId! + "'"
+        }
+        if (Session.FilterAssetGroup != nil)
+        {
+            Query += " AND [Task].[PPMGroup] = '" + Session.FilterAssetGroup! + "'"
+        }
+        if (Session.FilterTaskName != nil)
+        {
+            Query += " AND [Task].[TaskName] = '" + Session.FilterTaskName! + "'"
+        }
+        if (Session.FilterAssetType != nil)
+        {
+            Query += " AND [Task].[AssetType] = '" + Session.FilterAssetType! + "'"
+        }
+//        if (Session.FilterLocationGroup != nil)
+//        {
+//            Query += " AND [Task].[LocationGroupName] = '" + Session.FilterLocationGroup! + "'"
+//        }
+        if (Session.FilterLocation != nil)
+        {
+            Query += " AND [Task].[LocationName] = '" + Session.FilterLocationGroup! + "'"
         }
         Query += " ORDER BY [LocationGroupName]"
         sharedModelManager.database!.open()
@@ -396,6 +680,53 @@ class ModelUtility: NSObject {
         return Locations
     }
 
+    func GetTaskFilterLocationList(_ OrganisationId: String) -> [String]
+    {
+        var Locations: [String] = [String]()
+        var Query: String = "SELECT DISTINCT [LocationName] FROM [Task] WHERE [Deleted] IS NULL AND [Task].[Status] IN ('Pending','Outstanding') AND [Task].[OrganisationId] = '" + OrganisationId + "'"
+        if (Session.FilterSiteId != nil)
+        {
+            Query +=  " AND [Task].[SiteId] = '" + Session.FilterSiteId! + "'"
+        }
+        if (Session.FilterPropertyId != nil)
+        {
+            Query +=  " AND [Task].[PropertyId] = '" + Session.FilterPropertyId! + "'"
+        }
+        if (Session.FilterAssetGroup != nil)
+        {
+            Query += " AND [Task].[PPMGroup] = '" + Session.FilterAssetGroup! + "'"
+        }
+        if (Session.FilterTaskName != nil)
+        {
+            Query += " AND [Task].[TaskName] = '" + Session.FilterTaskName! + "'"
+        }
+        if (Session.FilterAssetType != nil)
+        {
+            Query += " AND [Task].[AssetType] = '" + Session.FilterAssetType! + "'"
+        }
+        if (Session.FilterLocationGroup != nil)
+        {
+            Query += " AND [Task].[LocationGroupName] = '" + Session.FilterLocationGroup! + "'"
+        }
+//        if (Session.FilterLocation != nil)
+//        {
+//            Query += " AND [Task].[LocationName] = '" + Session.FilterLocationGroup! + "'"
+//        }
+        Query += " ORDER BY [LocationName]"
+        sharedModelManager.database!.open()
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: [])
+        if (resultSet != nil) {
+            while resultSet.next()
+            {
+                if (resultSet.string(forColumn: "LocationName") != nil)
+                {
+                    Locations.append(resultSet.string(forColumn: "LocationName")!)
+                }
+            }
+        }
+        return Locations
+    }
+    
     func GetFilterAssetNumberList(_ PropertyId: String, AssetGroup: String?, TaskName: String?, AssetType: String?, LocationGroupName: String?, Location: String?) -> [String]
     {
         var AssetNumbers: [String] = [String]()

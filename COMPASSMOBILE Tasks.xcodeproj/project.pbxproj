@@ -52,6 +52,9 @@
 		A43919A31D2D1E7900C31CA0 /* TaskTemplateParameterFormItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A439199D1D2D1E7900C31CA0 /* TaskTemplateParameterFormItem.swift */; };
 		A43919A41D2D1E7900C31CA0 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A439199E1D2D1E7900C31CA0 /* Utility.swift */; };
 		A43919A51D2D1E7900C31CA0 /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A439199F1D2D1E7900C31CA0 /* WebService.swift */; };
+		A471892D229E8A6600523FD5 /* OperativeGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A471892C229E8A6600523FD5 /* OperativeGroup.swift */; };
+		A471892F229E8A8900523FD5 /* OperativeGroupMembership.swift in Sources */ = {isa = PBXBuildFile; fileRef = A471892E229E8A8900523FD5 /* OperativeGroupMembership.swift */; };
+		A471893322A01CC200523FD5 /* OperativeGroupTaskTemplateMembership.swift in Sources */ = {isa = PBXBuildFile; fileRef = A471893222A01CC200523FD5 /* OperativeGroupTaskTemplateMembership.swift */; };
 		A486A4F01D11748700FE4642 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A486A4EF1D11748700FE4642 /* SystemConfiguration.framework */; };
 		A486A4F21D11748E00FE4642 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A486A4F11D11748E00FE4642 /* CoreData.framework */; };
 		A49A746A1D2FBE580006F220 /* COMPASSDB.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = A4CBC52F1D2FB94500E1D3CE /* COMPASSDB.sqlite */; };
@@ -117,11 +120,15 @@
 		A439199D1D2D1E7900C31CA0 /* TaskTemplateParameterFormItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TaskTemplateParameterFormItem.swift; path = "COMPASSMOBILE Tasks/SupportingFiles/TaskTemplateParameterFormItem.swift"; sourceTree = SOURCE_ROOT; };
 		A439199E1D2D1E7900C31CA0 /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Utility.swift; path = "COMPASSMOBILE Tasks/SupportingFiles/Utility.swift"; sourceTree = SOURCE_ROOT; };
 		A439199F1D2D1E7900C31CA0 /* WebService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebService.swift; path = "COMPASSMOBILE Tasks/SupportingFiles/WebService.swift"; sourceTree = SOURCE_ROOT; };
+		A471892C229E8A6600523FD5 /* OperativeGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OperativeGroup.swift; path = "COMPASSMOBILE Tasks/Models/Entity/OperativeGroup.swift"; sourceTree = SOURCE_ROOT; };
+		A471892E229E8A8900523FD5 /* OperativeGroupMembership.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OperativeGroupMembership.swift; path = "COMPASSMOBILE Tasks/Models/Entity/OperativeGroupMembership.swift"; sourceTree = SOURCE_ROOT; };
+		A471893222A01CC200523FD5 /* OperativeGroupTaskTemplateMembership.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OperativeGroupTaskTemplateMembership.swift; path = "COMPASSMOBILE Tasks/Models/Entity/OperativeGroupTaskTemplateMembership.swift"; sourceTree = SOURCE_ROOT; };
 		A486A4EF1D11748700FE4642 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		A486A4F11D11748E00FE4642 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		A4A25F5E1D22D63A00027FA6 /* Default-568.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568.png"; sourceTree = SOURCE_ROOT; };
 		A4A522EC1C43F4A500D16A9A /* COMPASSMOBILE Tasks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "COMPASSMOBILE Tasks.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4AF07651E326A6E00D09CA8 /* TemperatureProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TemperatureProfile.swift; path = "COMPASSMOBILE Tasks/SupportingFiles/TemperatureProfile.swift"; sourceTree = SOURCE_ROOT; };
+		A4C1A27122A56F7100243E3C /* COMPASSMOBILE Tasks.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = "COMPASSMOBILE Tasks.entitlements"; path = "COMPASSMOBILE Tasks/COMPASSMOBILE Tasks.entitlements"; sourceTree = SOURCE_ROOT; };
 		A4CBC52F1D2FB94500E1D3CE /* COMPASSDB.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = COMPASSDB.sqlite; path = "COMPASSMOBILE Tasks/COMPASSDB.sqlite"; sourceTree = SOURCE_ROOT; };
 		A4D4A2D51D2D2097009287F8 /* COMPASSMOBILE Tasks.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "COMPASSMOBILE Tasks.xcdatamodel"; sourceTree = "<group>"; };
 		A4E425421D2D22870088EF64 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "COMPASSMOBILE Tasks/Base.lproj/Main.storyboard"; sourceTree = "<group>"; };
@@ -208,6 +215,9 @@
 				A43919871D2D1DB500C31CA0 /* TaskParameter.swift */,
 				A43919881D2D1DB500C31CA0 /* TaskTemplate.swift */,
 				A43919891D2D1DB500C31CA0 /* TaskTemplateParameter.swift */,
+				A471892C229E8A6600523FD5 /* OperativeGroup.swift */,
+				A471892E229E8A8900523FD5 /* OperativeGroupMembership.swift */,
+				A471893222A01CC200523FD5 /* OperativeGroupTaskTemplateMembership.swift */,
 			);
 			name = Entity;
 			sourceTree = "<group>";
@@ -265,6 +275,7 @@
 		A4A522EE1C43F4A500D16A9A /* COMPASSMOBILE Tasks */ = {
 			isa = PBXGroup;
 			children = (
+				A4C1A27122A56F7100243E3C /* COMPASSMOBILE Tasks.entitlements */,
 				A43919661D2D1D0100C31CA0 /* COMPASSMOBILE-Tasks-Bridging-Header.h */,
 				A4D4A2D41D2D2097009287F8 /* COMPASSMOBILE Tasks.xcdatamodeld */,
 				A43919671D2D1D0100C31CA0 /* Info.plist */,
@@ -356,6 +367,12 @@
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 0;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+							com.apple.iCloud = {
+								enabled = 1;
 							};
 						};
 					};
@@ -457,6 +474,7 @@
 				A4D4A2D61D2D2097009287F8 /* COMPASSMOBILE Tasks.xcdatamodeld in Sources */,
 				A439198A1D2D1DB500C31CA0 /* Asset.swift in Sources */,
 				A43919A31D2D1E7900C31CA0 /* TaskTemplateParameterFormItem.swift in Sources */,
+				A471892F229E8A8900523FD5 /* OperativeGroupMembership.swift in Sources */,
 				A432E9521D2D1A4E002FE138 /* LoginViewController.swift in Sources */,
 				A439198D1D2D1DB500C31CA0 /* LocationGroupMembership.swift in Sources */,
 				A43919941D2D1DB500C31CA0 /* TaskParameter.swift in Sources */,
@@ -467,6 +485,7 @@
 				A43919951D2D1DB500C31CA0 /* TaskTemplate.swift in Sources */,
 				A43919A21D2D1E7900C31CA0 /* Session.swift in Sources */,
 				A43919A11D2D1E7900C31CA0 /* Reachability.swift in Sources */,
+				A471893322A01CC200523FD5 /* OperativeGroupTaskTemplateMembership.swift in Sources */,
 				A439197B1D2D1D9D00C31CA0 /* ModelManager.swift in Sources */,
 				A432E92D1D2D1809002FE138 /* AppDelegate.swift in Sources */,
 				A43919911D2D1DB500C31CA0 /* ReferenceData.swift in Sources */,
@@ -475,6 +494,7 @@
 				A41B81421ECB0A0300822D25 /* TemperatureProfileViewController.swift in Sources */,
 				A432E9561D2D1A4E002FE138 /* SearchViewController.swift in Sources */,
 				A432E9581D2D1A4E002FE138 /* TaskViewController.swift in Sources */,
+				A471892D229E8A6600523FD5 /* OperativeGroup.swift in Sources */,
 				A43919A51D2D1E7900C31CA0 /* WebService.swift in Sources */,
 				A43919921D2D1DB500C31CA0 /* Site.swift in Sources */,
 				A43919A01D2D1E7900C31CA0 /* Constants.swift in Sources */,
@@ -548,6 +568,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -556,13 +577,14 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "$inherited";
-				"OTHER_LDFLAGS[arch=*]" = "$inherited";
+				OTHER_LDFLAGS = $inherited;
+				"OTHER_LDFLAGS[arch=*]" = $inherited;
 				PRODUCT_BUNDLE_IDENTIFIER = COM.HYDROP.COMPASSMOBILE.TASKS;
 				PROVISIONING_PROFILE = "bd0ca311-af46-4d09-81eb-6b5b1961d2f4";
 				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -575,6 +597,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = "COMPASSMOBILE Tasks/COMPASSMOBILE Tasks.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = H889T663QH;
@@ -635,6 +658,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -643,13 +667,14 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "$inherited";
-				"OTHER_LDFLAGS[arch=*]" = "$inherited";
+				OTHER_LDFLAGS = $inherited;
+				"OTHER_LDFLAGS[arch=*]" = $inherited;
 				PRODUCT_BUNDLE_IDENTIFIER = COM.HYDROP.COMPASSMOBILE.TASKS;
 				PROVISIONING_PROFILE = "bd0ca311-af46-4d09-81eb-6b5b1961d2f4";
 				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -662,6 +687,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = "COMPASSMOBILE Tasks/COMPASSMOBILE Tasks.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = H889T663QH;
