@@ -7,30 +7,6 @@
 //
 
 import UIKit
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
-
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
-}
-
 
 class FilterViewController: UIViewController {
 
@@ -85,27 +61,14 @@ class FilterViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    fileprivate func resetFilter() {
  
-        
-        switch Session.TaskSort
-        {
-            case .date:
-                TaskSortSegment.selectedSegmentIndex = 0
-            
-            case .location:
-                TaskSortSegment.selectedSegmentIndex = 1
-            
-            case .assetType:
-                TaskSortSegment.selectedSegmentIndex = 2
-
-            case .task:
-                TaskSortSegment.selectedSegmentIndex = 3
-        }
-     
         JustMyTasks.isOn = Session.FilterJustMyTasks
- 
+        Session.InvalidateCachedFilterJustMyTasksClause = true
+        
+        SitePopupSelector.unselectedLabelText = NotApplicable
+        SitePopupSelector.isEnabled = false
+
         PropertyPopupSelector.unselectedLabelText = NotApplicable
         PropertyPopupSelector.isEnabled = false
         
@@ -135,6 +98,7 @@ class FilterViewController: UIViewController {
         }
         else
         {
+            inChangeProcess = true
             PopulateSiteSelector()
             SitePopupSelector.isEnabled = true
             PopulatePropertySelector()
@@ -153,12 +117,38 @@ class FilterViewController: UIViewController {
             LocationGroupPopupSelector.isEnabled = true
             PopulateLocationSelector()
             LocationPopupSelector.isEnabled = true
+            PopulateAssetNumberSelector()
+            AssetNumberPopupSelector.isEnabled = true
+            inChangeProcess = false
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+ 
+        
+        switch Session.TaskSort
+        {
+            case .date:
+                TaskSortSegment.selectedSegmentIndex = 0
+            
+            case .location:
+                TaskSortSegment.selectedSegmentIndex = 1
+            
+            case .assetType:
+                TaskSortSegment.selectedSegmentIndex = 2
+
+            case .task:
+                TaskSortSegment.selectedSegmentIndex = 3
+        }
+     
+        resetFilter()
     }
 
     @IBAction func Cancel(_ sender: UIBarButtonItem) {
         Session.ClearFilter();
-        _ = self.navigationController?.popViewController(animated: true)
+       //_ = self.navigationController?.popViewController(animated: true)
+        resetFilter()
     }
     
     @IBAction func Done(_ sender: UIBarButtonItem) {
@@ -212,7 +202,7 @@ class FilterViewController: UIViewController {
         
         // go and get the search/filter criteria from the values selected in the session
         var SiteIds: [String] = [] //NSMutableArray!
-        var selectedIndex: Int? = 0
+        var selectedIndex: Int = 0
         Sites.append("")
         
         // go and get the AssetGroup data based on the criteria built
@@ -253,7 +243,7 @@ class FilterViewController: UIViewController {
         PropertyDictionary = [:]
         
         var PropertyIds: [String] = [] //NSMutableArray!
-        var selectedIndex: Int? = 0
+        var selectedIndex: Int = 0
         Properties.append("")
         
         // go and get the AssetGroup data based on the criteria built
@@ -298,7 +288,7 @@ class FilterViewController: UIViewController {
         criteria["Type"] = "PPMFrequency" as AnyObject
         
         var FrequencyData: [ReferenceData] = [] //NSMutableArray!
-        var selectedIndex: Int? = 0
+        var selectedIndex: Int = 0
         Frequencies.append("")
         
         // go and get the Frequency data based on the criteria built
@@ -329,7 +319,7 @@ class FilterViewController: UIViewController {
     func PopulatePeriodSelector()
     {
         //Get this list of Periods currently available for this user
-        var selectedIndex: Int? = 0
+        var selectedIndex: Int = 0
         
         var count: Int = 0
         for currentPeriod: String in Periods
@@ -337,8 +327,7 @@ class FilterViewController: UIViewController {
             if (currentPeriod == Session.FilterPeriod) { selectedIndex = count }
             count += 1
         }
-        if (selectedIndex == 0) { Session.FilterPeriod = nil }
-        
+
         PeriodPopupSelector.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
         PeriodPopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
         PeriodPopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
@@ -356,7 +345,7 @@ class FilterViewController: UIViewController {
         
         // go and get the search/filter criteria from the values selected in the session
         var AssetGroupData: [String] = [] //NSMutableArray!
-        var selectedIndex: Int? = 0
+        var selectedIndex: Int = 0
         AssetGroups.append("")
         
         // go and get the AssetGroup data based on the criteria built
@@ -397,7 +386,7 @@ class FilterViewController: UIViewController {
         
         // go and get the search/filter criteria from the values selected in the session
         var TaskNameData: [String] = [] //NSMutableArray!
-        var selectedIndex: Int? = 0
+        var selectedIndex: Int = 0
         TaskNames.append("")
         
         // go and get the TaskName data based on the criteria built
@@ -442,7 +431,7 @@ class FilterViewController: UIViewController {
         
         // go and get the search/filter criteria from the values selected in the session
         var AssetTypeData: [String] = [] //NSMutableArray!
-        var selectedIndex: Int? = 0
+        var selectedIndex: Int = 0
         AssetTypes.append("")
         
         // go and get the AssetType data based on the criteria built
@@ -459,8 +448,8 @@ class FilterViewController: UIViewController {
         for currentAssetType: String in AssetTypeData
         {
             let currentAssetTypeDisplay: String = ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMAssetType", key: currentAssetType, parentType: "PPMAssetGroup", parentValue: Session.FilterAssetGroup)
-            AssetTypes.append(currentAssetTypeDisplay)
-            AssetTypeDictionary[currentAssetTypeDisplay] = currentAssetType
+            AssetTypes.append(currentAssetType + ":" + currentAssetTypeDisplay)
+            AssetTypeDictionary[currentAssetType + ":" + currentAssetTypeDisplay] = currentAssetType
             if (currentAssetType == Session.FilterAssetType) { selectedIndex = count}
             count += 1
         }
@@ -483,7 +472,7 @@ class FilterViewController: UIViewController {
         
         // go and get the search/filter criteria from the values selected in the session
         var LocationGroupData: [String] = [] //NSMutableArray!
-        var selectedIndex: Int? = 0
+        var selectedIndex: Int = 0
         LocationGroups.append("")
         
         // go and get the LocationGroup data based on the criteria built
@@ -524,7 +513,7 @@ class FilterViewController: UIViewController {
         
         // go and get the search/filter criteria from the values selected in the session
         var LocationData: [String] = [] //NSMutableArray!
-        var selectedIndex: Int? = 0
+        var selectedIndex: Int = 0
         Locations.append("")
         
         //p]]
@@ -565,11 +554,18 @@ class FilterViewController: UIViewController {
         
         // go and get the search/filter criteria from the values selected in the session
         var AssetNumberData: [String] = [] //NSMutableArray!
-        var selectedIndex: Int? = 0
+        var selectedIndex: Int = 0
         AssetNumbers.append("")
         
         // go and get the AssetNumber data based on the criteria built
-        AssetNumberData = ModelUtility.getInstance().GetFilterAssetNumberList(Session.FilterPropertyId!, AssetGroup: Session.FilterAssetGroup, TaskName: Session.FilterTaskName, AssetType: Session.FilterAssetType, LocationGroupName: Session.FilterLocationGroup, Location: Session.FilterLocation)
+        if (Session.FilterOnTasks)
+        {
+            AssetNumberData = ModelUtility.getInstance().GetTaskFilterAssetNumberList(Session.OrganisationId!)
+        }
+        else
+        {
+            AssetNumberData = ModelUtility.getInstance().GetFilterAssetNumberList(Session.FilterPropertyId!, AssetGroup: Session.FilterAssetGroup, TaskName: Session.FilterTaskName, AssetType: Session.FilterAssetType, LocationGroupName: Session.FilterLocationGroup, Location: Session.FilterLocation)
+        }
         
         var count: Int = 1 //we already have the blank row
         for currentAssetNumber: String in AssetNumberData
@@ -591,14 +587,25 @@ class FilterViewController: UIViewController {
         AssetNumberPopupSelector.displaySelectedValueInLabel = true
     }
     
+    func RePopulateAllSelectors()
+    {
+        PopulateSiteSelector()
+        PopulatePropertySelector()
+        PopulateAssetGroupSelector()
+        PopulateTaskNameSelector()
+        PopulateAssetTypeSelector()
+        PopulateLocationGroupSelector()
+        PopulateLocationSelector()
+        PopulateAssetNumberSelector()
+    }
     
     //MARK : Action from selection
-    var inProcessSite: Bool = false
+    var inChangeProcess: Bool = false
     
     @IBAction func SiteChanged(_ sender: KFPopupSelector) {
-        if(!inProcessSite)
+        if(!inChangeProcess)
         {
-            inProcessSite = true
+            inChangeProcess = true
             //set the site filter
             if (SitePopupSelector.selectedIndex != nil && Sites[SitePopupSelector.selectedIndex!] != "")
             {
@@ -613,13 +620,7 @@ class FilterViewController: UIViewController {
                 }
                 else
                 {
-                    //PopulateSiteSelector()
-                    PopulatePropertySelector()
-                    PopulateAssetGroupSelector()
-                    PopulateTaskNameSelector()
-                    PopulateAssetTypeSelector()
-                    PopulateLocationGroupSelector()
-                    PopulateLocationSelector()
+                    RePopulateAllSelectors()
                 }
             }
             else
@@ -632,26 +633,19 @@ class FilterViewController: UIViewController {
                 
                 if (Session.FilterOnTasks)
                 {
-//                    //PopulateSiteSelector()
-//                    PopulatePropertySelector()
-//                    PopulateAssetGroupSelector()
-//                    PopulateTaskNameSelector()
-//                    PopulateAssetTypeSelector()
-//                    PopulateLocationGroupSelector()
-//                    PopulateLocationSelector()
+                    RePopulateAllSelectors()
                 }
             }
-            inProcessSite = false
+            inChangeProcess = false
         }
     }
 
-    var inProcessProperty: Bool = false
-
     @IBAction func PropertyChanged(_ sender: KFPopupSelector) {
-        if(!inProcessProperty)
+        if(!inChangeProcess)
         {
-            inProcessProperty = true       //set the property filter
-            
+            inChangeProcess = true
+           
+            //set the property filter
             if (PropertyPopupSelector.selectedIndex != nil  && Properties[PropertyPopupSelector.selectedIndex!] != "")
             {
                 Session.FilterPropertyId = PropertyDictionary[Properties[PropertyPopupSelector.selectedIndex!]]
@@ -669,13 +663,7 @@ class FilterViewController: UIViewController {
                 }
                 else
                 {
-                    PopulateSiteSelector()
-                    //PopulatePropertySelector()
-                    PopulateAssetGroupSelector()
-                    PopulateTaskNameSelector()
-                    PopulateAssetTypeSelector()
-                    PopulateLocationGroupSelector()
-                    PopulateLocationSelector()
+                    RePopulateAllSelectors()
                 }
             }
             else
@@ -691,52 +679,76 @@ class FilterViewController: UIViewController {
                 
                 if (Session.FilterOnTasks)
                 {
-//                    PopulateSiteSelector()
-//                    //PopulatePropertySelector()
-//                    PopulateAssetGroupSelector()
-//                    PopulateTaskNameSelector()
-//                    PopulateAssetTypeSelector()
-//                    PopulateLocationGroupSelector()
-//                    PopulateLocationSelector()
+                    RePopulateAllSelectors()
                 }
             }
-            inProcessProperty = false
+            inChangeProcess = false
         }
     }
  
     @IBAction func FrequencyChanged(_ sender: KFPopupSelector) {
-        if (FrequencyPopupSelector.selectedIndex != nil && Frequencies[FrequencyPopupSelector.selectedIndex!] != "")
+        if(!inChangeProcess)
         {
-            Session.FilterFrequency = FrequencyDictionary[Frequencies[FrequencyPopupSelector.selectedIndex!]]
-        }
-        else
-        {
-            if (FrequencyPopupSelector.selectedIndex != nil) { FrequencyPopupSelector.selectedIndex = nil }
-            Session.FilterFrequency = nil
+            inChangeProcess = true
+            //set the frequency filter
+            
+            if (FrequencyPopupSelector.selectedIndex != nil && Frequencies[FrequencyPopupSelector.selectedIndex!] != "")
+            {
+                Session.FilterFrequency = FrequencyDictionary[Frequencies[FrequencyPopupSelector.selectedIndex!]]
+                
+                if (Session.FilterOnTasks)
+                {
+                    RePopulateAllSelectors()
+                }
+            }
+            else
+            {
+                if (FrequencyPopupSelector.selectedIndex != nil) { FrequencyPopupSelector.selectedIndex = nil }
+                Session.FilterFrequency = nil
+                if (Session.FilterOnTasks)
+                {
+                    RePopulateAllSelectors()
+                }
+            }
+            inChangeProcess = false
         }
     }
     
     @IBAction func PeriodChanged(_ sender: KFPopupSelector) {
-        if (PeriodPopupSelector.selectedIndex != nil && Periods[PeriodPopupSelector.selectedIndex!] != "")
+        if(!inChangeProcess)
         {
-            Session.FilterPeriod = Periods[PeriodPopupSelector.selectedIndex!]
-        }
-        else
-        {
-            Session.FilterPeriod = nil
+            inChangeProcess = true
+            if (PeriodPopupSelector.selectedIndex != nil && Periods[PeriodPopupSelector.selectedIndex!] != "")
+            {
+                Session.FilterPeriod = Periods[PeriodPopupSelector.selectedIndex!]
+                if (Session.FilterOnTasks)
+                {
+                    RePopulateAllSelectors()
+                }
+            }
+            else
+            {
+                //no nil value for period selector
+                //if (PeriodPopupSelector.selectedIndex != nil) { PeriodPopupSelector.selectedIndex = nil }
+                Session.FilterPeriod = nil
+                if (Session.FilterOnTasks)
+                {
+                    RePopulateAllSelectors()
+                }
+            }
+            inChangeProcess = false
         }
     }
     
     @IBAction func MyTasksChanged(_ sender: UISwitch) {
         Session.FilterJustMyTasks = sender.isOn
+        resetFilter()
     }
     
-    var inProcessAssetGroup: Bool = false
-    
     @IBAction func AssetGroupChanged(_ sender: KFPopupSelector) {
-        if(!inProcessAssetGroup)
+        if(!inChangeProcess)
         {
-            inProcessAssetGroup = true       //set the property filter
+            inChangeProcess = true       //set the property filter
             if (AssetGroupPopupSelector.selectedIndex != nil && AssetGroups[AssetGroupPopupSelector.selectedIndex!] != "")
             {
                 Session.FilterAssetGroup = AssetGroupDictionary[AssetGroups[AssetGroupPopupSelector.selectedIndex!]]
@@ -749,13 +761,7 @@ class FilterViewController: UIViewController {
                 }
                 else
                 {
-                    PopulateSiteSelector()
-                    PopulatePropertySelector()
-                    //PopulateAssetGroupSelector()
-                    PopulateTaskNameSelector()
-                    PopulateAssetTypeSelector()
-                    PopulateLocationGroupSelector()
-                    PopulateLocationSelector()
+                    RePopulateAllSelectors()
                 }
             }
             else
@@ -767,25 +773,17 @@ class FilterViewController: UIViewController {
                 
                 if (Session.FilterOnTasks)
                 {
-//                    PopulateSiteSelector()
-//                    PopulatePropertySelector()
-//                    //PopulateAssetGroupSelector()
-//                    PopulateTaskNameSelector()
-//                    PopulateAssetTypeSelector()
-//                    PopulateLocationGroupSelector()
-//                    PopulateLocationSelector()
+                    RePopulateAllSelectors()
                 }
             }
-            inProcessAssetGroup = false
+            inChangeProcess = false
         }
     }
     
-    var inProcessTaskName: Bool = false
-    
     @IBAction func TaskNameChange(_ sender: KFPopupSelector) {
-        if(!inProcessTaskName)
+        if(!inChangeProcess)
         {
-            inProcessTaskName = true        //set the property filter
+            inChangeProcess = true        //set the property filter
             if (TaskNamePopupSelector.selectedIndex != nil && TaskNames[TaskNamePopupSelector.selectedIndex!] != "")
             {
                 if(TaskNames[TaskNamePopupSelector.selectedIndex!] == RemedialTask)
@@ -805,13 +803,7 @@ class FilterViewController: UIViewController {
                 }
                 else
                 {
-                    PopulateSiteSelector()
-                    PopulatePropertySelector()
-                    PopulateAssetGroupSelector()
-                    //PopulateTaskNameSelector()
-                    PopulateAssetTypeSelector()
-                    PopulateLocationGroupSelector()
-                    PopulateLocationSelector()
+                    RePopulateAllSelectors()
                 }
             }
             else
@@ -823,38 +815,24 @@ class FilterViewController: UIViewController {
                 
                 if (Session.FilterOnTasks)
                 {
-//                    PopulateSiteSelector()
-//                    PopulatePropertySelector()
-//                    PopulateAssetGroupSelector()
-//                    //PopulateTaskNameSelector()
-//                    PopulateAssetTypeSelector()
-//                    PopulateLocationGroupSelector()
-//                    PopulateLocationSelector()
+                    RePopulateAllSelectors()
                 }
             }
-            inProcessTaskName = false
+            inChangeProcess = false
         }
     }
     
-    var inProcessAssetType: Bool = false
-    
     @IBAction func AssetTypeChanged(_ sender: KFPopupSelector) {
-        if(!inProcessAssetType)
+        if(!inChangeProcess)
         {
-            inProcessAssetType = true        //set the property filter
+            inChangeProcess = true        //set the property filter
             if (AssetTypePopupSelector.selectedIndex != nil && AssetTypes[AssetTypePopupSelector.selectedIndex!] != "")
             {
                 Session.FilterAssetType = AssetTypeDictionary[AssetTypes[AssetTypePopupSelector.selectedIndex!]]
                 debugPrint(Session.FilterAssetType!)
                 if (Session.FilterOnTasks)
                 {
-                    PopulateSiteSelector()
-                    PopulatePropertySelector()
-                    PopulateAssetGroupSelector()
-                    PopulateTaskNameSelector()
-                    //PopulateAssetTypeSelector()
-                    PopulateLocationGroupSelector()
-                    PopulateLocationSelector()
+                    RePopulateAllSelectors()
                 }
             }
             else
@@ -864,25 +842,17 @@ class FilterViewController: UIViewController {
                 
                 if (Session.FilterOnTasks)
                 {
-//                    PopulateSiteSelector()
-//                    PopulatePropertySelector()
-//                    PopulateAssetGroupSelector()
-//                    PopulateTaskNameSelector()
-//                    //PopulateAssetTypeSelector()
-//                    PopulateLocationGroupSelector()
-//                    PopulateLocationSelector()
+                    RePopulateAllSelectors()
                 }
             }
-            inProcessAssetType = false
+            inChangeProcess = false
         }
     }
     
-    var inProcessLocationGroup: Bool = false
-    
     @IBAction func LocationGroupChanged(_ sender: KFPopupSelector) {
-        if (!inProcessLocationGroup)
+        if (!inChangeProcess)
         {
-            inProcessLocationGroup = true       //set the property filter
+            inChangeProcess = true       //set the property filter
             if (LocationGroupPopupSelector.selectedIndex != nil && LocationGroups[LocationGroupPopupSelector.selectedIndex!] != "")
             {
                 Session.FilterLocationGroup = LocationGroupDictionary[LocationGroups[LocationGroupPopupSelector.selectedIndex!]]
@@ -895,13 +865,7 @@ class FilterViewController: UIViewController {
                 }
                 else
                 {
-                    PopulateSiteSelector()
-                    PopulatePropertySelector()
-                    PopulateAssetGroupSelector()
-                    PopulateTaskNameSelector()
-                    PopulateAssetTypeSelector()
-                    //PopulateLocationGroupSelector()
-                    PopulateLocationSelector()
+                    RePopulateAllSelectors()
                 }
             }
             else
@@ -913,25 +877,17 @@ class FilterViewController: UIViewController {
                 
                 if (Session.FilterOnTasks)
                 {
-//                    PopulateSiteSelector()
-//                    PopulatePropertySelector()
-//                    PopulateAssetGroupSelector()
-//                    PopulateTaskNameSelector()
-//                    PopulateAssetTypeSelector()
-//                    //PopulateLocationGroupSelector()
-//                    PopulateLocationSelector()
+                    RePopulateAllSelectors()
                 }
             }
-            inProcessLocationGroup = false
+            inChangeProcess = false
         }
     }
     
-    var inProcessLocation: Bool = false
-    
     @IBAction func LocationChanged(_ sender: KFPopupSelector) {
-        if (!inProcessLocation)
+        if (!inChangeProcess)
         {
-            inProcessLocation = true
+            inChangeProcess = true
             //set the property filter
             if (LocationPopupSelector.selectedIndex != nil && Locations[LocationPopupSelector.selectedIndex!] != "")
             {
@@ -945,13 +901,7 @@ class FilterViewController: UIViewController {
                 }
                 else
                 {
-                    PopulateSiteSelector()
-                    PopulatePropertySelector()
-                    PopulateAssetGroupSelector()
-                    PopulateTaskNameSelector()
-                    PopulateAssetTypeSelector()
-                    PopulateLocationGroupSelector()
-                    //PopulateLocationSelector()
+                    RePopulateAllSelectors()
                 }
             }
             else
@@ -963,29 +913,40 @@ class FilterViewController: UIViewController {
                 
                 if (Session.FilterOnTasks)
                 {
-//                    PopulateSiteSelector()
-//                    PopulatePropertySelector()
-//                    PopulateAssetGroupSelector()
-//                    PopulateTaskNameSelector()
-//                    PopulateAssetTypeSelector()
-//                    PopulateLocationGroupSelector()
-//                    //PopulateLocationSelector()
+                    RePopulateAllSelectors()
                 }
             }
-            inProcessLocation = false
+            inChangeProcess = false
         }
     }
     
     @IBAction func AssetNumberChanged(_ sender: KFPopupSelector) {
-        //set the property filter
-        if (AssetNumberPopupSelector.selectedIndex != nil && AssetNumbers[AssetNumberPopupSelector.selectedIndex!] != "")
+        if (!inChangeProcess)
         {
-            Session.FilterAssetNumber = AssetNumberDictionary[AssetNumbers[AssetNumberPopupSelector.selectedIndex!]]
-        }
-        else
-        {
-            if (AssetNumberPopupSelector.selectedIndex != nil) { AssetNumberPopupSelector.selectedIndex = nil }
-            Session.FilterAssetNumber = nil
+            inChangeProcess = true
+            //set the asset number filter
+            if (AssetNumberPopupSelector.selectedIndex != nil && AssetNumbers[AssetNumberPopupSelector.selectedIndex!] != "")
+            {
+                if (!Session.FilterOnTasks)
+                {
+                    Session.FilterAssetNumber = AssetNumberDictionary[AssetNumbers[AssetNumberPopupSelector.selectedIndex!]]
+                }
+                else
+                {
+                    RePopulateAllSelectors()
+                }
+            }
+            else
+            {
+                if (AssetNumberPopupSelector.selectedIndex != nil) { AssetNumberPopupSelector.selectedIndex = nil }
+                Session.FilterAssetNumber = nil
+                
+                if (Session.FilterOnTasks)
+                {
+                    RePopulateAllSelectors()
+                }
+            }
+            inChangeProcess = false
         }
     }
     

@@ -3929,7 +3929,7 @@ class ModelManager: NSObject {
         var whereClausePredicate: String = String()
         if (onlyPending)
         {
-            whereClausePredicate = "WHERE [Status] IN ('Pending','Outstanding') AND "
+            whereClausePredicate = "WHERE ([Task].[Status] = 'Pending' OR ([Task].[Status] = 'Outstanding' AND [OperativeId] = '" + Session.OperativeId! + "')) AND "
         }
         else
         {
@@ -3944,57 +3944,7 @@ class ModelManager: NSObject {
         sharedModelManager.database!.open()
         if(Session.FilterJustMyTasks)
         {
-            var whereClauseMyTasks: String = String()
-            whereClauseMyTasks = " AND "
-            whereClauseMyTasks += "("
-            whereClauseMyTasks += "(OperativeId = '" + Session.OperativeId! + "')"
-            
-            var taskTemplateIds: [String] = [String]()
-            //get the groups for the operative
-            var operativeIds: [String] = [String]()
-            operativeIds.append(Session.OperativeId!)
-            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT OperativeGroupId FROM OperativeGroupMembership WHERE OperativeId = ?", withArgumentsIn: operativeIds)
-            if (resultSet != nil)
-            {
-                while resultSet.next() {
-                
-                    //get the templates for the operative group
-                    var operativeGroupIds: [String] = [String]()
-                    operativeGroupIds.append(resultSet.string(forColumn: "OperativeGroupId")!)
-                    let innerResultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT TaskTemplateId FROM OperativeGroupTaskTemplateMembership WHERE OperativeGroupId = ?", withArgumentsIn: operativeGroupIds)
-                    
-                    if (innerResultSet != nil)
-                    {
-                        while innerResultSet.next(){
-                        
-                            //add the templates to the array
-                            taskTemplateIds.append(innerResultSet.string(forColumn: "TaskTemplateId")!)
-                        }
-                    }
-                }
-
-                //build the where clause
-
-                if (taskTemplateIds.count > 0)
-                {
-                    var taskTemplateIdList: String = String()
-                    var first: Bool = true
-                    for taskTemplateId: String in taskTemplateIds
-                    {
-                        if (!first) {taskTemplateIdList += ", "} else {first = false}
-                        taskTemplateIdList += "'" + taskTemplateId + "'"
-                    }
- 
-                    whereClauseMyTasks += " OR "
-                    whereClauseMyTasks += "("
-                    whereClauseMyTasks += "TaskTemplateId IN (" + taskTemplateIdList + ")"
-                    whereClauseMyTasks += " AND "
-                    whereClauseMyTasks += "(OperativeId IS NULL OR OperativeId = '00000000-0000-0000-0000-000000000000')"
-                    whereClauseMyTasks += ")"
-                }
-            }
-            whereClauseMyTasks += ")"
-            whereClause += whereClauseMyTasks
+            whereClause += ModelUtility.getInstance().GetFilterJustMyTasksClause()
         }
         else
         {

@@ -126,7 +126,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 self.HUD!.hide(animated: true)
             }
         }
-
+        Session.InvalidateCachedFilterJustMyTasksClause = true
     }
  
     //MARK: Other methods

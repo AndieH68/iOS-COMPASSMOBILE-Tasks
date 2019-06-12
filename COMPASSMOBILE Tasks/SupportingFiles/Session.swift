@@ -49,6 +49,8 @@ class Session : NSObject
     static var FilterPeriod: String? = String?(DueCalendarMonthText)
     
     static var FilterJustMyTasks: Bool = false
+    static var CachedFilterJustMyTasksClause: String? = nil
+    static var InvalidateCachedFilterJustMyTasksClause: Bool = true
     
     static var FilterAssetGroup: String? = nil
     static var FilterTaskName: String? = nil
@@ -101,6 +103,8 @@ class Session : NSObject
         FilterPeriod = String?(DueCalendarMonthText)
         
         FilterJustMyTasks = false
+        CachedFilterJustMyTasksClause = nil
+        InvalidateCachedFilterJustMyTasksClause = true
         
         FilterAssetGroup = nil
         FilterTaskName = nil

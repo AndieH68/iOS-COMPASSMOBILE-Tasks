@@ -15,6 +15,8 @@ class RemedialTaskViewController: UIViewController, UITextFieldDelegate, UITextV
     var task: Task = Task()
     var taskParameters: [TaskParameter] = [TaskParameter]()
     
+    @IBOutlet weak var scrollView: UIScrollView!
+    
     //header fields
     @IBOutlet var AssetType: UILabel!
     @IBOutlet var TaskName: UILabel!
@@ -34,12 +36,20 @@ class RemedialTaskViewController: UIViewController, UITextFieldDelegate, UITextV
     //standard actions
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        registerForKeyboardNotifications()
+
         Session.CodeScanned = nil
         
         task = ModelManager.getInstance().getTask(Session.TaskId!)!
         
-        AssetType.text = ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMAssetGroup", key: task.PPMGroup!)
+        if(task.PPMGroup != nil)
+        {
+            AssetType.text = ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMAssetGroup", key: task.PPMGroup!)
+        }
+        else
+        {
+            AssetType.text = "Missing Asset Type"
+        }
         if (task.TaskName == RemedialTask)
         {
             TaskName.text = RemedialTask
@@ -82,6 +92,40 @@ class RemedialTaskViewController: UIViewController, UITextFieldDelegate, UITextV
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         NewScancode()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        deregisterFromKeyboardNotifications()
+    }
+    
+    //MARK: Keyboard handling methods
+    func registerForKeyboardNotifications(){
+        //Adding notifies on keyboard appearing
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIControl.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIControl.keyboardWillHideNotification, object: nil)
+    }
+    
+    func deregisterFromKeyboardNotifications(){
+        //Removing notifies on keyboard appearing
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+   
+    @objc func keyboardWillShow(_ notification: Notification) {
+        let userInfo: NSDictionary = notification.userInfo! as NSDictionary
+        let keyboardSize = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue.size
+        
+        let tabbarHeight = tabBarController?.tabBar.frame.size.height ?? 0
+        let toolbarHeight = navigationController?.toolbar.frame.size.height ?? 0
+        let bottomInset = keyboardSize.height - tabbarHeight - toolbarHeight
+        
+        scrollView.contentInset.bottom = bottomInset
+        scrollView.scrollIndicatorInsets.bottom = bottomInset
+    }
+    
+    @objc func keyboardWillHide(_ notification: Notification) {
+        scrollView.contentInset = .zero
+        scrollView.scrollIndicatorInsets = .zero
     }
     
     //MARK: - UITextFieldDelegate

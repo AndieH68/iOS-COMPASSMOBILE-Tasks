@@ -44,24 +44,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             Session.UseTaskTiming = defaults.bool(forKey: "TaskTimng")
             Session.UseTemperatureProfile = defaults.bool(forKey: "TemperatureProfile")
             Session.RememberFilterSettings = defaults.bool(forKey: "RememberFilterSettings")
+            Session.FilterOnTasks = defaults.bool(forKey: "FilterOnTasks")
             
             if(Session.RememberFilterSettings)
             {
-                Session.FilterSiteId = defaults.object(forKey: "FilterSiteId") as? String ?? String()
-                Session.FilterSiteName = defaults.object(forKey: "FilterSiteName") as? String ?? String()
-                Session.FilterPropertyId = defaults.object(forKey: "FilterPropertyId") as? String ?? String()
-                Session.FilterPropertyName = defaults.object(forKey: "FilterPropertyName") as? String ?? String()
-                Session.FilterFrequency = defaults.object(forKey: "FilterFrequency") as? String ?? String()
+                Session.FilterSiteId = defaults.object(forKey: "FilterSiteId") as? String ?? nil
+                Session.FilterSiteName = defaults.object(forKey: "FilterSiteName") as? String ?? nil
+                Session.FilterPropertyId = defaults.object(forKey: "FilterPropertyId") as? String ?? nil
+                Session.FilterPropertyName = defaults.object(forKey: "FilterPropertyName") as? String ?? nil
+                Session.FilterFrequency = defaults.object(forKey: "FilterFrequency") as? String ?? nil
                 Session.FilterPeriod = defaults.object(forKey: "FilterPeriod") as? String ??  String?(DueCalendarMonthText)
                 
                 Session.FilterJustMyTasks = defaults.bool(forKey: "FilterJustMyTasks")
                 
-                Session.FilterAssetGroup = defaults.object(forKey: "FilterAssetGroup") as? String ?? String()
-                Session.FilterTaskName = defaults.object(forKey: "FilterTaskName") as? String ?? String()
-                Session.FilterAssetType = defaults.object(forKey: "FilterAssetType") as? String ?? String()
-                Session.FilterLocationGroup = defaults.object(forKey: "FilterLocationGroup") as? String ?? String()
-                Session.FilterLocation = defaults.object(forKey: "FilterLocation") as? String ?? String()
-                Session.FilterAssetNumber = defaults.object(forKey: "FilterAssetNumber") as? String ?? String()
+                Session.FilterAssetGroup = defaults.object(forKey: "FilterAssetGroup") as? String ?? nil
+                Session.FilterTaskName = defaults.object(forKey: "FilterTaskName") as? String ?? nil
+                Session.FilterAssetType = defaults.object(forKey: "FilterAssetType") as? String ?? nil
+                Session.FilterLocationGroup = defaults.object(forKey: "FilterLocationGroup") as? String ?? nil
+                Session.FilterLocation = defaults.object(forKey: "FilterLocation") as? String ?? nil
+                Session.FilterAssetNumber = defaults.object(forKey: "FilterAssetNumber") as? String ?? nil
                
             }
             

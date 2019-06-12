@@ -226,7 +226,7 @@ class ModelUtility: NSObject {
     {
         var Sites: [String] = [String]()
         
-        var Query: String = "SELECT DISTINCT [Task].[SiteId] FROM [Task] INNER JOIN [Site] ON [Task].[SiteId] = [Site].[RowId] WHERE [Task].[Deleted] IS NULL AND [Site].[Deleted] IS NULL AND [Task].[Status] IN ('Pending','Outstanding') AND [Task].[OrganisationId] = '" + OrganisationId + "'"
+        var Query: String = "SELECT DISTINCT [Task].[SiteId] FROM [Task] INNER JOIN [Site] ON [Task].[SiteId] = [Site].[RowId] WHERE [Task].[Deleted] IS NULL AND [Site].[Deleted] IS NULL AND ([Task].[Status] = 'Pending' OR ([Task].[Status] = 'Outstanding' AND [OperativeId] = '" + Session.OperativeId! + "')) AND [Task].[OrganisationId] = '" + OrganisationId + "'"
 //        if (Session.FilterSiteId != nil)
 //        {
 //            Query +=  " AND [Task].[SiteId] = '" + Session.FilterSiteId! + "'"
@@ -253,12 +253,27 @@ class ModelUtility: NSObject {
         }
         if (Session.FilterLocation != nil)
         {
-            Query += " AND [Task].[LocationName] = '" + Session.FilterLocationGroup! + "'"
+            Query += " AND [Task].[LocationName] = '" + Session.FilterLocation! + "'"
         }
-        Query +=  " ORDER BY [Site].[Name]"
+        
+        if (Session.FilterJustMyTasks)
+        {
+            Query += ModelUtility.getInstance().GetFilterJustMyTasksClause()
+        }
+        else
+        {
+            Query += " AND (OperativeId IS NULL OR OperativeId = '00000000-0000-0000-0000-000000000000' OR OperativeId = '" + Session.OperativeId! + "')"
+        }
+        
+        var whereClause: String = String()
+        var whereValues: [AnyObject] = [AnyObject]()
+        (whereClause, whereValues) = GetPeriodClause(period: Session.FilterPeriod!)
+        
+        Query += " AND " + whereClause
+        Query += " ORDER BY [Site].[Name]"
         
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: [])
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: whereValues)
         if (resultSet != nil) {
             while resultSet.next()
             {
@@ -290,7 +305,7 @@ class ModelUtility: NSObject {
     {
         var Properties: [String] = [String]()
         
-        var Query: String = "SELECT DISTINCT [Task].[PropertyId] FROM [Task] INNER JOIN [Property] ON [Task].[PropertyId] = [Property].[RowId] WHERE [Task].[Deleted] IS NULL AND [Property].[Deleted] IS NULL AND [Task].[Status] IN ('Pending','Outstanding') AND [Task].[OrganisationId] = '" + OrganisationId + "'"
+        var Query: String = "SELECT DISTINCT [Task].[PropertyId] FROM [Task] INNER JOIN [Property] ON [Task].[PropertyId] = [Property].[RowId] WHERE [Task].[Deleted] IS NULL AND [Property].[Deleted] IS NULL AND ([Task].[Status] = 'Pending' OR ([Task].[Status] = 'Outstanding' AND [OperativeId] = '" + Session.OperativeId! + "')) AND [Task].[OrganisationId] = '" + OrganisationId + "'"
         if (Session.FilterSiteId != nil)
         {
             Query +=  " AND [Task].[SiteId] = '" + Session.FilterSiteId! + "'"
@@ -317,13 +332,27 @@ class ModelUtility: NSObject {
         }
         if (Session.FilterLocation != nil)
         {
-            Query += " AND [Task].[LocationName] = '" + Session.FilterLocationGroup! + "'"
+            Query += " AND [Task].[LocationName] = '" + Session.FilterLocation! + "'"
         }
-        Query +=  " ORDER BY [Property].[Name]"
-        debugPrint(Query)
+        
+        if (Session.FilterJustMyTasks)
+        {
+            Query += ModelUtility.getInstance().GetFilterJustMyTasksClause()
+        }
+        else
+        {
+            Query += " AND (OperativeId IS NULL OR OperativeId = '00000000-0000-0000-0000-000000000000' OR OperativeId = '" + Session.OperativeId! + "')"
+        }
+        
+        var whereClause: String = String()
+        var whereValues: [AnyObject] = [AnyObject]()
+        (whereClause, whereValues) = GetPeriodClause(period: Session.FilterPeriod!)
+        
+        Query += " AND " + whereClause
+        Query += " ORDER BY [Property].[Name]"
         
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: [])
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: whereValues)
         if (resultSet != nil) {
             while resultSet.next()
             {
@@ -366,7 +395,7 @@ class ModelUtility: NSObject {
     {
         var AssetGroups: [String] = [String]()
         
-        var Query: String = "SELECT DISTINCT [PPMGroup] FROM [Task] WHERE [Deleted] IS NULL AND [Task].[Status] IN ('Pending','Outstanding') AND [Task].[OrganisationId] = '" + OrganisationId + "'"
+        var Query: String = "SELECT DISTINCT [PPMGroup] FROM [Task] WHERE [Deleted] IS NULL AND ([Task].[Status] = 'Pending' OR ([Task].[Status] = 'Outstanding' AND [OperativeId] = '" + Session.OperativeId! + "')) AND [Task].[OrganisationId] = '" + OrganisationId + "'"
         if (Session.FilterSiteId != nil)
         {
             Query +=  " AND [Task].[SiteId] = '" + Session.FilterSiteId! + "'"
@@ -393,12 +422,27 @@ class ModelUtility: NSObject {
         }
         if (Session.FilterLocation != nil)
         {
-            Query += " AND [Task].[LocationName] = '" + Session.FilterLocationGroup! + "'"
+            Query += " AND [Task].[LocationName] = '" + Session.FilterLocation! + "'"
         }
-        Query +=  " ORDER BY [Task].[PPMGroup]"
-
+        
+        if (Session.FilterJustMyTasks)
+        {
+            Query += ModelUtility.getInstance().GetFilterJustMyTasksClause()
+        }
+        else
+        {
+            Query += " AND (OperativeId IS NULL OR OperativeId = '00000000-0000-0000-0000-000000000000' OR OperativeId = '" + Session.OperativeId! + "')"
+        }
+        
+        var whereClause: String = String()
+        var whereValues: [AnyObject] = [AnyObject]()
+        (whereClause, whereValues) = GetPeriodClause(period: Session.FilterPeriod!)
+        
+        Query += " AND " + whereClause
+        Query += " ORDER BY [PPMGroup]"
+        
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: [])
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: whereValues)
         if (resultSet != nil) {
             while resultSet.next()
             {
@@ -445,7 +489,7 @@ class ModelUtility: NSObject {
     func GetTaskFilterTaskNameList(_ OrganisationId: String) -> [String]
     {
         var TaskNames: [String] = [String]()
-        var Query: String = "SELECT DISTINCT [TaskName] FROM [Task] WHERE [Deleted] IS NULL AND [Task].[Status] IN ('Pending','Outstanding') AND [Task].[OrganisationId] = '" + OrganisationId + "'"
+        var Query: String = "SELECT DISTINCT [TaskName] FROM [Task] WHERE [Deleted] IS NULL AND ([Task].[Status] = 'Pending' OR ([Task].[Status] = 'Outstanding' AND [OperativeId] = '" + Session.OperativeId! + "')) AND [Task].[OrganisationId] = '" + OrganisationId + "'"
         if (Session.FilterSiteId != nil)
         {
             Query +=  " AND [Task].[SiteId] = '" + Session.FilterSiteId! + "'"
@@ -472,11 +516,27 @@ class ModelUtility: NSObject {
         }
         if (Session.FilterLocation != nil)
         {
-            Query += " AND [Task].[LocationName] = '" + Session.FilterLocationGroup! + "'"
+            Query += " AND [Task].[LocationName] = '" + Session.FilterLocation! + "'"
         }
-        Query +=  " ORDER BY [TaskName]"
+        
+        if (Session.FilterJustMyTasks)
+        {
+            Query += ModelUtility.getInstance().GetFilterJustMyTasksClause()
+        }
+        else
+        {
+            Query += " AND (OperativeId IS NULL OR OperativeId = '00000000-0000-0000-0000-000000000000' OR OperativeId = '" + Session.OperativeId! + "')"
+        }
+        
+        var whereClause: String = String()
+        var whereValues: [AnyObject] = [AnyObject]()
+        (whereClause, whereValues) = GetPeriodClause(period: Session.FilterPeriod!)
+        
+        Query += " AND " + whereClause
+        Query += " ORDER BY [TaskName]"
+        
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: [])
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: whereValues)
         if (resultSet != nil) {
             while resultSet.next()
             {
@@ -523,7 +583,7 @@ class ModelUtility: NSObject {
     func GetTaskFilterAssetTypeList(_ OrganisationId: String) -> [String]
     {
         var AssetTypes: [String] = [String]()
-        var Query: String = "SELECT DISTINCT [AssetType] FROM [Task] WHERE [Deleted] IS NULL AND [Task].[Status] IN ('Pending','Outstanding') AND [Task].[OrganisationId] = '" + OrganisationId + "'"
+        var Query: String = "SELECT DISTINCT [AssetType] FROM [Task] WHERE [Deleted] IS NULL AND ([Task].[Status] = 'Pending' OR ([Task].[Status] = 'Outstanding' AND [OperativeId] = '" + Session.OperativeId! + "')) AND [Task].[OrganisationId] = '" + OrganisationId + "'"
         if (Session.FilterSiteId != nil)
         {
             Query +=  " AND [Task].[SiteId] = '" + Session.FilterSiteId! + "'"
@@ -550,11 +610,27 @@ class ModelUtility: NSObject {
         }
         if (Session.FilterLocation != nil)
         {
-            Query += " AND [Task].[LocationName] = '" + Session.FilterLocationGroup! + "'"
+            Query += " AND [Task].[LocationName] = '" + Session.FilterLocation! + "'"
         }
+        
+        if (Session.FilterJustMyTasks)
+        {
+            Query += ModelUtility.getInstance().GetFilterJustMyTasksClause()
+        }
+        else
+        {
+            Query += " AND (OperativeId IS NULL OR OperativeId = '00000000-0000-0000-0000-000000000000' OR OperativeId = '" + Session.OperativeId! + "')"
+        }
+        
+        var whereClause: String = String()
+        var whereValues: [AnyObject] = [AnyObject]()
+        (whereClause, whereValues) = GetPeriodClause(period: Session.FilterPeriod!)
+        
+        Query += " AND " + whereClause
         Query += " ORDER BY [AssetType]"
+        
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: [])
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: whereValues)
         if (resultSet != nil) {
             while resultSet.next()
             {
@@ -602,7 +678,7 @@ class ModelUtility: NSObject {
     func GetTaskFilterLocationGroupList(_ OrganisationId: String) -> [String]
     {
         var LocationGroups: [String] = [String]()
-        var Query: String = "SELECT DISTINCT [LocationGroupName] FROM [Task] WHERE [Deleted] IS NULL AND [Task].[Status] IN ('Pending','Outstanding') AND [Task].[OrganisationId] = '" + OrganisationId + "'"
+        var Query: String = "SELECT DISTINCT [LocationGroupName] FROM [Task] WHERE [Deleted] IS NULL AND ([Task].[Status] = 'Pending' OR ([Task].[Status] = 'Outstanding' AND [OperativeId] = '" + Session.OperativeId! + "')) AND [Task].[OrganisationId] = '" + OrganisationId + "'"
         if (Session.FilterSiteId != nil)
         {
             Query +=  " AND [Task].[SiteId] = '" + Session.FilterSiteId! + "'"
@@ -629,11 +705,27 @@ class ModelUtility: NSObject {
 //        }
         if (Session.FilterLocation != nil)
         {
-            Query += " AND [Task].[LocationName] = '" + Session.FilterLocationGroup! + "'"
+            Query += " AND [Task].[LocationName] = '" + Session.FilterLocation! + "'"
         }
+        
+        if (Session.FilterJustMyTasks)
+        {
+            Query += ModelUtility.getInstance().GetFilterJustMyTasksClause()
+        }
+        else
+        {
+            Query += " AND (OperativeId IS NULL OR OperativeId = '00000000-0000-0000-0000-000000000000' OR OperativeId = '" + Session.OperativeId! + "')"
+        }
+        
+        var whereClause: String = String()
+        var whereValues: [AnyObject] = [AnyObject]()
+        (whereClause, whereValues) = GetPeriodClause(period: Session.FilterPeriod!)
+        
+        Query += " AND " + whereClause
         Query += " ORDER BY [LocationGroupName]"
+        
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: [])
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: whereValues)
         if (resultSet != nil) {
             while resultSet.next()
             {
@@ -683,7 +775,7 @@ class ModelUtility: NSObject {
     func GetTaskFilterLocationList(_ OrganisationId: String) -> [String]
     {
         var Locations: [String] = [String]()
-        var Query: String = "SELECT DISTINCT [LocationName] FROM [Task] WHERE [Deleted] IS NULL AND [Task].[Status] IN ('Pending','Outstanding') AND [Task].[OrganisationId] = '" + OrganisationId + "'"
+        var Query: String = "SELECT DISTINCT [LocationName] FROM [Task] WHERE [Deleted] IS NULL AND ([Task].[Status] = 'Pending' OR ([Task].[Status] = 'Outstanding' AND [OperativeId] = '" + Session.OperativeId! + "')) AND [Task].[OrganisationId] = '" + OrganisationId + "'"
         if (Session.FilterSiteId != nil)
         {
             Query +=  " AND [Task].[SiteId] = '" + Session.FilterSiteId! + "'"
@@ -710,11 +802,27 @@ class ModelUtility: NSObject {
         }
 //        if (Session.FilterLocation != nil)
 //        {
-//            Query += " AND [Task].[LocationName] = '" + Session.FilterLocationGroup! + "'"
+//            Query += " AND [Task].[LocationName] = '" + Session.FilterLocation! + "'"
 //        }
+        
+        if (Session.FilterJustMyTasks)
+        {
+            Query += ModelUtility.getInstance().GetFilterJustMyTasksClause()
+        }
+        else
+        {
+            Query += " AND (OperativeId IS NULL OR OperativeId = '00000000-0000-0000-0000-000000000000' OR OperativeId = '" + Session.OperativeId! + "')"
+        }
+        
+        var whereClause: String = String()
+        var whereValues: [AnyObject] = [AnyObject]()
+        (whereClause, whereValues) = GetPeriodClause(period: Session.FilterPeriod!)
+        
+        Query += " AND " + whereClause
         Query += " ORDER BY [LocationName]"
+        
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: [])
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: whereValues)
         if (resultSet != nil) {
             while resultSet.next()
             {
@@ -770,6 +878,69 @@ class ModelUtility: NSObject {
         return AssetNumbers
     }
     
+
+    func GetTaskFilterAssetNumberList(_ OrganisationId: String) -> [String]
+    {
+        var AssetNumbers: [String] = [String]()
+        var Query: String = "SELECT DISTINCT [AssetNumber] FROM [Task] WHERE [Deleted] IS NULL AND ([Task].[Status] = 'Pending' OR ([Task].[Status] = 'Outstanding' AND [OperativeId] = '" + Session.OperativeId! + "')) AND [Task].[OrganisationId] = '" + OrganisationId + "'"
+        if (Session.FilterSiteId != nil)
+        {
+            Query +=  " AND [Task].[SiteId] = '" + Session.FilterSiteId! + "'"
+        }
+        if (Session.FilterPropertyId != nil)
+        {
+            Query +=  " AND [Task].[PropertyId] = '" + Session.FilterPropertyId! + "'"
+        }
+        if (Session.FilterAssetGroup != nil)
+        {
+            Query += " AND [Task].[PPMGroup] = '" + Session.FilterAssetGroup! + "'"
+        }
+        if (Session.FilterTaskName != nil)
+        {
+            Query += " AND [Task].[TaskName] = '" + Session.FilterTaskName! + "'"
+        }
+        if (Session.FilterAssetType != nil)
+        {
+            Query += " AND [Task].[AssetType] = '" + Session.FilterAssetType! + "'"
+        }
+        if (Session.FilterLocationGroup != nil)
+        {
+            Query += " AND [Task].[LocationGroupName] = '" + Session.FilterLocationGroup! + "'"
+        }
+        if (Session.FilterLocation != nil)
+        {
+            Query += " AND [Task].[LocationName] = '" + Session.FilterLocation! + "'"
+        }
+        
+        if (Session.FilterJustMyTasks)
+        {
+            Query += ModelUtility.getInstance().GetFilterJustMyTasksClause()
+        }
+        else
+        {
+            Query += " AND (OperativeId IS NULL OR OperativeId = '00000000-0000-0000-0000-000000000000' OR OperativeId = '" + Session.OperativeId! + "')"
+        }
+        
+        var whereClause: String = String()
+        var whereValues: [AnyObject] = [AnyObject]()
+        (whereClause, whereValues) = GetPeriodClause(period: Session.FilterPeriod!)
+        
+        Query += " AND " + whereClause
+        Query += " ORDER BY [AssetNumber]"
+        
+        sharedModelManager.database!.open()
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: whereValues)
+        if (resultSet != nil) {
+            while resultSet.next()
+            {
+                if (resultSet.string(forColumn: "AssetNumber") != nil)
+                {
+                    AssetNumbers.append(resultSet.string(forColumn: "AssetNumber")!)
+                }
+            }
+        }
+        return AssetNumbers
+    }
     func GetTaskCountByStatus(Status: String) -> Int32
     {
         var count: Int32 = 0
@@ -785,6 +956,116 @@ class ModelUtility: NSObject {
         return count
     }
     
+    func GetFilterJustMyTasksClause() -> String {
+        if(Session.InvalidateCachedFilterJustMyTasksClause)
+        {
+            var whereClauseMyTasks: String = String()
+            whereClauseMyTasks = " AND "
+            whereClauseMyTasks += "("
+            whereClauseMyTasks += "(OperativeId = '" + Session.OperativeId! + "')"
+            
+            var taskTemplateIds: [String] = [String]()
+            //get the groups for the operative
+            var operativeIds: [String] = [String]()
+            operativeIds.append(Session.OperativeId!)
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT OperativeGroupId FROM OperativeGroupMembership WHERE OperativeId = ?", withArgumentsIn: operativeIds)
+            if (resultSet != nil)
+            {
+                while resultSet.next() {
+                    
+                    //get the templates for the operative group
+                    var operativeGroupIds: [String] = [String]()
+                    operativeGroupIds.append(resultSet.string(forColumn: "OperativeGroupId")!)
+                    let innerResultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT TaskTemplateId FROM OperativeGroupTaskTemplateMembership WHERE OperativeGroupId = ?", withArgumentsIn: operativeGroupIds)
+                    
+                    if (innerResultSet != nil)
+                    {
+                        while innerResultSet.next(){
+                            
+                            //add the templates to the array
+                            taskTemplateIds.append(innerResultSet.string(forColumn: "TaskTemplateId")!)
+                        }
+                    }
+                }
+                
+                //build the where clause
+                
+                if (taskTemplateIds.count > 0)
+                {
+                    var taskTemplateIdList: String = String()
+                    var first: Bool = true
+                    for taskTemplateId: String in taskTemplateIds
+                    {
+                        if (!first) {taskTemplateIdList += ", "} else {first = false}
+                        taskTemplateIdList += "'" + taskTemplateId + "'"
+                    }
+                    
+                    whereClauseMyTasks += " OR "
+                    whereClauseMyTasks += "("
+                    whereClauseMyTasks += "TaskTemplateId IN (" + taskTemplateIdList + ")"
+                    whereClauseMyTasks += " AND "
+                    whereClauseMyTasks += "(OperativeId IS NULL OR OperativeId = '00000000-0000-0000-0000-000000000000')"
+                    whereClauseMyTasks += ")"
+                }
+            }
+            whereClauseMyTasks += ")"
+            Session.CachedFilterJustMyTasksClause = whereClauseMyTasks
+            Session.InvalidateCachedFilterJustMyTasksClause = false
+        }
+        return Session.CachedFilterJustMyTasksClause!
+    }
+    
+    
+    func GetPeriodClause(period: String) -> (String,[AnyObject])
+    {
+        var whereClause: String = String()
+        var whereValues: [AnyObject] = [AnyObject]()
 
+        switch period
+        {
+        case DueTodayText:
+            
+            let endOfToday: Date = Date().endOfDay()
+            
+            whereClause += (whereClause != "" ? " AND " : " ")
+            whereClause += " [ScheduledDate] <= ? "
+            whereValues.append(endOfToday as AnyObject)
+            
+        case DueNext7DaysText:
+            
+            let endOfThisWeek: Date = Date().endOfWeek()
+            
+            whereClause += (whereClause != "" ? " AND " : " ")
+            whereClause += " [ScheduledDate] <= ? "
+            whereValues.append(endOfThisWeek as AnyObject)
+            
+        case DueCalendarMonthText:
+            
+            let endOfThisMonth: Date = Date().endOfMonth()
+            
+            whereClause += (whereClause != "" ? " AND " : " ")
+            whereClause += " [ScheduledDate] <= ? "
+            whereValues.append(endOfThisMonth as AnyObject)
+            
+        case DueThisMonthText:
+            
+            let startOfNextMonth: Date = Date().startOfNextMonth()
+            let endOfNextMonth: Date = Date().endOfNextMonth()
+            whereClause += (whereClause != "" ? " AND " : " ")
+            whereClause += " [ScheduledDate] >= ? AND [ScheduledDate] <= ? "
+            whereValues.append(startOfNextMonth as AnyObject)
+            whereValues.append(endOfNextMonth as AnyObject)
+            
+        case "All":
+            //nothing to do
+            print("Catch All")
+            
+        default:
+            //nothing to do
+            print("Default")
+            
+        }
+        return(whereClause, whereValues)
+    }
 }
 

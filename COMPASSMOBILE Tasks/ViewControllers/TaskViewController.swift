@@ -372,8 +372,8 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
     //MARK: Keyboard handling methods
     func registerForKeyboardNotifications(){
         //Adding notifies on keyboard appearing
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIControl.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIControl.keyboardWillHideNotification, object: nil)
     }
     
     func deregisterFromKeyboardNotifications(){
@@ -382,34 +382,21 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
-    @objc func keyboardWasShown(notification: NSNotification){
-        //Need to calculate keyboard exact size due to Apple suggestions
-        self.tableView.isScrollEnabled = true
-        var info = notification.userInfo!
-        let keyboardSize = (info[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.size
-        let contentInsets : UIEdgeInsets = UIEdgeInsets.init(top: 0.0, left: 0.0, bottom: keyboardSize!.height, right: 0.0)
+    @objc func keyboardWillShow(_ notification: Notification) {
+        let userInfo: NSDictionary = notification.userInfo! as NSDictionary
+        let keyboardSize = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue.size
         
-        self.tableView.contentInset = contentInsets
-        self.tableView.scrollIndicatorInsets = contentInsets
+        let tabbarHeight = tabBarController?.tabBar.frame.size.height ?? 0
+        let toolbarHeight = navigationController?.toolbar.frame.size.height ?? 0
+        let bottomInset = keyboardSize.height - tabbarHeight - toolbarHeight
         
-        var aRect : CGRect = self.view.frame
-        aRect.size.height -= keyboardSize!.height
-        if let activeField = self.activeField {
-            if (!aRect.contains(activeField.frame.origin)){
-                self.tableView.scrollRectToVisible(activeField.frame, animated: true)
-            }
-        }
+        tableView.contentInset.bottom = bottomInset
+        tableView.scrollIndicatorInsets.bottom = bottomInset
     }
     
-    @objc func keyboardWillBeHidden(notification: NSNotification){
-        //Once keyboard disappears, restore original positions
-        var info = notification.userInfo!
-        let keyboardSize = (info[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.size
-        let contentInsets : UIEdgeInsets = UIEdgeInsets.init(top: 0.0, left: 0.0, bottom: -keyboardSize!.height, right: 0.0)
-        self.tableView.contentInset = contentInsets
-        self.tableView.scrollIndicatorInsets = contentInsets
-        self.view.endEditing(true)
-        self.tableView.contentInset = UIEdgeInsets.zero
+    @objc func keyboardWillHide(_ notification: Notification) {
+        tableView.contentInset = .zero
+        tableView.scrollIndicatorInsets = .zero
     }
     
     

@@ -95,6 +95,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func LoginButton(_ sender: UIButton) {
         
+        Session.InvalidateCachedFilterJustMyTasksClause = true
         ValidationLabel.text = "Invalid username or password"
         ValidationLabel.isHidden = true
         
