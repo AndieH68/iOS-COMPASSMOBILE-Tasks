@@ -255,6 +255,10 @@ class ModelUtility: NSObject {
         {
             Query += " AND [Task].[LocationName] = '" + Session.FilterLocation! + "'"
         }
+        if (Session.FilterAssetNumber != nil)
+        {
+            Query += " AND [Task].[AssetNumber] = '" + Session.FilterAssetNumber! + "'"
+        }
         
         if (Session.FilterJustMyTasks)
         {
@@ -333,6 +337,10 @@ class ModelUtility: NSObject {
         if (Session.FilterLocation != nil)
         {
             Query += " AND [Task].[LocationName] = '" + Session.FilterLocation! + "'"
+        }
+        if (Session.FilterAssetNumber != nil)
+        {
+            Query += " AND [Task].[AssetNumber] = '" + Session.FilterAssetNumber! + "'"
         }
         
         if (Session.FilterJustMyTasks)
@@ -423,6 +431,10 @@ class ModelUtility: NSObject {
         if (Session.FilterLocation != nil)
         {
             Query += " AND [Task].[LocationName] = '" + Session.FilterLocation! + "'"
+        }
+        if (Session.FilterAssetNumber != nil)
+        {
+            Query += " AND [Task].[AssetNumber] = '" + Session.FilterAssetNumber! + "'"
         }
         
         if (Session.FilterJustMyTasks)
@@ -518,6 +530,10 @@ class ModelUtility: NSObject {
         {
             Query += " AND [Task].[LocationName] = '" + Session.FilterLocation! + "'"
         }
+        if (Session.FilterAssetNumber != nil)
+        {
+            Query += " AND [Task].[AssetNumber] = '" + Session.FilterAssetNumber! + "'"
+        }
         
         if (Session.FilterJustMyTasks)
         {
@@ -612,6 +628,10 @@ class ModelUtility: NSObject {
         {
             Query += " AND [Task].[LocationName] = '" + Session.FilterLocation! + "'"
         }
+        if (Session.FilterAssetNumber != nil)
+        {
+            Query += " AND [Task].[AssetNumber] = '" + Session.FilterAssetNumber! + "'"
+        }
         
         if (Session.FilterJustMyTasks)
         {
@@ -642,7 +662,6 @@ class ModelUtility: NSObject {
         }
         return AssetTypes
     }
-    
     
     func GetFilterLocationGroupList(_ PropertyId: String, AssetGroup: String?, TaskName: String?, AssetType: String?) -> [String]
     {
@@ -706,6 +725,10 @@ class ModelUtility: NSObject {
         if (Session.FilterLocation != nil)
         {
             Query += " AND [Task].[LocationName] = '" + Session.FilterLocation! + "'"
+        }
+        if (Session.FilterAssetNumber != nil)
+        {
+            Query += " AND [Task].[AssetNumber] = '" + Session.FilterAssetNumber! + "'"
         }
         
         if (Session.FilterJustMyTasks)
@@ -804,6 +827,10 @@ class ModelUtility: NSObject {
 //        {
 //            Query += " AND [Task].[LocationName] = '" + Session.FilterLocation! + "'"
 //        }
+        if (Session.FilterAssetNumber != nil)
+        {
+            Query += " AND [Task].[AssetNumber] = '" + Session.FilterAssetNumber! + "'"
+        }
         
         if (Session.FilterJustMyTasks)
         {
@@ -878,7 +905,6 @@ class ModelUtility: NSObject {
         return AssetNumbers
     }
     
-
     func GetTaskFilterAssetNumberList(_ OrganisationId: String) -> [String]
     {
         var AssetNumbers: [String] = [String]()
@@ -911,6 +937,10 @@ class ModelUtility: NSObject {
         {
             Query += " AND [Task].[LocationName] = '" + Session.FilterLocation! + "'"
         }
+        if (Session.FilterAssetNumber != nil)
+        {
+            Query += " AND [Task].[AssetNumber] = '" + Session.FilterAssetNumber! + "'"
+        }
         
         if (Session.FilterJustMyTasks)
         {
@@ -941,6 +971,7 @@ class ModelUtility: NSObject {
         }
         return AssetNumbers
     }
+
     func GetTaskCountByStatus(Status: String) -> Int32
     {
         var count: Int32 = 0
@@ -1014,7 +1045,6 @@ class ModelUtility: NSObject {
         }
         return Session.CachedFilterJustMyTasksClause!
     }
-    
     
     func GetPeriodClause(period: String) -> (String,[AnyObject])
     {

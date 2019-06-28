@@ -48,7 +48,7 @@ class RemedialTaskViewController: UIViewController, UITextFieldDelegate, UITextV
         }
         else
         {
-            AssetType.text = "Missing Asset Type"
+            AssetType.text = task.AssetType ?? "Missing Asset Type"
         }
         if (task.TaskName == RemedialTask)
         {
@@ -99,6 +99,7 @@ class RemedialTaskViewController: UIViewController, UITextFieldDelegate, UITextV
     }
     
     //MARK: Keyboard handling methods
+    
     func registerForKeyboardNotifications(){
         //Adding notifies on keyboard appearing
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIControl.keyboardWillShowNotification, object: nil)

@@ -70,7 +70,7 @@ class Utility: NSObject {
         if fileManager.fileExists(atPath: dbPath) {
         
             let documentsURL = try! FileManager.default.url(for: .documentDirectory,in: .userDomainMask,appropriateFor: nil, create: true)
-            let documentPath = documentsURL.appendingPathComponent((fileName as String) + ".backup")
+            let documentPath = documentsURL.appendingPathComponent("Backup " + (fileName as String))
          
             if fileManager.fileExists(atPath: documentPath.path) {
                 var error : NSError?
@@ -994,9 +994,16 @@ class Utility: NSObject {
                         else
                         {
                             //no  - update the Task
-                            _ = ModelManager.getInstance().updateTask(task)
+                            if (task.Status != "Outstanding" || (task.Status == "Outstanding" && task.OperativeId != Session.OperativeId))
+                            {
+                                _ = ModelManager.getInstance().updateTask(task)
+                            }
+                            else
+                            {
+                                task.LastUpdatedOn = currentTask?.LastUpdatedOn
+                                 _ = ModelManager.getInstance().updateTask(task)
+                            }
                         }
-                        
                     }
                     
                     if (progressBar != nil)
@@ -1575,6 +1582,10 @@ class Utility: NSObject {
                 _ = ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
                 
             } //while (!noMore)
+        }
+        else
+        {
+            Session.AlertMessage = NoNetwork;
         }
         NSLog("SendTaskDetails - ended")
         return (isRemoteAvailable, taskCounter)

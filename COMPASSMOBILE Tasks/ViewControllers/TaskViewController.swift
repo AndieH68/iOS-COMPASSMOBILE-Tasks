@@ -107,8 +107,15 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
             TaskTimeTakenStack.isHidden = !Session.UseTaskTiming
             TaskTravelTimeStack.isHidden = !Session.UseTaskTiming
         }
-        
-        AssetType.text = ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMAssetGroup", key: task.PPMGroup!) + " - " + ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMAssetType", key: task.AssetType!)
+        if(task.PPMGroup != nil)
+        {
+            AssetType.text = ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMAssetGroup", key: task.PPMGroup!) + " - " + ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMAssetType", key: task.AssetType!)
+        }
+        else
+        {
+            AssetType.text = task.AssetType ?? "Missing Asset Type"
+        }
+
         if (task.TaskName == RemedialTask)
         {
             TaskName.text = RemedialTask
@@ -461,9 +468,13 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
             }
             
             cell.Answer.tag = TemperatureCell
+            debugPrint(HotType!)
+            debugPrint(ColdType!)
             if (taskTemplateParameter.ParameterName == "TemperatureHot" && HotType == "None") || (taskTemplateParameter.ParameterName == "TemperatureCold" && ColdType == "None")
             {
                 taskTemplateParameterFormItem.Enabled = false
+                cell.ProfileButton.isHidden = true
+                cell.ProfileButton.isEnabled = false
             }
             else
             {
@@ -537,7 +548,10 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
                 
                 dropdownData.append(PleaseSelect)
                 dropdownData.append(contentsOf: ModelUtility.getInstance().GetLookupList(taskTemplateParameter.ReferenceDataType!, ExtendedReferenceDataType: taskTemplateParameter.ReferenceDataExtendedType))
-                dropdownData.append(NotApplicable)
+                if (taskTemplateParameter.ParameterName != "Accessible")
+                {
+                    dropdownData.append(NotApplicable)
+                }
                 
                 cell.AnswerSelector.restorationIdentifier = taskTemplateParameter.RowId
                 cell.AnswerSelector.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
@@ -1055,7 +1069,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
                                 || (taskTemplateParameter.ParameterName == "TemperatureFeedCold")
                             )
                         {
-                            cell.Answer.isEnabled = enabled //&& !Session.UseTemperatureProfile
+                            cell.Answer.isEnabled = enabled && !Session.UseTemperatureProfile
                             cell.ProfileButton.isHidden = !Session.UseTemperatureProfile
                             cell.ProfileButton.isEnabled = enabled && Session.UseTemperatureProfile
                         }

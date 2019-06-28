@@ -109,24 +109,31 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         //        self.getTaskData(MainThread: false)
         //}, animated: true)
         
-        HUD = MBProgressHUD.showAdded(to: self.navigationController!.view, animated: true)
-        HUD!.mode = .determinateHorizontalBar
-        HUD!.label.text = "Synchronising"
-        
-        DispatchQueue.global().async
+        if(Reachability().connectedToNetwork())
         {
-            Utility.CheckSynchronisation(self, HUD: self.HUD!)
-            self.getTaskData(MainThread: false)
+            HUD = MBProgressHUD.showAdded(to: self.navigationController!.view, animated: true)
+            HUD!.mode = .determinateHorizontalBar
+            HUD!.label.text = "Synchronising"
             
-            //reload the table
-            self.taskTable.reloadData()
-
-            DispatchQueue.main.async
+            DispatchQueue.global().async
             {
-                self.HUD!.hide(animated: true)
+                Utility.CheckSynchronisation(self, HUD: self.HUD!)
+                self.getTaskData(MainThread: false)
+                
+                //reload the table
+                self.taskTable.reloadData()
+
+                DispatchQueue.main.async
+                {
+                    self.HUD!.hide(animated: true)
+                }
             }
+            Session.InvalidateCachedFilterJustMyTasksClause = true
         }
-        Session.InvalidateCachedFilterJustMyTasksClause = true
+        else
+        {
+            Utility.invokeAlertMethod(self, title: "Synchronise", message: NoNetwork)
+        }
     }
  
     //MARK: Other methods
@@ -190,7 +197,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
         else
         {
-            cell.type.text = "Missing PPM Group"
+            cell.type.text = (task.AssetType ?? "Missing PPM Group")  + " - " + ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMAssetType", key: task.AssetType!)
         }
         cell.asset.text = task.AssetNumber
         cell.dateDue.text = Utility.DateToStringForView(task.ScheduledDate)

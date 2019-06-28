@@ -448,8 +448,8 @@ class FilterViewController: UIViewController {
         for currentAssetType: String in AssetTypeData
         {
             let currentAssetTypeDisplay: String = ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMAssetType", key: currentAssetType, parentType: "PPMAssetGroup", parentValue: Session.FilterAssetGroup)
-            AssetTypes.append(currentAssetType + ":" + currentAssetTypeDisplay)
-            AssetTypeDictionary[currentAssetType + ":" + currentAssetTypeDisplay] = currentAssetType
+            AssetTypes.append(currentAssetTypeDisplay)
+            AssetTypeDictionary[currentAssetTypeDisplay] = currentAssetType
             if (currentAssetType == Session.FilterAssetType) { selectedIndex = count}
             count += 1
         }
@@ -927,11 +927,9 @@ class FilterViewController: UIViewController {
             //set the asset number filter
             if (AssetNumberPopupSelector.selectedIndex != nil && AssetNumbers[AssetNumberPopupSelector.selectedIndex!] != "")
             {
-                if (!Session.FilterOnTasks)
-                {
-                    Session.FilterAssetNumber = AssetNumberDictionary[AssetNumbers[AssetNumberPopupSelector.selectedIndex!]]
-                }
-                else
+                Session.FilterAssetNumber = AssetNumberDictionary[AssetNumbers[AssetNumberPopupSelector.selectedIndex!]]
+
+                if (Session.FilterOnTasks)
                 {
                     RePopulateAllSelectors()
                 }

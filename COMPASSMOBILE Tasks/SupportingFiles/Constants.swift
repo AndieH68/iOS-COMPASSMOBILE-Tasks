@@ -60,3 +60,5 @@ let TaskOpenMessage: String = "A different task is already open"
 let TemperatureCell: Int = 1
 let TemperatureProfileCellHot: Int = 2
 let TemperatureProfileCellCold: Int = 3
+
+let NoNetwork: String = "Not connected to network"

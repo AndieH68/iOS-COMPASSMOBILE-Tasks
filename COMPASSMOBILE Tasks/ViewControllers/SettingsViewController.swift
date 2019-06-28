@@ -298,6 +298,8 @@ class SettingsViewController: UITableViewController, MBProgressHUDDelegate
         //headsUpDisplay!.label.text = "Downloading"
         //headsUpDisplay!.showWhileExecuting({Utility.DownloadAll(self, HUD: self.headsUpDisplay)}, animated: true)
 
+        if (Reachability().connectedToNetwork())
+        {
         headsUpDisplay = MBProgressHUD.showAdded(to: self.view, animated: true)
         headsUpDisplay!.mode = .determinate
         headsUpDisplay!.label.text = "Downloading"
@@ -311,6 +313,11 @@ class SettingsViewController: UITableViewController, MBProgressHUDDelegate
                         self.headsUpDisplay!.hide(animated: true)
                     }
             }
+        }
+        else
+        {
+            Utility.invokeAlertMethod(self, title: "Synchronise", message: NoNetwork)
+        }
     }
     
     func ResetSynchronisationHandler (_ actionTarget: UIAlertAction) {

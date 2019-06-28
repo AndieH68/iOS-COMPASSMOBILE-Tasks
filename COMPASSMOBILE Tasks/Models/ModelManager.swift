@@ -35,7 +35,7 @@ class ModelManager: NSObject {
         
         //check for the OperativeGroupTable
         if (returnValue){
-            SQLStatement = "SELECT name FOM sqlite_master WHERE type = 'table' and name = 'OperativeGroup'"
+            SQLStatement = "SELECT name FROM sqlite_master WHERE type = 'table' and name = 'OperativeGroup'"
             let resultSet = sharedModelManager.database!.executeQuery(SQLStatement, withArgumentsIn: SQLParameterValues)
             if (resultSet == nil)
             {
@@ -46,7 +46,7 @@ class ModelManager: NSObject {
         }
         
         if (returnValue){
-            SQLStatement = " SELECT name FOM sqlite_master WHERE type = 'table' and name='OperativeGroupMembership'"
+            SQLStatement = " SELECT name FROM sqlite_master WHERE type = 'table' and name='OperativeGroupMembership'"
             let resultSet = sharedModelManager.database!.executeQuery(SQLStatement, withArgumentsIn: SQLParameterValues)
             if (resultSet == nil)
             {
@@ -57,7 +57,7 @@ class ModelManager: NSObject {
         }
         
         if (returnValue){
-            SQLStatement = " SELECT name FOM sqlite_master WHERE type = 'table' and name='OperativeGroupTaskTemplateMembership'"
+            SQLStatement = " SELECT name FROM sqlite_master WHERE type = 'table' and name='OperativeGroupTaskTemplateMembership'"
             let resultSet = sharedModelManager.database!.executeQuery(SQLStatement, withArgumentsIn: SQLParameterValues)
             if (resultSet == nil)
             {
@@ -3926,15 +3926,7 @@ class ModelManager: NSObject {
             }
         }
         
-        var whereClausePredicate: String = String()
-        if (onlyPending)
-        {
-            whereClausePredicate = "WHERE ([Task].[Status] = 'Pending' OR ([Task].[Status] = 'Outstanding' AND [OperativeId] = '" + Session.OperativeId! + "')) AND "
-        }
-        else
-        {
-            whereClausePredicate = "WHERE [Status] IN ('Complete','Dockable') AND "
-        }
+        let whereClausePredicate: String = "WHERE "
         
         if (whereClause != "")
         {
@@ -3953,7 +3945,15 @@ class ModelManager: NSObject {
                 whereClause += " AND (OperativeId IS NULL OR OperativeId = '00000000-0000-0000-0000-000000000000' OR OperativeId = '" + Session.OperativeId! + "')"
             }
         }
-        
+  
+        if (onlyPending)
+        {
+            whereClause += " AND ([Task].[Status] = 'Pending' OR ([Task].[Status] = 'Outstanding' AND [OperativeId] = '" + Session.OperativeId! + "')) "
+        }
+        else
+        {
+            whereClause += " AND [Status] IN ('Complete','Dockable') "
+        }
 
         let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [Task] " + whereClause + orderByClause, withArgumentsIn: whereValues)
         if (countSet != nil) {
