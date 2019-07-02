@@ -1719,7 +1719,7 @@ class Utility: NSObject {
             _ = ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
         }
     }
-   
+    
     class func ResetSynchronisationDates(_ viewController: UIViewController, HUD: MBProgressHUD?)
     {
         self.ResetSynchronisationDatesDetails(HUD)

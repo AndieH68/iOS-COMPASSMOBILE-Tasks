@@ -273,7 +273,10 @@ class ModelUtility: NSObject {
         var whereValues: [AnyObject] = [AnyObject]()
         (whereClause, whereValues) = GetPeriodClause(period: Session.FilterPeriod!)
         
-        Query += " AND " + whereClause
+        if(!whereClause.isEmpty)
+        {
+            Query += " AND " + whereClause
+        }
         Query += " ORDER BY [Site].[Name]"
         
         sharedModelManager.database!.open()
@@ -356,7 +359,10 @@ class ModelUtility: NSObject {
         var whereValues: [AnyObject] = [AnyObject]()
         (whereClause, whereValues) = GetPeriodClause(period: Session.FilterPeriod!)
         
-        Query += " AND " + whereClause
+        if(!whereClause.isEmpty)
+        {
+            Query += " AND " + whereClause
+        }
         Query += " ORDER BY [Property].[Name]"
         
         sharedModelManager.database!.open()
@@ -450,7 +456,10 @@ class ModelUtility: NSObject {
         var whereValues: [AnyObject] = [AnyObject]()
         (whereClause, whereValues) = GetPeriodClause(period: Session.FilterPeriod!)
         
-        Query += " AND " + whereClause
+        if(!whereClause.isEmpty)
+        {
+            Query += " AND " + whereClause
+        }
         Query += " ORDER BY [PPMGroup]"
         
         sharedModelManager.database!.open()
@@ -548,7 +557,10 @@ class ModelUtility: NSObject {
         var whereValues: [AnyObject] = [AnyObject]()
         (whereClause, whereValues) = GetPeriodClause(period: Session.FilterPeriod!)
         
-        Query += " AND " + whereClause
+        if(!whereClause.isEmpty)
+        {
+            Query += " AND " + whereClause
+        }
         Query += " ORDER BY [TaskName]"
         
         sharedModelManager.database!.open()
@@ -646,7 +658,10 @@ class ModelUtility: NSObject {
         var whereValues: [AnyObject] = [AnyObject]()
         (whereClause, whereValues) = GetPeriodClause(period: Session.FilterPeriod!)
         
-        Query += " AND " + whereClause
+        if(!whereClause.isEmpty)
+        {
+            Query += " AND " + whereClause
+        }
         Query += " ORDER BY [AssetType]"
         
         sharedModelManager.database!.open()
@@ -744,7 +759,10 @@ class ModelUtility: NSObject {
         var whereValues: [AnyObject] = [AnyObject]()
         (whereClause, whereValues) = GetPeriodClause(period: Session.FilterPeriod!)
         
-        Query += " AND " + whereClause
+        if(!whereClause.isEmpty)
+        {
+            Query += " AND " + whereClause
+        }
         Query += " ORDER BY [LocationGroupName]"
         
         sharedModelManager.database!.open()
@@ -845,7 +863,10 @@ class ModelUtility: NSObject {
         var whereValues: [AnyObject] = [AnyObject]()
         (whereClause, whereValues) = GetPeriodClause(period: Session.FilterPeriod!)
         
-        Query += " AND " + whereClause
+        if(!whereClause.isEmpty)
+        {
+            Query += " AND " + whereClause
+        }
         Query += " ORDER BY [LocationName]"
         
         sharedModelManager.database!.open()
@@ -955,7 +976,10 @@ class ModelUtility: NSObject {
         var whereValues: [AnyObject] = [AnyObject]()
         (whereClause, whereValues) = GetPeriodClause(period: Session.FilterPeriod!)
         
-        Query += " AND " + whereClause
+        if(!whereClause.isEmpty)
+        {
+            Query += " AND " + whereClause
+        }
         Query += " ORDER BY [AssetNumber]"
         
         sharedModelManager.database!.open()
