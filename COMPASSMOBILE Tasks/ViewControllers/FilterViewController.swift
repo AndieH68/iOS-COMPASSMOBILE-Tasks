@@ -62,7 +62,7 @@ class FilterViewController: UIViewController {
     }
     
     fileprivate func resetFilter() {
- 
+        
         JustMyTasks.isOn = Session.FilterJustMyTasks
         Session.InvalidateCachedFilterJustMyTasksClause = true
         
@@ -95,6 +95,7 @@ class FilterViewController: UIViewController {
             PopulateSiteSelector()
             PopulateFrequencySelector()
             PopulatePeriodSelector()
+            SitePopupSelector.isEnabled = true
         }
         else
         {
@@ -147,8 +148,8 @@ class FilterViewController: UIViewController {
 
     @IBAction func Cancel(_ sender: UIBarButtonItem) {
         Session.ClearFilter();
-       //_ = self.navigationController?.popViewController(animated: true)
-        resetFilter()
+        _ = self.navigationController?.popViewController(animated: true)
+        //resetFilter()
     }
     
     @IBAction func Done(_ sender: UIBarButtonItem) {
@@ -603,7 +604,7 @@ class FilterViewController: UIViewController {
     var inChangeProcess: Bool = false
     
     @IBAction func SiteChanged(_ sender: KFPopupSelector) {
-        if(!inChangeProcess)
+        if(!(inChangeProcess && Session.FilterOnTasks))
         {
             inChangeProcess = true
             //set the site filter
@@ -641,7 +642,7 @@ class FilterViewController: UIViewController {
     }
 
     @IBAction func PropertyChanged(_ sender: KFPopupSelector) {
-        if(!inChangeProcess)
+        if(!(inChangeProcess && Session.FilterOnTasks))
         {
             inChangeProcess = true
            
@@ -687,7 +688,7 @@ class FilterViewController: UIViewController {
     }
  
     @IBAction func FrequencyChanged(_ sender: KFPopupSelector) {
-        if(!inChangeProcess)
+        if(!(inChangeProcess && Session.FilterOnTasks))
         {
             inChangeProcess = true
             //set the frequency filter
@@ -715,7 +716,7 @@ class FilterViewController: UIViewController {
     }
     
     @IBAction func PeriodChanged(_ sender: KFPopupSelector) {
-        if(!inChangeProcess)
+        if(!(inChangeProcess && Session.FilterOnTasks))
         {
             inChangeProcess = true
             if (PeriodPopupSelector.selectedIndex != nil && Periods[PeriodPopupSelector.selectedIndex!] != "")
@@ -746,7 +747,7 @@ class FilterViewController: UIViewController {
     }
     
     @IBAction func AssetGroupChanged(_ sender: KFPopupSelector) {
-        if(!inChangeProcess)
+        if(!(inChangeProcess && Session.FilterOnTasks))
         {
             inChangeProcess = true       //set the property filter
             if (AssetGroupPopupSelector.selectedIndex != nil && AssetGroups[AssetGroupPopupSelector.selectedIndex!] != "")
@@ -781,7 +782,7 @@ class FilterViewController: UIViewController {
     }
     
     @IBAction func TaskNameChange(_ sender: KFPopupSelector) {
-        if(!inChangeProcess)
+        if(!(inChangeProcess && Session.FilterOnTasks))
         {
             inChangeProcess = true        //set the property filter
             if (TaskNamePopupSelector.selectedIndex != nil && TaskNames[TaskNamePopupSelector.selectedIndex!] != "")
@@ -823,7 +824,7 @@ class FilterViewController: UIViewController {
     }
     
     @IBAction func AssetTypeChanged(_ sender: KFPopupSelector) {
-        if(!inChangeProcess)
+        if(!(inChangeProcess && Session.FilterOnTasks))
         {
             inChangeProcess = true        //set the property filter
             if (AssetTypePopupSelector.selectedIndex != nil && AssetTypes[AssetTypePopupSelector.selectedIndex!] != "")
@@ -850,7 +851,7 @@ class FilterViewController: UIViewController {
     }
     
     @IBAction func LocationGroupChanged(_ sender: KFPopupSelector) {
-        if (!inChangeProcess)
+        if(!(inChangeProcess && Session.FilterOnTasks))
         {
             inChangeProcess = true       //set the property filter
             if (LocationGroupPopupSelector.selectedIndex != nil && LocationGroups[LocationGroupPopupSelector.selectedIndex!] != "")
@@ -885,7 +886,7 @@ class FilterViewController: UIViewController {
     }
     
     @IBAction func LocationChanged(_ sender: KFPopupSelector) {
-        if (!inChangeProcess)
+        if(!(inChangeProcess && Session.FilterOnTasks))
         {
             inChangeProcess = true
             //set the property filter
@@ -921,7 +922,7 @@ class FilterViewController: UIViewController {
     }
     
     @IBAction func AssetNumberChanged(_ sender: KFPopupSelector) {
-        if (!inChangeProcess)
+        if(!(inChangeProcess && Session.FilterOnTasks))
         {
             inChangeProcess = true
             //set the asset number filter
