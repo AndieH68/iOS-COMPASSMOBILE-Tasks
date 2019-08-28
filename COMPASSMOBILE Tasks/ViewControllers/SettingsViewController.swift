@@ -250,7 +250,12 @@ class SettingsViewController: UITableViewController, MBProgressHUDDelegate
             switch indexPath.row
             {
             case 0:
-                let urlString = Session.WebProtocol + Session.Server + "/HelpDocuments/COMPASSMOBILE/COMPASSMOBILE-Tasks-User-Guide-for-iOS.pdf"
+                if(Session.Server.contains(":"))
+                {
+                    let index = Session.Server.firstIndex(of: ":") ?? Session.Server.endIndex
+                    Session.Server = String(Session.Server[..<index])
+                }
+                let urlString = Session.WebProtocol + Session.Server + ":443/HelpDocuments/COMPASSMOBILE/COMPASSMOBILE-Tasks-User-Guide-for-iOS.pdf"
                 let url = URL(string: urlString)
                 let application = UIApplication.shared
                 application.openURL(url!)

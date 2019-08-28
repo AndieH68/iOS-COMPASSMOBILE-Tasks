@@ -86,8 +86,8 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
             let asset: Asset? = ModelManager.getInstance().getAsset(task.AssetId!)
             if (asset != nil)
             {
-                HotType = asset!.HotType
-                ColdType = asset!.ColdType
+                HotType = asset!.HotType != nil ? asset!.HotType : "None"
+                ColdType = asset!.ColdType != nil ? asset!.ColdType : "None"
             }
             else
             {
@@ -468,8 +468,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
             }
             
             cell.Answer.tag = TemperatureCell
-            debugPrint(HotType!)
-            debugPrint(ColdType!)
+
             if (taskTemplateParameter.ParameterName == "TemperatureHot" && HotType == "None") || (taskTemplateParameter.ParameterName == "TemperatureCold" && ColdType == "None")
             {
                 taskTemplateParameterFormItem.Enabled = false
