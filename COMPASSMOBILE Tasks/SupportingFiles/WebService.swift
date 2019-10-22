@@ -20,7 +20,7 @@ class WebService : NSObject {
                 let index = Session.Server.firstIndex(of: ":") ?? Session.Server.endIndex
                 Session.Server = String(Session.Server[..<index])
             }
-            let urlString = Session.WebProtocol + Session.Server + ":443/services/servicepdautility2osx.asmx"
+            let urlString = Session.WebProtocol + Session.Server +  ":443/services/servicepdautility2osx.asmx"
             let url = URL(string: urlString)
             
             let theSession = URLSession.shared
