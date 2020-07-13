@@ -19,8 +19,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var UsernameTextField: UITextField!
     @IBOutlet weak var PasswordTextField: UITextField!
     @IBOutlet weak var ValidationLabel: UILabel!
-    @IBOutlet weak var MessageLabel: UILabel!
     @IBOutlet var LoginButton: UIButton!
+    @IBOutlet weak var BrandStack: UIStackView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,14 +56,15 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             PasswordTextField.isEnabled = false
         }
         // 1
-        self.view.backgroundColor = UIColor.white
-        gradientLayer.frame = self.view.bounds
+        self.view.backgroundColor = UIColor(red:0.00, green:0.60, blue:0.85, alpha:1.0)
+        scrollView.backgroundColor = UIColor.white
+        gradientLayer.frame = scrollView.bounds
         let color1 = UIColor(red:0.00, green:0.60, blue:0.85, alpha:1.0).cgColor as CGColor
         let color3 = UIColor.clear.cgColor as CGColor
         gradientLayer.colors = [color1, color3]
-        gradientLayer.locations = [0.355,0.355]
-        self.view.layer.insertSublayer(gradientLayer, at: 0)
-       
+        gradientLayer.locations = [0.250,0.250]
+        scrollView.layer.insertSublayer(gradientLayer, at: 0)
+        
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)

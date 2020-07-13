@@ -121,10 +121,10 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 self.getTaskData(MainThread: false)
                 
                 //reload the table
-                self.taskTable.reloadData()
-
                 DispatchQueue.main.async
                 {
+                    self.taskTable.reloadData()
+
                     self.HUD!.hide(animated: true)
                 }
             }
@@ -147,7 +147,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         var page: Int32
         var size: Int32
         
-        // make sure w ehave vlaid paging parameters
+        // make sure we have valid paging parameters
         if (pageNumber == nil) {page = Session.PageNumber} else {page = pageNumber!}
         if (pageSize == nil) {size = Session.PageSize} else {size = pageSize!}
         

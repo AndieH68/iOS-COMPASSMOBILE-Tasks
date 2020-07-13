@@ -3866,15 +3866,16 @@ class ModelManager: NSObject {
         
         whereCriteria["Period"] = nil  //remove the period criteria
         whereCriteria["Status"] = nil
+        whereCriteria["OperativeId"] = nil
         
         //build the where clause
         var whereClause: String = String()
         var whereValues: [AnyObject] = [AnyObject]()
         
-        if(Session.FilterJustMyTasks)
-        {
-            whereCriteria["OperativeId"] = nil
-        }
+        //if(Session.FilterJustMyTasks)
+        //{
+        //    whereCriteria["OperativeId"] = nil
+        //}
         
         (whereClause, whereValues) = buildWhereClause(whereCriteria)
         
