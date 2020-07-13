@@ -14,13 +14,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     // MARK: - Properties
     let gradientLayer = CAGradientLayer()
     @IBOutlet var scrollView: UIScrollView!
+    @IBOutlet weak var brandStack: UIStackView!
     @IBOutlet var VersionNumber: UILabel!
     @IBOutlet weak var ServerTextField: UITextField!
     @IBOutlet weak var UsernameTextField: UITextField!
     @IBOutlet weak var PasswordTextField: UITextField!
     @IBOutlet weak var ValidationLabel: UILabel!
     @IBOutlet var LoginButton: UIButton!
-    @IBOutlet weak var BrandStack: UIStackView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,12 +58,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         // 1
         self.view.backgroundColor = UIColor(red:0.00, green:0.60, blue:0.85, alpha:1.0)
         scrollView.backgroundColor = UIColor.white
-        gradientLayer.frame = scrollView.bounds
-        let color1 = UIColor(red:0.00, green:0.60, blue:0.85, alpha:1.0).cgColor as CGColor
-        let color3 = UIColor.clear.cgColor as CGColor
-        gradientLayer.colors = [color1, color3]
-        gradientLayer.locations = [0.250,0.250]
-        scrollView.layer.insertSublayer(gradientLayer, at: 0)
+//        gradientLayer.frame = self.view.bounds
+//        let color1 = UIColor(red:0.00, green:0.60, blue:0.85, alpha:1.0).cgColor as CGColor
+//        let color3 = UIColor.clear.cgColor as CGColor
+//        gradientLayer.colors = [color1, color3]
+//        gradientLayer.locations = [0.250,0.250]
+//        scrollView.layer.insertSublayer(gradientLayer, at: 0)
+        
+        brandStack.addBackground(color: UIColor(red:0.00, green:0.60, blue:0.85, alpha:1.0))
         
     }
     override func viewWillDisappear(_ animated: Bool) {
