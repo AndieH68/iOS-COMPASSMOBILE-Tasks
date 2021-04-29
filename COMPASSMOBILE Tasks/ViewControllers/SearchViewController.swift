@@ -45,7 +45,7 @@ class SearchViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
             captureSession.addOutput(metadataOutput)
             
             metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
-            metadataOutput.metadataObjectTypes = [AVMetadataObject.ObjectType.code39, AVMetadataObject.ObjectType.ean8, AVMetadataObject.ObjectType.ean13, AVMetadataObject.ObjectType.pdf417, AVMetadataObject.ObjectType.code128, AVMetadataObject.ObjectType.upce, AVMetadataObject.ObjectType.code93]
+            metadataOutput.metadataObjectTypes = [AVMetadataObject.ObjectType.code39, AVMetadataObject.ObjectType.ean8, AVMetadataObject.ObjectType.ean13, AVMetadataObject.ObjectType.pdf417, AVMetadataObject.ObjectType.code128, AVMetadataObject.ObjectType.upce, AVMetadataObject.ObjectType.code93, AVMetadataObject.ObjectType.dataMatrix]
         } else {
             failed()
             return

@@ -211,17 +211,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "8F82084F-5E17-4189-97FD-2ADAC22EE4A7"
+            uuid = "BF52E237-5EA2-4D9C-BBF5-6BD3645D89E7"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "COMPASSMOBILE Tasks/ViewControllers/SettingsViewController.swift"
-            timestampString = "587394152.9435869"
+            filePath = "COMPASSMOBILE Tasks/ViewControllers/SearchViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "253"
-            endingLineNumber = "253"
-            landmarkName = "tableView(_:didSelectRowAt:)"
+            startingLineNumber = "103"
+            endingLineNumber = "103"
+            landmarkName = "foundCode(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

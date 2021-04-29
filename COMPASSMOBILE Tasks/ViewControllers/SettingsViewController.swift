@@ -258,7 +258,7 @@ class SettingsViewController: UITableViewController, MBProgressHUDDelegate
                 let urlString = Session.WebProtocol + Session.Server + ":443/HelpDocuments/COMPASSMOBILE/COMPASSMOBILE-Tasks-User-Guide-for-iOS.pdf"
                 let url = URL(string: urlString)
                 let application = UIApplication.shared
-                application.openURL(url!)
+                application.open(url!, options: [:], completionHandler: nil)
             case 1:
                 debugTapFunction()
             default:
