@@ -61,4 +61,6 @@ let TemperatureCell: Int = 1
 let TemperatureProfileCellHot: Int = 2
 let TemperatureProfileCellCold: Int = 3
 
+let ScanCodeCell: Int = 1
+
 let NoNetwork: String = "Not connected to network"

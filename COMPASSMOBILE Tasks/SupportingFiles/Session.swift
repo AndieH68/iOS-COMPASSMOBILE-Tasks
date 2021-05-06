@@ -122,5 +122,10 @@ class Session : NSObject
     static var Profile: TemperatureProfile? = nil
     static var GettingProfile: Bool = false
     static var CancelFromProfile: Bool = false
+    
+    static var CurrentScanCodeControl: UITextField? = nil
+    static var ScanCode: String? = nil
+    static var GettingScanCode: Bool = false
+    static var CancelFromScanCode: Bool = false
 }
 

@@ -12,6 +12,8 @@
 		69C721C71FFBB66800B9582E /* libThermaLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 69C721C61FFBB66700B9582E /* libThermaLib.a */; };
 		A40BB55E1C4FE9D7005C2AE6 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A40BB55D1C4FE9D7005C2AE6 /* libsqlite3.0.tbd */; };
 		A41B81421ECB0A0300822D25 /* TemperatureProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A41B81411ECB0A0300822D25 /* TemperatureProfileViewController.swift */; };
+		A426CFB2263AE1A5002D7773 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A426CFB1263AE1A5002D7773 /* StringExtension.swift */; };
+		A426CFB7263AE30D002D7773 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A426CFB6263AE30D002D7773 /* DateExtension.swift */; };
 		A432E92D1D2D1809002FE138 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A432E92A1D2D1809002FE138 /* AppDelegate.swift */; };
 		A432E9361D2D19D5002FE138 /* blueThermLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A432E9311D2D19D5002FE138 /* blueThermLibrary.a */; };
 		A432E9481D2D1A18002FE138 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A432E9471D2D1A18002FE138 /* LaunchScreen.storyboard */; };
@@ -60,6 +62,12 @@
 		A49A746A1D2FBE580006F220 /* COMPASSDB.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = A4CBC52F1D2FB94500E1D3CE /* COMPASSDB.sqlite */; };
 		A4A25F5F1D22D63A00027FA6 /* Default-568.png in Resources */ = {isa = PBXBuildFile; fileRef = A4A25F5E1D22D63A00027FA6 /* Default-568.png */; };
 		A4AF07661E326A6E00D09CA8 /* TemperatureProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4AF07651E326A6E00D09CA8 /* TemperatureProfile.swift */; };
+		A4D3975A26412AE5001F2ACA /* Barcode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D3975526412AE4001F2ACA /* Barcode.swift */; };
+		A4D3975B26412AE5001F2ACA /* GS1Barcode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D3975626412AE5001F2ACA /* GS1Barcode.swift */; };
+		A4D3975C26412AE5001F2ACA /* GS1BarcodeErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D3975726412AE5001F2ACA /* GS1BarcodeErrors.swift */; };
+		A4D3975D26412AE5001F2ACA /* GS1ApplicationIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D3975826412AE5001F2ACA /* GS1ApplicationIdentifier.swift */; };
+		A4D3975E26412AE5001F2ACA /* GS1BarcodeParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D3975926412AE5001F2ACA /* GS1BarcodeParser.swift */; };
+		A4D3976126412B3E001F2ACA /* TaskTemplateParameterCellScanCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D3976026412B3E001F2ACA /* TaskTemplateParameterCellScanCode.swift */; };
 		A4D4A2D61D2D2097009287F8 /* COMPASSMOBILE Tasks.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A4D4A2D41D2D2097009287F8 /* COMPASSMOBILE Tasks.xcdatamodeld */; };
 		A4E425431D2D22870088EF64 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4E425411D2D22870088EF64 /* Main.storyboard */; };
 /* End PBXBuildFile section */
@@ -72,6 +80,8 @@
 		7C118C934BA9FD808C074B37 /* Pods-COMPASSMOBILE Tasks.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-COMPASSMOBILE Tasks.release.xcconfig"; path = "Target Support Files/Pods-COMPASSMOBILE Tasks/Pods-COMPASSMOBILE Tasks.release.xcconfig"; sourceTree = "<group>"; };
 		A40BB55D1C4FE9D7005C2AE6 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		A41B81411ECB0A0300822D25 /* TemperatureProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TemperatureProfileViewController.swift; path = "COMPASSMOBILE Tasks/ViewControllers/TemperatureProfileViewController.swift"; sourceTree = SOURCE_ROOT; };
+		A426CFB1263AE1A5002D7773 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = SOURCE_ROOT; };
+		A426CFB6263AE30D002D7773 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = SOURCE_ROOT; };
 		A432E92A1D2D1809002FE138 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = "COMPASSMOBILE Tasks/AppDelegate.swift"; sourceTree = SOURCE_ROOT; };
 		A432E92F1D2D19D5002FE138 /* AlertMessageDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AlertMessageDelegate.h; path = "COMPASSMOBILE Tasks/Bluetooth/AlertMessageDelegate.h"; sourceTree = SOURCE_ROOT; };
 		A432E9301D2D19D5002FE138 /* AlertMessages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AlertMessages.h; path = "COMPASSMOBILE Tasks/Bluetooth/AlertMessages.h"; sourceTree = SOURCE_ROOT; };
@@ -130,6 +140,12 @@
 		A4AF07651E326A6E00D09CA8 /* TemperatureProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TemperatureProfile.swift; path = "COMPASSMOBILE Tasks/SupportingFiles/TemperatureProfile.swift"; sourceTree = SOURCE_ROOT; };
 		A4C1A27122A56F7100243E3C /* COMPASSMOBILE Tasks.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = "COMPASSMOBILE Tasks.entitlements"; path = "COMPASSMOBILE Tasks/COMPASSMOBILE Tasks.entitlements"; sourceTree = SOURCE_ROOT; };
 		A4CBC52F1D2FB94500E1D3CE /* COMPASSDB.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = COMPASSDB.sqlite; path = "COMPASSMOBILE Tasks/COMPASSDB.sqlite"; sourceTree = SOURCE_ROOT; };
+		A4D3975526412AE4001F2ACA /* Barcode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Barcode.swift; path = "COMPASSMOBILE Tasks/Barcode.swift"; sourceTree = SOURCE_ROOT; };
+		A4D3975626412AE5001F2ACA /* GS1Barcode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GS1Barcode.swift; path = "COMPASSMOBILE Tasks/GS1Barcode.swift"; sourceTree = SOURCE_ROOT; };
+		A4D3975726412AE5001F2ACA /* GS1BarcodeErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GS1BarcodeErrors.swift; path = "COMPASSMOBILE Tasks/GS1BarcodeErrors.swift"; sourceTree = SOURCE_ROOT; };
+		A4D3975826412AE5001F2ACA /* GS1ApplicationIdentifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GS1ApplicationIdentifier.swift; path = "COMPASSMOBILE Tasks/GS1ApplicationIdentifier.swift"; sourceTree = SOURCE_ROOT; };
+		A4D3975926412AE5001F2ACA /* GS1BarcodeParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GS1BarcodeParser.swift; path = "COMPASSMOBILE Tasks/GS1BarcodeParser.swift"; sourceTree = SOURCE_ROOT; };
+		A4D3976026412B3E001F2ACA /* TaskTemplateParameterCellScanCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TaskTemplateParameterCellScanCode.swift; path = "COMPASSMOBILE Tasks/TaskTemplateParameterCells/TaskTemplateParameterCellScanCode.swift"; sourceTree = SOURCE_ROOT; };
 		A4D4A2D51D2D2097009287F8 /* COMPASSMOBILE Tasks.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "COMPASSMOBILE Tasks.xcdatamodel"; sourceTree = "<group>"; };
 		A4E425421D2D22870088EF64 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "COMPASSMOBILE Tasks/Base.lproj/Main.storyboard"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -195,6 +211,8 @@
 				A439199E1D2D1E7900C31CA0 /* Utility.swift */,
 				A439199F1D2D1E7900C31CA0 /* WebService.swift */,
 				A4AF07651E326A6E00D09CA8 /* TemperatureProfile.swift */,
+				A426CFB1263AE1A5002D7773 /* StringExtension.swift */,
+				A426CFB6263AE30D002D7773 /* DateExtension.swift */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -275,6 +293,7 @@
 		A4A522EE1C43F4A500D16A9A /* COMPASSMOBILE Tasks */ = {
 			isa = PBXGroup;
 			children = (
+				A4D3975426412A50001F2ACA /* GS1Barcode */,
 				A4C1A27122A56F7100243E3C /* COMPASSMOBILE Tasks.entitlements */,
 				A43919661D2D1D0100C31CA0 /* COMPASSMOBILE-Tasks-Bridging-Header.h */,
 				A4D4A2D41D2D2097009287F8 /* COMPASSMOBILE Tasks.xcdatamodeld */,
@@ -296,6 +315,7 @@
 		A4D326561D0700C600EDEC7F /* TaskTemplateParameterCells */ = {
 			isa = PBXGroup;
 			children = (
+				A4D3976026412B3E001F2ACA /* TaskTemplateParameterCellScanCode.swift */,
 				A439196F1D2D1D8C00C31CA0 /* TaskTemplateParameterCellDropdown.swift */,
 				A43919701D2D1D8C00C31CA0 /* TaskTemplateParameterCellFreetext.swift */,
 				A43919711D2D1D8C00C31CA0 /* TaskTemplateParameterCellNumber.swift */,
@@ -303,6 +323,18 @@
 				A43919731D2D1D8C00C31CA0 /* TaskTemplateParameterCellTextArea.swift */,
 			);
 			name = TaskTemplateParameterCells;
+			sourceTree = "<group>";
+		};
+		A4D3975426412A50001F2ACA /* GS1Barcode */ = {
+			isa = PBXGroup;
+			children = (
+				A4D3975526412AE4001F2ACA /* Barcode.swift */,
+				A4D3975826412AE5001F2ACA /* GS1ApplicationIdentifier.swift */,
+				A4D3975626412AE5001F2ACA /* GS1Barcode.swift */,
+				A4D3975726412AE5001F2ACA /* GS1BarcodeErrors.swift */,
+				A4D3975926412AE5001F2ACA /* GS1BarcodeParser.swift */,
+			);
+			name = GS1Barcode;
 			sourceTree = "<group>";
 		};
 		A4EDA3941C4EA53100667987 /* models */ = {
@@ -470,6 +502,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A43919961D2D1DB500C31CA0 /* TaskTemplateParameter.swift in Sources */,
+				A426CFB7263AE30D002D7773 /* DateExtension.swift in Sources */,
 				A43919751D2D1D8C00C31CA0 /* TaskTemplateParameterCellFreetext.swift in Sources */,
 				A4D4A2D61D2D2097009287F8 /* COMPASSMOBILE Tasks.xcdatamodeld in Sources */,
 				A439198A1D2D1DB500C31CA0 /* Asset.swift in Sources */,
@@ -484,13 +517,16 @@
 				A43919771D2D1D8C00C31CA0 /* TaskTemplateParameterCellTemperature.swift in Sources */,
 				A43919951D2D1DB500C31CA0 /* TaskTemplate.swift in Sources */,
 				A43919A21D2D1E7900C31CA0 /* Session.swift in Sources */,
+				A4D3975E26412AE5001F2ACA /* GS1BarcodeParser.swift in Sources */,
 				A43919A11D2D1E7900C31CA0 /* Reachability.swift in Sources */,
 				A471893322A01CC200523FD5 /* OperativeGroupTaskTemplateMembership.swift in Sources */,
 				A439197B1D2D1D9D00C31CA0 /* ModelManager.swift in Sources */,
 				A432E92D1D2D1809002FE138 /* AppDelegate.swift in Sources */,
 				A43919911D2D1DB500C31CA0 /* ReferenceData.swift in Sources */,
+				A4D3975C26412AE5001F2ACA /* GS1BarcodeErrors.swift in Sources */,
 				A43919781D2D1D8C00C31CA0 /* TaskTemplateParameterCellTextArea.swift in Sources */,
 				A439198E1D2D1DB500C31CA0 /* Operative.swift in Sources */,
+				A4D3975D26412AE5001F2ACA /* GS1ApplicationIdentifier.swift in Sources */,
 				A41B81421ECB0A0300822D25 /* TemperatureProfileViewController.swift in Sources */,
 				A432E9561D2D1A4E002FE138 /* SearchViewController.swift in Sources */,
 				A432E9581D2D1A4E002FE138 /* TaskViewController.swift in Sources */,
@@ -498,6 +534,7 @@
 				A43919A51D2D1E7900C31CA0 /* WebService.swift in Sources */,
 				A43919921D2D1DB500C31CA0 /* Site.swift in Sources */,
 				A43919A01D2D1E7900C31CA0 /* Constants.swift in Sources */,
+				A426CFB2263AE1A5002D7773 /* StringExtension.swift in Sources */,
 				A432E9541D2D1A4E002FE138 /* MainViewController.swift in Sources */,
 				A43919761D2D1D8C00C31CA0 /* TaskTemplateParameterCellNumber.swift in Sources */,
 				A439197C1D2D1D9D00C31CA0 /* ModelUtility.swift in Sources */,
@@ -506,11 +543,14 @@
 				A439196E1D2D1D7F00C31CA0 /* TaskCell.swift in Sources */,
 				A432E9551D2D1A4E002FE138 /* RemedialTaskViewController.swift in Sources */,
 				A432E9571D2D1A4E002FE138 /* SettingsViewController.swift in Sources */,
+				A4D3975B26412AE5001F2ACA /* GS1Barcode.swift in Sources */,
 				A432E95A1D2D1AF0002FE138 /* AddViewController.swift in Sources */,
 				A43919741D2D1D8C00C31CA0 /* TaskTemplateParameterCellDropdown.swift in Sources */,
+				A4D3976126412B3E001F2ACA /* TaskTemplateParameterCellScanCode.swift in Sources */,
 				A439198C1D2D1DB500C31CA0 /* LocationGroup.swift in Sources */,
 				A43919901D2D1DB500C31CA0 /* Property.swift in Sources */,
 				A439196C1D2D1D2E00C31CA0 /* KFPopupSelector.swift in Sources */,
+				A4D3975A26412AE5001F2ACA /* Barcode.swift in Sources */,
 				A439198F1D2D1DB500C31CA0 /* Organisation.swift in Sources */,
 				A43919A41D2D1E7900C31CA0 /* Utility.swift in Sources */,
 			);
