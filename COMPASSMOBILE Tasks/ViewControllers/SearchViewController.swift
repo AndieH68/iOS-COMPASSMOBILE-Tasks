@@ -93,20 +93,26 @@ class SearchViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
 
             AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
             if readableObject.type == AVMetadataObject.ObjectType.dataMatrix {
+                
                 // parse the matrix to get the serial number
-                let GS1DataMatrix = GS1Barcode(raw: readableObject.stringValue!)
+                let GS1DataMatrix = GS1Barcode(raw: readableObject.stringValue!.replacingOccurrences(of: "\n", with: ""))
+                Session.MatrixScanned = GS1DataMatrix.raw
+
                 if GS1DataMatrix.LastParseSuccessfull {
                     foundCode(GS1DataMatrix.SerialNumber!)
                 } else {
                     if GS1DataMatrix.HasUnrecognisedElement == true {
                         if GS1DataMatrix.SerialNumber != nil
-                        { foundCode(GS1DataMatrix.SerialNumber!) }
+                        {
+                            foundCode(GS1DataMatrix.SerialNumber!) }
                         else {
                             // bad code
+                            Session.MatrixScanned = nil
                         }
                     }
                 }
             } else {
+                Session.MatrixScanned = nil
                 foundCode(readableObject.stringValue!)
             }
         }
@@ -129,6 +135,7 @@ class SearchViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
     }
 
     @IBAction func Cancel(_ sender: UIBarButtonItem) {
+        Session.CancelFromScan = true;
         _ = navigationController?.popViewController(animated: true)
     }
 }

@@ -125,7 +125,10 @@ public class GS1Barcode: NSObject, Barcode {
                 if data!.startsWith("\u{1D}") {
                     data = data!.substring(from: 1)
                 }
-
+                if data!.startsWith("\u{1C}") {
+                    data = data!.substring(from: 1)
+                }
+                
                 // Checking the AIs by it's identifier and passing it to the Barcode Parser to get the value and cut the data
                 var foundOne = false
                 for (_, applicationIdentifier) in applicationIdentifiers {

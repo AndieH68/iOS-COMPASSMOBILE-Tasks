@@ -57,6 +57,7 @@
 		A471892D229E8A6600523FD5 /* OperativeGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A471892C229E8A6600523FD5 /* OperativeGroup.swift */; };
 		A471892F229E8A8900523FD5 /* OperativeGroupMembership.swift in Sources */ = {isa = PBXBuildFile; fileRef = A471892E229E8A8900523FD5 /* OperativeGroupMembership.swift */; };
 		A471893322A01CC200523FD5 /* OperativeGroupTaskTemplateMembership.swift in Sources */ = {isa = PBXBuildFile; fileRef = A471893222A01CC200523FD5 /* OperativeGroupTaskTemplateMembership.swift */; };
+		A47D1F15264D60B800537097 /* TaskTemplateParameterCellDataMatrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47D1F14264D60B800537097 /* TaskTemplateParameterCellDataMatrix.swift */; };
 		A486A4F01D11748700FE4642 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A486A4EF1D11748700FE4642 /* SystemConfiguration.framework */; };
 		A486A4F21D11748E00FE4642 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A486A4F11D11748E00FE4642 /* CoreData.framework */; };
 		A49A746A1D2FBE580006F220 /* COMPASSDB.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = A4CBC52F1D2FB94500E1D3CE /* COMPASSDB.sqlite */; };
@@ -133,6 +134,7 @@
 		A471892C229E8A6600523FD5 /* OperativeGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OperativeGroup.swift; path = "COMPASSMOBILE Tasks/Models/Entity/OperativeGroup.swift"; sourceTree = SOURCE_ROOT; };
 		A471892E229E8A8900523FD5 /* OperativeGroupMembership.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OperativeGroupMembership.swift; path = "COMPASSMOBILE Tasks/Models/Entity/OperativeGroupMembership.swift"; sourceTree = SOURCE_ROOT; };
 		A471893222A01CC200523FD5 /* OperativeGroupTaskTemplateMembership.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OperativeGroupTaskTemplateMembership.swift; path = "COMPASSMOBILE Tasks/Models/Entity/OperativeGroupTaskTemplateMembership.swift"; sourceTree = SOURCE_ROOT; };
+		A47D1F14264D60B800537097 /* TaskTemplateParameterCellDataMatrix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTemplateParameterCellDataMatrix.swift; sourceTree = SOURCE_ROOT; };
 		A486A4EF1D11748700FE4642 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		A486A4F11D11748E00FE4642 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		A4A25F5E1D22D63A00027FA6 /* Default-568.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568.png"; sourceTree = SOURCE_ROOT; };
@@ -316,6 +318,7 @@
 			isa = PBXGroup;
 			children = (
 				A4D3976026412B3E001F2ACA /* TaskTemplateParameterCellScanCode.swift */,
+				A47D1F14264D60B800537097 /* TaskTemplateParameterCellDataMatrix.swift */,
 				A439196F1D2D1D8C00C31CA0 /* TaskTemplateParameterCellDropdown.swift */,
 				A43919701D2D1D8C00C31CA0 /* TaskTemplateParameterCellFreetext.swift */,
 				A43919711D2D1D8C00C31CA0 /* TaskTemplateParameterCellNumber.swift */,
@@ -518,6 +521,7 @@
 				A43919951D2D1DB500C31CA0 /* TaskTemplate.swift in Sources */,
 				A43919A21D2D1E7900C31CA0 /* Session.swift in Sources */,
 				A4D3975E26412AE5001F2ACA /* GS1BarcodeParser.swift in Sources */,
+				A47D1F15264D60B800537097 /* TaskTemplateParameterCellDataMatrix.swift in Sources */,
 				A43919A11D2D1E7900C31CA0 /* Reachability.swift in Sources */,
 				A471893322A01CC200523FD5 /* OperativeGroupTaskTemplateMembership.swift in Sources */,
 				A439197B1D2D1D9D00C31CA0 /* ModelManager.swift in Sources */,

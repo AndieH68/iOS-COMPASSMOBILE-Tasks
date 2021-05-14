@@ -94,21 +94,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     func DoSynchronise(_ actionTarget: UIAlertAction?)
     {
-        //HUD = MBProgressHUD(view: self.navigationController!.view)
-        //self.navigationController!.view.addSubview(HUD!)
-        
-        ////set the HUD mode
-        //HUD!.mode = .determinateHorizontalBar;
-        
-        //// Register for HUD callbacks so we can remove it from the window at the right time
-        //HUD!.delegate = self
-        //HUD!.label.text = "Synchronising"
-        
-        //HUD!.showWhileExecuting({
-        //        Utility.CheckSynchronisation(self, HUD: self.HUD!);
-        //        self.getTaskData(MainThread: false)
-        //}, animated: true)
-        
+       
         if(Reachability().connectedToNetwork())
         {
             HUD = MBProgressHUD.showAdded(to: self.navigationController!.view, animated: true)

@@ -56,9 +56,18 @@ public class GS1BarcodeParser: NSObject {
         // Cut data by Group Seperator, if dynamic length item and has a GS.
         if applicationIndentifier.dynamicLength && applicationIndentifierData.index(of: "\u{1D}") != nil {
             let toi = applicationIndentifierData.index(of: "\u{1D}")
-            let to = applicationIndentifierData.distance(from: applicationIndentifierData.startIndex, to: toi ?? applicationIndentifierData.startIndex)
+            let to = applicationIndentifierData.distance(from: applicationIndentifierData.startIndex, to: toi ?? applicationIndentifierData.`startIndex`)
 
             applicationIndentifierData = applicationIndentifierData.substring(to: to)
+        }
+        else
+        {
+            if applicationIndentifier.dynamicLength && applicationIndentifierData.index(of: "\u{1C}") != nil {
+                let toi = applicationIndentifierData.index(of: "\u{1C}")
+                let to = applicationIndentifierData.distance(from: applicationIndentifierData.startIndex, to: toi ?? applicationIndentifierData.`startIndex`)
+
+                applicationIndentifierData = applicationIndentifierData.substring(to: to)
+            }
         }
         // Cut to Max Length, if applicationIndentifierData still longer after the previous cutting.
         if applicationIndentifierData.count > applicationIndentifier.maxLength {

@@ -77,6 +77,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
             NotificationCenter.default.addObserver(self, selector: #selector(deviceNotificationReceived), name: Notification.Name(ThermaLibNotificationReceivedNotificationName), object: nil)
         }
         Session.CodeScanned = nil
+        Session.MatrixScanned = nil
 
         task = ModelManager.getInstance().getTask(Session.TaskId!)!
 
@@ -172,6 +173,15 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        if Session.GettingAlternateAssetCode {
+            if (!Session.CancelFromScan) {
+                AlternateAssetCode.text = Session.CodeScanned!
+                Session.CodeScanned = nil
+                Session.GettingAlternateAssetCode = false
+            }
+            Session.CancelFromScan = false;
+        }
+        
         if Session.GettingProfile {
             if Session.CurrentProfileControl != nil && !Session.CancelFromProfile {
                 taskTemperatureProfiles[Session.CurrentProfileControl!.restorationIdentifier!] = Session.Profile
@@ -183,13 +193,37 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
             Session.CancelFromProfile = false
         }
 
+        if Session.GettingDataMatrix {
+            if Session.CurrentDataMatrixControl != nil && !Session.CancelFromScan {
+                if Session.CurrentDataMatrixControl!.restorationIdentifier != nil {
+                    if let currentTaskTemplateParameterFormItem: TaskTemplateParameterFormItem = taskTemplateParameterFormItems[Session.CurrentDataMatrixControl!.restorationIdentifier!]
+                    {
+                        currentTaskTemplateParameterFormItem.SelectedItem = Session.MatrixScanned!
+                    }
+                }
+                Session.CurrentDataMatrixControl!.text = Session.MatrixScanned!
+                Session.CurrentDataMatrixCell!.updateFromAnswer()
+                Session.CurrentDataMatrixControl = nil
+                Session.MatrixScanned = nil
+                Session.GettingDataMatrix = false
+            }
+            Session.CancelFromScan = false
+        }
+        
         if Session.GettingScanCode {
-            if Session.CurrentScanCodeControl != nil && !Session.CancelFromScanCode {
+            if Session.CurrentScanCodeControl != nil && !Session.CancelFromScan {
+                if Session.CurrentScanCodeControl!.restorationIdentifier != nil {
+                    if let currentTaskTemplateParameterFormItem: TaskTemplateParameterFormItem = taskTemplateParameterFormItems[Session.CurrentScanCodeControl!.restorationIdentifier!]
+                    {
+                        currentTaskTemplateParameterFormItem.SelectedItem = Session.CodeScanned!
+                    }
+                }
                 Session.CurrentScanCodeControl!.text = Session.CodeScanned!
                 Session.CurrentScanCodeControl = nil
                 Session.CodeScanned = nil
                 Session.GettingScanCode = false
             }
+            Session.CancelFromScan = false
         }
     }
 
@@ -197,8 +231,6 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
         super.viewDidAppear(animated)
 
         taskParameterTable.allowsSelection = false
-
-        NewScancode()
 
         if Session.UseBlueToothProbe {
             // Start scanning for devices
@@ -459,6 +491,30 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
             return cell
         } else  {
             switch taskTemplateParameter.ParameterType {
+            case "GS1 Data Matrix":
+                let cell = tableView.dequeueReusableCell(withIdentifier: "DataMatrixCell", for: indexPath) as! TaskTemplateParameterCellDataMatrix
+                cell.restorationIdentifier = taskTemplateParameter.RowId
+                cell.Question.text = taskTemplateParameter.ParameterDisplay
+
+                cell.Question.textColor = taskTemplateParameterFormItem.LabelColour
+                cell.Answer.backgroundColor = taskTemplateParameterFormItem.ControlBackgroundColor
+
+                cell.Answer.restorationIdentifier = taskTemplateParameter.RowId
+                cell.Answer.delegate = self
+
+                if taskTemplateParameterFormItem.SelectedItem != nil {
+                    cell.Answer.text = taskTemplateParameterFormItem.SelectedItem
+                }
+
+                cell.Answer.tag = DataMatrixCell
+
+                cell.Answer.isEnabled = (taskTemplateParameterFormItem.Enabled)
+                cell.DataMatrixButton.isHidden = false
+                cell.DataMatrixButton.isEnabled = (taskTemplateParameterFormItem.Enabled)
+
+                cell.DataMatrixButton.tag = cell.Answer.tag
+                return cell
+                
             case "Scan Code":
                 let cell = tableView.dequeueReusableCell(withIdentifier: "ScanCodeCell", for: indexPath) as! TaskTemplateParameterCellScanCode
                 cell.restorationIdentifier = taskTemplateParameter.RowId
@@ -582,7 +638,16 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         // need to work out here what type of cell so that we can return the correct height
         // nope all are fixed height now
-        return 68
+        //return 68
+        let taskTemplateParameter: TaskTemplateParameter = formTaskTemplateParameters[indexPath.row]
+        if taskTemplateParameter.ParameterType == "GS1 Data Matrix"
+        {
+            return 134
+        }
+        else
+        {
+            return 68
+        }
     }
 
     // MARK: Control handling
@@ -636,6 +701,9 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.identifier {
         
+        case "SearchSegue":
+            Session.GettingAlternateAssetCode = true
+            
         case "TemperatureProfileSegue":
 
             if sender is UIButton {
@@ -649,6 +717,18 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
             temperatureProfileViewController.hot = (Session.CurrentProfileControl!.tag == TemperatureProfileCellHot)
             Session.GettingProfile = true
 
+        case "DataMatrixSegue":
+
+            if sender is UIButton {
+                let cell: TaskTemplateParameterCellDataMatrix = (sender as! UIButton).superview!.superview as! TaskTemplateParameterCellDataMatrix
+                Session.CurrentDataMatrixControl = cell.Answer
+                Session.CurrentDataMatrixCell = cell
+            } else {
+                Session.CurrentDataMatrixControl = sender as? UITextField
+            }
+
+            Session.GettingDataMatrix = true
+        
         case "ScanCodeSegue":
 
             if sender is UIButton {
@@ -673,6 +753,28 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
         }
 
         switch identifier {
+        case "SearchSegue":
+            if sender is UIButton {
+                if AlternateAssetCode.text != String() {
+                    let userPrompt: UIAlertController = UIAlertController(title: "Overwrite ScanCode?", message: "Are you sure you want to overwrite the current scancode?", preferredStyle: UIAlertController.Style.alert)
+
+                    let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel) {
+                        _ in
+                        // do nothing
+                    }
+
+                    let OKAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.destructive) {
+                        _ in
+                        self.performSegue(withIdentifier: "SearchSegue", sender: sender)
+                    }
+
+                    userPrompt.addAction(cancelAction)
+                    userPrompt.addAction(OKAction)
+
+                    present(userPrompt, animated: true, completion: nil)
+                }
+            }
+            
         case "TemperatureProfileSegue":
 
             if sender is UIButton {
@@ -688,6 +790,30 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
                     let OKAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.destructive) {
                         _ in
                         self.performSegue(withIdentifier: "TemperatureProfileSegue", sender: sender)
+                    }
+
+                    userPrompt.addAction(cancelAction)
+                    userPrompt.addAction(OKAction)
+
+                    present(userPrompt, animated: true, completion: nil)
+                }
+            }
+
+        case "DataMatrixSegue":
+
+            if sender is UIButton {
+                let cell: TaskTemplateParameterCellDataMatrix = (sender as! UIButton).superview!.superview as! TaskTemplateParameterCellDataMatrix
+                if cell.Answer.text != String() {
+                    let userPrompt: UIAlertController = UIAlertController(title: "Overwrite Data Matrix?", message: "Are you sure you want to overwrite the current data matrix?", preferredStyle: UIAlertController.Style.alert)
+
+                    let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel) {
+                        _ in
+                        // do nothing
+                    }
+
+                    let OKAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.destructive) {
+                        _ in
+                        self.performSegue(withIdentifier: "DataMatrixSegue", sender: sender)
                     }
 
                     userPrompt.addAction(cancelAction)
@@ -867,11 +993,13 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
     func LeaveTask(_ actionTarget: UIAlertAction) {
         if Session.BluetoothProbeConnected {
             Session.CodeScanned = nil
+            Session.DataMatrix = nil
             Session.TaskId = nil
             EAController.shared().callBack = nil
             _ = navigationController?.popViewController(animated: true)
         } else {
             Session.CodeScanned = nil
+            Session.DataMatrix = nil
             Session.TaskId = nil
             _ = navigationController?.popViewController(animated: true)
         }
@@ -947,6 +1075,11 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
                 let taskTemplateParameter: TaskTemplateParameter = taskTemplateParameterFormItems[taskTemplateParameterId]!.TemplateParameter
 
                 switch taskTemplateParameter.ParameterType {
+                case "GS1 Data Matrix":
+                    let cell: TaskTemplateParameterCellDataMatrix = tableCell as! TaskTemplateParameterCellDataMatrix
+                    cell.Answer.text = value
+                    return
+
                 case "Scan Code":
                     let cell: TaskTemplateParameterCellScanCode = tableCell as! TaskTemplateParameterCellScanCode
                     cell.Answer.text = value
@@ -1001,6 +1134,13 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
                 let taskTemplateParameter: TaskTemplateParameter = taskTemplateParameterFormItems[taskTemplateParameterId]!.TemplateParameter
 
                 switch taskTemplateParameter.ParameterType {
+                case "GS1 Data Matrix":
+                    let cell: TaskTemplateParameterCellDataMatrix = tableCell as! TaskTemplateParameterCellDataMatrix
+                    cell.Answer.isEnabled = true
+                    cell.DataMatrixButton.isHidden = false
+                    cell.DataMatrixButton.isEnabled = true
+                    return
+
                 case "Scan Code":
                     let cell: TaskTemplateParameterCellScanCode = tableCell as! TaskTemplateParameterCellScanCode
                     cell.Answer.isEnabled = true
@@ -1057,6 +1197,11 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
                 let taskTemplateParameter: TaskTemplateParameter = taskTemplateParameterFormItems[taskTemplateParameterId]!.TemplateParameter
 
                 switch taskTemplateParameter.ParameterType {
+                case "GS1 Data Matrix":
+                    let cell: TaskTemplateParameterCellDataMatrix = tableCell as! TaskTemplateParameterCellDataMatrix
+                    cell.Question.textColor = colour
+                    return
+
                 case "Scan Code":
                     let cell: TaskTemplateParameterCellScanCode = tableCell as! TaskTemplateParameterCellScanCode
                     cell.Question.textColor = colour
@@ -1096,6 +1241,12 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
                 let taskTemplateParameter: TaskTemplateParameter = taskTemplateParameterFormItems[taskTemplateParameterId]!.TemplateParameter
 
                 switch taskTemplateParameter.ParameterType {
+                case "GS1 Data Matrix":
+                    let cell: TaskTemplateParameterCellDataMatrix = tableCell as! TaskTemplateParameterCellDataMatrix
+                    cell.Answer.backgroundColor = colour
+                    //TBD Answer labels backgroundColor
+                    return
+
                 case "Scan Code":
                     let cell: TaskTemplateParameterCellScanCode = tableCell as! TaskTemplateParameterCellScanCode
                     cell.Answer.backgroundColor = colour
@@ -1241,20 +1392,26 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
             _ = ModelManager.getInstance().updateTask(task)
 
             Utility.SendTasks(navigationController!, HUD: nil)
-            Session.CodeScanned = nil
-            EAController.shared().callBack = nil
+            if Session.BluetoothProbeConnected {
+                Session.CodeScanned = nil
+                Session.DataMatrix = nil
+                Session.ScanCode = nil
+                Session.TaskId = nil
+                Session.FilterAssetNumber = nil
+                EAController.shared().callBack = nil
+                _ = navigationController?.popViewController(animated: true)
+            } else {
+                Session.CodeScanned = nil
+                Session.DataMatrix = nil
+                Session.ScanCode = nil
+                Session.TaskId = nil
+                Session.FilterAssetNumber = nil
+                _ = navigationController?.popViewController(animated: true)
+            }
 
             // close the view
             Session.TaskId = nil
             _ = navigationController?.popViewController(animated: true)
-        }
-    }
-
-    // MARK: - Scancode
-
-    func NewScancode() {
-        if Session.CodeScanned != nil {
-            AlternateAssetCode.text = Session.CodeScanned!
         }
     }
 

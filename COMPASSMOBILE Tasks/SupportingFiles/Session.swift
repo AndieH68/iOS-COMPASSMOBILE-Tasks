@@ -39,6 +39,7 @@ class Session : NSObject
     static var ReverseReferenceLists: Dictionary<String, Dictionary<String, String>> = Dictionary<String, Dictionary<String, String>>()
   
     static var CodeScanned: String? = nil
+    static var MatrixScanned: String? = nil
     static var NoRequery: Bool = false
     
     static var FilterSiteId: String? = nil
@@ -118,6 +119,8 @@ class Session : NSObject
     static var CurrentTemperatureControl: UITextField? = nil
     static var TimerRunning: Bool = false
     
+    static var GettingAlternateAssetCode = false
+    
     static var CurrentProfileControl: UITextField? = nil
     static var Profile: TemperatureProfile? = nil
     static var GettingProfile: Bool = false
@@ -126,6 +129,14 @@ class Session : NSObject
     static var CurrentScanCodeControl: UITextField? = nil
     static var ScanCode: String? = nil
     static var GettingScanCode: Bool = false
-    static var CancelFromScanCode: Bool = false
+    
+    static var CurrentDataMatrixCell: TaskTemplateParameterCellDataMatrix? = nil
+    static var CurrentDataMatrixControl: UITextField? = nil
+    static var DataMatrix: String? = nil
+    static var GettingDataMatrix: Bool = false
+
+    static var CancelFromScan: Bool = false
+
+    
 }
 

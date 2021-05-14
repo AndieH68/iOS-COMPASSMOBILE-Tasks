@@ -43,6 +43,15 @@ extension String
         return self.simpleReplace(mapList)
     }
 
+    func GS1DataMatrixEscape() -> String
+    {
+        let mapList : SimpleToFromReplaceList = [
+        ("\u{1d}",  "ZZ1DZZ"),
+        ("\u{1c}", "ZZ1CZZ")]
+
+        return self.simpleReplace(mapList)
+    }
+    
     func xmlSimpleEscape() -> String
     {
         let mapList : SimpleToFromReplaceList = [
