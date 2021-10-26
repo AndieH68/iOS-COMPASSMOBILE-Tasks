@@ -65,4 +65,6 @@ let ScanCodeCell: Int = 1
 
 let DataMatrixCell: Int = 1
 
+let ScanUniversalCell: Int = -1
+
 let NoNetwork: String = "Not connected to network"

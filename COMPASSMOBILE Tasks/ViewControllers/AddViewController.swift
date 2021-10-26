@@ -357,8 +357,22 @@ class AddViewController: UIViewController {
         
         for currentTaskName: ReferenceData in TaskNameData
         {
-            TaskNames.append(currentTaskName.Display)
-            TaskNameDictionary[currentTaskName.Display] = currentTaskName.Value
+            //get the relvant task template
+            var criteria: Dictionary<String, AnyObject> = [:]
+            criteria["OrganisationId"] = Session.OrganisationId! as AnyObject
+            criteria["AssetType"] = AssetGroup! as AnyObject
+            criteria["TaskName"] = currentTaskName.Value as AnyObject
+            criteria["CanCreateFromDevice"] = true as AnyObject
+            
+            var TaskTemplateData: [TaskTemplate] = []
+
+            TaskTemplateData = ModelManager.getInstance().findTaskTemplateList(criteria)
+
+            if TaskTemplateData.count > 0
+            {
+                TaskNames.append(currentTaskName.Display)
+                TaskNameDictionary[currentTaskName.Display] = currentTaskName.Value
+            }
         }
         
         TaskNamePopupSelector.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left

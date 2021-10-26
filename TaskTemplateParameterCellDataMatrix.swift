@@ -11,7 +11,9 @@ import Foundation
 class TaskTemplateParameterCellDataMatrix: UITableViewCell {
     @IBOutlet var Question: UILabel!
     @IBOutlet var Answer: UITextField!
+    
     @IBOutlet var DataMatrixButton: UIButton!
+    
     @IBOutlet var SerialNumber: UILabel!
     @IBOutlet var PartNumber: UILabel!
     @IBOutlet var BatchNumber: UILabel!
@@ -63,6 +65,4 @@ class TaskTemplateParameterCellDataMatrix: UITableViewCell {
             }
         }
     }
-    
-    
 }

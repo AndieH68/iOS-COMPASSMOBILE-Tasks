@@ -60,6 +60,7 @@
 		A47D1F15264D60B800537097 /* TaskTemplateParameterCellDataMatrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47D1F14264D60B800537097 /* TaskTemplateParameterCellDataMatrix.swift */; };
 		A486A4F01D11748700FE4642 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A486A4EF1D11748700FE4642 /* SystemConfiguration.framework */; };
 		A486A4F21D11748E00FE4642 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A486A4F11D11748E00FE4642 /* CoreData.framework */; };
+		A4996AA7266EDD8500D8C49D /* TaskTemplateParameterCellScanUniversal.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4996AA6266EDD8500D8C49D /* TaskTemplateParameterCellScanUniversal.swift */; };
 		A49A746A1D2FBE580006F220 /* COMPASSDB.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = A4CBC52F1D2FB94500E1D3CE /* COMPASSDB.sqlite */; };
 		A4A25F5F1D22D63A00027FA6 /* Default-568.png in Resources */ = {isa = PBXBuildFile; fileRef = A4A25F5E1D22D63A00027FA6 /* Default-568.png */; };
 		A4AF07661E326A6E00D09CA8 /* TemperatureProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4AF07651E326A6E00D09CA8 /* TemperatureProfile.swift */; };
@@ -137,6 +138,7 @@
 		A47D1F14264D60B800537097 /* TaskTemplateParameterCellDataMatrix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTemplateParameterCellDataMatrix.swift; sourceTree = SOURCE_ROOT; };
 		A486A4EF1D11748700FE4642 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		A486A4F11D11748E00FE4642 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		A4996AA6266EDD8500D8C49D /* TaskTemplateParameterCellScanUniversal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTemplateParameterCellScanUniversal.swift; sourceTree = SOURCE_ROOT; };
 		A4A25F5E1D22D63A00027FA6 /* Default-568.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568.png"; sourceTree = SOURCE_ROOT; };
 		A4A522EC1C43F4A500D16A9A /* COMPASSMOBILE Tasks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "COMPASSMOBILE Tasks.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4AF07651E326A6E00D09CA8 /* TemperatureProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TemperatureProfile.swift; path = "COMPASSMOBILE Tasks/SupportingFiles/TemperatureProfile.swift"; sourceTree = SOURCE_ROOT; };
@@ -324,6 +326,7 @@
 				A43919711D2D1D8C00C31CA0 /* TaskTemplateParameterCellNumber.swift */,
 				A43919721D2D1D8C00C31CA0 /* TaskTemplateParameterCellTemperature.swift */,
 				A43919731D2D1D8C00C31CA0 /* TaskTemplateParameterCellTextArea.swift */,
+				A4996AA6266EDD8500D8C49D /* TaskTemplateParameterCellScanUniversal.swift */,
 			);
 			name = TaskTemplateParameterCells;
 			sourceTree = "<group>";
@@ -547,6 +550,7 @@
 				A439196E1D2D1D7F00C31CA0 /* TaskCell.swift in Sources */,
 				A432E9551D2D1A4E002FE138 /* RemedialTaskViewController.swift in Sources */,
 				A432E9571D2D1A4E002FE138 /* SettingsViewController.swift in Sources */,
+				A4996AA7266EDD8500D8C49D /* TaskTemplateParameterCellScanUniversal.swift in Sources */,
 				A4D3975B26412AE5001F2ACA /* GS1Barcode.swift in Sources */,
 				A432E95A1D2D1AF0002FE138 /* AddViewController.swift in Sources */,
 				A43919741D2D1D8C00C31CA0 /* TaskTemplateParameterCellDropdown.swift in Sources */,
@@ -645,7 +649,7 @@
 				CODE_SIGN_ENTITLEMENTS = "COMPASSMOBILE Tasks/COMPASSMOBILE Tasks.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 49;
 				DEVELOPMENT_TEAM = H889T663QH;
 				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -655,7 +659,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)";
-				MARKETING_VERSION = 1.30.01;
+				MARKETING_VERSION = 1.31.02;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = COM.HYDROP.COMPASSMOBILE.TASKS;
@@ -738,7 +742,7 @@
 				CODE_SIGN_ENTITLEMENTS = "COMPASSMOBILE Tasks/COMPASSMOBILE Tasks.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 49;
 				DEVELOPMENT_TEAM = H889T663QH;
 				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -748,7 +752,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)";
-				MARKETING_VERSION = 1.30.01;
+				MARKETING_VERSION = 1.31.02;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = COM.HYDROP.COMPASSMOBILE.TASKS;

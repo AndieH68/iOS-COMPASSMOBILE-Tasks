@@ -17,6 +17,7 @@ class Session : NSObject
     
     static var DatabasePresent: Bool = false
     static var DatabaseMessage: String = String()
+    static var ResetTaskTemplateDates: Bool = false
     
     static var UseBlueToothProbe: Bool = false
     static var UseTaskTiming: Bool = false
@@ -40,6 +41,7 @@ class Session : NSObject
   
     static var CodeScanned: String? = nil
     static var MatrixScanned: String? = nil
+
     static var NoRequery: Bool = false
     
     static var FilterSiteId: String? = nil
@@ -134,6 +136,11 @@ class Session : NSObject
     static var CurrentDataMatrixControl: UITextField? = nil
     static var DataMatrix: String? = nil
     static var GettingDataMatrix: Bool = false
+
+    static var CurrentScanUniversalCell: TaskTemplateParameterCellScanUniversal? = nil
+    static var CurrentScanUniversalControl: UITextField? = nil
+    static var ScanUniversal: String? = nil
+    static var GettingScanUniversal: Bool = false
 
     static var CancelFromScan: Bool = false
 

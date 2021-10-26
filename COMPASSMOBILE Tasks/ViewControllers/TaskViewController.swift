@@ -193,6 +193,33 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
             Session.CancelFromProfile = false
         }
 
+        if Session.GettingScanUniversal {
+            if Session.CurrentScanUniversalControl != nil && !Session.CancelFromScan {
+                if Session.CurrentScanUniversalControl!.restorationIdentifier != nil {
+                    if let currentTaskTemplateParameterFormItem: TaskTemplateParameterFormItem = taskTemplateParameterFormItems[Session.CurrentScanUniversalControl!.restorationIdentifier!]
+                    {
+                        if (Session.MatrixScanned != nil)
+                        {
+                            currentTaskTemplateParameterFormItem.SelectedItem = Session.MatrixScanned!
+                            Session.CurrentScanUniversalControl!.text = Session.MatrixScanned!
+                        }
+                        else if Session.CodeScanned != nil
+                        {
+                            currentTaskTemplateParameterFormItem.SelectedItem = Session.CodeScanned!
+                            Session.CurrentScanUniversalControl!.text = Session.CodeScanned!
+                        }
+                    }
+                }
+                
+                Session.CurrentScanUniversalCell!.updateFromAnswer()
+                Session.CurrentScanUniversalControl = nil
+                Session.MatrixScanned = nil
+                Session.CodeScanned = nil
+                Session.GettingScanUniversal = false
+            }
+            Session.CancelFromScan = false
+        }
+
         if Session.GettingDataMatrix {
             if Session.CurrentDataMatrixControl != nil && !Session.CancelFromScan {
                 if Session.CurrentDataMatrixControl!.restorationIdentifier != nil {
@@ -491,6 +518,32 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
             return cell
         } else  {
             switch taskTemplateParameter.ParameterType {
+            case "Scan Universal":
+                let cell = tableView.dequeueReusableCell(withIdentifier: "ScanUniversalCell", for: indexPath) as! TaskTemplateParameterCellScanUniversal
+                cell.restorationIdentifier = taskTemplateParameter.RowId
+                cell.Question.text = taskTemplateParameter.ParameterDisplay
+
+                cell.Question.textColor = taskTemplateParameterFormItem.LabelColour
+                cell.Answer.backgroundColor = taskTemplateParameterFormItem.ControlBackgroundColor
+
+                cell.Answer.restorationIdentifier = taskTemplateParameter.RowId
+                cell.Answer.delegate = self
+
+                if taskTemplateParameterFormItem.SelectedItem != nil {
+                    cell.Answer.text = taskTemplateParameterFormItem.SelectedItem
+                }
+
+                cell.Answer.tag = ScanUniversalCell
+
+                cell.Answer.isEnabled = (taskTemplateParameterFormItem.Enabled)
+                cell.ScanUniversalButton.isHidden = false
+                cell.ScanUniversalButton.isEnabled = (taskTemplateParameterFormItem.Enabled)
+                cell.ScanUniversalTextButton.isHidden = false
+                cell.ScanUniversalTextButton.isEnabled = (taskTemplateParameterFormItem.Enabled)
+                
+                cell.ScanUniversalButton.tag = cell.Answer.tag
+                return cell
+                
             case "GS1 Data Matrix":
                 let cell = tableView.dequeueReusableCell(withIdentifier: "DataMatrixCell", for: indexPath) as! TaskTemplateParameterCellDataMatrix
                 cell.restorationIdentifier = taskTemplateParameter.RowId
@@ -640,7 +693,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
         // nope all are fixed height now
         //return 68
         let taskTemplateParameter: TaskTemplateParameter = formTaskTemplateParameters[indexPath.row]
-        if taskTemplateParameter.ParameterType == "GS1 Data Matrix"
+        if taskTemplateParameter.ParameterType == "GS1 Data Matrix" || taskTemplateParameter.ParameterType == "Scan Universal"
         {
             return 134
         }
@@ -716,6 +769,18 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
             let temperatureProfileViewController = segue.destination as! TemperatureProfileViewController
             temperatureProfileViewController.hot = (Session.CurrentProfileControl!.tag == TemperatureProfileCellHot)
             Session.GettingProfile = true
+
+        case "ScanUniversalSegue":
+
+            if sender is UIButton {
+                let cell: TaskTemplateParameterCellScanUniversal = (sender as! UIButton).superview!.superview as! TaskTemplateParameterCellScanUniversal
+                Session.CurrentScanUniversalControl = cell.Answer
+                Session.CurrentScanUniversalCell = cell
+            } else {
+                Session.CurrentScanUniversalControl = sender as? UITextField
+            }
+
+            Session.GettingScanUniversal = true
 
         case "DataMatrixSegue":
 
@@ -799,6 +864,30 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
                 }
             }
 
+        case "ScanUniversalSegue":
+
+            if sender is UIButton {
+                let cell: TaskTemplateParameterCellScanUniversal = (sender as! UIButton).superview!.superview as! TaskTemplateParameterCellScanUniversal
+                if cell.Answer.text != String() {
+                    let userPrompt: UIAlertController = UIAlertController(title: "Overwrite Scan?", message: "Are you sure you want to overwrite the current scan?", preferredStyle: UIAlertController.Style.alert)
+
+                    let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel) {
+                        _ in
+                        // do nothing
+                    }
+
+                    let OKAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.destructive) {
+                        _ in
+                        self.performSegue(withIdentifier: "ScanUniversalSegue", sender: sender)
+                    }
+
+                    userPrompt.addAction(cancelAction)
+                    userPrompt.addAction(OKAction)
+
+                    present(userPrompt, animated: true, completion: nil)
+                }
+            }
+
         case "DataMatrixSegue":
 
             if sender is UIButton {
@@ -859,7 +948,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
         if Session.TimerRunning {
             return false
         }
-
+       
         if textField.tag >= TemperatureProfileCellHot && Session.UseTemperatureProfile {
             if textField.text != String() {
                 let userPrompt: UIAlertController = UIAlertController(title: "Overwrite Profile?", message: "Are you sure you want to overwrite the current profile?", preferredStyle: UIAlertController.Style.alert)
@@ -920,6 +1009,12 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
     }
 
     func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField.tag == ScanUniversalCell {
+            textField.isHidden = true
+            let cell: TaskTemplateParameterCellScanUniversal = textField.superview!.superview as! TaskTemplateParameterCellScanUniversal
+            cell.updateFromAnswer()
+        }
+        
         if textField.tag >= TemperatureCell && Session.BluetoothProbeConnected || textField.tag >= TemperatureCell && Session.ThermaQBluetoothProbeConnected
         {
             stopProbeTimer()
@@ -994,12 +1089,14 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
         if Session.BluetoothProbeConnected {
             Session.CodeScanned = nil
             Session.DataMatrix = nil
+            Session.ScanUniversal = nil
             Session.TaskId = nil
             EAController.shared().callBack = nil
             _ = navigationController?.popViewController(animated: true)
         } else {
             Session.CodeScanned = nil
             Session.DataMatrix = nil
+            Session.ScanUniversal = nil
             Session.TaskId = nil
             _ = navigationController?.popViewController(animated: true)
         }
@@ -1075,6 +1172,11 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
                 let taskTemplateParameter: TaskTemplateParameter = taskTemplateParameterFormItems[taskTemplateParameterId]!.TemplateParameter
 
                 switch taskTemplateParameter.ParameterType {
+                case "Scan Universal":
+                    let cell: TaskTemplateParameterCellScanUniversal = tableCell as! TaskTemplateParameterCellScanUniversal
+                    cell.Answer.text = value
+                    return
+
                 case "GS1 Data Matrix":
                     let cell: TaskTemplateParameterCellDataMatrix = tableCell as! TaskTemplateParameterCellDataMatrix
                     cell.Answer.text = value
@@ -1134,6 +1236,15 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
                 let taskTemplateParameter: TaskTemplateParameter = taskTemplateParameterFormItems[taskTemplateParameterId]!.TemplateParameter
 
                 switch taskTemplateParameter.ParameterType {
+                case "Scan Universal":
+                    let cell: TaskTemplateParameterCellScanUniversal = tableCell as! TaskTemplateParameterCellScanUniversal
+                    cell.Answer.isEnabled = true
+                    cell.ScanUniversalButton.isHidden = false
+                    cell.ScanUniversalButton.isEnabled = true
+                    cell.ScanUniversalTextButton.isHidden = false
+                    cell.ScanUniversalTextButton.isEnabled = true
+                    return
+
                 case "GS1 Data Matrix":
                     let cell: TaskTemplateParameterCellDataMatrix = tableCell as! TaskTemplateParameterCellDataMatrix
                     cell.Answer.isEnabled = true
@@ -1197,6 +1308,11 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
                 let taskTemplateParameter: TaskTemplateParameter = taskTemplateParameterFormItems[taskTemplateParameterId]!.TemplateParameter
 
                 switch taskTemplateParameter.ParameterType {
+                case "Scan Universal":
+                    let cell: TaskTemplateParameterCellScanUniversal = tableCell as! TaskTemplateParameterCellScanUniversal
+                    cell.Question.textColor = colour
+                    return
+
                 case "GS1 Data Matrix":
                     let cell: TaskTemplateParameterCellDataMatrix = tableCell as! TaskTemplateParameterCellDataMatrix
                     cell.Question.textColor = colour
@@ -1241,10 +1357,14 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
                 let taskTemplateParameter: TaskTemplateParameter = taskTemplateParameterFormItems[taskTemplateParameterId]!.TemplateParameter
 
                 switch taskTemplateParameter.ParameterType {
+                case "Scan Universal":
+                    let cell: TaskTemplateParameterCellScanUniversal = tableCell as! TaskTemplateParameterCellScanUniversal
+                    cell.Answer.backgroundColor = colour
+                    return
+
                 case "GS1 Data Matrix":
                     let cell: TaskTemplateParameterCellDataMatrix = tableCell as! TaskTemplateParameterCellDataMatrix
                     cell.Answer.backgroundColor = colour
-                    //TBD Answer labels backgroundColor
                     return
 
                 case "Scan Code":
@@ -1395,6 +1515,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
             if Session.BluetoothProbeConnected {
                 Session.CodeScanned = nil
                 Session.DataMatrix = nil
+                Session.ScanUniversal = nil
                 Session.ScanCode = nil
                 Session.TaskId = nil
                 Session.FilterAssetNumber = nil
@@ -1403,6 +1524,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
             } else {
                 Session.CodeScanned = nil
                 Session.DataMatrix = nil
+                Session.ScanUniversal = nil
                 Session.ScanCode = nil
                 Session.TaskId = nil
                 Session.FilterAssetNumber = nil

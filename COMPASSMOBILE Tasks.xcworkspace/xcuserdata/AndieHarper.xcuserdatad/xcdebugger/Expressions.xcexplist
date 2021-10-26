@@ -3,6 +3,14 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "TaskTemplate.__allocating_init(XMLElement:):TaskTemplate.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "XMLElement.attributes[&quot;CanCreateFromDevice&quot;]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "specialized static Utility.DownloadAllDetails(_:HUD:):Utility.swift">
       </ContextState>
       <ContextState

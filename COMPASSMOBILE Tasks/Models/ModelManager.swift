@@ -37,7 +37,7 @@ class ModelManager: NSObject {
         if (returnValue){
             SQLStatement = "SELECT name FROM sqlite_master WHERE type = 'table' and name = 'OperativeGroup'"
             let resultSet = sharedModelManager.database!.executeQuery(SQLStatement, withArgumentsIn: SQLParameterValues)
-            if (resultSet == nil)
+            if !resultSet!.next()
             {
                 //create the table
                 SQLStatement = "CREATE TABLE OperativeGroup (RowId VARCHAR (36) NOT NULL CONSTRAINT PK_OperativeGroupId PRIMARY KEY COLLATE NOCASE, CreatedBy VARCHAR (36) NOT NULL COLLATE NOCASE, CreatedOn DATETIME NOT NULL, LastUpdatedBy VARCHAR (36) COLLATE NOCASE, LastUpdatedOn DATETIME, Deleted DATETIME, OrganisationId VARCHAR (36) NOT NULL COLLATE NOCASE, Name VARCHAR (50) COLLATE NOCASE);"
@@ -48,7 +48,7 @@ class ModelManager: NSObject {
         if (returnValue){
             SQLStatement = " SELECT name FROM sqlite_master WHERE type = 'table' and name='OperativeGroupMembership'"
             let resultSet = sharedModelManager.database!.executeQuery(SQLStatement, withArgumentsIn: SQLParameterValues)
-            if (resultSet == nil)
+            if !resultSet!.next()
             {
                 //create the table
                 SQLStatement = "CREATE TABLE OperativeGroupMembership (RowId VARCHAR (36) NOT NULL CONSTRAINT PK_OperativeGroupMembershipId PRIMARY KEY COLLATE NOCASE, CreatedBy VARCHAR (36) NOT NULL COLLATE NOCASE, CreatedOn DATETIME NOT NULL, LastUpdatedBy VARCHAR (36) COLLATE NOCASE, LastUpdatedOn DATETIME, Deleted DATETIME, OperativeGroupId VARCHAR (36) NOT NULL COLLATE NOCASE, OperativeId VARCHAR (36) NOT NULL COLLATE NOCASE);"
@@ -59,11 +59,26 @@ class ModelManager: NSObject {
         if (returnValue){
             SQLStatement = " SELECT name FROM sqlite_master WHERE type = 'table' and name='OperativeGroupTaskTemplateMembership'"
             let resultSet = sharedModelManager.database!.executeQuery(SQLStatement, withArgumentsIn: SQLParameterValues)
-            if (resultSet == nil)
+            if !resultSet!.next()
             {
                 //create the table
                 SQLStatement = "CREATE TABLE OperativeGroupTaskTemplateMembership (RowId VARCHAR (36) NOT NULL CONSTRAINT PK_OperativeGroupMembershipId PRIMARY KEY COLLATE NOCASE, CreatedBy VARCHAR (36) NOT NULL COLLATE NOCASE, CreatedOn DATETIME NOT NULL, LastUpdatedBy VARCHAR (36) COLLATE NOCASE, LastUpdatedOn DATETIME, Deleted DATETIME, OperativeGroupId VARCHAR (36) NOT NULL COLLATE NOCASE, TaskTemplateId VARCHAR (36) NOT NULL COLLATE NOCASE);"
                 returnValue = sharedModelManager.database!.executeStatements(SQLStatement)
+            }
+        }
+        
+        if (returnValue){
+            SQLStatement = "SELECT m.name as tableName, p.name as columnName FROM sqlite_master m left outer join pragma_table_info((m.name)) p on m.name <> p.name where tableName = 'TaskTemplate' and columnName ='CanCreateFromDevice'"
+            let resultSet = sharedModelManager.database!.executeQuery(SQLStatement, withArgumentsIn: SQLParameterValues)
+            if !resultSet!.next()
+            {
+                //create the table
+                SQLStatement = "ALTER TABLE TaskTemplate ADD COLUMN CanCreateFromDevice BIT;"
+                returnValue = sharedModelManager.database!.executeStatements(SQLStatement)
+                if(returnValue)
+                {
+                    Session.ResetTaskTemplateDates = true
+                }
             }
         }
         
@@ -4383,6 +4398,9 @@ class ModelManager: NSObject {
         SQLParameterNames += ", [EstimatedDuration]"
         SQLParameterPlaceholders += ", ?"
         SQLParameterValues.append(taskTemplate.EstimatedDuration as NSObject)
+        SQLParameterNames += ", [CanCreateFromDevice]"
+        SQLParameterPlaceholders += ", ?"
+        SQLParameterValues.append(taskTemplate.CanCreateFromDevice as NSObject)
         
         SQLStatement = "INSERT INTO [TaskTemplate] (" + SQLParameterNames + ") VALUES (" + SQLParameterPlaceholders + ")"
         
@@ -4427,6 +4445,8 @@ class ModelManager: NSObject {
         SQLParameterValues.append(taskTemplate.Priority as NSObject)
         SQLParameterNames += ", [EstimatedDuration]=?"
         SQLParameterValues.append(taskTemplate.EstimatedDuration as NSObject)
+        SQLParameterNames += ", [CanCreateFromDevice]=?"
+        SQLParameterValues.append(taskTemplate.CanCreateFromDevice as NSObject)
         
         SQLParameterValues.append(taskTemplate.RowId as NSObject)
         
@@ -4449,7 +4469,7 @@ class ModelManager: NSObject {
         sharedModelManager.database!.open()
         var taskTemplate: TaskTemplate? = nil
         
-        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [AssetType], [TaskName], [Priority], [EstimatedDuration] FROM [TaskTemplate] WHERE [RowId]=?", withArgumentsIn: [taskTemplateId])
+        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [AssetType], [TaskName], [Priority], [EstimatedDuration], [CanCreateFromDevice] FROM [TaskTemplate] WHERE [RowId]=?", withArgumentsIn: [taskTemplateId])
         if (resultSet != nil) {
             while (resultSet?.next())! {
                 var resultTaskTemplate: TaskTemplate = TaskTemplate()
@@ -4474,6 +4494,7 @@ class ModelManager: NSObject {
                 resultTaskTemplate.TaskName = (resultSet?.string(forColumn: "TaskName"))!
                 resultTaskTemplate.Priority = Int((resultSet?.int(forColumn: "Priority"))!)
                 resultTaskTemplate.EstimatedDuration = Int((resultSet?.int(forColumn: "EstimatedDuration"))!)
+                resultTaskTemplate.CanCreateFromDevice = (resultSet?.bool(forColumn: "CanCreateFromDevice"))!
                 
                 taskTemplate = resultTaskTemplate
             }
@@ -4484,7 +4505,7 @@ class ModelManager: NSObject {
     
     func getAllTaskTemplate() -> [TaskTemplate] {
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [AssetType], [TaskName], [Priority], [EstimatedDuration] FROM [TaskTemplate]", withArgumentsIn: [])
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [AssetType], [TaskName], [Priority], [EstimatedDuration], [CanCreateFromDevice] FROM [TaskTemplate]", withArgumentsIn: [])
         var taskTemplateList: [TaskTemplate] = [TaskTemplate]()
         if (resultSet != nil) {
             while resultSet.next() {
@@ -4509,6 +4530,10 @@ class ModelManager: NSObject {
                 taskTemplate.TaskName = resultSet.string(forColumn: "TaskName")!
                 taskTemplate.Priority = Int(resultSet.int(forColumn: "Priority"))
                 taskTemplate.EstimatedDuration = Int(resultSet.int(forColumn: "EstimatedDuration"))
+                if !resultSet.columnIsNull("CanCreateFromDevice")
+                {
+                    taskTemplate.CanCreateFromDevice = resultSet.bool(forColumn: "CanCreateFromDevice")
+                }
                 
                 taskTemplateList.append(taskTemplate)
             }
@@ -4559,7 +4584,7 @@ class ModelManager: NSObject {
                 pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
             }
             
-            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [AssetType], [TaskName], [Priority], [EstimatedDuration]FROM [TaskTemplate] " + whereClause + orderByClause + pageClause, withArgumentsIn: whereValues)
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [AssetType], [TaskName], [Priority], [EstimatedDuration], [CanCreateFromDevice] FROM [TaskTemplate] " + whereClause + orderByClause + pageClause, withArgumentsIn: whereValues)
             if (resultSet != nil) {
                 while resultSet.next() {
                     let taskTemplate : TaskTemplate = TaskTemplate()
@@ -4583,6 +4608,10 @@ class ModelManager: NSObject {
                     taskTemplate.TaskName = resultSet.string(forColumn: "TaskName")!
                     taskTemplate.Priority = Int(resultSet.int(forColumn: "Priority"))
                     taskTemplate.EstimatedDuration = Int(resultSet.int(forColumn: "EstimatedDuration"))
+                    if !resultSet.columnIsNull("CanCreateFromDevice")
+                    {
+                        taskTemplate.CanCreateFromDevice = resultSet.bool(forColumn: "CanCreateFromDevice")
+                    }
                     
                     taskTemplateList.append(taskTemplate)
                 }

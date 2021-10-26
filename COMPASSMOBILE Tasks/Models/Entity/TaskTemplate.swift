@@ -23,11 +23,12 @@ class TaskTemplate: NSObject {
     var TaskName: String = String()
     var Priority: Int = Int()
     var EstimatedDuration: Int = Int()
-
+    var CanCreateFromDevice: Bool = true
+    
     // MARK: - Contructors
     
     convenience
-    init(rowId:String, createdBy: String, createdOn: Date, lastUpdatedBy: String?, lastUpdatedOn: Date?, deleted: Date?, organisationId: String, assetType: String, taskName: String, priority: Int, estimatedDuration: Int) {
+    init(rowId:String, createdBy: String, createdOn: Date, lastUpdatedBy: String?, lastUpdatedOn: Date?, deleted: Date?, organisationId: String, assetType: String, taskName: String, priority: Int, estimatedDuration: Int, canCreateFromDevice: Bool) {
         self.init()
         self.RowId = rowId
         self.CreatedBy = createdBy
@@ -40,6 +41,7 @@ class TaskTemplate: NSObject {
         self.TaskName = taskName
         self.Priority = priority
         self.EstimatedDuration = estimatedDuration
+        self.CanCreateFromDevice = canCreateFromDevice
     }
     
     convenience
@@ -71,6 +73,21 @@ class TaskTemplate: NSObject {
         self.TaskName = XMLElement.attributes["TaskName"]!
         self.Priority = Int(XMLElement.attributes["Priority"]!)!
         self.EstimatedDuration = Int(XMLElement.attributes["EstimatedDuration"]!)!
+        if XMLElement.attributes.keys.contains("CanCreateFromDevice")
+        {
+            if XMLElement.attributes["CanCreateFromDevice"] != nil
+            {
+                self.CanCreateFromDevice = XMLElement.attributes["CanCreateFromDevice"]! == "1"
+            }
+            else
+            {
+                self.CanCreateFromDevice = false
+            }
+        }
+        else
+        {
+            self.CanCreateFromDevice = true
+        }
 
     }
 }

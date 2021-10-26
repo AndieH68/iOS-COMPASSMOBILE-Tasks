@@ -1210,9 +1210,9 @@ class Utility: NSObject {
         return (lastRowId, lastDateInPackage, current, total)
     }
     
-    class func SynchroniseAllData(_ viewController: UIViewController, stage: Int32, progressBar: MBProgressHUD?) -> Bool
+    class func SynchroniseAllData(_ viewController: UIViewController, stage: Int32, progressBar: MBProgressHUD?, reset: Bool) -> Bool
     {
-        var SQLStatement: String
+            var SQLStatement: String
         var SQLParameterValues: [NSObject]
         var synchronisationDateToUse: Date = BaseDate as Date
         var synchronisationType: String = Session.OrganisationId! + ":Receive:"
@@ -1604,91 +1604,91 @@ class Utility: NSObject {
         var success: Bool = false
         
         // Show the HUD while the provide method  executes in a new thread
-        success = Utility.SynchroniseAllData(viewController, stage: 1, progressBar: HUD)
+        success = Utility.SynchroniseAllData(viewController, stage: 1, progressBar: HUD, reset: false)
         if(!success)
         {
             Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Reference Data", message: Session.AlertMessage!)
         }
             
-        success = Utility.SynchroniseAllData(viewController, stage: 10, progressBar: HUD)
+        success = Utility.SynchroniseAllData(viewController, stage: 10, progressBar: HUD, reset: Session.ResetTaskTemplateDates)
         if(!success)
         {
             Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Task Templates", message: Session.AlertMessage!)
         }
         
-        success = Utility.SynchroniseAllData(viewController, stage: 11, progressBar: HUD)
+        success = Utility.SynchroniseAllData(viewController, stage: 11, progressBar: HUD, reset: false)
         if(!success)
         {
             Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Task Template Parameters", message: Session.AlertMessage!)
         }
         
-        success = Utility.SynchroniseAllData(viewController, stage: 9, progressBar: HUD)
+        success = Utility.SynchroniseAllData(viewController, stage: 9, progressBar: HUD, reset: false)
         if(!success)
         {
             Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Operatives", message: Session.AlertMessage!)
         }
         
-        success = Utility.SynchroniseAllData(viewController, stage: 14, progressBar: HUD)
+        success = Utility.SynchroniseAllData(viewController, stage: 14, progressBar: HUD, reset: false)
         if(!success)
         {
             Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise OperativeGroups", message: Session.AlertMessage!)
         }
 
-        success = Utility.SynchroniseAllData(viewController, stage: 15, progressBar: HUD)
+        success = Utility.SynchroniseAllData(viewController, stage: 15, progressBar: HUD, reset: false)
         if(!success)
         {
             Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise OperativeGroupMemberships", message: Session.AlertMessage!)
         }
 
-        success = Utility.SynchroniseAllData(viewController, stage: 16, progressBar: HUD)
+        success = Utility.SynchroniseAllData(viewController, stage: 16, progressBar: HUD, reset: false)
         if(!success)
         {
             Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise OperativeGroupTaskTemplateMemberships", message: Session.AlertMessage!)
         }
         
-        success = Utility.SynchroniseAllData(viewController, stage: 2, progressBar: HUD)
+        success = Utility.SynchroniseAllData(viewController, stage: 2, progressBar: HUD, reset: false)
         if(!success)
         {
             Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Organisations", message: Session.AlertMessage!)
         }
         
-        success = Utility.SynchroniseAllData(viewController, stage: 3, progressBar: HUD)
+        success = Utility.SynchroniseAllData(viewController, stage: 3, progressBar: HUD, reset: false)
         if(!success)
         {
             Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Sites", message: Session.AlertMessage!)
         }
         
-        success = Utility.SynchroniseAllData(viewController, stage: 4, progressBar: HUD)
+        success = Utility.SynchroniseAllData(viewController, stage: 4, progressBar: HUD, reset: false)
         if(!success)
         {
             Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Properties", message: Session.AlertMessage!)
         }
         
-        success = Utility.SynchroniseAllData(viewController, stage: 6, progressBar: HUD)
+        success = Utility.SynchroniseAllData(viewController, stage: 6, progressBar: HUD, reset: false)
         if(!success)
         {
             Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Areas", message: Session.AlertMessage!)
         }
         
-        success = Utility.SynchroniseAllData(viewController, stage: 5, progressBar: HUD)
+        success = Utility.SynchroniseAllData(viewController, stage: 5, progressBar: HUD, reset: false)
         if(!success)
         {
             Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Locations", message: Session.AlertMessage!)
         }
         
-        success = Utility.SynchroniseAllData(viewController, stage: 7, progressBar: HUD)
+        success = Utility.SynchroniseAllData(viewController, stage: 7, progressBar: HUD, reset: false)
         if(!success)
         {
             Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Area Links", message: Session.AlertMessage!)
         }
         
-        success = Utility.SynchroniseAllData(viewController, stage: 8, progressBar: HUD)
+        success = Utility.SynchroniseAllData(viewController, stage: 8, progressBar: HUD, reset: false)
         if(!success)
         {
             Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Assets", message: Session.AlertMessage!)
         }
         
-        success = Utility.SynchroniseAllData(viewController, stage: 12, progressBar: HUD)
+        success = Utility.SynchroniseAllData(viewController, stage: 12, progressBar: HUD, reset: false)
         if(!success)
         {
             Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Tasks", message: Session.AlertMessage!)
@@ -1704,7 +1704,7 @@ class Utility: NSObject {
             _ = ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
         }
 
-        success = Utility.SynchroniseAllData(viewController, stage: 13, progressBar: HUD)
+        success = Utility.SynchroniseAllData(viewController, stage: 13, progressBar: HUD, reset: false)
         if(!success)
         {
             Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Task Parameters", message: Session.AlertMessage!)
