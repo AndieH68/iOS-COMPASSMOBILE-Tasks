@@ -81,7 +81,7 @@ class Session : NSObject
         if (Session.OrganisationId != nil) { criteria["OrganisationId"] = Session.OrganisationId! as AnyObject? }
         if (Session.FilterSiteId != nil) { criteria["SiteId"] = Session.FilterSiteId! as AnyObject? }
         if (Session.FilterPropertyId != nil) { criteria["PropertyId"] = Session.FilterPropertyId! as AnyObject? }
-        if (Session.FilterFrequency != nil) { criteria["Frequency"] = Session.FilterFrequency! as AnyObject? }
+        if (Session.FilterFrequency != nil && Session.FilterFrequency != "All") { criteria["LOWER(Frequency)"] = Session.FilterFrequency! as AnyObject? } //TBD: temporary hack because of frequency inconsistency
         if (Session.FilterPeriod != nil) { criteria["Period"] = Session.FilterPeriod! as AnyObject? }
         
         if (Session.FilterAssetGroup != nil) { criteria["PPMGroup"] = Session.FilterAssetGroup! as AnyObject? }

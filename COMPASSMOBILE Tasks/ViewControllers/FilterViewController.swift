@@ -291,22 +291,27 @@ class FilterViewController: UIViewController {
         var FrequencyData: [ReferenceData] = [] //NSMutableArray!
         var selectedIndex: Int = 0
         Frequencies.append("")
+
+        Frequencies.append("All")
+        FrequencyDictionary["All"] = "All"
+        if (Session.FilterFrequency?.localizedLowercase == "all") { selectedIndex = 1 }
+        
+        Frequencies.append("Ad-hoc")
+        FrequencyDictionary["Ad-hoc"] = "Ad-hoc"
+        if (Session.FilterFrequency?.localizedLowercase == "ad-hoc") { selectedIndex = 2 }
         
         // go and get the Frequency data based on the criteria built
         (FrequencyData, _) = ModelManager.getInstance().findReferenceDataList(criteria, pageSize: nil, pageNumber: nil, sortOrder: ReferenceDataSortOrder.ordinal)
         
-        var count: Int = 1 //we already have the blank row
+        var count: Int = 3 //we already have the blank row, All and Ad-hoc
         for currentFrequency: ReferenceData in FrequencyData
         {
             Frequencies.append(currentFrequency.Display)
-            FrequencyDictionary[currentFrequency.Display] = currentFrequency.Value
-            if (currentFrequency.Display == Session.FilterFrequency) { selectedIndex = count}
+            FrequencyDictionary[currentFrequency.Display] = currentFrequency.Display.localizedLowercase
+            if (currentFrequency.Display.localizedLowercase == Session.FilterFrequency?.localizedLowercase) { selectedIndex = count}
             count += 1
         }
         if (selectedIndex == 0) { Session.FilterFrequency = nil }
-        
-        Frequencies.append("All")
-        FrequencyDictionary["All"] = "All"
         
         FrequencyPopupSelector.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
         FrequencyPopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
