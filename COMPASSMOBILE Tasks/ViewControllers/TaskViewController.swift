@@ -1119,8 +1119,8 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
                 {
                     value = taskTemperatureProfiles[taskTemplateParameter.RowId]!.ToString()
                 }
-
-                if value == nil || value == String() || value == PleaseSelect {
+		//TBD: check collect parameter
+                if value == nil || value == String() || value == PleaseSelect { 
                     taskTemplateParameterFormItem.LabelColour = UIColor.red
                     SetCellLabelColour(taskTemplateParameter.RowId, colour: UIColor.red)
 
@@ -1411,7 +1411,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
 
             present(userPrompt, animated: true, completion: nil)
         } else {
-            // do all the vlaidation
+            // do all the validation
             if !Validate() {
                 let userPrompt: UIAlertController = UIAlertController(title: "Incomplete task!", message: "Please complete the fields highlighted with red.", preferredStyle: UIAlertController.Style.alert)
 

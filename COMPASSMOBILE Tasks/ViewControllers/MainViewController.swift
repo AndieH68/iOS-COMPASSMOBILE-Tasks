@@ -191,7 +191,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         if (indexPath.row % 2 == 1)
         {
-            cell.backgroundColor = UIColor.white
+            cell.backgroundColor = UIColor(red: 170/255, green: 170/255, blue: 170/255, alpha: 0.75) //UIColor.white
         }
         else
         {
