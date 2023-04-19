@@ -16,6 +16,7 @@ class TaskCell: UITableViewCell {
     @IBOutlet weak var type: UILabel!
     @IBOutlet weak var asset: UILabel!
     @IBOutlet weak var dateDue: UILabel!
+    @IBOutlet weak var priority: UILabel!
     
     var taskId: String = String()
     

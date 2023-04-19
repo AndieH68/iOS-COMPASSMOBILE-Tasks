@@ -64,6 +64,6 @@ class Property: NSObject {
         }
         self.SiteId = XMLElement.attributes["SiteId"]!
         self.Name = XMLElement.attributes["Name"]!
-        self.Healthcare = (XMLElement.attributes["Healthcare"]! == "1") //should test to make sure boolean
+        self.Healthcare = (XMLElement.attributes["Healthcare"]! == "true") //should test to make sure boolean
     }
 }

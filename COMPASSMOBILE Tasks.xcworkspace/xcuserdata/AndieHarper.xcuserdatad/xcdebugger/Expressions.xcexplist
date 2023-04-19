@@ -3,18 +3,50 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "TaskTemplate.__allocating_init(XMLElement:):TaskTemplate.swift">
+         contextName = "static Utility.GenerateUniqueReference(last:):Utility.swift">
          <PersistentStrings>
             <PersistentString
-               value = "XMLElement.attributes[&quot;CanCreateFromDevice&quot;]">
+               value = "BaseDate.timeIntervalSinceReferenceDate">
+            </PersistentString>
+            <PersistentString
+               value = "Date().timeIntervalSinceReferenceDate">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "main:AppDelegate.swift">
+      </ContextState>
+      <ContextState
+         contextName = "BiologicalMonitoringViewController.tableView(_:cellForRowAt:):BiologicalMonitoringViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "BiologicalMonitoringViewController.DonePressed(_:):BiologicalMonitoringViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "closure #2 in BiologicalMonitoringViewController.AddSamplePicker(_:):BiologicalMonitoringViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "TaskTemplate.__allocating_init(XMLElement:):TaskTemplate.swift">
+      </ContextState>
+      <ContextState
+         contextName = "BiologicalMonitoringViewController.viewDidLoad():BiologicalMonitoringViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "BiologicalMonitoringViewController.DeleteSample(_:):BiologicalMonitoringViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "sender.restorationIdentifier">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #6 in static Utility.importData(_:entityType:progressBar:count:maxCount:):Utility.swift">
       </ContextState>
       <ContextState
          contextName = "specialized static Utility.DownloadAllDetails(_:HUD:):Utility.swift">
       </ContextState>
       <ContextState
-         contextName = "closure #6 in static Utility.importData(_:entityType:progressBar:count:maxCount:):Utility.swift">
+         contextName = "ReferenceData.__allocating_init(XMLElement:):ReferenceData.swift">
       </ContextState>
    </ContextStates>
 </VariablesViewState>

@@ -10,7 +10,8 @@ import Foundation
 
 public class GS1Barcode: NSObject, Barcode {
     public var raw: String?
-    private var lastParseSuccessfull: Bool = false
+    private var
+lastParseSuccessfull: Bool = false
     private var hasUnrecognisedElement: Bool = false
 
     /* Just the common Application Identifiers for now */

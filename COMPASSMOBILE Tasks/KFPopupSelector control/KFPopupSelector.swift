@@ -296,7 +296,7 @@ class KFPopupSelector: UIControl, UIPopoverPresentationControllerDelegate {
                 let pc = pvc.popoverPresentationController
                 pc?.sourceView = self
                 pc?.sourceRect = button.frame
-                pc?.permittedArrowDirections = .any
+                pc?.permittedArrowDirections = .any 
                 pc?.delegate = self
                 
                 viewController!.present(pvc, animated: true) {}

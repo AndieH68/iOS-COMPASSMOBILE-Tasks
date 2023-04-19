@@ -159,7 +159,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Core Data stack
 
     lazy var applicationDocumentsDirectory: URL = {
-        // The directory the application uses to store the Core Data store file. This code uses a directory named "COM.HYDROP.COMPASSMOBILE" in the application's documents Application Support directory.
+        // The directory the application uses to store the Core Data store file. This code uses a directory named "COM.HYDROP.COMPASSMOBILE" in the application's documents Application Support directory.`
         let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         return urls[urls.count-1]
     }()

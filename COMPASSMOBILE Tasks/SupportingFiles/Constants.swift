@@ -9,7 +9,7 @@
 import UIKit
 
 enum EntityType: Int32 {
-    case referenceData = 1, organisation = 2, site = 3, property = 4, location = 5, locationGroup = 6, locationGroupMembership = 7, asset = 8, operative = 9, taskTemplate = 10, taskTemplateParameter = 11, task = 12, taskParameter = 13, operativeGroup = 14, operativeGroupMembership = 15, operativeGroupTaskTemplateMembership = 16
+    case referenceData = 1, organisation = 2, site = 3, property = 4, location = 5, locationGroup = 6, locationGroupMembership = 7, asset = 8, operative = 9, taskTemplate = 10, taskTemplateParameter = 11, task = 12, taskParameter = 13, operativeGroup = 14, operativeGroupMembership = 15, operativeGroupTaskTemplateMembership = 16, pendingTask = 17, assetOutlet = 18
 }
 
 enum ReferenceDataSortOrder: Int32 {
@@ -17,7 +17,7 @@ enum ReferenceDataSortOrder: Int32 {
 }
 
 enum TaskSortOrder: Int32 {
-    case date = 1, location = 2, assetType = 3, task = 4 //, Route = 5
+    case date = 1, location = 2, assetType = 3, task = 4 , priority = 5
 }
 
 enum TaskPeriod: Int32 {
@@ -51,11 +51,13 @@ let BaseDate: Date = Date(dateString: hasAMPM ? "2000-01-01T12:00:00 PM" : "2000
 
 let EmptyGuid: String = "00000000-0000-0000-0000-000000000000"
 
+let BiologicalMonitoring: String = "Biological Monitoring"
 let RemedialTask: String = "Remedial Task"
 let Accessible: String = "Accessible"
 let NotApplicable: String = "Not applicable"
 let PleaseSelect: String = "Please select"
 let TaskOpenMessage: String = "A different task is already open"
+let None: String = "None"
 
 let TemperatureCell: Int = 1
 let TemperatureProfileCellHot: Int = 2
@@ -68,3 +70,5 @@ let DataMatrixCell: Int = 1
 let ScanUniversalCell: Int = -1
 
 let NoNetwork: String = "Not connected to network"
+
+let SampleRefDelimiter = "#"

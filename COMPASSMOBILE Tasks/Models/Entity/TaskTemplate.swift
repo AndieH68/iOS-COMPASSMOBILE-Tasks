@@ -73,21 +73,6 @@ class TaskTemplate: NSObject {
         self.TaskName = XMLElement.attributes["TaskName"]!
         self.Priority = Int(XMLElement.attributes["Priority"]!)!
         self.EstimatedDuration = Int(XMLElement.attributes["EstimatedDuration"]!)!
-        if XMLElement.attributes.keys.contains("CanCreateFromDevice")
-        {
-            if XMLElement.attributes["CanCreateFromDevice"] != nil
-            {
-                self.CanCreateFromDevice = XMLElement.attributes["CanCreateFromDevice"]! == "1"
-            }
-            else
-            {
-                self.CanCreateFromDevice = false
-            }
-        }
-        else
-        {
-            self.CanCreateFromDevice = true
-        }
-
+        self.CanCreateFromDevice = (XMLElement.attributes["CanCreateFromDevice"]! == "true") //should test to make sure boolean
     }
 }

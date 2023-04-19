@@ -263,6 +263,69 @@ class Utility: NSObject {
                     }
                 }
                 
+            case .assetOutlet:
+                
+                //get the data nodes
+                let dataNode: AEXMLElement = packageData["AssetOutlet"]
+                
+                for childNode in dataNode.children
+                {
+
+                    
+                    autoreleasepool{
+                        current += 1
+                        
+                        //get the first child
+                        let assetOutlet: AssetOutlet = AssetOutlet(XMLElement: childNode)
+                        
+                        var currentSynchDate: Date
+                        if assetOutlet.LastUpdatedOn == nil {
+                            currentSynchDate = assetOutlet.CreatedOn as Date
+                        }
+                        else {
+                            currentSynchDate = assetOutlet.LastUpdatedOn! as Date
+                        }
+                        
+                        lastDateInPackage = (lastDateInPackage as NSDate).laterDate(currentSynchDate)
+                        lastRowId = assetOutlet.RowId
+                        
+                        //does the record exists
+                        let currentAssetOutlet: AssetOutlet? = ModelManager.getInstance().getAssetOutlet(assetOutlet.RowId)
+                        if currentAssetOutlet == nil
+                        {
+                            //is the current record deleted
+                            if (assetOutlet.Deleted == nil)
+                            {
+                                //no insert it
+                                _ = ModelManager.getInstance().addAssetOutlet(assetOutlet)
+                            }
+                        }
+                        else
+                        {
+                            //yes
+                            
+                            //is the current record deleted
+                            if (assetOutlet.Deleted != nil)
+                            {
+                                //yes  - delete the asset
+                                _ = ModelManager.getInstance().deleteAssetOutlet(assetOutlet)
+                            }
+                            else
+                            {
+                                //no  - update the asset
+                                _ = ModelManager.getInstance().updateAssetOutlet(assetOutlet)
+                            }
+                            
+                        }
+                        
+                        
+                        if (progressBar != nil)
+                        {
+                            DispatchQueue.main.async(execute: {progressBar!.label.text = "AssetOutlet"; progressBar!.progress = (Float(current) / Float(total))})
+                        }
+                    }
+                }
+                
             case .location:
                 
                 //get the data nodes
@@ -1012,7 +1075,68 @@ class Utility: NSObject {
                     }
                     }
                 }
-
+                
+            case .pendingTask:
+                
+                //get the data nodes
+                let dataNode: AEXMLElement = packageData["Task"]
+                
+                //total = dataNode.children.count
+                
+                for childNode in dataNode.children
+                {
+                    autoreleasepool{
+                    current += 1
+                    
+                    //get the first child
+                    let task: Task = Task(XMLElement: childNode)
+                    
+                    var currentSynchDate: Date
+                    if task.LastUpdatedOn == nil {
+                        currentSynchDate = task.CreatedOn as Date
+                    }
+                    else {
+                        currentSynchDate = task.LastUpdatedOn! as Date
+                    }
+                    
+                    lastDateInPackage = (lastDateInPackage as NSDate).laterDate(currentSynchDate)
+                    lastRowId = task.RowId
+                    
+                    //does the record exists
+                    let currentTask: Task? = ModelManager.getInstance().getTask(task.RowId)
+                    if currentTask == nil
+                    {
+                        //is the current record deleted
+                        if (task.Deleted == nil)
+                        {
+                            //no insert it
+                            _ = ModelManager.getInstance().addTask(task)
+                        }
+                    }
+                    else
+                    {
+                        //yes
+                        
+                        //is the current record deleted
+                        if (task.Deleted != nil)
+                        {
+                            //yes  - delete the Task
+                            _ = ModelManager.getInstance().deleteTask(task)
+                        }
+                        else
+                        {
+                            //no  - update the Task
+                            _ = ModelManager.getInstance().updateTask(task)
+                        }
+                    }
+                    
+                    if (progressBar != nil)
+                    {
+                        DispatchQueue.main.async(execute: {progressBar!.label.text = "Pending Tasks"; progressBar!.progress = (Float(current) / Float(total))})
+                    }
+                    }
+                }
+                
             case .taskParameter:
                 
                 //get the data nodes
@@ -1293,6 +1417,14 @@ class Utility: NSObject {
             (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 16, entityType: EntityType.operativeGroupTaskTemplateMembership, progressBar: progressBar)
             if (!state){ return false }
 
+        case 17:
+            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 17, entityType: EntityType.pendingTask, progressBar: progressBar)
+            if (!state){ return false }
+            
+        case 18:
+            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 18, entityType: EntityType.assetOutlet, progressBar: progressBar)
+            if (!state){ return false }
+       
         default:
             //response = nil
             print ("Invalid Stage")
@@ -1335,10 +1467,6 @@ class Utility: NSObject {
         while ((lastRowId != EmptyGuid || count == 0) && !failed) {
             autoreleasepool{
                 count += 1
-//                if (progressBar != nil)
-//                {
-//                    progressBar!.progress = (Float(count) / Float(count + 1));
-//                }
                 
                 let data: Data? = WebService.getSynchronisationPackageSync(Session.OperativeId!, synchronisationDate: synchronisationDate, lastRowId: lastRowId, stage: stage)
                 
@@ -1688,6 +1816,12 @@ class Utility: NSObject {
             Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Assets", message: Session.AlertMessage!)
         }
         
+        success = Utility.SynchroniseAllData(viewController, stage: 18, progressBar: HUD, reset: false)
+        if(!success)
+        {
+            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Asset Outlets", message: Session.AlertMessage!)
+        }
+
         success = Utility.SynchroniseAllData(viewController, stage: 12, progressBar: HUD, reset: false)
         if(!success)
         {
@@ -1702,6 +1836,12 @@ class Utility: NSObject {
             SQLParameterValues = [NSObject]()
             SQLParameterValues.append(Session.OrganisationId! as NSObject)
             _ = ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
+        }
+        
+        success = Utility.SynchroniseAllData(viewController, stage: 17, progressBar: HUD, reset: false)
+        if(!success)
+        {
+            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Pending Tasks", message: Session.AlertMessage!)
         }
 
         success = Utility.SynchroniseAllData(viewController, stage: 13, progressBar: HUD, reset: false)
@@ -1795,9 +1935,13 @@ class Utility: NSObject {
         _ = ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [LocationGroupMembership]")
         _ = ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [Location]")
         _ = ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [Asset]")
+        _ = ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [AssetOutlet]")
         _ = ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [Task]")
         _ = ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [TaskParameter]")
-
+        _ = ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [OperativeGroup]")
+        _ = ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [OperativeGroupMembership]")
+        _ = ModelManager.getInstance().executeDirectNoParameters("DELETE FROM [OperativeGroupTaskTemplateMembership]")
+        
         var synchronisationType: String = Session.OrganisationId! + ":Receive%"
         SQLStatement = "DELETE FROM [Synchronisation] WHERE [Type] LIKE ?"
         SQLParameterValues = [NSObject]()
@@ -1848,6 +1992,50 @@ class Utility: NSObject {
         }
         
         return nil
+    }
+    
+    class func GenerateUniqueReference(last: String) -> String
+    {
+        let BaseDate: Date = Date(dateString: hasAMPM ? "2011-02-23T01:30:00 PM" : "2011-02-23T13:30:00.000")
+        let Base: Int64 = (Int64)(BaseDate.timeIntervalSinceReferenceDate * 100.0)
+        
+        let ValidCharacters: String = "0123456789BCDFGHJKLMNPQRSTVWXZ"
+    
+        var Reference: String = last
+        
+        let BaseNumberValue: Int64 = ((Int64)((Date().timeIntervalSinceReferenceDate) * 100.0)) - Base
+        var IterationCounter: Int16 = 0
+        while (!(Reference.count > last.count) && Reference <= last)
+        {
+            Reference = String()
+            var NumberValue: Int64 = BaseNumberValue + Int64(IterationCounter)
+            
+            var PositionCounter: Int16 = 0
+            while (NumberValue > 0)
+            {
+                Reference = ValidCharacters.substring((Int)(NumberValue % 30), length: 1) + Reference
+                NumberValue -= (NumberValue % 30)
+                NumberValue /= 30
+                PositionCounter += 1
+                if((PositionCounter % 4) == 0)
+                {
+                    Reference = "-" + Reference
+                }
+            }
+            IterationCounter += 1
+        }
+            
+        if (Reference.startsWith("-"))
+        {
+            Reference = Reference.substring(1, length: Reference.count  - 1 )
+        }
+        
+        if (Reference == last)
+        {
+            Reference = GenerateUniqueReference(last: Reference)
+        }
+        
+        return Reference
     }
 }
 

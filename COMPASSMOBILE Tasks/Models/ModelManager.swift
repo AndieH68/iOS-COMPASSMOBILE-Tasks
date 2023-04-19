@@ -33,7 +33,19 @@ class ModelManager: NSObject {
         
         let SQLParameterValues: [NSObject] = [NSObject]()
         
-        //check for the OperativeGroupTable
+        //check for the AssetOutlet Table
+        if (returnValue){
+            SQLStatement = " SELECT name FROM sqlite_master WHERE type = 'table' and name='AssetOutlet'"
+            let resultSet = sharedModelManager.database!.executeQuery(SQLStatement, withArgumentsIn: SQLParameterValues)
+            if !resultSet!.next()
+            {
+                //create the table
+                SQLStatement = "CREATE TABLE AssetOutlet (RowId VARCHAR (36) NOT NULL CONSTRAINT PK_AssetOutletId PRIMARY KEY COLLATE NOCASE, CreatedBy VARCHAR (36) NOT NULL COLLATE NOCASE, CreatedOn DATETIME NOT NULL, LastUpdatedBy VARCHAR (36) COLLATE NOCASE, LastUpdatedOn DATETIME, Deleted DATETIME, OutletType VARCHAR(100) NOT NULL COLLATE NOCASE, FacilityId VARCHAR (36) NOT NULL COLLATE NOCASE, HydropName VARCHAR (20) COLLATE NOCASE, ClientName VARCHAR (50) COLLATE NOCASE, ScanCode VARCHAR (50) COLLATE NOCASE, Integral BIT);"
+                returnValue = sharedModelManager.database!.executeStatements(SQLStatement)
+            }
+        }
+        
+        //check for the OperativeGroup Tables
         if (returnValue){
             SQLStatement = "SELECT name FROM sqlite_master WHERE type = 'table' and name = 'OperativeGroup'"
             let resultSet = sharedModelManager.database!.executeQuery(SQLStatement, withArgumentsIn: SQLParameterValues)
@@ -74,6 +86,21 @@ class ModelManager: NSObject {
             {
                 //create the table
                 SQLStatement = "ALTER TABLE TaskTemplate ADD COLUMN CanCreateFromDevice BIT;"
+                returnValue = sharedModelManager.database!.executeStatements(SQLStatement)
+                if(returnValue)
+                {
+                    Session.ResetTaskTemplateDates = true
+                }
+            }
+        }
+   
+        if (returnValue){
+            SQLStatement = "SELECT m.name as tableName, p.name as columnName FROM sqlite_master m left outer join pragma_table_info((m.name)) p on m.name <> p.name where tableName = 'Task' and columnName ='Level'"
+            let resultSet = sharedModelManager.database!.executeQuery(SQLStatement, withArgumentsIn: SQLParameterValues)
+            if !resultSet!.next()
+            {
+                //create the table
+                SQLStatement = "ALTER TABLE Task ADD COLUMN Level NVARCHAR(50) COLLATE NOCASE;"
                 returnValue = sharedModelManager.database!.executeStatements(SQLStatement)
                 if(returnValue)
                 {
@@ -147,7 +174,34 @@ class ModelManager: NSObject {
         }
         return (whereClause, whereValues)
     }
-    
+ 
+    func buildWhereClauseWithNulls(_ criteria: Dictionary<String, AnyObject>) -> (whereClause: String, whereValues: [AnyObject]) {
+        var whereClause: String = String()
+        var loopCount: Int32 = 0
+        var whereValues: [AnyObject] = [AnyObject]()
+        for (itemKey, itemValue) in criteria
+        {
+            whereClause += (loopCount > 0 ? " AND " : " ")
+            
+            if (itemValue as! String? == nil)
+            {
+                whereClause += (itemKey) + " IS ? "
+            }
+            else if (itemValue is String)
+            {
+                whereClause += (itemKey) + " LIKE ? "
+            }
+            else
+            {
+                whereClause += (itemKey) + " = ? "
+            }
+            
+            whereValues.append(itemValue)
+            
+            loopCount += 1
+        }
+        return (whereClause, whereValues)
+    }
     // MARK: - Asset
     
     func addAsset(_ asset: Asset) -> Bool {
@@ -479,6 +533,301 @@ class ModelManager: NSObject {
         return (assetList, count)
     }
     
+    // MARK: - AssetOutlet
+    
+    func addAssetOutlet(_ assetOutlet: AssetOutlet) -> Bool {
+        //build the sql statemnt
+        var SQLStatement: String = String()
+        var SQLParameterNames: String = String()
+        var SQLParameterPlaceholders: String = String()
+        var SQLParameterValues: [NSObject] = [NSObject]()
+        
+        SQLParameterNames = "[RowId], [CreatedBy], [CreatedOn]"
+        SQLParameterPlaceholders = "?, ?, ?"
+        SQLParameterValues.append(assetOutlet.RowId as NSObject)
+        SQLParameterValues.append(assetOutlet.CreatedBy as NSObject)
+        SQLParameterValues.append(assetOutlet.CreatedOn as NSObject)
+        
+        if assetOutlet.LastUpdatedBy != nil {
+            SQLParameterNames += ", [LastUpdatedBy]"
+            SQLParameterPlaceholders += ", ?"
+            SQLParameterValues.append(assetOutlet.LastUpdatedBy! as NSObject)
+        }
+        
+        if assetOutlet.LastUpdatedOn != nil {
+            SQLParameterNames += ", [LastUpdatedOn]"
+            SQLParameterPlaceholders += ", ?"
+            SQLParameterValues.append(assetOutlet.LastUpdatedOn! as NSObject)
+        }
+        
+        if assetOutlet.Deleted != nil {
+            SQLParameterNames += ", [Deleted]"
+            SQLParameterPlaceholders += ", ?"
+            SQLParameterValues.append(assetOutlet.Deleted! as NSObject)
+        }
+        
+        SQLParameterNames += ", [OutletType]"
+        SQLParameterPlaceholders += ", ?"
+        SQLParameterValues.append(assetOutlet.OutletType as NSObject)
+        SQLParameterNames += ", [FacilityId]"
+        SQLParameterPlaceholders += ", ?"
+        SQLParameterValues.append(assetOutlet.FacilityId as NSObject)
+        if assetOutlet.HydropName != nil {
+            SQLParameterNames += ", [HydropName]"
+            SQLParameterPlaceholders += ", ?"
+            SQLParameterValues.append(assetOutlet.HydropName! as NSObject)
+        }
+        if assetOutlet.ClientName != nil {
+            SQLParameterNames += ", [ClientName]"
+            SQLParameterPlaceholders += ", ?"
+            SQLParameterValues.append(assetOutlet.ClientName! as NSObject)
+        }
+        if assetOutlet.ScanCode != nil {
+            SQLParameterNames += ", [ScanCode]"
+            SQLParameterPlaceholders += ", ?"
+            SQLParameterValues.append(assetOutlet.ScanCode! as NSObject)
+        }
+        SQLParameterNames += ", [Integral]"
+        SQLParameterPlaceholders += ", ?"
+        SQLParameterValues.append(assetOutlet.Integral as NSObject)
+        
+        SQLStatement = "INSERT INTO [AssetOutlet] (" + SQLParameterNames + ") VALUES (" + SQLParameterPlaceholders + ")"
+        
+        sharedModelManager.database!.open()
+        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
+        sharedModelManager.database!.close()
+        return isInserted
+    }
+    
+    func updateAssetOutlet(_ assetOutlet: AssetOutlet) -> Bool {
+        //build the sql statemnt
+        var SQLStatement: String = String()
+        var SQLParameterNames: String = String()
+        var SQLParameterValues: [NSObject] = [NSObject]()
+        
+        SQLParameterNames = "[CreatedBy]=?, [CreatedOn]=?"
+        SQLParameterValues.append(assetOutlet.CreatedBy as NSObject)
+        SQLParameterValues.append(assetOutlet.CreatedOn as NSObject)
+        
+        if assetOutlet.LastUpdatedBy != nil {
+            SQLParameterNames += ", [LastUpdatedBy]=?"
+            SQLParameterValues.append(assetOutlet.LastUpdatedBy! as NSObject)
+        }
+        
+        if assetOutlet.LastUpdatedOn != nil {
+            SQLParameterNames += ", [LastUpdatedOn]=?"
+            SQLParameterValues.append(assetOutlet.LastUpdatedOn! as NSObject)
+        }
+        
+        if assetOutlet.Deleted != nil {
+            SQLParameterNames += ", [Deleted]=?"
+            SQLParameterValues.append(assetOutlet.Deleted! as NSObject)
+        }
+        
+        SQLParameterNames += ", [OutletType]=?"
+        SQLParameterValues.append(assetOutlet.OutletType as NSObject)
+        SQLParameterNames += ", [FacilityId]=?"
+        SQLParameterValues.append(assetOutlet.FacilityId as NSObject)
+        if assetOutlet.HydropName != nil {
+            SQLParameterNames += ", [HydropName]=?"
+            SQLParameterValues.append(assetOutlet.HydropName! as NSObject)
+        }
+        if assetOutlet.ClientName != nil {
+            SQLParameterNames += ", [ClientName]=?"
+            SQLParameterValues.append(assetOutlet.ClientName! as NSObject)
+        }
+        if assetOutlet.ScanCode != nil {
+            SQLParameterNames += ", [ScanCode]=?"
+            SQLParameterValues.append(assetOutlet.ScanCode! as NSObject)
+        }
+        SQLParameterNames += ", [Integral]=?"
+        SQLParameterValues.append(assetOutlet.Integral as NSObject)
+        
+        SQLParameterValues.append(assetOutlet.RowId as NSObject)
+        
+        SQLStatement = "UPDATE [AssetOutlet] SET " + SQLParameterNames + "WHERE [RowId]=?"
+        
+        sharedModelManager.database!.open()
+        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
+        sharedModelManager.database!.close()
+        return isUpdated
+    }
+    
+    func deleteAssetOutlet(_ assetOutlet: AssetOutlet) -> Bool {
+        sharedModelManager.database!.open()
+        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [AssetOutlet] WHERE [RowId]=?", withArgumentsIn: [assetOutlet.RowId])
+        sharedModelManager.database!.close()
+        return isDeleted
+    }
+    
+    func getAssetOutlet(_ assetOutletId: String) -> AssetOutlet? {
+        sharedModelManager.database!.open()
+        var assetOutlet: AssetOutlet? = nil
+        
+        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OutletType], [FacilityId], [HydropName], [ClientName], [ScanCode], [Integral] FROM [AssetOutlet] WHERE [RowId]=?", withArgumentsIn: [assetOutletId])
+        if (resultSet != nil) {
+            while (resultSet?.next())! {
+                var resultAssetOutlet: AssetOutlet = AssetOutlet()
+                resultAssetOutlet = AssetOutlet()
+                resultAssetOutlet.RowId = (resultSet?.string(forColumn: "RowId"))!
+                resultAssetOutlet.CreatedBy = (resultSet?.string(forColumn: "CreatedBy"))!
+                resultAssetOutlet.CreatedOn = (resultSet?.date(forColumn: "CreatedOn"))!
+                if !(resultSet?.columnIsNull("LastUpdatedBy"))!
+                {
+                    resultAssetOutlet.LastUpdatedBy = resultSet?.string(forColumn: "LastUpdatedBy")
+                }
+                if !(resultSet?.columnIsNull("LastUpdatedOn"))!
+                {
+                    resultAssetOutlet.LastUpdatedOn = resultSet?.date(forColumn: "LastUpdatedOn")
+                }
+                if !(resultSet?.columnIsNull("Deleted"))!
+                {
+                    resultAssetOutlet.Deleted = resultSet?.date(forColumn: "Deleted")
+                }
+                resultAssetOutlet.OutletType = (resultSet?.string(forColumn: "OutletType"))!
+                resultAssetOutlet.FacilityId = (resultSet?.string(forColumn: "FacilityId"))!
+                if !(resultSet?.columnIsNull("HydropName"))! {
+                    resultAssetOutlet.HydropName = resultSet?.string(forColumn: "HydropName")
+                }
+                if !(resultSet?.columnIsNull("ClientName"))! {
+                    resultAssetOutlet.ClientName = resultSet?.string(forColumn: "ClientName")
+                }
+                if !(resultSet?.columnIsNull("ScanCode"))! {
+                    resultAssetOutlet.ScanCode = resultSet?.string(forColumn: "ScanCode")
+                }
+                resultAssetOutlet.Integral = (resultSet?.bool(forColumn: "Integral"))!
+                
+                assetOutlet = resultAssetOutlet
+            }
+        }
+        sharedModelManager.database!.close()
+        return assetOutlet
+    }
+    
+    func getAllAssetOutlet() -> [AssetOutlet] {
+        sharedModelManager.database!.open()
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OutletType], [FacilityId], [HydropName], [ClientName], [ScanCode], [Integral] FROM [AssetOutlet]", withArgumentsIn: [])
+        var assetOutletList: [AssetOutlet] = [AssetOutlet]()
+        if (resultSet != nil) {
+            while resultSet.next() {
+                let assetOutlet : AssetOutlet = AssetOutlet()
+                assetOutlet.RowId = resultSet.string(forColumn: "RowId")!
+                assetOutlet.CreatedBy = resultSet.string(forColumn: "CreatedBy")!
+                assetOutlet.CreatedOn = resultSet.date(forColumn: "CreatedOn")!
+                if !resultSet.columnIsNull("LastUpdatedBy")
+                {
+                    assetOutlet.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
+                }
+                if !resultSet.columnIsNull("LastUpdatedOn")
+                {
+                    assetOutlet.LastUpdatedOn = resultSet.date(forColumn: "LastUpdatedOn")
+                }
+                if !resultSet.columnIsNull("Deleted")
+                {
+                    assetOutlet.Deleted = resultSet.date(forColumn: "Deleted")
+                }
+                assetOutlet.OutletType = resultSet.string(forColumn: "OutletType")!
+                assetOutlet.FacilityId = resultSet.string(forColumn: "FacilityId")!
+                if !resultSet.columnIsNull("HydropName") {
+                    assetOutlet.HydropName = resultSet.string(forColumn: "HydropName")
+                }
+                if !resultSet.columnIsNull("ClientName") {
+                    assetOutlet.ClientName = resultSet.string(forColumn: "ClientName")
+                }
+                if !resultSet.columnIsNull("ScanCode") {
+                    assetOutlet.ScanCode = resultSet.string(forColumn: "ScanCode")
+                }
+                assetOutlet.Integral = resultSet.bool(forColumn: "Integral")
+                
+                assetOutletList.append(assetOutlet)
+            }
+        }
+        sharedModelManager.database!.close()
+        return assetOutletList
+    }
+    
+    func findAssetOutletList(_ criteria: Dictionary<String, AnyObject>) -> [AssetOutlet] {
+        var list: [AssetOutlet] = [AssetOutlet]()
+        //var count: Int32 = 0
+        (list, _) = findAssetOutletList(criteria, pageSize: nil, pageNumber: nil)
+        return list
+    }
+    
+    func findAssetOutletList(_ criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [AssetOutlet], Count: Int32) {
+        
+        //return variables
+        var count: Int32 = 0
+        var assetOutletList: [AssetOutlet] = [AssetOutlet]()
+        
+        //build the where clause
+        var whereClause: String = String()
+        var whereValues: [AnyObject] = [AnyObject]()
+        
+        (whereClause, whereValues) = buildWhereClause(criteria)
+        
+        if (whereClause != "")
+        {
+            whereClause = "WHERE " + whereClause
+        }
+        
+        sharedModelManager.database!.open()
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [AssetOutlet] " + whereClause, withArgumentsIn: whereValues)
+        if (countSet != nil) {
+            while countSet.next() {
+                count = countSet.int(forColumnIndex: 0)
+            }
+        }
+        
+        if (count > 0)
+        {
+            var pageClause: String = String()
+            if (pageSize != nil && pageNumber != nil)
+            {
+                pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
+            }
+            
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OutletType], [FacilityId], [HydropName], [ClientName], [ScanCode], [Integral] FROM [AssetOutlet] " + whereClause + pageClause, withArgumentsIn: whereValues)
+            if (resultSet != nil) {
+                while resultSet.next() {
+                    let assetOutlet : AssetOutlet = AssetOutlet()
+                    assetOutlet.RowId = resultSet.string(forColumn: "RowId")!
+                    assetOutlet.CreatedBy = resultSet.string(forColumn: "CreatedBy")!
+                    assetOutlet.CreatedOn = resultSet.date(forColumn: "CreatedOn")!
+                    if !resultSet.columnIsNull("LastUpdatedBy")
+                    {
+                        assetOutlet.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
+                    }
+                    if !resultSet.columnIsNull("LastUpdatedOn")
+                    {
+                        assetOutlet.LastUpdatedOn = resultSet.date(forColumn: "LastUpdatedOn")
+                    }
+                    if !resultSet.columnIsNull("Deleted")
+                    {
+                        assetOutlet.Deleted = resultSet.date(forColumn: "Deleted")
+                    }
+                    assetOutlet.OutletType = resultSet.string(forColumn: "OutletType")!
+                    assetOutlet.FacilityId = resultSet.string(forColumn: "FacilityId")!
+                    if !resultSet.columnIsNull("HydropName") {
+                        assetOutlet.HydropName = resultSet.string(forColumn: "HydropName")
+                    }
+                    if !resultSet.columnIsNull("ClientName") {
+                        assetOutlet.ClientName = resultSet.string(forColumn: "ClientName")
+                    }
+                    if !resultSet.columnIsNull("ScanCode") {
+                        assetOutlet.ScanCode = resultSet.string(forColumn: "ScanCode")
+                    }
+                    assetOutlet.Integral = resultSet.bool(forColumn: "Integral")
+                    
+                    assetOutletList.append(assetOutlet)
+                }
+            }
+        }
+        
+        sharedModelManager.database!.close()
+        
+        return (assetOutletList, count)
+    }
+
     // MARK: - Location
     
     func addLocation(_ location: Location) -> Bool {
@@ -3117,7 +3466,15 @@ class ModelManager: NSObject {
         
         if (whereClause != "")
         {
-            whereClause = "WHERE " + whereClause
+            if (whereClause.contains("ParentType"))
+            {
+                whereClause = "WHERE " + whereClause
+            }
+            else
+            {
+                whereClause = "WHERE ParentType IS NULL AND" + whereClause
+            }
+                
         }
         
         sharedModelManager.database!.open()
@@ -3135,7 +3492,7 @@ class ModelManager: NSObject {
             {
                 pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
             }
-            
+
             let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [StartDate], [EndDate], [Type], [Value], [Ordinal], [Display], [System], [ParentType], [ParentValue] FROM [ReferenceData] " + whereClause + orderByClause + pageClause, withArgumentsIn: whereValues)
             if (resultSet != nil) {
                 while resultSet.next() {
@@ -3545,7 +3902,11 @@ class ModelManager: NSObject {
             SQLParameterPlaceholders += ", ?"
             SQLParameterValues.append(task.AlternateAssetCode! as NSObject)
         }
-        
+        if task.Level != nil {
+            SQLParameterNames += ", [Level]"
+            SQLParameterPlaceholders += ", ?"
+            SQLParameterValues.append(task.Level! as NSObject)
+        }
         
         SQLStatement = "INSERT INTO [Task] (" + SQLParameterNames + ") VALUES (" + SQLParameterPlaceholders + ")"
         
@@ -3656,7 +4017,10 @@ class ModelManager: NSObject {
             SQLParameterNames += ", [AlternateAssetCode]=?"
             SQLParameterValues.append(task.AlternateAssetCode! as NSObject)
         }
-        
+        if task.Level != nil {
+            SQLParameterNames += ", [Level]=?"
+            SQLParameterValues.append(task.Level! as NSObject)
+        }
         
         SQLParameterValues.append(task.RowId as NSObject)
         
@@ -3679,7 +4043,7 @@ class ModelManager: NSObject {
         sharedModelManager.database!.open()
         var task: Task? = nil
         
-        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [SiteId], [PropertyId], [LocationId], [LocationGroupName], [LocationName], [Room], [TaskTemplateId], [TaskRef], [PPMGroup], [AssetType], [TaskName], [Frequency], [AssetId], [AssetNumber], [ScheduledDate], [CompletedDate], [Status], [Priority], [EstimatedDuration], [OperativeId], [ActualDuration], [TravelDuration], [Comments], [AlternateAssetCode] FROM [Task] WHERE [RowId]=?", withArgumentsIn: [taskId])
+        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [SiteId], [PropertyId], [LocationId], [LocationGroupName], [LocationName], [Room], [TaskTemplateId], [TaskRef], [PPMGroup], [AssetType], [TaskName], [Frequency], [AssetId], [AssetNumber], [ScheduledDate], [CompletedDate], [Status], [Priority], [EstimatedDuration], [OperativeId], [ActualDuration], [TravelDuration], [Comments], [AlternateAssetCode], [Level] FROM [Task] WHERE [RowId]=?", withArgumentsIn: [taskId])
         if (resultSet != nil) {
             while (resultSet?.next())! {
                 var resultTask: Task = Task()
@@ -3750,7 +4114,9 @@ class ModelManager: NSObject {
                 if !(resultSet?.columnIsNull("AlternateAssetCode"))! {
                     resultTask.AlternateAssetCode = resultSet?.string(forColumn: "AlternateAssetCode")
                 }
-                
+                if !(resultSet?.columnIsNull("Level"))! {
+                    resultTask.Level = resultSet?.string(forColumn: "Level")
+                }
                 task = resultTask
             }
         }
@@ -3760,7 +4126,7 @@ class ModelManager: NSObject {
     
     func getAllTask() -> [Task] {
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [SiteId], [PropertyId], [LocationId], [LocationGroupName], [LocationName], [Room], [TaskTemplateId], [TaskRef], [PPMGroup], [AssetType], [TaskName], [Frequency], [AssetId], [AssetNumber], [ScheduledDate], [CompletedDate], [Status], [Priority], [EstimatedDuration], [OperativeId], [ActualDuration], [TravelDuration], [Comments], [AlternateAssetCode] FROM [Task]", withArgumentsIn: [])
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [SiteId], [PropertyId], [LocationId], [LocationGroupName], [LocationName], [Room], [TaskTemplateId], [TaskRef], [PPMGroup], [AssetType], [TaskName], [Frequency], [AssetId], [AssetNumber], [ScheduledDate], [CompletedDate], [Status], [Priority], [EstimatedDuration], [OperativeId], [ActualDuration], [TravelDuration], [Comments], [AlternateAssetCode], [Level] FROM [Task]", withArgumentsIn: [])
         var taskList: [Task] = [Task]()
         if (resultSet != nil) {
             while resultSet.next() {
@@ -3831,7 +4197,9 @@ class ModelManager: NSObject {
                 if !resultSet.columnIsNull("AlternateAssetCode") {
                     task.AlternateAssetCode = resultSet.string(forColumn: "AlternateAssetCode")
                 }
-                
+                if !resultSet.columnIsNull("Level") {
+                    task.Level = resultSet.string(forColumn: "Level")
+                }
                 taskList.append(task)
             }
         }
@@ -3864,17 +4232,19 @@ class ModelManager: NSObject {
         switch sortOrder {
             
         case .date:
-            orderByClause += "[ScheduledDate] "
+            orderByClause += "[ScheduledDate], [LocationName], [PPMGroup], [AssetNumber] "
             
         case .location:
-            orderByClause += "[LocationName] "
+            orderByClause += "[LocationName], [PPMGroup], [AssetNumber], [ScheduledDate] "
             
         case .assetType:
-            orderByClause += "[PPMGroup] "
+            orderByClause += "[PPMGroup], [AssetNumber], [LocationName], [ScheduledDate] "
             
         case .task:
-            orderByClause += "[TaskName] "
-            
+            orderByClause += "[TaskRef], [ScheduledDate], [LocationName], [PPMGroup], [AssetNumber] "
+
+        case .priority:
+            orderByClause += "[Priority], [LocationName], [ScheduledDate], [PPMGroup], [AssetNumber], [TaskRef]"
         }
         
         var whereCriteria: Dictionary<String, AnyObject> = criteria
@@ -3886,11 +4256,6 @@ class ModelManager: NSObject {
         //build the where clause
         var whereClause: String = String()
         var whereValues: [AnyObject] = [AnyObject]()
-        
-        //if(Session.FilterJustMyTasks)
-        //{
-        //    whereCriteria["OperativeId"] = nil
-        //}
         
         (whereClause, whereValues) = buildWhereClause(whereCriteria)
         
@@ -3964,7 +4329,7 @@ class ModelManager: NSObject {
   
         if (onlyPending)
         {
-            whereClause += " AND ([Task].[Status] = 'Pending' OR ([Task].[Status] = 'Outstanding' AND [OperativeId] = '" + Session.OperativeId! + "')) "
+            whereClause += " AND [Status] IN ('Pending','Outstanding') "
         }
         else
         {
@@ -3986,7 +4351,7 @@ class ModelManager: NSObject {
                 pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
             }
             
-            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [SiteId], [PropertyId], [LocationId], [LocationGroupName], [LocationName], [Room], [TaskTemplateId], [TaskRef], [PPMGroup], [AssetType], [TaskName], [Frequency], [AssetId], [AssetNumber], [ScheduledDate], [CompletedDate], [Status], [Priority], [EstimatedDuration], [OperativeId], [ActualDuration], [TravelDuration], [Comments], [AlternateAssetCode] FROM [Task] " + whereClause  + orderByClause + pageClause, withArgumentsIn: whereValues)
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [SiteId], [PropertyId], [LocationId], [LocationGroupName], [LocationName], [Room], [TaskTemplateId], [TaskRef], [PPMGroup], [AssetType], [TaskName], [Frequency], [AssetId], [AssetNumber], [ScheduledDate], [CompletedDate], [Status], [Priority], [EstimatedDuration], [OperativeId], [ActualDuration], [TravelDuration], [Comments], [AlternateAssetCode], [Level] FROM [Task] " + whereClause  + orderByClause + pageClause, withArgumentsIn: whereValues)
             if (resultSet != nil) {
                 while resultSet.next() {
                     let task : Task = Task()
@@ -4056,7 +4421,9 @@ class ModelManager: NSObject {
                     if !resultSet.columnIsNull("AlternateAssetCode") {
                         task.AlternateAssetCode = resultSet.string(forColumn: "AlternateAssetCode")
                     }
-                    
+                    if !resultSet.columnIsNull("Level") {
+                        task.Level = resultSet.string(forColumn: "Level")
+                    }
                     taskList.append(task)
                 }
             }

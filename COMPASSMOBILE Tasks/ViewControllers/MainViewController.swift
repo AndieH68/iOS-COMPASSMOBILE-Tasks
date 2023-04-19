@@ -170,7 +170,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
        
         cell.taskRef.text = task.TaskRef
         var TaskName: String = task.TaskName
-        if (TaskName != RemedialTask)
+        if (TaskName != RemedialTask && TaskName != BiologicalMonitoring)
         {
             TaskName = ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMTaskType", key: task.TaskName, parentType: "PPMAssetGroup", parentValue: task.PPMGroup!)
         }
@@ -179,7 +179,15 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         cell.location.text = PropertyName + task.LocationName
         if(task.PPMGroup != nil)
         {
-            cell.type.text = ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMAssetGroup", key: task.PPMGroup!) + " - " + ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMAssetType", key: task.AssetType!)
+            let AssetType: String? = ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMAssetType", key: task.AssetType!, parentType: "PPMAssetGroup", parentValue:task.PPMGroup!)
+            if (AssetType != "")
+            {
+                cell.type.text = ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMAssetGroup", key: task.PPMGroup!) + " - " + ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMAssetType", key: task.AssetType!, parentType: "PPMAssetGroup", parentValue:task.PPMGroup!)
+            }
+            else
+            {
+                cell.type.text = ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMAssetGroup", key: task.PPMGroup!) + " - " + ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMAssetType", key: task.AssetType!, parentType: "PPMAssetGroup", parentValue: "DistributionServices")
+            }
         }
         else
         {
@@ -187,8 +195,8 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
         cell.asset.text = task.AssetNumber
         cell.dateDue.text = Utility.DateToStringForView(task.ScheduledDate)
+        cell.priority.text = ModelUtility.getInstance().ReferenceDataDisplayFromValue("Priority", key: String(task.Priority))
         cell.taskId = task.RowId
-        
         if (indexPath.row % 2 == 1)
         {
             cell.backgroundColor = UIColor(red: 170/255, green: 170/255, blue: 170/255, alpha: 0.75) //UIColor.white
@@ -206,10 +214,14 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let cell: TaskCell = tableView.cellForRow(at: indexPath) as! TaskCell
         switch (cell.taskName.text!)
         {
-        case RemedialTask:
-            self.performSegue(withIdentifier: "RemedialTaskSegue", sender: cell)
-        default:
-            self.performSegue(withIdentifier: "TaskSegue", sender: cell)
+            case BiologicalMonitoring:
+                self.performSegue(withIdentifier: "BiologicalMonitoringSegue", sender: cell)
+            
+            case RemedialTask:
+                self.performSegue(withIdentifier: "RemedialTaskSegue", sender: cell)
+            
+            default:
+                self.performSegue(withIdentifier: "TaskSegue", sender: cell)
         }
         
     }
@@ -231,6 +243,13 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
                     {
                         Session.TaskId = (sender as! TaskCell).taskId
                     }
+
+                case "BiologicalMonitoringSegue":
+                    if (sender is TaskCell)
+                    {
+                        Session.TaskId = (sender as! TaskCell).taskId
+                    }
+                
                 default:
                     print("Default")
             }

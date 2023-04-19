@@ -44,17 +44,20 @@ class Session : NSObject
 
     static var NoRequery: Bool = false
     
-    static var FilterSiteId: String? = nil
-    static var FilterSiteName: String? = nil
-    static var FilterPropertyId: String? = nil
-    static var FilterPropertyName: String? = nil
-    static var FilterFrequency: String? = nil
     static var FilterPeriod: String? = String?(DueCalendarMonthText)
-    
+
     static var FilterJustMyTasks: Bool = false
     static var CachedFilterJustMyTasksClause: String? = nil
     static var InvalidateCachedFilterJustMyTasksClause: Bool = true
     
+    static var FilterPriority: String? = nil
+    static var FilterFrequency: String? = nil
+
+    static var FilterSiteId: String? = nil
+    static var FilterSiteName: String? = nil
+    static var FilterPropertyId: String? = nil
+    static var FilterPropertyName: String? = nil
+    static var FilterLevel: String? = nil
     static var FilterAssetGroup: String? = nil
     static var FilterTaskName: String? = nil
     static var FilterAssetType: String? = nil
@@ -79,36 +82,42 @@ class Session : NSObject
     class func BuildCriteriaFromSession() -> Dictionary<String, AnyObject> {
         var criteria: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
         if (Session.OrganisationId != nil) { criteria["OrganisationId"] = Session.OrganisationId! as AnyObject? }
+        if (Session.FilterPeriod != nil) { criteria["Period"] = Session.FilterPeriod! as AnyObject? }
+
+        if (Session.FilterJustMyTasks == true) { criteria["OperativeId"] = Session.OperativeId as AnyObject? }
+
+        if (Session.FilterPriority != nil) { criteria["Priority"] = Session.FilterPriority! as AnyObject? }
+        if (Session.FilterFrequency != nil && Session.FilterFrequency != "All") { criteria["LOWER(Frequency)"] = Session.FilterFrequency! as AnyObject? } //TBD: temporary hack because of frequency inconsistency
+        
         if (Session.FilterSiteId != nil) { criteria["SiteId"] = Session.FilterSiteId! as AnyObject? }
         if (Session.FilterPropertyId != nil) { criteria["PropertyId"] = Session.FilterPropertyId! as AnyObject? }
-        if (Session.FilterFrequency != nil && Session.FilterFrequency != "All") { criteria["LOWER(Frequency)"] = Session.FilterFrequency! as AnyObject? } //TBD: temporary hack because of frequency inconsistency
-        if (Session.FilterPeriod != nil) { criteria["Period"] = Session.FilterPeriod! as AnyObject? }
-        
+        if (Session.FilterLevel != nil) { criteria["Level"] = Session.FilterLevel! as AnyObject? }
         if (Session.FilterAssetGroup != nil) { criteria["PPMGroup"] = Session.FilterAssetGroup! as AnyObject? }
         if (Session.FilterTaskName != nil) { criteria["TaskName"] = Session.FilterTaskName! as AnyObject? }
         if (Session.FilterAssetType != nil) { criteria["AssetType"] = Session.FilterAssetType! as AnyObject? }
         if (Session.FilterLocationGroup != nil) { criteria["LocationGroupName"] = Session.FilterLocationGroup! as AnyObject? }
         if (Session.FilterLocation != nil) { criteria["LocationName"] = Session.FilterLocation! as AnyObject? }
         if (Session.FilterAssetNumber != nil) { criteria["AssetNumber"] = Session.FilterAssetNumber! as AnyObject? }
-        
-        if (Session.FilterJustMyTasks == true) { criteria["OperativeId"] = Session.OperativeId as AnyObject? }
-        
+       
         return criteria
     }
     
     class func ClearFilter()
     {
+        FilterPeriod = String?(DueCalendarMonthText)
+
+        FilterJustMyTasks = false
+        CachedFilterJustMyTasksClause = nil
+        InvalidateCachedFilterJustMyTasksClause = true
+
+        FilterPriority = nil
+        FilterFrequency = nil
+
         FilterSiteId = nil
         FilterSiteName = nil
         FilterPropertyId = nil
         FilterPropertyName = nil
-        FilterFrequency = nil
-        FilterPeriod = String?(DueCalendarMonthText)
-        
-        FilterJustMyTasks = false
-        CachedFilterJustMyTasksClause = nil
-        InvalidateCachedFilterJustMyTasksClause = true
-        
+        FilterLevel = nil
         FilterAssetGroup = nil
         FilterTaskName = nil
         FilterAssetType = nil
@@ -117,6 +126,7 @@ class Session : NSObject
         FilterAssetNumber = nil
     }
     
+    static var LastUniqueReference: String = String()
     static var CurrentReading: String? = nil
     static var CurrentTemperatureControl: UITextField? = nil
     static var TimerRunning: Bool = false

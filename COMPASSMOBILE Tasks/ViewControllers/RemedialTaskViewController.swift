@@ -42,12 +42,17 @@ class RemedialTaskViewController: UIViewController, UITextFieldDelegate, UITextV
         
         task = ModelManager.getInstance().getTask(Session.TaskId!)!
         
-        if(task.PPMGroup != nil)
-        {
-            AssetType.text = ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMAssetGroup", key: task.PPMGroup!)
-        }
-        else
-        {
+        if task.PPMGroup != nil {
+            let AssetTypeValue: String? = ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMAssetType", key: task.AssetType!, parentType: "PPMAssetGroup", parentValue:task.PPMGroup!)
+            if (AssetTypeValue != "")
+            {
+                AssetType.text = ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMAssetGroup", key: task.PPMGroup!) + " - " + ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMAssetType", key: task.AssetType!, parentType: "PPMAssetGroup", parentValue:task.PPMGroup!)
+            }
+            else
+            {
+                AssetType.text = ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMAssetGroup", key: task.PPMGroup!) + " - " + ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMAssetType", key: task.AssetType!, parentType: "PPMAssetGroup", parentValue: "DistributionServices")
+            }
+        } else {
             AssetType.text = task.AssetType ?? "Missing Asset Type"
         }
         if (task.TaskName == RemedialTask)

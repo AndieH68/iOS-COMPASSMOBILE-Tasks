@@ -80,7 +80,7 @@ class TaskTemplateParameter: NSObject {
         self.ParameterName = XMLElement.attributes["ParameterName"]!
         self.ParameterType = XMLElement.attributes["ParameterType"]!
         self.ParameterDisplay = XMLElement.attributes["ParameterDisplay"]!
-        self.Collect = Bool(XMLElement.attributes["Collect"]! == "1")
+        self.Collect = Bool(XMLElement.attributes["Collect"]! == "true")
         if XMLElement.attributes.keys.contains("ReferenceDataType") {
             if XMLElement.attributes["ReferenceDataType"] != "" {
                 self.ReferenceDataType = XMLElement.attributes["ReferenceDataType"]!

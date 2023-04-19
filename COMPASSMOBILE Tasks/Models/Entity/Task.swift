@@ -43,11 +43,12 @@ class Task: NSObject {
     var TravelDuration: Int? = nil
     var Comments: String? = nil
     var AlternateAssetCode: String? = nil
+    var Level: String? = nil
 
     // MARK: - Contructors
     
     convenience
-    init(rowId: String, createdBy: String, createdOn: Date, lastUpdatedBy: String?, lastUpdatedOn: Date?, deleted: Date?, organisationId: String, siteId: String, propertyId: String, locationId: String, locationGroupName: String, locationName: String, room: String?, taskTemplateId: String?, taskRef: String, PPMGroup: String?, assetType: String?, taskName: String, frequency: String, assetId: String?, assetNumber: String?, scheduledDate: Date, completedDate: Date?, status: String, priority: Int, estimatedDuration: Int?, operativeId: String?, actualDuration: Int?, travelDuration: Int?, comments: String?, alternateAssetCode: String?) {
+    init(rowId: String, createdBy: String, createdOn: Date, lastUpdatedBy: String?, lastUpdatedOn: Date?, deleted: Date?, organisationId: String, siteId: String, propertyId: String, locationId: String, locationGroupName: String, locationName: String, room: String?, taskTemplateId: String?, taskRef: String, PPMGroup: String?, assetType: String?, taskName: String, frequency: String, assetId: String?, assetNumber: String?, scheduledDate: Date, completedDate: Date?, status: String, priority: Int, estimatedDuration: Int?, operativeId: String?, actualDuration: Int?, travelDuration: Int?, comments: String?, alternateAssetCode: String?, level: String?) {
         self.init()
         self.RowId = rowId
         self.CreatedBy = createdBy
@@ -80,6 +81,7 @@ class Task: NSObject {
         self.TravelDuration = travelDuration
         self.Comments = comments
         self.AlternateAssetCode = alternateAssetCode
+        self.Level = level
     }
     
     convenience
@@ -173,6 +175,11 @@ class Task: NSObject {
         if XMLElement.attributes.keys.contains("AlternateAssetCode") {
             if XMLElement.attributes["AlternateAssetCode"] != "" {
                 self.AlternateAssetCode = XMLElement.attributes["AlternateAssetCode"]!
+            }
+        }
+        if XMLElement.attributes.keys.contains("Level") {
+            if XMLElement.attributes["Level"] != "" {
+                self.Level = XMLElement.attributes["Level"]!
             }
         }
     }

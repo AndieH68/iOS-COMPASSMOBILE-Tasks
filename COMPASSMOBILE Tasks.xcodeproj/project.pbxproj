@@ -10,8 +10,10 @@
 		045EB649F499CF66FE178F02 /* Pods_COMPASSMOBILE_Tasks.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45CAD45439E4BE01EC5A8519 /* Pods_COMPASSMOBILE_Tasks.framework */; };
 		698D6EC8200F8D4700B68497 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 698D6EC7200F8D4700B68497 /* Assets.xcassets */; };
 		69C721C71FFBB66800B9582E /* libThermaLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 69C721C61FFBB66700B9582E /* libThermaLib.a */; };
+		A40A450E288E919E005F533C /* TaskTemplateParameterFormItemSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = A40A450D288E919E005F533C /* TaskTemplateParameterFormItemSample.swift */; };
 		A40BB55E1C4FE9D7005C2AE6 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A40BB55D1C4FE9D7005C2AE6 /* libsqlite3.0.tbd */; };
 		A41B81421ECB0A0300822D25 /* TemperatureProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A41B81411ECB0A0300822D25 /* TemperatureProfileViewController.swift */; };
+		A41D1C8F2859E2620006C736 /* BiologicalMonitoringViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A41D1C8E2859E2620006C736 /* BiologicalMonitoringViewController.swift */; };
 		A426CFB2263AE1A5002D7773 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A426CFB1263AE1A5002D7773 /* StringExtension.swift */; };
 		A426CFB7263AE30D002D7773 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A426CFB6263AE30D002D7773 /* DateExtension.swift */; };
 		A432E92D1D2D1809002FE138 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A432E92A1D2D1809002FE138 /* AppDelegate.swift */; };
@@ -54,6 +56,8 @@
 		A43919A31D2D1E7900C31CA0 /* TaskTemplateParameterFormItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A439199D1D2D1E7900C31CA0 /* TaskTemplateParameterFormItem.swift */; };
 		A43919A41D2D1E7900C31CA0 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A439199E1D2D1E7900C31CA0 /* Utility.swift */; };
 		A43919A51D2D1E7900C31CA0 /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A439199F1D2D1E7900C31CA0 /* WebService.swift */; };
+		A4583C62286475D2005C8B4E /* TaskTemplateParameterCellSampleWithBiocide.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4583C61286475D2005C8B4E /* TaskTemplateParameterCellSampleWithBiocide.swift */; };
+		A4583C64286497B5005C8B4E /* TaskTemplateParameterCellSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4583C63286497B5005C8B4E /* TaskTemplateParameterCellSample.swift */; };
 		A471892D229E8A6600523FD5 /* OperativeGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A471892C229E8A6600523FD5 /* OperativeGroup.swift */; };
 		A471892F229E8A8900523FD5 /* OperativeGroupMembership.swift in Sources */ = {isa = PBXBuildFile; fileRef = A471892E229E8A8900523FD5 /* OperativeGroupMembership.swift */; };
 		A471893322A01CC200523FD5 /* OperativeGroupTaskTemplateMembership.swift in Sources */ = {isa = PBXBuildFile; fileRef = A471893222A01CC200523FD5 /* OperativeGroupTaskTemplateMembership.swift */; };
@@ -64,6 +68,7 @@
 		A49A746A1D2FBE580006F220 /* COMPASSDB.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = A4CBC52F1D2FB94500E1D3CE /* COMPASSDB.sqlite */; };
 		A4A25F5F1D22D63A00027FA6 /* Default-568.png in Resources */ = {isa = PBXBuildFile; fileRef = A4A25F5E1D22D63A00027FA6 /* Default-568.png */; };
 		A4AF07661E326A6E00D09CA8 /* TemperatureProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4AF07651E326A6E00D09CA8 /* TemperatureProfile.swift */; };
+		A4B456E029C3285F00834096 /* AssetOutlet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B456DF29C3285F00834096 /* AssetOutlet.swift */; };
 		A4D3975A26412AE5001F2ACA /* Barcode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D3975526412AE4001F2ACA /* Barcode.swift */; };
 		A4D3975B26412AE5001F2ACA /* GS1Barcode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D3975626412AE5001F2ACA /* GS1Barcode.swift */; };
 		A4D3975C26412AE5001F2ACA /* GS1BarcodeErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D3975726412AE5001F2ACA /* GS1BarcodeErrors.swift */; };
@@ -80,8 +85,10 @@
 		698D6EC7200F8D4700B68497 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "COMPASSMOBILE Tasks/Assets.xcassets"; sourceTree = "<group>"; };
 		69C721C61FFBB66700B9582E /* libThermaLib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libThermaLib.a; path = Library/libThermaLib.a; sourceTree = "<group>"; };
 		7C118C934BA9FD808C074B37 /* Pods-COMPASSMOBILE Tasks.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-COMPASSMOBILE Tasks.release.xcconfig"; path = "Target Support Files/Pods-COMPASSMOBILE Tasks/Pods-COMPASSMOBILE Tasks.release.xcconfig"; sourceTree = "<group>"; };
+		A40A450D288E919E005F533C /* TaskTemplateParameterFormItemSample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTemplateParameterFormItemSample.swift; sourceTree = SOURCE_ROOT; };
 		A40BB55D1C4FE9D7005C2AE6 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		A41B81411ECB0A0300822D25 /* TemperatureProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TemperatureProfileViewController.swift; path = "COMPASSMOBILE Tasks/ViewControllers/TemperatureProfileViewController.swift"; sourceTree = SOURCE_ROOT; };
+		A41D1C8E2859E2620006C736 /* BiologicalMonitoringViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BiologicalMonitoringViewController.swift; sourceTree = SOURCE_ROOT; };
 		A426CFB1263AE1A5002D7773 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = SOURCE_ROOT; };
 		A426CFB6263AE30D002D7773 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = SOURCE_ROOT; };
 		A432E92A1D2D1809002FE138 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = "COMPASSMOBILE Tasks/AppDelegate.swift"; sourceTree = SOURCE_ROOT; };
@@ -132,6 +139,8 @@
 		A439199D1D2D1E7900C31CA0 /* TaskTemplateParameterFormItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TaskTemplateParameterFormItem.swift; path = "COMPASSMOBILE Tasks/SupportingFiles/TaskTemplateParameterFormItem.swift"; sourceTree = SOURCE_ROOT; };
 		A439199E1D2D1E7900C31CA0 /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Utility.swift; path = "COMPASSMOBILE Tasks/SupportingFiles/Utility.swift"; sourceTree = SOURCE_ROOT; };
 		A439199F1D2D1E7900C31CA0 /* WebService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebService.swift; path = "COMPASSMOBILE Tasks/SupportingFiles/WebService.swift"; sourceTree = SOURCE_ROOT; };
+		A4583C61286475D2005C8B4E /* TaskTemplateParameterCellSampleWithBiocide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTemplateParameterCellSampleWithBiocide.swift; sourceTree = SOURCE_ROOT; };
+		A4583C63286497B5005C8B4E /* TaskTemplateParameterCellSample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTemplateParameterCellSample.swift; sourceTree = SOURCE_ROOT; };
 		A471892C229E8A6600523FD5 /* OperativeGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OperativeGroup.swift; path = "COMPASSMOBILE Tasks/Models/Entity/OperativeGroup.swift"; sourceTree = SOURCE_ROOT; };
 		A471892E229E8A8900523FD5 /* OperativeGroupMembership.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OperativeGroupMembership.swift; path = "COMPASSMOBILE Tasks/Models/Entity/OperativeGroupMembership.swift"; sourceTree = SOURCE_ROOT; };
 		A471893222A01CC200523FD5 /* OperativeGroupTaskTemplateMembership.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OperativeGroupTaskTemplateMembership.swift; path = "COMPASSMOBILE Tasks/Models/Entity/OperativeGroupTaskTemplateMembership.swift"; sourceTree = SOURCE_ROOT; };
@@ -142,6 +151,7 @@
 		A4A25F5E1D22D63A00027FA6 /* Default-568.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568.png"; sourceTree = SOURCE_ROOT; };
 		A4A522EC1C43F4A500D16A9A /* COMPASSMOBILE Tasks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "COMPASSMOBILE Tasks.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4AF07651E326A6E00D09CA8 /* TemperatureProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TemperatureProfile.swift; path = "COMPASSMOBILE Tasks/SupportingFiles/TemperatureProfile.swift"; sourceTree = SOURCE_ROOT; };
+		A4B456DF29C3285F00834096 /* AssetOutlet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetOutlet.swift; sourceTree = SOURCE_ROOT; };
 		A4C1A27122A56F7100243E3C /* COMPASSMOBILE Tasks.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = "COMPASSMOBILE Tasks.entitlements"; path = "COMPASSMOBILE Tasks/COMPASSMOBILE Tasks.entitlements"; sourceTree = SOURCE_ROOT; };
 		A4CBC52F1D2FB94500E1D3CE /* COMPASSDB.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = COMPASSDB.sqlite; path = "COMPASSMOBILE Tasks/COMPASSDB.sqlite"; sourceTree = SOURCE_ROOT; };
 		A4D3975526412AE4001F2ACA /* Barcode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Barcode.swift; path = "COMPASSMOBILE Tasks/Barcode.swift"; sourceTree = SOURCE_ROOT; };
@@ -209,14 +219,15 @@
 			isa = PBXGroup;
 			children = (
 				A439199A1D2D1E7900C31CA0 /* Constants.swift */,
+				A426CFB6263AE30D002D7773 /* DateExtension.swift */,
 				A439199B1D2D1E7900C31CA0 /* Reachability.swift */,
 				A439199C1D2D1E7900C31CA0 /* Session.swift */,
+				A426CFB1263AE1A5002D7773 /* StringExtension.swift */,
 				A439199D1D2D1E7900C31CA0 /* TaskTemplateParameterFormItem.swift */,
+				A40A450D288E919E005F533C /* TaskTemplateParameterFormItemSample.swift */,
+				A4AF07651E326A6E00D09CA8 /* TemperatureProfile.swift */,
 				A439199E1D2D1E7900C31CA0 /* Utility.swift */,
 				A439199F1D2D1E7900C31CA0 /* WebService.swift */,
-				A4AF07651E326A6E00D09CA8 /* TemperatureProfile.swift */,
-				A426CFB1263AE1A5002D7773 /* StringExtension.swift */,
-				A426CFB6263AE30D002D7773 /* DateExtension.swift */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -240,6 +251,7 @@
 				A471892C229E8A6600523FD5 /* OperativeGroup.swift */,
 				A471892E229E8A8900523FD5 /* OperativeGroupMembership.swift */,
 				A471893222A01CC200523FD5 /* OperativeGroupTaskTemplateMembership.swift */,
+				A4B456DF29C3285F00834096 /* AssetOutlet.swift */,
 			);
 			name = Entity;
 			sourceTree = "<group>";
@@ -247,6 +259,7 @@
 		A49455E71C7CBEB600BE6247 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				A41D1C8E2859E2620006C736 /* BiologicalMonitoringViewController.swift */,
 				A41B81411ECB0A0300822D25 /* TemperatureProfileViewController.swift */,
 				A432E9591D2D1AF0002FE138 /* AddViewController.swift */,
 				A432E9491D2D1A4E002FE138 /* FilterViewController.swift */,
@@ -319,14 +332,16 @@
 		A4D326561D0700C600EDEC7F /* TaskTemplateParameterCells */ = {
 			isa = PBXGroup;
 			children = (
-				A4D3976026412B3E001F2ACA /* TaskTemplateParameterCellScanCode.swift */,
 				A47D1F14264D60B800537097 /* TaskTemplateParameterCellDataMatrix.swift */,
 				A439196F1D2D1D8C00C31CA0 /* TaskTemplateParameterCellDropdown.swift */,
 				A43919701D2D1D8C00C31CA0 /* TaskTemplateParameterCellFreetext.swift */,
 				A43919711D2D1D8C00C31CA0 /* TaskTemplateParameterCellNumber.swift */,
+				A4583C63286497B5005C8B4E /* TaskTemplateParameterCellSample.swift */,
+				A4583C61286475D2005C8B4E /* TaskTemplateParameterCellSampleWithBiocide.swift */,
+				A4D3976026412B3E001F2ACA /* TaskTemplateParameterCellScanCode.swift */,
+				A4996AA6266EDD8500D8C49D /* TaskTemplateParameterCellScanUniversal.swift */,
 				A43919721D2D1D8C00C31CA0 /* TaskTemplateParameterCellTemperature.swift */,
 				A43919731D2D1D8C00C31CA0 /* TaskTemplateParameterCellTextArea.swift */,
-				A4996AA6266EDD8500D8C49D /* TaskTemplateParameterCellScanUniversal.swift */,
 			);
 			name = TaskTemplateParameterCells;
 			sourceTree = "<group>";
@@ -511,12 +526,15 @@
 				A426CFB7263AE30D002D7773 /* DateExtension.swift in Sources */,
 				A43919751D2D1D8C00C31CA0 /* TaskTemplateParameterCellFreetext.swift in Sources */,
 				A4D4A2D61D2D2097009287F8 /* COMPASSMOBILE Tasks.xcdatamodeld in Sources */,
+				A4583C64286497B5005C8B4E /* TaskTemplateParameterCellSample.swift in Sources */,
 				A439198A1D2D1DB500C31CA0 /* Asset.swift in Sources */,
 				A43919A31D2D1E7900C31CA0 /* TaskTemplateParameterFormItem.swift in Sources */,
 				A471892F229E8A8900523FD5 /* OperativeGroupMembership.swift in Sources */,
 				A432E9521D2D1A4E002FE138 /* LoginViewController.swift in Sources */,
 				A439198D1D2D1DB500C31CA0 /* LocationGroupMembership.swift in Sources */,
+				A40A450E288E919E005F533C /* TaskTemplateParameterFormItemSample.swift in Sources */,
 				A43919941D2D1DB500C31CA0 /* TaskParameter.swift in Sources */,
+				A4B456E029C3285F00834096 /* AssetOutlet.swift in Sources */,
 				A432E9511D2D1A4E002FE138 /* FilterViewController.swift in Sources */,
 				A432E9531D2D1A4E002FE138 /* MainNavigationController.swift in Sources */,
 				A4AF07661E326A6E00D09CA8 /* TemperatureProfile.swift in Sources */,
@@ -531,6 +549,8 @@
 				A432E92D1D2D1809002FE138 /* AppDelegate.swift in Sources */,
 				A43919911D2D1DB500C31CA0 /* ReferenceData.swift in Sources */,
 				A4D3975C26412AE5001F2ACA /* GS1BarcodeErrors.swift in Sources */,
+				A4583C62286475D2005C8B4E /* TaskTemplateParameterCellSampleWithBiocide.swift in Sources */,
+				A41D1C8F2859E2620006C736 /* BiologicalMonitoringViewController.swift in Sources */,
 				A43919781D2D1D8C00C31CA0 /* TaskTemplateParameterCellTextArea.swift in Sources */,
 				A439198E1D2D1DB500C31CA0 /* Operative.swift in Sources */,
 				A4D3975D26412AE5001F2ACA /* GS1ApplicationIdentifier.swift in Sources */,
@@ -649,7 +669,7 @@
 				CODE_SIGN_ENTITLEMENTS = "COMPASSMOBILE Tasks/COMPASSMOBILE Tasks.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 50;
+				CURRENT_PROJECT_VERSION = 20101;
 				DEVELOPMENT_TEAM = H889T663QH;
 				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -659,7 +679,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)";
-				MARKETING_VERSION = 1.32.01;
+				MARKETING_VERSION = 2.01.01;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = COM.HYDROP.COMPASSMOBILE.TASKS;
@@ -742,7 +762,7 @@
 				CODE_SIGN_ENTITLEMENTS = "COMPASSMOBILE Tasks/COMPASSMOBILE Tasks.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 50;
+				CURRENT_PROJECT_VERSION = 20101;
 				DEVELOPMENT_TEAM = H889T663QH;
 				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -752,7 +772,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)";
-				MARKETING_VERSION = 1.32.01;
+				MARKETING_VERSION = 2.01.01;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = COM.HYDROP.COMPASSMOBILE.TASKS;

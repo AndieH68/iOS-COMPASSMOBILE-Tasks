@@ -20,7 +20,7 @@ class WebService : NSObject {
                 let index = Session.Server.firstIndex(of: ":") ?? Session.Server.endIndex
                 Session.Server = String(Session.Server[..<index])
             }
-            let urlString = Session.WebProtocol + Session.Server +  ":443/services/servicepdautility2osx.asmx"
+            let urlString = Session.WebProtocol + Session.Server +  ":443/services/serviceCOMPASSMOBILETasksUtilityXML.asmx"
             let url = URL(string: urlString)
             
             let theSession = URLSession.shared
@@ -69,7 +69,7 @@ class WebService : NSObject {
                 let index = Session.Server.firstIndex(of: ":") ?? Session.Server.endIndex
                 Session.Server = String(Session.Server[..<index])
             }
-            let urlString = Session.WebProtocol + Session.Server + ":443/services/servicepdautility2osx.asmx"
+            let urlString = Session.WebProtocol + Session.Server + ":443/services/serviceCOMPASSMOBILETasksUtilityXML.asmx"
             let url = URL(string: urlString)
         
             let theSession = URLSession.shared
@@ -83,7 +83,7 @@ class WebService : NSObject {
             var soapBody: String = "<soap:Body>"
             soapBody += "<GetSynchronisationPackage xmlns=\"http://compass.hydrop.com/services/\">"
             soapBody += "<OperativeId>" + operativeId + "</OperativeId>"
-            soapBody += "<LastSynchonisationDateTime>" + Utility.DateToStringForXML(synchronisationDate) + "</LastSynchonisationDateTime>"
+            soapBody += "<LastSynchronisationDateTime>" + Utility.DateToStringForXML(synchronisationDate) + "</LastSynchronisationDateTime>"
             soapBody += "<LastRowId>" + lastRowId + "</LastRowId>"
             soapBody += "<Stage>" + String(stage) + "</Stage>"
             soapBody += "</GetSynchronisationPackage>"
@@ -121,7 +121,7 @@ class WebService : NSObject {
                 let index = Session.Server.firstIndex(of: ":") ?? Session.Server.endIndex
                 Session.Server = String(Session.Server[..<index])
             }
-            let urlString = Session.WebProtocol + Session.Server + ":443/services/servicepdautility2osx.asmx"
+            let urlString = Session.WebProtocol + Session.Server + ":443/services/serviceCOMPASSMOBILETasksUtilityXML.asmx"
             let url = URL(string: urlString)
             
             let theSession = URLSession.shared
@@ -135,7 +135,7 @@ class WebService : NSObject {
             var soapBody: String = "<soap:Body>"
             soapBody += "<SetSynchronisationPackage xmlns=\"http://compass.hydrop.com/services/\">"
             soapBody += "<OperativeId>" + operativeId + "</OperativeId>"
-            soapBody += "<SynchonisationPackage>" + sysnchronisationPackage + "</SynchonisationPackage>"
+            soapBody += "<SynchronisationPackage>" + sysnchronisationPackage + "</SynchronisationPackage>"
             soapBody += "</SetSynchronisationPackage>"
             soapBody += "</soap:Body>"
             

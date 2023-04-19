@@ -12,7 +12,7 @@ import FMDB
 let sharedModelUtility = ModelUtility()
 
 class ModelUtility: NSObject {
-
+    
     let DELIMITER: Character = "\u{254}"
     
     class func getInstance() -> ModelUtility{
@@ -39,7 +39,7 @@ class ModelUtility: NSObject {
     func AssetNumber(_ asset: Asset) -> String {
         return (asset.ScanCode != nil ? "(" + asset.ScanCode! + ") " : "") + (asset.ClientName != nil ? asset.ClientName! : (asset.HydropName != nil ? asset.HydropName! : "UNKNOWN"))
     }
-  
+    
     func GetPropertyName(_ PropertyId: String) -> String {
         if let currentProperty: Property = GetPropertyDetails(PropertyId)
         {
@@ -102,7 +102,7 @@ class ModelUtility: NSObject {
         
         return Session.ReferenceLists[key]!  //we've already checked if it exists to unwrapping if ok
     }
-
+    
     func GetReverseReferenceDataList(_ type: String, parentType: String?, parentValue: String?) -> Dictionary<String, String> {
         
         let key: String = makeKey(type, parentType: parentType,parentValue: parentValue)
@@ -116,16 +116,25 @@ class ModelUtility: NSObject {
         return Session.ReverseReferenceLists[key]!  //we've already checked if it exists to unwrapping if ok
     }
     
-    func GetLookupList(_ ReferenceDataType: String, ExtendedReferenceDataType: String?) -> [String]
+    func GetLookupList(_ referenceDataType: String, extendedReferenceDataType: String?) -> [String]
+    {
+        return GetLookupList(referenceDataType, extendedReferenceDataType: extendedReferenceDataType, parentType: nil, parentValue: nil)
+    }
+    
+    func GetLookupList(_ referenceDataType: String, extendedReferenceDataType: String?, parentType: String?, parentValue: String?) -> [String]
     {
         var returnArray: [String] = [String]()
         
-        if (!Session.LookupLists.keys.contains(ReferenceDataType))
+        let key: String = makeKey(referenceDataType, parentType: parentType, parentValue: parentValue)
+        
+        if (!Session.LookupLists.keys.contains(key))
         {
             var lookupList: [String] = [String]()
             
             var criteria: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
-            criteria["Type"] = ReferenceDataType as AnyObject?
+            criteria["Type"] = referenceDataType as AnyObject?
+            criteria["ParentType"] = parentType as String? as AnyObject?
+            criteria["ParentValue"] = parentValue as String? as AnyObject?
             
             //get the list of reference data from the databse
             let (referenceDataListData, _) = ModelManager.getInstance().findReferenceDataList(criteria, pageSize: nil, pageNumber: nil, sortOrder: ReferenceDataSortOrder.ordinal)
@@ -133,19 +142,19 @@ class ModelUtility: NSObject {
             for referenceDataItem in referenceDataListData {
                 lookupList.append(referenceDataItem.Display)
             }
-            Session.LookupLists[ReferenceDataType] = lookupList as AnyObject?
+            Session.LookupLists[key] = lookupList as AnyObject?
         }
         
-        returnArray = Session.LookupLists[ReferenceDataType] as! [String]
+        returnArray = Session.LookupLists[key] as! [String]
  
-        if (ExtendedReferenceDataType != nil)
+        if (extendedReferenceDataType != nil)
         {
-            if (!Session.LookupLists.keys.contains(ExtendedReferenceDataType!))
+            if (!Session.LookupLists.keys.contains(extendedReferenceDataType!))
             {
                 var lookupList: [String] = [String]()
                 
                 var criteria: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
-                criteria["Type"] = ExtendedReferenceDataType! as AnyObject?
+                criteria["Type"] = extendedReferenceDataType! as AnyObject?
                 
                 //get the list of reference data from the databse
                 let (referenceDataListData, _) = ModelManager.getInstance().findReferenceDataList(criteria, pageSize: nil, pageNumber: nil, sortOrder: ReferenceDataSortOrder.ordinal)
@@ -153,10 +162,10 @@ class ModelUtility: NSObject {
                 for referenceDataItem in referenceDataListData {
                     lookupList.append(referenceDataItem.Display)
                 }
-                Session.LookupLists[ExtendedReferenceDataType!] = lookupList as AnyObject?
+                Session.LookupLists[extendedReferenceDataType!] = lookupList as AnyObject?
             }
             
-            returnArray.append(contentsOf: Session.LookupLists[ExtendedReferenceDataType!] as! [String])
+            returnArray.append(contentsOf: Session.LookupLists[extendedReferenceDataType!] as! [String])
         }
         
         return returnArray
@@ -203,6 +212,60 @@ class ModelUtility: NSObject {
         return true
     }
     
+    func UpdateLevelsForTasks() -> Void
+    {
+        let Query: String = "SELECT [RowId],[LocationId],[Level] FROM [Task] WHERE [Level] IS NULL"
+        let whereValues: [AnyObject] = [AnyObject]()
+
+        sharedModelManager.database!.open()
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: whereValues)
+        if (resultSet != nil) {
+            while resultSet.next()
+            {
+                let RowId: String = resultSet.string(forColumn: "rowId")!
+                let Level: String = ModelUtility.getInstance().GetLevelForLocationId(resultSet.string(forColumn: "LocationId")!)!
+                let UpdateQuery: String = "UPDATE [Task] SET [Level] = '" + Level + "' WHERE [RowId] = '" + RowId + "'"
+                sharedModelManager.database!.executeUpdate(UpdateQuery, withArgumentsIn: whereValues)
+            }
+        }
+    }
+    
+    func GetLevelForLocationId(_ LocationId: String) -> String?
+    {
+        var Level: String? = nil
+        let Query: String = "SELECT DISTINCT [Location].[Level] FROM [Location] WHERE [Location].[Deleted] IS NULL AND [Location].[RowId] = '" + LocationId + "'"
+        let whereValues: [AnyObject] = [AnyObject]()
+        
+        sharedModelManager.database!.open()
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: whereValues)
+        if (resultSet != nil) {
+            while resultSet.next()
+            {
+                Level = resultSet.string(forColumn: "Level")!
+            }
+        }
+        return Level
+    }
+    
+    
+    func GetOutletsForAsset(_ FacilityId: String) -> [String]
+    {
+        var OutletTypes: [String] = [String]()
+        let Query: String = "SELECT DISTINCT [AssetOutlet].[OutletType] FROM [AssetOutlet] WHERE [AssetOutlet].[Deleted] IS NULL AND [AssetOutlet].[FacilityId] = '" + FacilityId + "'"
+        let whereValues: [AnyObject] = [AnyObject]()
+        
+        sharedModelManager.database!.open()
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: whereValues)
+        if (resultSet != nil) {
+            while resultSet.next()
+            {
+                OutletTypes.append(ReferenceDataDisplayFromValue("OutletType", key: resultSet.string(forColumn: "OutletType")!))
+            }
+        }
+        return OutletTypes
+    }
+    
+    
     //MARK: Filter functions
     func GetFilterSiteList(_ OrganisationId: String) -> [String]
     {
@@ -226,14 +289,14 @@ class ModelUtility: NSObject {
     {
         var Sites: [String] = [String]()
         
-        var Query: String = "SELECT DISTINCT [Task].[SiteId] FROM [Task] INNER JOIN [Site] ON [Task].[SiteId] = [Site].[RowId] WHERE [Task].[Deleted] IS NULL AND [Site].[Deleted] IS NULL AND ([Task].[Status] = 'Pending' OR ([Task].[Status] = 'Outstanding' AND [OperativeId] = '" + Session.OperativeId! + "')) AND [Task].[OrganisationId] = '" + OrganisationId + "'"
-//        if (Session.FilterSiteId != nil)
-//        {
-//            Query +=  " AND [Task].[SiteId] = '" + Session.FilterSiteId! + "'"
-//        }
+        var Query: String = "SELECT DISTINCT [Task].[SiteId] FROM [Task] INNER JOIN [Site] ON [Task].[SiteId] = [Site].[RowId] WHERE [Task].[Deleted] IS NULL AND [Site].[Deleted] IS NULL AND [Task].[Status] IN ('Pending','Outstanding') AND [Task].[OrganisationId] = '" + OrganisationId + "'"
         if (Session.FilterPropertyId != nil)
         {
             Query +=  " AND [Task].[PropertyId] = '" + Session.FilterPropertyId! + "'"
+        }
+        if (Session.FilterLevel != nil)
+        {
+            Query +=  " AND [Task].[Level] = '" + Session.FilterLevel! + "'"
         }
         if (Session.FilterAssetGroup != nil)
         {
@@ -312,15 +375,15 @@ class ModelUtility: NSObject {
     {
         var Properties: [String] = [String]()
         
-        var Query: String = "SELECT DISTINCT [Task].[PropertyId] FROM [Task] INNER JOIN [Property] ON [Task].[PropertyId] = [Property].[RowId] WHERE [Task].[Deleted] IS NULL AND [Property].[Deleted] IS NULL AND ([Task].[Status] = 'Pending' OR ([Task].[Status] = 'Outstanding' AND [OperativeId] = '" + Session.OperativeId! + "')) AND [Task].[OrganisationId] = '" + OrganisationId + "'"
+        var Query: String = "SELECT DISTINCT [Task].[PropertyId] FROM [Task] INNER JOIN [Property] ON [Task].[PropertyId] = [Property].[RowId] WHERE [Task].[Deleted] IS NULL AND [Property].[Deleted] IS NULL AND [Task].[Status] IN ('Pending','Outstanding') AND [Task].[OrganisationId] = '" + OrganisationId + "'"
         if (Session.FilterSiteId != nil)
         {
             Query +=  " AND [Task].[SiteId] = '" + Session.FilterSiteId! + "'"
         }
-//        if (Session.FilterPropertyId != nil)
-//        {
-//            Query +=  " AND [Task].[PropertyId] = '" + Session.FilterPropertyId! + "'"
-//        }
+        if (Session.FilterLevel != nil)
+        {
+            Query +=  " AND [Task].[Level] = '" + Session.FilterLevel! + "'"
+        }
         if (Session.FilterAssetGroup != nil)
         {
             Query += " AND [Task].[PPMGroup] = '" + Session.FilterAssetGroup! + "'"
@@ -376,6 +439,97 @@ class ModelUtility: NSObject {
         return Properties
     }
     
+    func GetFilterLevelList(_ PropertyId: String) -> [String]
+    {
+        var Levels: [String] = [String]()
+
+        var Query: String = "SELECT DISTINCT [Level] FROM [Task] WHERE [Deleted] IS NULL AND [PropertyId] = '" + PropertyId + "'"
+        Query +=  " ORDER BY [Level]"
+        sharedModelManager.database!.open()
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: [])
+        if (resultSet != nil) {
+            while resultSet.next()
+            {
+                if (resultSet.string(forColumn: "Level") != nil)
+                {
+                    Levels.append(resultSet.string(forColumn: "Level")!)
+                }
+            }
+        }
+        return Levels
+    }
+    
+    func GetTaskFilterLevelList(_ OrganisationId: String) -> [String]
+    {
+        var Levels: [String] = [String]()
+        
+        var Query: String = "SELECT DISTINCT [Level] FROM [Task] WHERE [Deleted] IS NULL AND [Task].[Status] IN ('Pending','Outstanding') AND [Task].[OrganisationId] = '" + OrganisationId + "'"
+        if (Session.FilterSiteId != nil)
+        {
+            Query +=  " AND [Task].[SiteId] = '" + Session.FilterSiteId! + "'"
+        }
+        if (Session.FilterPropertyId != nil)
+        {
+            Query +=  " AND [Task].[PropertyId] = '" + Session.FilterPropertyId! + "'"
+        }
+        if (Session.FilterTaskName != nil)
+        {
+            Query += " AND [Task].[TaskName] = '" + Session.FilterTaskName! + "'"
+        }
+        if (Session.FilterAssetGroup != nil)
+        {
+            Query += " AND [Task].[PPMGroup] = '" + Session.FilterAssetGroup! + "'"
+        }
+        if (Session.FilterAssetType != nil)
+        {
+            Query += " AND [Task].[AssetType] = '" + Session.FilterAssetType! + "'"
+        }
+        if (Session.FilterLocationGroup != nil)
+        {
+            Query += " AND [Task].[LocationGroupName] = '" + Session.FilterLocationGroup! + "'"
+        }
+        if (Session.FilterLocation != nil)
+        {
+            Query += " AND [Task].[LocationName] = '" + Session.FilterLocation! + "'"
+        }
+        if (Session.FilterAssetNumber != nil)
+        {
+            Query += " AND [Task].[AssetNumber] = '" + Session.FilterAssetNumber! + "'"
+        }
+        
+        if (Session.FilterJustMyTasks)
+        {
+            Query += ModelUtility.getInstance().GetFilterJustMyTasksClause()
+        }
+        else
+        {
+            Query += " AND (OperativeId IS NULL OR OperativeId = '00000000-0000-0000-0000-000000000000' OR OperativeId = '" + Session.OperativeId! + "')"
+        }
+        
+        var whereClause: String = String()
+        var whereValues: [AnyObject] = [AnyObject]()
+        (whereClause, whereValues) = GetPeriodClause(period: Session.FilterPeriod!)
+        
+        if(!whereClause.isEmpty)
+        {
+            Query += " AND " + whereClause
+        }
+        Query += " ORDER BY [Level]"
+        
+        sharedModelManager.database!.open()
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: whereValues)
+        if (resultSet != nil) {
+            while resultSet.next()
+            {
+                if (resultSet.string(forColumn: "Level") != nil)
+                {
+                    Levels.append(resultSet.string(forColumn: "Level")!)
+                }
+            }
+        }
+        return Levels
+    }
+    
     func GetFilterAssetGroupList(_ PropertyId: String, LocationGroupName: String?, Location: String?) -> [String]
     {
         var AssetGroups: [String] = [String]()
@@ -409,7 +563,7 @@ class ModelUtility: NSObject {
     {
         var AssetGroups: [String] = [String]()
         
-        var Query: String = "SELECT DISTINCT [PPMGroup] FROM [Task] WHERE [Deleted] IS NULL AND ([Task].[Status] = 'Pending' OR ([Task].[Status] = 'Outstanding' AND [OperativeId] = '" + Session.OperativeId! + "')) AND [Task].[OrganisationId] = '" + OrganisationId + "'"
+        var Query: String = "SELECT DISTINCT [PPMGroup] FROM [Task] WHERE [Deleted] IS NULL AND [Task].[Status] IN ('Pending','Outstanding') AND [Task].[OrganisationId] = '" + OrganisationId + "'"
         if (Session.FilterSiteId != nil)
         {
             Query +=  " AND [Task].[SiteId] = '" + Session.FilterSiteId! + "'"
@@ -418,10 +572,10 @@ class ModelUtility: NSObject {
         {
             Query +=  " AND [Task].[PropertyId] = '" + Session.FilterPropertyId! + "'"
         }
-//        if (Session.FilterAssetGroup != nil)
-//        {
-//            Query += " AND [Task].[PPMGroup] = '" + Session.FilterAssetGroup! + "'"
-//        }
+        if (Session.FilterLevel != nil)
+        {
+            Query +=  " AND [Task].[Level] = '" + Session.FilterLevel! + "'"
+        }
         if (Session.FilterTaskName != nil)
         {
             Query += " AND [Task].[TaskName] = '" + Session.FilterTaskName! + "'"
@@ -510,7 +664,7 @@ class ModelUtility: NSObject {
     func GetTaskFilterTaskNameList(_ OrganisationId: String) -> [String]
     {
         var TaskNames: [String] = [String]()
-        var Query: String = "SELECT DISTINCT [TaskName] FROM [Task] WHERE [Deleted] IS NULL AND ([Task].[Status] = 'Pending' OR ([Task].[Status] = 'Outstanding' AND [OperativeId] = '" + Session.OperativeId! + "')) AND [Task].[OrganisationId] = '" + OrganisationId + "'"
+        var Query: String = "SELECT DISTINCT [TaskName] FROM [Task] WHERE [Deleted] IS NULL AND [Task].[Status] IN ('Pending','Outstanding') AND [Task].[OrganisationId] = '" + OrganisationId + "'"
         if (Session.FilterSiteId != nil)
         {
             Query +=  " AND [Task].[SiteId] = '" + Session.FilterSiteId! + "'"
@@ -519,14 +673,14 @@ class ModelUtility: NSObject {
         {
             Query +=  " AND [Task].[PropertyId] = '" + Session.FilterPropertyId! + "'"
         }
+        if (Session.FilterLevel != nil)
+        {
+            Query +=  " AND [Task].[Level] = '" + Session.FilterLevel! + "'"
+        }
         if (Session.FilterAssetGroup != nil)
         {
             Query += " AND [Task].[PPMGroup] = '" + Session.FilterAssetGroup! + "'"
         }
-//        if (Session.FilterTaskName != nil)
-//        {
-//            Query += " AND [Task].[TaskName] = '" + Session.FilterTaskName! + "'"
-//        }
         if (Session.FilterAssetType != nil)
         {
             Query += " AND [Task].[AssetType] = '" + Session.FilterAssetType! + "'"
@@ -611,7 +765,7 @@ class ModelUtility: NSObject {
     func GetTaskFilterAssetTypeList(_ OrganisationId: String) -> [String]
     {
         var AssetTypes: [String] = [String]()
-        var Query: String = "SELECT DISTINCT [AssetType] FROM [Task] WHERE [Deleted] IS NULL AND ([Task].[Status] = 'Pending' OR ([Task].[Status] = 'Outstanding' AND [OperativeId] = '" + Session.OperativeId! + "')) AND [Task].[OrganisationId] = '" + OrganisationId + "'"
+        var Query: String = "SELECT DISTINCT [AssetType] FROM [Task] WHERE [Deleted] IS NULL AND [Task].[Status] IN ('Pending','Outstanding') AND [Task].[OrganisationId] = '" + OrganisationId + "'"
         if (Session.FilterSiteId != nil)
         {
             Query +=  " AND [Task].[SiteId] = '" + Session.FilterSiteId! + "'"
@@ -619,6 +773,10 @@ class ModelUtility: NSObject {
         if (Session.FilterPropertyId != nil)
         {
             Query +=  " AND [Task].[PropertyId] = '" + Session.FilterPropertyId! + "'"
+        }
+        if (Session.FilterLevel != nil)
+        {
+            Query +=  " AND [Task].[Level] = '" + Session.FilterLevel! + "'"
         }
         if (Session.FilterAssetGroup != nil)
         {
@@ -628,10 +786,6 @@ class ModelUtility: NSObject {
         {
             Query += " AND [Task].[TaskName] = '" + Session.FilterTaskName! + "'"
         }
-//        if (Session.FilterAssetType != nil)
-//        {
-//            Query += " AND [Task].[AssetType] = '" + Session.FilterAssetType! + "'"
-//        }
         if (Session.FilterLocationGroup != nil)
         {
             Query += " AND [Task].[LocationGroupName] = '" + Session.FilterLocationGroup! + "'"
@@ -712,7 +866,7 @@ class ModelUtility: NSObject {
     func GetTaskFilterLocationGroupList(_ OrganisationId: String) -> [String]
     {
         var LocationGroups: [String] = [String]()
-        var Query: String = "SELECT DISTINCT [LocationGroupName] FROM [Task] WHERE [Deleted] IS NULL AND ([Task].[Status] = 'Pending' OR ([Task].[Status] = 'Outstanding' AND [OperativeId] = '" + Session.OperativeId! + "')) AND [Task].[OrganisationId] = '" + OrganisationId + "'"
+        var Query: String = "SELECT DISTINCT [LocationGroupName] FROM [Task] WHERE [Deleted] IS NULL AND [Task].[Status] IN ('Pending','Outstanding') AND [Task].[OrganisationId] = '" + OrganisationId + "'"
         if (Session.FilterSiteId != nil)
         {
             Query +=  " AND [Task].[SiteId] = '" + Session.FilterSiteId! + "'"
@@ -720,6 +874,10 @@ class ModelUtility: NSObject {
         if (Session.FilterPropertyId != nil)
         {
             Query +=  " AND [Task].[PropertyId] = '" + Session.FilterPropertyId! + "'"
+        }
+        if (Session.FilterLevel != nil)
+        {
+            Query +=  " AND [Task].[Level] = '" + Session.FilterLevel! + "'"
         }
         if (Session.FilterAssetGroup != nil)
         {
@@ -733,10 +891,6 @@ class ModelUtility: NSObject {
         {
             Query += " AND [Task].[AssetType] = '" + Session.FilterAssetType! + "'"
         }
-//        if (Session.FilterLocationGroup != nil)
-//        {
-//            Query += " AND [Task].[LocationGroupName] = '" + Session.FilterLocationGroup! + "'"
-//        }
         if (Session.FilterLocation != nil)
         {
             Query += " AND [Task].[LocationName] = '" + Session.FilterLocation! + "'"
@@ -816,7 +970,7 @@ class ModelUtility: NSObject {
     func GetTaskFilterLocationList(_ OrganisationId: String) -> [String]
     {
         var Locations: [String] = [String]()
-        var Query: String = "SELECT DISTINCT [LocationName] FROM [Task] WHERE [Deleted] IS NULL AND ([Task].[Status] = 'Pending' OR ([Task].[Status] = 'Outstanding' AND [OperativeId] = '" + Session.OperativeId! + "')) AND [Task].[OrganisationId] = '" + OrganisationId + "'"
+        var Query: String = "SELECT DISTINCT [LocationName] FROM [Task] WHERE [Deleted] IS NULL AND [Task].[Status] IN ('Pending','Outstanding') AND [Task].[OrganisationId] = '" + OrganisationId + "'"
         if (Session.FilterSiteId != nil)
         {
             Query +=  " AND [Task].[SiteId] = '" + Session.FilterSiteId! + "'"
@@ -824,6 +978,10 @@ class ModelUtility: NSObject {
         if (Session.FilterPropertyId != nil)
         {
             Query +=  " AND [Task].[PropertyId] = '" + Session.FilterPropertyId! + "'"
+        }
+        if (Session.FilterLevel != nil)
+        {
+            Query +=  " AND [Task].[Level] = '" + Session.FilterLevel! + "'"
         }
         if (Session.FilterAssetGroup != nil)
         {
@@ -841,10 +999,6 @@ class ModelUtility: NSObject {
         {
             Query += " AND [Task].[LocationGroupName] = '" + Session.FilterLocationGroup! + "'"
         }
-//        if (Session.FilterLocation != nil)
-//        {
-//            Query += " AND [Task].[LocationName] = '" + Session.FilterLocation! + "'"
-//        }
         if (Session.FilterAssetNumber != nil)
         {
             Query += " AND [Task].[AssetNumber] = '" + Session.FilterAssetNumber! + "'"
@@ -929,7 +1083,7 @@ class ModelUtility: NSObject {
     func GetTaskFilterAssetNumberList(_ OrganisationId: String) -> [String]
     {
         var AssetNumbers: [String] = [String]()
-        var Query: String = "SELECT DISTINCT [AssetNumber] FROM [Task] WHERE [Deleted] IS NULL AND ([Task].[Status] = 'Pending' OR ([Task].[Status] = 'Outstanding' AND [OperativeId] = '" + Session.OperativeId! + "')) AND [Task].[OrganisationId] = '" + OrganisationId + "'"
+        var Query: String = "SELECT DISTINCT [AssetNumber] FROM [Task] WHERE [Deleted] IS NULL AND [Task].[Status] IN ('Pending','Outstanding') AND [Task].[OrganisationId] = '" + OrganisationId + "'"
         if (Session.FilterSiteId != nil)
         {
             Query +=  " AND [Task].[SiteId] = '" + Session.FilterSiteId! + "'"
@@ -937,6 +1091,10 @@ class ModelUtility: NSObject {
         if (Session.FilterPropertyId != nil)
         {
             Query +=  " AND [Task].[PropertyId] = '" + Session.FilterPropertyId! + "'"
+        }
+        if (Session.FilterLevel != nil)
+        {
+            Query +=  " AND [Task].[Level] = '" + Session.FilterLevel! + "'"
         }
         if (Session.FilterAssetGroup != nil)
         {
@@ -957,10 +1115,6 @@ class ModelUtility: NSObject {
         if (Session.FilterLocation != nil)
         {
             Query += " AND [Task].[LocationName] = '" + Session.FilterLocation! + "'"
-        }
-        if (Session.FilterAssetNumber != nil)
-        {
-            Query += " AND [Task].[AssetNumber] = '" + Session.FilterAssetNumber! + "'"
         }
         
         if (Session.FilterJustMyTasks)

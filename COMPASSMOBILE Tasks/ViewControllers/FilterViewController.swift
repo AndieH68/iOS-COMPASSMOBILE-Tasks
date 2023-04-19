@@ -11,14 +11,16 @@ import UIKit
 class FilterViewController: UIViewController {
 
     @IBOutlet var TaskSortSegment: UISegmentedControl!
+
+    @IBOutlet var PeriodPopupSelector: KFPopupSelector!
+    @IBOutlet var JustMyTasks: UISwitch!
+    
+    @IBOutlet var PriorityPopupSelector: KFPopupSelector!
+    @IBOutlet var FrequencyPopupSelector: KFPopupSelector!
     
     @IBOutlet var SitePopupSelector: KFPopupSelector!
     @IBOutlet var PropertyPopupSelector: KFPopupSelector!
-    @IBOutlet var FrequencyPopupSelector: KFPopupSelector!
-    @IBOutlet var PeriodPopupSelector: KFPopupSelector!
-    
-    @IBOutlet var JustMyTasks: UISwitch!
-    
+    @IBOutlet var LevelPopupSelector: KFPopupSelector!
     @IBOutlet var AssetGroupPopupSelector: KFPopupSelector!
     @IBOutlet var TaskNamePopupSelector: KFPopupSelector!
     @IBOutlet var AssetTypePopupSelector: KFPopupSelector!
@@ -26,16 +28,23 @@ class FilterViewController: UIViewController {
     @IBOutlet var LocationPopupSelector: KFPopupSelector!
     @IBOutlet var AssetNumberPopupSelector: KFPopupSelector!
     
+
+    var Periods: [String] = [DueTodayText, DueNext7DaysText, DueCalendarMonthText, DueThisMonthText, "All"]
+    
+    var Priorities: [String] = []
+    var PriorityDictionary: Dictionary<String, String> = [:]
+    
+    var Frequencies: [String] = []
+    var FrequencyDictionary: Dictionary<String, String> = [:]
+    
     var Sites: [String] = []
     var SiteDictionary: Dictionary<String, String> = [:]
     
     var Properties: [String] = []
     var PropertyDictionary: Dictionary<String, String> = [:]
 
-    var Frequencies: [String] = []
-    var FrequencyDictionary: Dictionary<String, String> = [:]
-    
-    var Periods: [String] = [DueTodayText, DueNext7DaysText, DueCalendarMonthText, DueThisMonthText, "All"]
+    var Levels: [String] = []
+    var LevelDictionary: Dictionary<String, String> = [:]
 
     var AssetGroups: [String] = []
     var AssetGroupDictionary: Dictionary<String, String> = [:]
@@ -71,6 +80,9 @@ class FilterViewController: UIViewController {
 
         PropertyPopupSelector.unselectedLabelText = NotApplicable
         PropertyPopupSelector.isEnabled = false
+
+        LevelPopupSelector.unselectedLabelText = NotApplicable
+        LevelPopupSelector.isEnabled = false
         
         AssetGroupPopupSelector.unselectedLabelText = NotApplicable
         AssetGroupPopupSelector.isEnabled = false
@@ -92,22 +104,31 @@ class FilterViewController: UIViewController {
         
         if(!Session.FilterOnTasks)
         {
-            PopulateSiteSelector()
-            PopulateFrequencySelector()
             PopulatePeriodSelector()
+            
+            PopulatePrioritySelector()
+            PopulateFrequencySelector()
+            
+            PopulateSiteSelector()
             SitePopupSelector.isEnabled = true
         }
         else
         {
             inChangeProcess = true
+            PopulatePeriodSelector()
+            PeriodPopupSelector.isEnabled = true
+            
+            PopulatePrioritySelector()
+            PriorityPopupSelector.isEnabled = true
+            PopulateFrequencySelector()
+            FrequencyPopupSelector.isEnabled = true
+
             PopulateSiteSelector()
             SitePopupSelector.isEnabled = true
             PopulatePropertySelector()
             PropertyPopupSelector.isEnabled = true
-            PopulateFrequencySelector()
-            FrequencyPopupSelector.isEnabled = true
-            PopulatePeriodSelector()
-            PeriodPopupSelector.isEnabled = true
+            PopulateLevelSelector()
+            LevelPopupSelector.isEnabled = true
             PopulateAssetGroupSelector()
             AssetGroupPopupSelector.isEnabled = true
             PopulateTaskNameSelector()
@@ -141,6 +162,9 @@ class FilterViewController: UIViewController {
 
             case .task:
                 TaskSortSegment.selectedSegmentIndex = 3
+        
+            case .priority:
+                TaskSortSegment.selectedSegmentIndex = 4
         }
      
         resetFilter()
@@ -156,15 +180,18 @@ class FilterViewController: UIViewController {
         if(Session.RememberFilterSettings)
         {
             let defaults = UserDefaults.standard
-            defaults.set(Session.FilterSiteId, forKey: "FilterSiteId")
-            defaults.set(Session.FilterSiteName, forKey: "FilterSiteName")
-            defaults.set(Session.FilterPropertyId, forKey: "FilterPropertyId")
-            defaults.set(Session.FilterPropertyName, forKey: "FilterPropertyName")
-            defaults.set(Session.FilterFrequency, forKey: "FilterFrequency")
             defaults.set(Session.FilterPeriod, forKey: "FilterPeriod")
             
             defaults.set(Session.FilterJustMyTasks, forKey: "FilterJustMyTasks")
             
+            defaults.set(Session.FilterFrequency, forKey: "FilterPriority")
+            defaults.set(Session.FilterFrequency, forKey: "FilterFrequency")
+
+            defaults.set(Session.FilterSiteId, forKey: "FilterSiteId")
+            defaults.set(Session.FilterSiteName, forKey: "FilterSiteName")
+            defaults.set(Session.FilterPropertyId, forKey: "FilterPropertyId")
+            defaults.set(Session.FilterPropertyName, forKey: "FilterPropertyName")
+            defaults.set(Session.FilterAssetGroup, forKey: "FilterLevel")
             defaults.set(Session.FilterAssetGroup, forKey: "FilterAssetGroup")
             defaults.set(Session.FilterTaskName, forKey: "FilterTaskName")
             defaults.set(Session.FilterAssetType, forKey: "FilterAssetType")
@@ -186,11 +213,110 @@ class FilterViewController: UIViewController {
             Session.TaskSort = TaskSortOrder.assetType
         case 3:
             Session.TaskSort = TaskSortOrder.task
+        case 4:
+            Session.TaskSort = TaskSortOrder.priority
         default:
             Session.TaskSort = TaskSortOrder.date
         }
     }
 
+    func PopulatePeriodSelector()
+    {
+        //Get this list of Periods currently available for this user
+        var selectedIndex: Int = 0
+        
+        var count: Int = 0
+        for currentPeriod: String in Periods
+        {
+            if (currentPeriod == Session.FilterPeriod) { selectedIndex = count }
+            count += 1
+        }
+
+        PeriodPopupSelector.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
+        PeriodPopupSelector.setLabelFont(UIFont.systemFont(ofSize: 14))
+        PeriodPopupSelector.setTableFont(UIFont.systemFont(ofSize: 14))
+        PeriodPopupSelector.options = Periods.map { KFPopupSelector.Option.text(text: $0) }
+        if (selectedIndex > -1) { PeriodPopupSelector.selectedIndex = selectedIndex } else { PeriodPopupSelector.selectedIndex = nil }
+        PeriodPopupSelector.unselectedLabelText = "Select Period"
+        PeriodPopupSelector.displaySelectedValueInLabel = true
+    }
+    
+    func PopulatePrioritySelector()
+    {
+        //Get this list of Priorities currently available for this user
+        Priorities = []
+        PriorityDictionary = [:]
+        
+        // go and get the search/filter criteria from the values selected in the session
+        var criteria: Dictionary<String, AnyObject> = [:]
+        criteria["Type"] = "Priority" as AnyObject
+        
+        var PriorityData: [ReferenceData] = [] //NSMutableArray!
+        var selectedIndex: Int = 0
+        Priorities.append("")
+
+        // go and get the Priority data based on the criteria built
+        (PriorityData, _) = ModelManager.getInstance().findReferenceDataList(criteria, pageSize: nil, pageNumber: nil, sortOrder: ReferenceDataSortOrder.ordinal)
+        
+        var count: Int = 1 //we already have the blank row
+        for currentPriority: ReferenceData in PriorityData
+        {
+            Priorities.append(currentPriority.Display)
+            PriorityDictionary[currentPriority.Display] = currentPriority.Value
+            if (currentPriority.Value.localizedLowercase == Session.FilterPriority?.localizedLowercase) { selectedIndex = count}
+            count += 1
+        }
+        if (selectedIndex == 0) { Session.FilterPriority = nil }
+        
+        PriorityPopupSelector.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
+        PriorityPopupSelector.setLabelFont(UIFont.systemFont(ofSize: 14))
+        PriorityPopupSelector.setTableFont(UIFont.systemFont(ofSize: 14))
+        PriorityPopupSelector.options = Priorities.map { KFPopupSelector.Option.text(text: $0) }
+        if (selectedIndex > 0) { PriorityPopupSelector.selectedIndex = selectedIndex } else { PriorityPopupSelector.selectedIndex = nil }
+        PriorityPopupSelector.unselectedLabelText = "Select Priority"
+        PriorityPopupSelector.displaySelectedValueInLabel = true
+    }
+        
+    func PopulateFrequencySelector()
+    {
+        //Get this list of Frequencys currently available for this user
+        Frequencies = []
+        FrequencyDictionary = [:]
+        
+        // go and get the search/filter criteria from the values selected in the session
+        var criteria: Dictionary<String, AnyObject> = [:]
+        criteria["Type"] = "PPMFrequency" as AnyObject
+        
+        var FrequencyData: [ReferenceData] = [] //NSMutableArray!
+        var selectedIndex: Int = 0
+        Frequencies.append("")
+
+        Frequencies.append("All")
+        FrequencyDictionary["All"] = "All"
+        if (Session.FilterFrequency?.localizedLowercase == "all") { selectedIndex = 1 }
+       
+        // go and get the Frequency data based on the criteria built
+        (FrequencyData, _) = ModelManager.getInstance().findReferenceDataList(criteria, pageSize: nil, pageNumber: nil, sortOrder: ReferenceDataSortOrder.ordinal)
+        
+        var count: Int = 2 //we already have the blank row, All and One off
+        for currentFrequency: ReferenceData in FrequencyData
+        {
+            Frequencies.append(currentFrequency.Display)
+            FrequencyDictionary[currentFrequency.Display] = currentFrequency.Display.localizedLowercase
+            if (currentFrequency.Display.localizedLowercase == Session.FilterFrequency?.localizedLowercase) { selectedIndex = count}
+            count += 1
+        }
+        if (selectedIndex == 0) { Session.FilterFrequency = nil }
+        
+        FrequencyPopupSelector.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
+        FrequencyPopupSelector.setLabelFont(UIFont.systemFont(ofSize: 14))
+        FrequencyPopupSelector.setTableFont(UIFont.systemFont(ofSize: 14))
+        FrequencyPopupSelector.options = Frequencies.map { KFPopupSelector.Option.text(text: $0) }
+        if (selectedIndex > 0) { FrequencyPopupSelector.selectedIndex = selectedIndex } else { FrequencyPopupSelector.selectedIndex = nil }
+        FrequencyPopupSelector.unselectedLabelText = "Select Frequency"
+        FrequencyPopupSelector.displaySelectedValueInLabel = true
+    }
+    
     func PopulateSiteSelector()
     {
         //Get this list of sites currently available for this user
@@ -206,7 +332,7 @@ class FilterViewController: UIViewController {
         var selectedIndex: Int = 0
         Sites.append("")
         
-        // go and get the AssetGroup data based on the criteria built
+        // go and get the Site data based on the criteria built
         if (Session.FilterOnTasks)
         {
             SiteIds = ModelUtility.getInstance().GetTaskFilterSiteList(Session.OrganisationId!)
@@ -229,8 +355,8 @@ class FilterViewController: UIViewController {
         if (selectedIndex == 0) { Session.FilterSiteId = nil }
         
         SitePopupSelector.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
-        SitePopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
-        SitePopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
+        SitePopupSelector.setLabelFont(UIFont.systemFont(ofSize: 14))
+        SitePopupSelector.setTableFont(UIFont.systemFont(ofSize: 14))
         SitePopupSelector.options = Sites.map { KFPopupSelector.Option.text(text: $0) }
         if (selectedIndex > 0) { SitePopupSelector.selectedIndex = selectedIndex } else { SitePopupSelector.selectedIndex = nil }
         SitePopupSelector.unselectedLabelText = "Select Site"
@@ -247,7 +373,7 @@ class FilterViewController: UIViewController {
         var selectedIndex: Int = 0
         Properties.append("")
         
-        // go and get the AssetGroup data based on the criteria built
+        // go and get the Property data based on the criteria built
         if (Session.FilterOnTasks)
         {
             PropertyIds = ModelUtility.getInstance().GetTaskFilterPropertyList(Session.OrganisationId!)
@@ -270,79 +396,56 @@ class FilterViewController: UIViewController {
         if (selectedIndex == 0) { Session.FilterPropertyId = nil }
         
         PropertyPopupSelector.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
-        PropertyPopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
-        PropertyPopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
+        PropertyPopupSelector.setLabelFont(UIFont.systemFont(ofSize: 14))
+        PropertyPopupSelector.setTableFont(UIFont.systemFont(ofSize: 14))
         PropertyPopupSelector.options = Properties.map { KFPopupSelector.Option.text(text: $0) }
         if (selectedIndex > 0) { PropertyPopupSelector.selectedIndex = selectedIndex } else { PropertyPopupSelector.selectedIndex = nil }
         PropertyPopupSelector.unselectedLabelText = "Select Property"
         PropertyPopupSelector.displaySelectedValueInLabel = true
     }
     
-    func PopulateFrequencySelector()
+    func PopulateLevelSelector()
     {
-        //Get this list of Frequencys currently available for this user
-        Frequencies = []
-        FrequencyDictionary = [:]
+        ModelUtility.getInstance().UpdateLevelsForTasks()
+        
+        //Get this list of Levels currently available for this user
+        Levels = []
+        LevelDictionary = [:]
         
         // go and get the search/filter criteria from the values selected in the session
-        var criteria: Dictionary<String, AnyObject> = [:]
-        criteria["Type"] = "PPMFrequency" as AnyObject
-        
-        var FrequencyData: [ReferenceData] = [] //NSMutableArray!
+        var LevelData: [String] = [] //NSMutableArray!
         var selectedIndex: Int = 0
-        Frequencies.append("")
-
-        Frequencies.append("All")
-        FrequencyDictionary["All"] = "All"
-        if (Session.FilterFrequency?.localizedLowercase == "all") { selectedIndex = 1 }
+        Levels.append("")
         
-        Frequencies.append("Ad-hoc")
-        FrequencyDictionary["Ad-hoc"] = "Ad-hoc"
-        if (Session.FilterFrequency?.localizedLowercase == "ad-hoc") { selectedIndex = 2 }
-        
-        // go and get the Frequency data based on the criteria built
-        (FrequencyData, _) = ModelManager.getInstance().findReferenceDataList(criteria, pageSize: nil, pageNumber: nil, sortOrder: ReferenceDataSortOrder.ordinal)
-        
-        var count: Int = 3 //we already have the blank row, All and Ad-hoc
-        for currentFrequency: ReferenceData in FrequencyData
+        // go and get the Level data based on the criteria built
+        if (Session.FilterOnTasks)
         {
-            Frequencies.append(currentFrequency.Display)
-            FrequencyDictionary[currentFrequency.Display] = currentFrequency.Display.localizedLowercase
-            if (currentFrequency.Display.localizedLowercase == Session.FilterFrequency?.localizedLowercase) { selectedIndex = count}
+            LevelData = ModelUtility.getInstance().GetTaskFilterLevelList(Session.OrganisationId!)
+        }
+        else
+        {
+            LevelData = ModelUtility.getInstance().GetFilterLevelList(Session.FilterPropertyId!)
+        }
+        
+        var count: Int = 1 //we already have the blank row
+        for currentLevel: String in LevelData
+        {
+            Levels.append(currentLevel)
+            LevelDictionary[currentLevel] = currentLevel
+            if (currentLevel == Session.FilterLevel) { selectedIndex = count}
             count += 1
         }
-        if (selectedIndex == 0) { Session.FilterFrequency = nil }
+        if (selectedIndex == 0) { Session.FilterLevel = nil }
         
-        FrequencyPopupSelector.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
-        FrequencyPopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
-        FrequencyPopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
-        FrequencyPopupSelector.options = Frequencies.map { KFPopupSelector.Option.text(text: $0) }
-        if (selectedIndex > 0) { FrequencyPopupSelector.selectedIndex = selectedIndex } else { FrequencyPopupSelector.selectedIndex = nil }
-        FrequencyPopupSelector.unselectedLabelText = "Select Frequency"
-        FrequencyPopupSelector.displaySelectedValueInLabel = true
+        LevelPopupSelector.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
+        LevelPopupSelector.setLabelFont(UIFont.systemFont(ofSize: 14))
+        LevelPopupSelector.setTableFont(UIFont.systemFont(ofSize: 14))
+        LevelPopupSelector.options = Levels.map { KFPopupSelector.Option.text(text: $0) }
+        if (selectedIndex > 0) { LevelPopupSelector.selectedIndex = selectedIndex } else { LevelPopupSelector.selectedIndex = nil }
+        LevelPopupSelector.unselectedLabelText = "Select Level"
+        LevelPopupSelector.displaySelectedValueInLabel = true
     }
-    
-    func PopulatePeriodSelector()
-    {
-        //Get this list of Periods currently available for this user
-        var selectedIndex: Int = 0
-        
-        var count: Int = 0
-        for currentPeriod: String in Periods
-        {
-            if (currentPeriod == Session.FilterPeriod) { selectedIndex = count }
-            count += 1
-        }
-
-        PeriodPopupSelector.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
-        PeriodPopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
-        PeriodPopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
-        PeriodPopupSelector.options = Periods.map { KFPopupSelector.Option.text(text: $0) }
-        if (selectedIndex > -1) { PeriodPopupSelector.selectedIndex = selectedIndex } else { PeriodPopupSelector.selectedIndex = nil }
-        PeriodPopupSelector.unselectedLabelText = "Select Period"
-        PeriodPopupSelector.displaySelectedValueInLabel = true
-    }
-    
+   
     func PopulateAssetGroupSelector()
     {
         //Get this list of AssetGroups currently available for this user
@@ -376,8 +479,8 @@ class FilterViewController: UIViewController {
         if (selectedIndex == 0) { Session.FilterAssetGroup = nil }
         
         AssetGroupPopupSelector.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
-        AssetGroupPopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
-        AssetGroupPopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
+        AssetGroupPopupSelector.setLabelFont(UIFont.systemFont(ofSize: 14))
+        AssetGroupPopupSelector.setTableFont(UIFont.systemFont(ofSize: 14))
         AssetGroupPopupSelector.options = AssetGroups.map { KFPopupSelector.Option.text(text: $0) }
         if (selectedIndex > 0) { AssetGroupPopupSelector.selectedIndex = selectedIndex } else { AssetGroupPopupSelector.selectedIndex = nil }
         AssetGroupPopupSelector.unselectedLabelText = "Select Asset Group"
@@ -421,8 +524,8 @@ class FilterViewController: UIViewController {
         if (selectedIndex == 0) { Session.FilterTaskName = nil }
         
         TaskNamePopupSelector.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
-        TaskNamePopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
-        TaskNamePopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
+        TaskNamePopupSelector.setLabelFont(UIFont.systemFont(ofSize: 14))
+        TaskNamePopupSelector.setTableFont(UIFont.systemFont(ofSize: 14))
         TaskNamePopupSelector.options = TaskNames.map { KFPopupSelector.Option.text(text: $0) }
         if (selectedIndex > 0) { TaskNamePopupSelector.selectedIndex = selectedIndex } else { TaskNamePopupSelector.selectedIndex = nil }
         TaskNamePopupSelector.unselectedLabelText = "Select Task Name"
@@ -462,8 +565,8 @@ class FilterViewController: UIViewController {
         if (selectedIndex == 0) { Session.FilterAssetType = nil }
         
         AssetTypePopupSelector.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
-        AssetTypePopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
-        AssetTypePopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
+        AssetTypePopupSelector.setLabelFont(UIFont.systemFont(ofSize: 14))
+        AssetTypePopupSelector.setTableFont(UIFont.systemFont(ofSize: 14))
         AssetTypePopupSelector.options = AssetTypes.map { KFPopupSelector.Option.text(text: $0) }
         if (selectedIndex > 0) { AssetTypePopupSelector.selectedIndex = selectedIndex } else { AssetTypePopupSelector.selectedIndex = nil }
         AssetTypePopupSelector.unselectedLabelText = "Select Asset Type"
@@ -503,8 +606,8 @@ class FilterViewController: UIViewController {
         if (selectedIndex == 0) { Session.FilterLocationGroup = nil }
         
         LocationGroupPopupSelector.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
-        LocationGroupPopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
-        LocationGroupPopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
+        LocationGroupPopupSelector.setLabelFont(UIFont.systemFont(ofSize: 14))
+        LocationGroupPopupSelector.setTableFont(UIFont.systemFont(ofSize: 14))
         LocationGroupPopupSelector.options = LocationGroups.map { KFPopupSelector.Option.text(text: $0) }
         if (selectedIndex > 0) { LocationGroupPopupSelector.selectedIndex = selectedIndex } else { LocationGroupPopupSelector.selectedIndex = nil }
         LocationGroupPopupSelector.unselectedLabelText = "Select Area"
@@ -544,8 +647,8 @@ class FilterViewController: UIViewController {
         if (selectedIndex == 0) { Session.FilterLocation = nil }
         
         LocationPopupSelector.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
-        LocationPopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
-        LocationPopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
+        LocationPopupSelector.setLabelFont(UIFont.systemFont(ofSize: 14))
+        LocationPopupSelector.setTableFont(UIFont.systemFont(ofSize: 14))
         LocationPopupSelector.options = Locations.map { KFPopupSelector.Option.text(text: $0) }
         if (selectedIndex > 0) { LocationPopupSelector.selectedIndex = selectedIndex } else { LocationPopupSelector.selectedIndex = nil }
         LocationPopupSelector.unselectedLabelText = "Select Location"
@@ -585,8 +688,8 @@ class FilterViewController: UIViewController {
         if (selectedIndex == 0) { Session.FilterAssetNumber = nil }
         
         AssetNumberPopupSelector.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
-        AssetNumberPopupSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
-        AssetNumberPopupSelector.setTableFont(UIFont.systemFont(ofSize: 17))
+        AssetNumberPopupSelector.setLabelFont(UIFont.systemFont(ofSize: 14))
+        AssetNumberPopupSelector.setTableFont(UIFont.systemFont(ofSize: 14))
         AssetNumberPopupSelector.options = AssetNumbers.map { KFPopupSelector.Option.text(text: $0) }
         if (selectedIndex > 0) { AssetNumberPopupSelector.selectedIndex = selectedIndex } else { AssetNumberPopupSelector.selectedIndex = nil }
         AssetNumberPopupSelector.unselectedLabelText = "Select Asset Number"
@@ -597,6 +700,7 @@ class FilterViewController: UIViewController {
     {
         PopulateSiteSelector()
         PopulatePropertySelector()
+        PopulateLevelSelector()
         PopulateAssetGroupSelector()
         PopulateTaskNameSelector()
         PopulateAssetTypeSelector()
@@ -607,6 +711,93 @@ class FilterViewController: UIViewController {
     
     //MARK : Action from selection
     var inChangeProcess: Bool = false
+    
+    @IBAction func PeriodChanged(_ sender: KFPopupSelector) {
+        if(!(inChangeProcess && Session.FilterOnTasks))
+        {
+            inChangeProcess = true
+            if (PeriodPopupSelector.selectedIndex != nil && Periods[PeriodPopupSelector.selectedIndex!] != "")
+            {
+                Session.FilterPeriod = Periods[PeriodPopupSelector.selectedIndex!]
+                if (Session.FilterOnTasks)
+                {
+                    RePopulateAllSelectors()
+                }
+            }
+            else
+            {
+                //no nil value for period selector
+                //if (PeriodPopupSelector.selectedIndex != nil) { PeriodPopupSelector.selectedIndex = nil }
+                Session.FilterPeriod = nil
+                if (Session.FilterOnTasks)
+                {
+                    RePopulateAllSelectors()
+                }
+            }
+            inChangeProcess = false
+        }
+    }
+    
+    @IBAction func MyTasksChanged(_ sender: UISwitch) {
+        Session.FilterJustMyTasks = sender.isOn
+        resetFilter()
+    }
+    
+    @IBAction func PriorityChanged(_ sender: KFPopupSelector) {
+        if(!(inChangeProcess && Session.FilterOnTasks))
+        {
+            inChangeProcess = true
+            
+            //set the Priority filter
+            if (PriorityPopupSelector.selectedIndex != nil && Priorities[PriorityPopupSelector.selectedIndex!] != "")
+            {
+                Session.FilterPriority = PriorityDictionary[Priorities[PriorityPopupSelector.selectedIndex!]]
+                
+                if (Session.FilterOnTasks)
+                {
+                    RePopulateAllSelectors()
+                }
+            }
+            else
+            {
+                if (PriorityPopupSelector.selectedIndex != nil) { PriorityPopupSelector.selectedIndex = nil }
+                Session.FilterPriority = nil
+                if (Session.FilterOnTasks)
+                {
+                    RePopulateAllSelectors()
+                }
+            }
+            inChangeProcess = false
+        }
+    }
+    
+    @IBAction func FrequencyChanged(_ sender: KFPopupSelector) {
+        if(!(inChangeProcess && Session.FilterOnTasks))
+        {
+            inChangeProcess = true
+            //set the frequency filter
+            
+            if (FrequencyPopupSelector.selectedIndex != nil && Frequencies[FrequencyPopupSelector.selectedIndex!] != "")
+            {
+                Session.FilterFrequency = FrequencyDictionary[Frequencies[FrequencyPopupSelector.selectedIndex!]]
+                
+                if (Session.FilterOnTasks)
+                {
+                    RePopulateAllSelectors()
+                }
+            }
+            else
+            {
+                if (FrequencyPopupSelector.selectedIndex != nil) { FrequencyPopupSelector.selectedIndex = nil }
+                Session.FilterFrequency = nil
+                if (Session.FilterOnTasks)
+                {
+                    RePopulateAllSelectors()
+                }
+            }
+            inChangeProcess = false
+        }
+    }
     
     @IBAction func SiteChanged(_ sender: KFPopupSelector) {
         if(!(inChangeProcess && Session.FilterOnTasks))
@@ -659,6 +850,10 @@ class FilterViewController: UIViewController {
                 
                 if (!Session.FilterOnTasks)
                 {
+                    //do the level stuff
+                    PopulateLevelSelector()
+                    LevelPopupSelector.isEnabled = true
+                    
                     //do the asset group stuff
                     PopulateAssetGroupSelector()
                     AssetGroupPopupSelector.isEnabled = true
@@ -692,16 +887,17 @@ class FilterViewController: UIViewController {
         }
     }
  
-    @IBAction func FrequencyChanged(_ sender: KFPopupSelector) {
+    @IBAction func LevelChanged(_ sender: KFPopupSelector) {
         if(!(inChangeProcess && Session.FilterOnTasks))
         {
             inChangeProcess = true
-            //set the frequency filter
             
-            if (FrequencyPopupSelector.selectedIndex != nil && Frequencies[FrequencyPopupSelector.selectedIndex!] != "")
+            //set the level filter
+            if (LevelPopupSelector.selectedIndex != nil && Levels[LevelPopupSelector.selectedIndex!] != "")
             {
-                Session.FilterFrequency = FrequencyDictionary[Frequencies[FrequencyPopupSelector.selectedIndex!]]
+                Session.FilterLevel = LevelDictionary[Levels[LevelPopupSelector.selectedIndex!]]
                 
+                //do the Task name stuff
                 if (Session.FilterOnTasks)
                 {
                     RePopulateAllSelectors()
@@ -709,8 +905,9 @@ class FilterViewController: UIViewController {
             }
             else
             {
-                if (FrequencyPopupSelector.selectedIndex != nil) { FrequencyPopupSelector.selectedIndex = nil }
-                Session.FilterFrequency = nil
+                if (LevelPopupSelector.selectedIndex != nil) { LevelPopupSelector.selectedIndex = nil }
+                Session.FilterLevel = nil
+
                 if (Session.FilterOnTasks)
                 {
                     RePopulateAllSelectors()
@@ -718,37 +915,6 @@ class FilterViewController: UIViewController {
             }
             inChangeProcess = false
         }
-    }
-    
-    @IBAction func PeriodChanged(_ sender: KFPopupSelector) {
-        if(!(inChangeProcess && Session.FilterOnTasks))
-        {
-            inChangeProcess = true
-            if (PeriodPopupSelector.selectedIndex != nil && Periods[PeriodPopupSelector.selectedIndex!] != "")
-            {
-                Session.FilterPeriod = Periods[PeriodPopupSelector.selectedIndex!]
-                if (Session.FilterOnTasks)
-                {
-                    RePopulateAllSelectors()
-                }
-            }
-            else
-            {
-                //no nil value for period selector
-                //if (PeriodPopupSelector.selectedIndex != nil) { PeriodPopupSelector.selectedIndex = nil }
-                Session.FilterPeriod = nil
-                if (Session.FilterOnTasks)
-                {
-                    RePopulateAllSelectors()
-                }
-            }
-            inChangeProcess = false
-        }
-    }
-    
-    @IBAction func MyTasksChanged(_ sender: UISwitch) {
-        Session.FilterJustMyTasks = sender.isOn
-        resetFilter()
     }
     
     @IBAction func AssetGroupChanged(_ sender: KFPopupSelector) {
