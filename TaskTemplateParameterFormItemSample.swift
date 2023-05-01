@@ -14,9 +14,4 @@ class TaskTemplateParameterFormItemSample: TaskTemplateParameterFormItem
     var OutletType: String? = nil
     var SampleType: String? = nil
     var NumberOfBottles: String? = nil
-    var BiocideType: String? = nil
-    var Reading1: String? = nil
-    var Reading2: String? = nil
-    var Temperature: String? = nil
-
 }

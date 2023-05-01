@@ -10,6 +10,7 @@ import UIKit
 
 class TaskTemplateParameterCellSampleWithBiocide: UITableViewCell {
     
+    @IBOutlet var Sample: UILabel!
     @IBOutlet var Delete: UIButton!
     @IBOutlet var SampleReference: UILabel!
     @IBOutlet var BacteriumType: UILabel!
@@ -24,7 +25,7 @@ class TaskTemplateParameterCellSampleWithBiocide: UITableViewCell {
     @IBOutlet var Reading2Label: UILabel!
     @IBOutlet var Reading2: UITextField!
     @IBOutlet var Temperature: UITextField!
-    
+        
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

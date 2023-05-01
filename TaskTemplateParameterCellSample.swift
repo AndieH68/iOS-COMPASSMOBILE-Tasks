@@ -10,6 +10,7 @@ import UIKit
 
 class TaskTemplateParameterCellSample: UITableViewCell {
     
+    @IBOutlet var Sample: UILabel!
     @IBOutlet var Delete: UIButton!
     @IBOutlet var SampleReference: UILabel!
     @IBOutlet var BacteriumType: UILabel!

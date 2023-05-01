@@ -56,8 +56,12 @@
 		A43919A31D2D1E7900C31CA0 /* TaskTemplateParameterFormItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A439199D1D2D1E7900C31CA0 /* TaskTemplateParameterFormItem.swift */; };
 		A43919A41D2D1E7900C31CA0 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A439199E1D2D1E7900C31CA0 /* Utility.swift */; };
 		A43919A51D2D1E7900C31CA0 /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A439199F1D2D1E7900C31CA0 /* WebService.swift */; };
+		A457200729FBD9FB00CD6D40 /* CheckBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A457200629FBD9FB00CD6D40 /* CheckBox.swift */; };
+		A457200B29FBEF8C00CD6D40 /* TaskTemplateParameterCellSampleWithMultipleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A457200A29FBEF8C00CD6D40 /* TaskTemplateParameterCellSampleWithMultipleTests.swift */; };
 		A4583C62286475D2005C8B4E /* TaskTemplateParameterCellSampleWithBiocide.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4583C61286475D2005C8B4E /* TaskTemplateParameterCellSampleWithBiocide.swift */; };
 		A4583C64286497B5005C8B4E /* TaskTemplateParameterCellSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4583C63286497B5005C8B4E /* TaskTemplateParameterCellSample.swift */; };
+		A45D271029FC1E370077D9A1 /* TaskTemplateParameterFormItemSampleWithBiocide.swift in Sources */ = {isa = PBXBuildFile; fileRef = A45D270F29FC1E370077D9A1 /* TaskTemplateParameterFormItemSampleWithBiocide.swift */; };
+		A45D271229FC1E580077D9A1 /* TaskTemplateParameterFormItemSampleWithMultipleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A45D271129FC1E580077D9A1 /* TaskTemplateParameterFormItemSampleWithMultipleTests.swift */; };
 		A471892D229E8A6600523FD5 /* OperativeGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A471892C229E8A6600523FD5 /* OperativeGroup.swift */; };
 		A471892F229E8A8900523FD5 /* OperativeGroupMembership.swift in Sources */ = {isa = PBXBuildFile; fileRef = A471892E229E8A8900523FD5 /* OperativeGroupMembership.swift */; };
 		A471893322A01CC200523FD5 /* OperativeGroupTaskTemplateMembership.swift in Sources */ = {isa = PBXBuildFile; fileRef = A471893222A01CC200523FD5 /* OperativeGroupTaskTemplateMembership.swift */; };
@@ -139,8 +143,12 @@
 		A439199D1D2D1E7900C31CA0 /* TaskTemplateParameterFormItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TaskTemplateParameterFormItem.swift; path = "COMPASSMOBILE Tasks/SupportingFiles/TaskTemplateParameterFormItem.swift"; sourceTree = SOURCE_ROOT; };
 		A439199E1D2D1E7900C31CA0 /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Utility.swift; path = "COMPASSMOBILE Tasks/SupportingFiles/Utility.swift"; sourceTree = SOURCE_ROOT; };
 		A439199F1D2D1E7900C31CA0 /* WebService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebService.swift; path = "COMPASSMOBILE Tasks/SupportingFiles/WebService.swift"; sourceTree = SOURCE_ROOT; };
+		A457200629FBD9FB00CD6D40 /* CheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBox.swift; sourceTree = SOURCE_ROOT; };
+		A457200A29FBEF8C00CD6D40 /* TaskTemplateParameterCellSampleWithMultipleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTemplateParameterCellSampleWithMultipleTests.swift; sourceTree = SOURCE_ROOT; };
 		A4583C61286475D2005C8B4E /* TaskTemplateParameterCellSampleWithBiocide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTemplateParameterCellSampleWithBiocide.swift; sourceTree = SOURCE_ROOT; };
 		A4583C63286497B5005C8B4E /* TaskTemplateParameterCellSample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTemplateParameterCellSample.swift; sourceTree = SOURCE_ROOT; };
+		A45D270F29FC1E370077D9A1 /* TaskTemplateParameterFormItemSampleWithBiocide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTemplateParameterFormItemSampleWithBiocide.swift; sourceTree = SOURCE_ROOT; };
+		A45D271129FC1E580077D9A1 /* TaskTemplateParameterFormItemSampleWithMultipleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTemplateParameterFormItemSampleWithMultipleTests.swift; sourceTree = SOURCE_ROOT; };
 		A471892C229E8A6600523FD5 /* OperativeGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OperativeGroup.swift; path = "COMPASSMOBILE Tasks/Models/Entity/OperativeGroup.swift"; sourceTree = SOURCE_ROOT; };
 		A471892E229E8A8900523FD5 /* OperativeGroupMembership.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OperativeGroupMembership.swift; path = "COMPASSMOBILE Tasks/Models/Entity/OperativeGroupMembership.swift"; sourceTree = SOURCE_ROOT; };
 		A471893222A01CC200523FD5 /* OperativeGroupTaskTemplateMembership.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OperativeGroupTaskTemplateMembership.swift; path = "COMPASSMOBILE Tasks/Models/Entity/OperativeGroupTaskTemplateMembership.swift"; sourceTree = SOURCE_ROOT; };
@@ -225,9 +233,12 @@
 				A426CFB1263AE1A5002D7773 /* StringExtension.swift */,
 				A439199D1D2D1E7900C31CA0 /* TaskTemplateParameterFormItem.swift */,
 				A40A450D288E919E005F533C /* TaskTemplateParameterFormItemSample.swift */,
+				A45D270F29FC1E370077D9A1 /* TaskTemplateParameterFormItemSampleWithBiocide.swift */,
 				A4AF07651E326A6E00D09CA8 /* TemperatureProfile.swift */,
 				A439199E1D2D1E7900C31CA0 /* Utility.swift */,
 				A439199F1D2D1E7900C31CA0 /* WebService.swift */,
+				A457200629FBD9FB00CD6D40 /* CheckBox.swift */,
+				A45D271129FC1E580077D9A1 /* TaskTemplateParameterFormItemSampleWithMultipleTests.swift */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -342,6 +353,7 @@
 				A4996AA6266EDD8500D8C49D /* TaskTemplateParameterCellScanUniversal.swift */,
 				A43919721D2D1D8C00C31CA0 /* TaskTemplateParameterCellTemperature.swift */,
 				A43919731D2D1D8C00C31CA0 /* TaskTemplateParameterCellTextArea.swift */,
+				A457200A29FBEF8C00CD6D40 /* TaskTemplateParameterCellSampleWithMultipleTests.swift */,
 			);
 			name = TaskTemplateParameterCells;
 			sourceTree = "<group>";
@@ -534,6 +546,7 @@
 				A439198D1D2D1DB500C31CA0 /* LocationGroupMembership.swift in Sources */,
 				A40A450E288E919E005F533C /* TaskTemplateParameterFormItemSample.swift in Sources */,
 				A43919941D2D1DB500C31CA0 /* TaskParameter.swift in Sources */,
+				A45D271229FC1E580077D9A1 /* TaskTemplateParameterFormItemSampleWithMultipleTests.swift in Sources */,
 				A4B456E029C3285F00834096 /* AssetOutlet.swift in Sources */,
 				A432E9511D2D1A4E002FE138 /* FilterViewController.swift in Sources */,
 				A432E9531D2D1A4E002FE138 /* MainNavigationController.swift in Sources */,
@@ -559,6 +572,7 @@
 				A432E9581D2D1A4E002FE138 /* TaskViewController.swift in Sources */,
 				A471892D229E8A6600523FD5 /* OperativeGroup.swift in Sources */,
 				A43919A51D2D1E7900C31CA0 /* WebService.swift in Sources */,
+				A45D271029FC1E370077D9A1 /* TaskTemplateParameterFormItemSampleWithBiocide.swift in Sources */,
 				A43919921D2D1DB500C31CA0 /* Site.swift in Sources */,
 				A43919A01D2D1E7900C31CA0 /* Constants.swift in Sources */,
 				A426CFB2263AE1A5002D7773 /* StringExtension.swift in Sources */,
@@ -566,8 +580,10 @@
 				A43919761D2D1D8C00C31CA0 /* TaskTemplateParameterCellNumber.swift in Sources */,
 				A439197C1D2D1D9D00C31CA0 /* ModelUtility.swift in Sources */,
 				A439198B1D2D1DB500C31CA0 /* Location.swift in Sources */,
+				A457200729FBD9FB00CD6D40 /* CheckBox.swift in Sources */,
 				A43919931D2D1DB500C31CA0 /* Task.swift in Sources */,
 				A439196E1D2D1D7F00C31CA0 /* TaskCell.swift in Sources */,
+				A457200B29FBEF8C00CD6D40 /* TaskTemplateParameterCellSampleWithMultipleTests.swift in Sources */,
 				A432E9551D2D1A4E002FE138 /* RemedialTaskViewController.swift in Sources */,
 				A432E9571D2D1A4E002FE138 /* SettingsViewController.swift in Sources */,
 				A4996AA7266EDD8500D8C49D /* TaskTemplateParameterCellScanUniversal.swift in Sources */,

@@ -10,7 +10,7 @@ import MBProgressHUD
 import UIKit
 import CoreMedia
 
-class BiologicalMonitoringViewController: UITableViewController, UITextFieldDelegate, UITextViewDelegate, MBProgressHUDDelegate, ETIPassingData, AlertMessageDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
+class BiologicalMonitoringViewController: UITableViewController, UITextFieldDelegate, UITextViewDelegate, MBProgressHUDDelegate, ETIPassingData, AlertMessageDelegate, UIPickerViewDelegate, UIPickerViewDataSource, CheckBoxDelegate {
     
     var instanceOfCustomObject: ThermaLib = ThermaLib()
 
@@ -329,6 +329,7 @@ class BiologicalMonitoringViewController: UITableViewController, UITextFieldDele
     
     var BacteriumTypes : KeyValuePairs =
     [
+        "Multiple Tests" : "SampleWithMultipleTests",
         "Legionellae (cfu/l)" : "SampleWithBiocide",
         "TVC (cfu/ml)" : "Sample",
         "E. Coli (cfu/100ml)" : "Sample",
@@ -400,7 +401,18 @@ class BiologicalMonitoringViewController: UITableViewController, UITextFieldDele
             sampleTaskTemplateParameter.PredecessorTrueValue = nil
             
             self.formTaskTemplateParameters.append(sampleTaskTemplateParameter)
-            self.taskTemplateParameterFormItems[sampleTaskTemplateParameter.RowId] = TaskTemplateParameterFormItemSample(taskTemplateParameter: sampleTaskTemplateParameter)
+            switch type
+            {
+            case "SampleWithMultipleTests":
+                self.taskTemplateParameterFormItems[sampleTaskTemplateParameter.RowId] = TaskTemplateParameterFormItemSampleWithMultipleTests(taskTemplateParameter: sampleTaskTemplateParameter)
+                break
+            case "SampleWithBiocide":
+                self.taskTemplateParameterFormItems[sampleTaskTemplateParameter.RowId] = TaskTemplateParameterFormItemSampleWithBiocide(taskTemplateParameter: sampleTaskTemplateParameter)
+                break
+            default:
+                self.taskTemplateParameterFormItems[sampleTaskTemplateParameter.RowId] = TaskTemplateParameterFormItemSample(taskTemplateParameter: sampleTaskTemplateParameter)
+                break
+            }
             
             // reload the table
             self.taskParameterTable.reloadData()
@@ -761,7 +773,7 @@ class BiologicalMonitoringViewController: UITableViewController, UITextFieldDele
 
             case "Sample":
                 let cell = tableView.dequeueReusableCell(withIdentifier: "Sample", for: indexPath) as! TaskTemplateParameterCellSample
-                let taskTemplateParameterFormItemSample = taskTemplateParameterFormItem as! TaskTemplateParameterFormItemSample
+                let taskTemplateParameterFormItemSample: TaskTemplateParameterFormItemSample = taskTemplateParameterFormItem as! TaskTemplateParameterFormItemSample
                 cell.restorationIdentifier = taskTemplateParameter.RowId
                 cell.SampleReference.text = taskTemplateParameter.ParameterName
                 cell.BacteriumType.text = taskTemplateParameter.ParameterDisplay
@@ -771,7 +783,8 @@ class BiologicalMonitoringViewController: UITableViewController, UITextFieldDele
                 var OutletTypeDropdownData: [String] = []
                 OutletTypeDropdownData.append(PleaseSelect)
                 OutletTypeDropdownData.append(contentsOf: ModelUtility.getInstance().GetOutletsForAsset(task.AssetId!))
-
+                if OutletTypeDropdownData.count == 1 {OutletTypeDropdownData.append("Outlet")}
+                
                 cell.OutletType.restorationIdentifier = taskTemplateParameter.RowId
                 cell.OutletType.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
                 cell.OutletType.setLabelFont(UIFont.systemFont(ofSize: 17))
@@ -798,14 +811,7 @@ class BiologicalMonitoringViewController: UITableViewController, UITextFieldDele
                 //Sample Type
                 var SampleTypeTypeDropdownData: [String] = []
                 SampleTypeTypeDropdownData.append(PleaseSelect)
-                 if (cell.BacteriumType.text!.startsWith("TVC"))
-                {
-                    SampleTypeTypeDropdownData.append(contentsOf: ModelUtility.getInstance().GetLookupList("SampleType", extendedReferenceDataType: "None", parentType: "BacteriumType", parentValue: "TVC"));
-                }
-                else
-                {
-                    SampleTypeTypeDropdownData.append(contentsOf: ModelUtility.getInstance().GetLookupList("SampleType", extendedReferenceDataType: "None"));
-                }
+                SampleTypeTypeDropdownData.append(contentsOf: ModelUtility.getInstance().GetLookupList("SampleType", extendedReferenceDataType: "None"));
                 
                 cell.SampleType.restorationIdentifier = taskTemplateParameter.RowId
                 cell.SampleType.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
@@ -843,7 +849,7 @@ class BiologicalMonitoringViewController: UITableViewController, UITextFieldDele
                 
             case "SampleWithBiocide":
                 let cell = tableView.dequeueReusableCell(withIdentifier: "SampleWithBiocide", for: indexPath) as! TaskTemplateParameterCellSampleWithBiocide
-                let taskTemplateParameterFormItemSample = taskTemplateParameterFormItem as! TaskTemplateParameterFormItemSample
+                let taskTemplateParameterFormItemSampleWithBiocide = taskTemplateParameterFormItem as! TaskTemplateParameterFormItemSampleWithBiocide
                 cell.restorationIdentifier = taskTemplateParameter.RowId
                 cell.SampleReference.text = taskTemplateParameter.ParameterName
                 cell.BacteriumType.text = taskTemplateParameter.ParameterDisplay
@@ -853,6 +859,7 @@ class BiologicalMonitoringViewController: UITableViewController, UITextFieldDele
                 var OutletTypeDropdownData: [String] = []
                 OutletTypeDropdownData.append(PleaseSelect)
                 OutletTypeDropdownData.append(contentsOf: ModelUtility.getInstance().GetOutletsForAsset(task.AssetId!))
+                if OutletTypeDropdownData.count == 1 {OutletTypeDropdownData.append("Outlet")}
 
                 cell.OutletType.restorationIdentifier = taskTemplateParameter.RowId
                 cell.OutletType.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
@@ -862,10 +869,10 @@ class BiologicalMonitoringViewController: UITableViewController, UITextFieldDele
 
                 var selectedOutletTypeItem: Int = 0
 
-                if taskTemplateParameterFormItemSample.OutletType != nil {
+                if taskTemplateParameterFormItemSampleWithBiocide.OutletType != nil {
                     var count: Int = 0
                     for value in OutletTypeDropdownData {
-                        if value == taskTemplateParameterFormItemSample.OutletType {
+                        if value == taskTemplateParameterFormItemSampleWithBiocide.OutletType {
                             selectedOutletTypeItem = count
                             break
                         }
@@ -880,14 +887,7 @@ class BiologicalMonitoringViewController: UITableViewController, UITextFieldDele
                 //Sample Type
                 var SampleTypeTypeDropdownData: [String] = []
                 SampleTypeTypeDropdownData.append(PleaseSelect)
-                if (cell.BacteriumType.text!.startsWith("TVC"))
-                {
-                    SampleTypeTypeDropdownData.append(contentsOf: ModelUtility.getInstance().GetLookupList("SampleType", extendedReferenceDataType: "None", parentType: "BacteriumType", parentValue: taskTemplateParameter.ParameterDisplay));
-                }
-                else
-                {
-                    SampleTypeTypeDropdownData.append(contentsOf: ModelUtility.getInstance().GetLookupList("SampleType", extendedReferenceDataType: "None"));
-                }
+                SampleTypeTypeDropdownData.append(contentsOf: ModelUtility.getInstance().GetLookupList("SampleType", extendedReferenceDataType: "None"));
 
                 cell.SampleType.restorationIdentifier = taskTemplateParameter.RowId
                 cell.SampleType.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
@@ -897,10 +897,10 @@ class BiologicalMonitoringViewController: UITableViewController, UITextFieldDele
 
                 var selectedSampleTypeItem: Int = 0
 
-                if taskTemplateParameterFormItemSample.SampleType != nil {
+                if taskTemplateParameterFormItemSampleWithBiocide.SampleType != nil {
                     var count: Int = 0
                     for value in SampleTypeTypeDropdownData {
-                        if value == taskTemplateParameterFormItemSample.SampleType {
+                        if value == taskTemplateParameterFormItemSampleWithBiocide.SampleType {
                             selectedSampleTypeItem = count
                             break
                         }
@@ -914,10 +914,11 @@ class BiologicalMonitoringViewController: UITableViewController, UITextFieldDele
 
                 //Number Of Bottles
                 cell.NumberOfBottles.restorationIdentifier = taskTemplateParameter.RowId
+                cell.NumberOfBottles.tag = 1
                 cell.NumberOfBottles.delegate = self
 
-                if taskTemplateParameterFormItemSample.NumberOfBottles != nil {
-                    cell.NumberOfBottles.text = taskTemplateParameterFormItemSample.NumberOfBottles
+                if taskTemplateParameterFormItemSampleWithBiocide.NumberOfBottles != nil {
+                    cell.NumberOfBottles.text = taskTemplateParameterFormItemSampleWithBiocide.NumberOfBottles
                 }
 
                 //Biocide Type
@@ -938,10 +939,10 @@ class BiologicalMonitoringViewController: UITableViewController, UITextFieldDele
 
                 var selectedBiocideTypeItem: Int = 0
 
-                if taskTemplateParameterFormItemSample.BiocideType != nil {
+                if taskTemplateParameterFormItemSampleWithBiocide.BiocideType != nil {
                     var count: Int = 0
                     for value in BiocideTypeDropdownData {
-                        if value == taskTemplateParameterFormItemSample.BiocideType {
+                        if value == taskTemplateParameterFormItemSampleWithBiocide.BiocideType {
                             selectedBiocideTypeItem = count
                             break
                         }
@@ -956,31 +957,147 @@ class BiologicalMonitoringViewController: UITableViewController, UITextFieldDele
                
                 //Reading1
                 cell.Reading1.restorationIdentifier = taskTemplateParameter.RowId
+                cell.Reading1.tag = 2
                 cell.Reading1.delegate = self
 
-                if taskTemplateParameterFormItemSample.Reading1 != nil {
-                    cell.Reading1.text = taskTemplateParameterFormItemSample.Reading1
+                if taskTemplateParameterFormItemSampleWithBiocide.Reading1 != nil {
+                    cell.Reading1.text = taskTemplateParameterFormItemSampleWithBiocide.Reading1
                 }
                 
                 //Reading2
                 cell.Reading2.restorationIdentifier = taskTemplateParameter.RowId
+                cell.Reading2.tag = 3
                 cell.Reading2.delegate = self
 
-                if taskTemplateParameterFormItemSample.Reading2 != nil {
-                    cell.Reading2.text = taskTemplateParameterFormItemSample.Reading2
+                if taskTemplateParameterFormItemSampleWithBiocide.Reading2 != nil {
+                    cell.Reading2.text = taskTemplateParameterFormItemSampleWithBiocide.Reading2
                 }
                 
                 //Temperature
                 cell.Temperature.restorationIdentifier = taskTemplateParameter.RowId
+                cell.Temperature.tag = 4
                 cell.Temperature.delegate = self
 
-                if taskTemplateParameterFormItemSample.Temperature != nil {
-                    cell.Temperature.text = taskTemplateParameterFormItemSample.Temperature
+                if taskTemplateParameterFormItemSampleWithBiocide.Temperature != nil {
+                    cell.Temperature.text = taskTemplateParameterFormItemSampleWithBiocide.Temperature
                 }
                 
-                taskTemplateParameterFormItemSample.cell = cell
+                taskTemplateParameterFormItemSampleWithBiocide.cell = cell
                 return cell
                 
+            case "SampleWithMultipleTests":
+                let cell = tableView.dequeueReusableCell(withIdentifier: "SampleWithMultipleTests", for: indexPath) as! TaskTemplateParameterCellSampleWithMultipleTests
+                let taskTemplateParameterFormItemSampleWithMultipleTests: TaskTemplateParameterFormItemSampleWithMultipleTests = taskTemplateParameterFormItem as! TaskTemplateParameterFormItemSampleWithMultipleTests
+                cell.restorationIdentifier = taskTemplateParameter.RowId
+                cell.SampleReference.text = taskTemplateParameter.ParameterName
+                cell.BacteriumType.text = taskTemplateParameter.ParameterDisplay
+                cell.Delete.restorationIdentifier = taskTemplateParameter.RowId
+                
+                //Outlet Type
+                var OutletTypeDropdownData: [String] = []
+                OutletTypeDropdownData.append(PleaseSelect)
+                OutletTypeDropdownData.append(contentsOf: ModelUtility.getInstance().GetOutletsForAsset(task.AssetId!))
+                if OutletTypeDropdownData.count == 1 {OutletTypeDropdownData.append("Outlet")}
+                
+                cell.OutletType.restorationIdentifier = taskTemplateParameter.RowId
+                cell.OutletType.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
+                cell.OutletType.setLabelFont(UIFont.systemFont(ofSize: 17))
+                cell.OutletType.setTableFont(UIFont.systemFont(ofSize: 17))
+                cell.OutletType.options = OutletTypeDropdownData.map { KFPopupSelector.Option.text(text: $0) }
+
+                var selectedOutletTypeItem: Int = 0
+
+                if taskTemplateParameterFormItemSampleWithMultipleTests.OutletType != nil {
+                    var count: Int = 0
+                    for value in OutletTypeDropdownData {
+                        if value == taskTemplateParameterFormItemSampleWithMultipleTests.OutletType {
+                            selectedOutletTypeItem = count
+                            break
+                        }
+                        count += 1
+                    }
+                }
+
+                cell.OutletType.selectedIndex = selectedOutletTypeItem
+                cell.OutletType.unselectedLabelText = PleaseSelect
+                cell.OutletType.displaySelectedValueInLabel = true
+
+                //Sample Type
+                var SampleTypeTypeDropdownData: [String] = []
+                SampleTypeTypeDropdownData.append(PleaseSelect)
+                SampleTypeTypeDropdownData.append(contentsOf: ModelUtility.getInstance().GetLookupList("SampleType", extendedReferenceDataType: "None"));
+
+                cell.SampleType.restorationIdentifier = taskTemplateParameter.RowId
+                cell.SampleType.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
+                cell.SampleType.setLabelFont(UIFont.systemFont(ofSize: 17))
+                cell.SampleType.setTableFont(UIFont.systemFont(ofSize: 17))
+                cell.SampleType.options = SampleTypeTypeDropdownData.map { KFPopupSelector.Option.text(text: $0) }
+
+                var selectedSampleTypeItem: Int = 0
+
+                if taskTemplateParameterFormItemSampleWithMultipleTests.SampleType != nil {
+                    var count: Int = 0
+                    for value in SampleTypeTypeDropdownData {
+                        if value == taskTemplateParameterFormItemSampleWithMultipleTests.SampleType {
+                            selectedSampleTypeItem = count
+                            break
+                        }
+                        count += 1
+                    }
+                }
+
+                cell.SampleType.selectedIndex = selectedSampleTypeItem
+                cell.SampleType.unselectedLabelText = PleaseSelect
+                cell.SampleType.displaySelectedValueInLabel = true
+
+                //Number Of Bottles
+                cell.NumberOfBottles.restorationIdentifier = taskTemplateParameter.RowId
+                cell.NumberOfBottles.delegate = self
+
+                if taskTemplateParameterFormItemSampleWithMultipleTests.NumberOfBottles != nil {
+                    cell.NumberOfBottles.text = taskTemplateParameterFormItemSampleWithMultipleTests.NumberOfBottles
+                }
+
+                cell.TVC.isChecked = taskTemplateParameterFormItemSampleWithMultipleTests.TVC
+                cell.TVC.restorationIdentifier = taskTemplateParameter.RowId
+                cell.TVC.Name = "TVC"
+                cell.TVC.setTitle("", for: .normal)
+                cell.TVC.delegate = self
+ 
+                cell.EColi.isChecked = taskTemplateParameterFormItemSampleWithMultipleTests.EColi
+                cell.EColi.restorationIdentifier = taskTemplateParameter.RowId
+                cell.EColi.Name = "EColi"
+                cell.EColi.setTitle("", for: .normal)
+                cell.EColi.delegate = self
+ 
+                cell.Coliforms.isChecked = taskTemplateParameterFormItemSampleWithMultipleTests.Coliforms
+                cell.Coliforms.restorationIdentifier = taskTemplateParameter.RowId
+                cell.Coliforms.Name = "Coliforms"
+                cell.Coliforms.setTitle("", for: .normal)
+                cell.Coliforms.delegate = self
+ 
+                cell.PseudomonasSpp.isChecked = taskTemplateParameterFormItemSampleWithMultipleTests.PseudomonasSpp
+                cell.PseudomonasSpp.restorationIdentifier = taskTemplateParameter.RowId
+                cell.PseudomonasSpp.Name = "PseudomonasSpp"
+                cell.PseudomonasSpp.setTitle("", for: .normal)
+                cell.PseudomonasSpp.delegate = self
+ 
+                cell.PseudomonasAeruginosa.isChecked = taskTemplateParameterFormItemSampleWithMultipleTests.PseudomonasAeruginosa
+                cell.PseudomonasAeruginosa.restorationIdentifier = taskTemplateParameter.RowId
+                cell.PseudomonasAeruginosa.Name = "PseudomonasAeruginosa"
+                cell.PseudomonasAeruginosa.setTitle("", for: .normal)
+                cell.PseudomonasAeruginosa.delegate = self
+ 
+                cell.Cryptosporidium.isChecked = taskTemplateParameterFormItemSampleWithMultipleTests.Cryptosporidium
+                cell.Cryptosporidium.restorationIdentifier = taskTemplateParameter.RowId
+                cell.Cryptosporidium.Name = "Cryptosporidium"
+                cell.Cryptosporidium.setTitle("", for: .normal)
+                cell.Cryptosporidium.delegate = self
+ 
+                
+                taskTemplateParameterFormItemSampleWithMultipleTests.cell = cell
+                return cell
+
             default:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "FreetextCell", for: indexPath) as! TaskTemplateParameterCellFreetext
                 cell.restorationIdentifier = taskTemplateParameter.RowId
@@ -1018,7 +1135,10 @@ class BiologicalMonitoringViewController: UITableViewController, UITextFieldDele
         
         case "SampleWithBiocide":
             return 458
-        
+
+        case "SampleWithMultipleTests":
+            return 392
+            
         default:
             return 68
         }
@@ -1113,7 +1233,7 @@ class BiologicalMonitoringViewController: UITableViewController, UITextFieldDele
         if let thisTaskTemplateParameterId: String = sender.restorationIdentifier {
             debugPrint("BiocideTypePopupChanged: " + thisTaskTemplateParameterId)
 
-            let thisTaskTemplateParameterFormItem: TaskTemplateParameterFormItemSample = taskTemplateParameterFormItems[thisTaskTemplateParameterId] as! TaskTemplateParameterFormItemSample
+            let thisTaskTemplateParameterFormItem: TaskTemplateParameterFormItemSampleWithBiocide = taskTemplateParameterFormItems[thisTaskTemplateParameterId] as! TaskTemplateParameterFormItemSampleWithBiocide
 
             // record the selected value
 
@@ -1300,16 +1420,79 @@ class BiologicalMonitoringViewController: UITableViewController, UITextFieldDele
             Session.CurrentTemperatureControl!.backgroundColor = UIColor.white
         }
 
-        if textField.restorationIdentifier != nil {
-            if let currentTaskTemplateParameterFormItem: TaskTemplateParameterFormItem = taskTemplateParameterFormItems[textField.restorationIdentifier!]
+         if textField.restorationIdentifier != nil {
+            if taskTemplateParameterFormItems[textField.restorationIdentifier!] is TaskTemplateParameterFormItemSampleWithBiocide
+            {
+                let currentTaskTemplateParameterFormItem: TaskTemplateParameterFormItemSampleWithBiocide = (taskTemplateParameterFormItems[textField.restorationIdentifier!] as? TaskTemplateParameterFormItemSampleWithBiocide)!
+            
+                switch textField.tag
+                {
+                    case 1:
+                        currentTaskTemplateParameterFormItem.NumberOfBottles = textField.text
+                        break
+                    case 2:
+                        currentTaskTemplateParameterFormItem.Reading1 = textField.text
+                        break
+                    case 3:
+                        currentTaskTemplateParameterFormItem.Reading2 = textField.text
+                        break
+                    case 4:
+                        currentTaskTemplateParameterFormItem.Temperature = textField.text
+                        break
+                    default:
+                        break
+                }
+            }
+            else if taskTemplateParameterFormItems[textField.restorationIdentifier!] is TaskTemplateParameterFormItemSampleWithMultipleTests ||  taskTemplateParameterFormItems[textField.restorationIdentifier!] is TaskTemplateParameterFormItemSample
+            {
+                if let currentTaskTemplateParameterFormItem: TaskTemplateParameterFormItemSample = taskTemplateParameterFormItems[textField.restorationIdentifier!] as? TaskTemplateParameterFormItemSample
+                {
+                    currentTaskTemplateParameterFormItem.NumberOfBottles = textField.text
+                }
+            }
+            else if let currentTaskTemplateParameterFormItem: TaskTemplateParameterFormItem = taskTemplateParameterFormItems[textField.restorationIdentifier!]
             {
                 currentTaskTemplateParameterFormItem.SelectedItem = textField.text
             }
+            
+            
         }
         activeField = nil
         textField.resignFirstResponder()
     }
 
+    // MARK: CheckBoxDelegate\
+    func CheckBoxClicked(sender: CheckBox) {
+        if sender.restorationIdentifier != nil {
+            let currentTaskTemplateParameterFormItemSampleWithMultipleTests: TaskTemplateParameterFormItemSampleWithMultipleTests = taskTemplateParameterFormItems[sender.restorationIdentifier!] as! TaskTemplateParameterFormItemSampleWithMultipleTests
+            
+            switch sender.Name {
+            case "TVC":
+                currentTaskTemplateParameterFormItemSampleWithMultipleTests.TVC = sender.isChecked
+                break
+            case "EColi":
+                currentTaskTemplateParameterFormItemSampleWithMultipleTests.EColi = sender.isChecked
+                break
+            case "Coliforms":
+                currentTaskTemplateParameterFormItemSampleWithMultipleTests.Coliforms = sender.isChecked
+                break
+            case "PseudomonasSpp":
+                currentTaskTemplateParameterFormItemSampleWithMultipleTests.PseudomonasSpp = sender.isChecked
+                break
+            case "PseudomonasAeruginosa":
+                currentTaskTemplateParameterFormItemSampleWithMultipleTests.PseudomonasAeruginosa = sender.isChecked
+                break
+            case "Cryptosporidium":
+                currentTaskTemplateParameterFormItemSampleWithMultipleTests.Cryptosporidium = sender.isChecked
+                break
+            default:
+                break
+            }
+            
+        }
+    }
+    
+    
     // MARK: UITextViewDelegate
 
     func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
@@ -1390,34 +1573,159 @@ class BiologicalMonitoringViewController: UITableViewController, UITextFieldDele
     //MARK: Validation
     func Validate() -> Bool {
         var valid: Bool = true
+        var SampleFound: Bool = false
 
         for (_, taskTemplateParameterFormItem) in taskTemplateParameterFormItems {
             let taskTemplateParameter: TaskTemplateParameter = taskTemplateParameterFormItem.TemplateParameter
-            if !((taskTemplateParameter.ParameterName == "TemperatureHot" && HotType == "None")
-                || (taskTemplateParameter.ParameterName == "TemperatureCold" && ColdType == "None")
-                || (taskTemplateParameter.ParameterName == "RemoveAsset")
-                || (taskTemplateParameter.ParameterName == "AlternateAssetCode")
-                || (taskTemplateParameter.ParameterName.hasPrefix("Add") && taskTemplateParameter.ParameterName.hasSuffix("Notes")))
-            {
-                let value: String? = GetParameterValue(taskTemplateParameter.RowId)
-
-                //TBD: check collect parameter
-                if value == nil || value == String() || value == PleaseSelect {
+            
+            switch taskTemplateParameter.ParameterType {
+            case "Sample":
+                SampleFound = true
+                
+                let SampleItem: TaskTemplateParameterFormItemSample = taskTemplateParameterFormItem as! TaskTemplateParameterFormItemSample
+                
+                let SampleCell: TaskTemplateParameterCellSample  = SampleItem.cell as! TaskTemplateParameterCellSample
+                
+                if SampleCell.outletType() == nil || SampleCell.outletType() == "" || SampleCell.outletType() == NotApplicable || SampleCell.outletType() == PleaseSelect {
                     taskTemplateParameterFormItem.LabelColour = UIColor.red
                     SetCellLabelColour(taskTemplateParameter.RowId, colour: UIColor.red)
-
-                    taskTemplateParameterFormItem.ControlBackgroundColor = UIColor.red
-                    SetCellBackgroundColour(taskTemplateParameter.RowId, colour: UIColor.red)
-
                     valid = false
-                } else {
-                    taskTemplateParameterFormItem.LabelColour = UIColor.white
-                    SetCellLabelColour(taskTemplateParameter.RowId, colour: UIColor.white)
-
-                    taskTemplateParameterFormItem.ControlBackgroundColor = UIColor.white
-                    SetCellBackgroundColour(taskTemplateParameter.RowId, colour: UIColor.white)
                 }
+
+                if SampleCell.outletType() == nil || SampleCell.sampleType() == "" || SampleCell.sampleType() == NotApplicable || SampleCell.sampleType() == PleaseSelect {
+                    taskTemplateParameterFormItem.LabelColour = UIColor.red
+                    SetCellLabelColour(taskTemplateParameter.RowId, colour: UIColor.red)
+                    valid = false
+                }
+                if SampleCell.numberOfBottles() == nil || SampleCell.numberOfBottles() == "" || SampleCell.numberOfBottles() == NotApplicable || SampleCell.numberOfBottles() == PleaseSelect {
+                    taskTemplateParameterFormItem.LabelColour = UIColor.red
+                    SetCellLabelColour(taskTemplateParameter.RowId, colour: UIColor.red)
+                    valid = false
+                }
+                break
+                
+            case "SampleWithBiocide":
+                SampleFound = true
+                    
+                let taskTemplateParameterFormItemSampleWithBiocide: TaskTemplateParameterFormItemSampleWithBiocide = taskTemplateParameterFormItem as! TaskTemplateParameterFormItemSampleWithBiocide
+                
+                if taskTemplateParameterFormItemSampleWithBiocide.OutletType == nil || taskTemplateParameterFormItemSampleWithBiocide.OutletType == "" || taskTemplateParameterFormItemSampleWithBiocide.OutletType == NotApplicable || taskTemplateParameterFormItemSampleWithBiocide.OutletType == PleaseSelect {
+                    taskTemplateParameterFormItem.LabelColour = UIColor.red
+                    SetCellLabelColour(taskTemplateParameter.RowId, colour: UIColor.red)
+                    valid = false
+                }
+
+                if taskTemplateParameterFormItemSampleWithBiocide.SampleType == nil || taskTemplateParameterFormItemSampleWithBiocide.SampleType == "" || taskTemplateParameterFormItemSampleWithBiocide.SampleType == NotApplicable || taskTemplateParameterFormItemSampleWithBiocide.SampleType == PleaseSelect {
+                    taskTemplateParameterFormItem.LabelColour = UIColor.red
+                    SetCellLabelColour(taskTemplateParameter.RowId, colour: UIColor.red)
+                    valid = false
+                }
+                if taskTemplateParameterFormItemSampleWithBiocide.NumberOfBottles == nil || taskTemplateParameterFormItemSampleWithBiocide.NumberOfBottles == "" || taskTemplateParameterFormItemSampleWithBiocide.NumberOfBottles == NotApplicable || taskTemplateParameterFormItemSampleWithBiocide.NumberOfBottles == PleaseSelect {
+                    taskTemplateParameterFormItem.LabelColour = UIColor.red
+                    SetCellLabelColour(taskTemplateParameter.RowId, colour: UIColor.red)
+                    valid = false
+                }
+                if taskTemplateParameterFormItemSampleWithBiocide.BiocideType == nil || taskTemplateParameterFormItemSampleWithBiocide.BiocideType == "" || taskTemplateParameterFormItemSampleWithBiocide.BiocideType == NotApplicable || taskTemplateParameterFormItemSampleWithBiocide.BiocideType == PleaseSelect {
+                    taskTemplateParameterFormItem.LabelColour = UIColor.red
+                    SetCellLabelColour(taskTemplateParameter.RowId, colour: UIColor.red)
+                    valid = false
+                }
+                else
+                {
+                    switch taskTemplateParameterFormItemSampleWithBiocide.BiocideType {
+                    case "None":
+                        break
+                        
+                    case "Copper Silver Ionisation":
+                        if taskTemplateParameterFormItemSampleWithBiocide.Reading1 == nil || taskTemplateParameterFormItemSampleWithBiocide.Reading1 == "" || taskTemplateParameterFormItemSampleWithBiocide.Reading1 == NotApplicable || taskTemplateParameterFormItemSampleWithBiocide.Reading1 == PleaseSelect {
+                            taskTemplateParameterFormItem.LabelColour = UIColor.red
+                            SetCellLabelColour(taskTemplateParameter.RowId, colour: UIColor.red)
+                            valid = false
+                        }
+                        if taskTemplateParameterFormItemSampleWithBiocide.Reading2 == nil || taskTemplateParameterFormItemSampleWithBiocide.Reading2 == "" || taskTemplateParameterFormItemSampleWithBiocide.Reading2 == NotApplicable || taskTemplateParameterFormItemSampleWithBiocide.Reading2 == PleaseSelect {
+                            taskTemplateParameterFormItem.LabelColour = UIColor.red
+                            SetCellLabelColour(taskTemplateParameter.RowId, colour: UIColor.red)
+                            valid = false
+                        }
+                        break
+                    default:
+                        if taskTemplateParameterFormItemSampleWithBiocide.Reading1 == nil || taskTemplateParameterFormItemSampleWithBiocide.Reading1 == "" || taskTemplateParameterFormItemSampleWithBiocide.Reading1 == NotApplicable || taskTemplateParameterFormItemSampleWithBiocide.Reading1 == PleaseSelect {
+                            taskTemplateParameterFormItem.LabelColour = UIColor.red
+                            SetCellLabelColour(taskTemplateParameter.RowId, colour: UIColor.red)
+                            valid = false
+                        }
+                        break
+                    }
+                }
+ 
+                if taskTemplateParameterFormItemSampleWithBiocide.Temperature == nil || taskTemplateParameterFormItemSampleWithBiocide.Temperature == "" || taskTemplateParameterFormItemSampleWithBiocide.Temperature == NotApplicable || taskTemplateParameterFormItemSampleWithBiocide.Temperature == PleaseSelect {
+                    taskTemplateParameterFormItem.LabelColour = UIColor.red
+                    SetCellLabelColour(taskTemplateParameter.RowId, colour: UIColor.red)
+                    valid = false
+                }
+                break
+
+                
+            case "SampleWithMultipleTests":
+                SampleFound = true
+                let taskTemplateParameterFormItemSampleWithMultipleTests: TaskTemplateParameterFormItemSampleWithMultipleTests = taskTemplateParameterFormItem as! TaskTemplateParameterFormItemSampleWithMultipleTests
+                
+                if taskTemplateParameterFormItemSampleWithMultipleTests.OutletType == nil || taskTemplateParameterFormItemSampleWithMultipleTests.OutletType == "" || taskTemplateParameterFormItemSampleWithMultipleTests.OutletType == NotApplicable || taskTemplateParameterFormItemSampleWithMultipleTests.OutletType == PleaseSelect {
+                    taskTemplateParameterFormItem.LabelColour = UIColor.red
+                    SetCellLabelColour(taskTemplateParameter.RowId, colour: UIColor.red)
+                    valid = false
+                }
+
+                if taskTemplateParameterFormItemSampleWithMultipleTests.SampleType == nil || taskTemplateParameterFormItemSampleWithMultipleTests.SampleType == "" || taskTemplateParameterFormItemSampleWithMultipleTests.SampleType == NotApplicable || taskTemplateParameterFormItemSampleWithMultipleTests.SampleType == PleaseSelect {
+                    taskTemplateParameterFormItem.LabelColour = UIColor.red
+                    SetCellLabelColour(taskTemplateParameter.RowId, colour: UIColor.red)
+                    valid = false
+                }
+                if taskTemplateParameterFormItemSampleWithMultipleTests.NumberOfBottles == nil || taskTemplateParameterFormItemSampleWithMultipleTests.NumberOfBottles == "" || taskTemplateParameterFormItemSampleWithMultipleTests.NumberOfBottles == NotApplicable || taskTemplateParameterFormItemSampleWithMultipleTests.NumberOfBottles == PleaseSelect {
+                    taskTemplateParameterFormItem.LabelColour = UIColor.red
+                    SetCellLabelColour(taskTemplateParameter.RowId, colour: UIColor.red)
+                    valid = false
+                }
+                if !(taskTemplateParameterFormItemSampleWithMultipleTests.TVC || taskTemplateParameterFormItemSampleWithMultipleTests.EColi || taskTemplateParameterFormItemSampleWithMultipleTests.Coliforms || taskTemplateParameterFormItemSampleWithMultipleTests.PseudomonasSpp || taskTemplateParameterFormItemSampleWithMultipleTests.PseudomonasAeruginosa || taskTemplateParameterFormItemSampleWithMultipleTests.Cryptosporidium) {
+                    taskTemplateParameterFormItem.LabelColour = UIColor.red
+                    SetCellLabelColour(taskTemplateParameter.RowId, colour: UIColor.red)
+                    valid = false
+                }
+                
+                break
+                
+            default:
+                if !((taskTemplateParameter.ParameterName == "TemperatureHot" && HotType == "None")
+                    || (taskTemplateParameter.ParameterName == "TemperatureCold" && ColdType == "None")
+                    || (taskTemplateParameter.ParameterName == "RemoveAsset")
+                    || (taskTemplateParameter.ParameterName == "AlternateAssetCode")
+                    || (taskTemplateParameter.ParameterName.hasPrefix("Add") && taskTemplateParameter.ParameterName.hasSuffix("Notes")))
+                {
+                    let value: String? = GetParameterValue(taskTemplateParameter.RowId)
+
+                    //TBD: check collect parameter
+                    if (value == nil || value == String() || value == PleaseSelect) && taskTemplateParameter.Collect {
+                        taskTemplateParameterFormItem.LabelColour = UIColor.red
+                        SetCellLabelColour(taskTemplateParameter.RowId, colour: UIColor.red)
+
+                        taskTemplateParameterFormItem.ControlBackgroundColor = UIColor.red
+                        SetCellBackgroundColour(taskTemplateParameter.RowId, colour: UIColor.red)
+
+                        valid = false
+                    } else {
+                        taskTemplateParameterFormItem.LabelColour = UIColor.white
+                        SetCellLabelColour(taskTemplateParameter.RowId, colour: UIColor.white)
+
+                        taskTemplateParameterFormItem.ControlBackgroundColor = UIColor.white
+                        SetCellBackgroundColour(taskTemplateParameter.RowId, colour: UIColor.white)
+                    }
+                }
+                break
             }
+        }
+        
+        if !SampleFound {
+            valid = false
         }
 
         if Session.UseTaskTiming {
@@ -1574,6 +1882,21 @@ class BiologicalMonitoringViewController: UITableViewController, UITextFieldDele
                     cell.Question.textColor = colour
                     return
 
+                case "Sample":
+                    let cell: TaskTemplateParameterCellSample = tableCell as! TaskTemplateParameterCellSample
+                    cell.Sample.textColor = colour
+                    return
+                    
+                case "SampleWithBiocide":
+                    let cell: TaskTemplateParameterCellSampleWithBiocide = tableCell as! TaskTemplateParameterCellSampleWithBiocide
+                    cell.Sample.textColor = colour
+                    return
+                    
+                case "SampleWithMultipleTests":
+                    let cell: TaskTemplateParameterCellSampleWithMultipleTests = tableCell as! TaskTemplateParameterCellSampleWithMultipleTests
+                    cell.Sample.textColor = colour
+                    return
+                    
                 default:
                     return
                 }
@@ -1608,6 +1931,21 @@ class BiologicalMonitoringViewController: UITableViewController, UITextFieldDele
                     cell.AnswerSelector.backgroundColor = colour
                     return
 
+                case "Sample":
+                    let cell: TaskTemplateParameterCellSample = tableCell as! TaskTemplateParameterCellSample
+                    cell.Sample.backgroundColor = colour
+                    return
+                    
+                case "SampleWithBiocide":
+                    let cell: TaskTemplateParameterCellSampleWithBiocide = tableCell as! TaskTemplateParameterCellSampleWithBiocide
+                    cell.Sample.backgroundColor = colour
+                    return
+                    
+                case "SampleWithMultipleTests":
+                    let cell: TaskTemplateParameterCellSampleWithMultipleTests = tableCell as! TaskTemplateParameterCellSampleWithMultipleTests
+                    cell.Sample.backgroundColor = colour
+                    return
+                    
                 default:
                     return
                 }
@@ -1760,7 +2098,7 @@ class BiologicalMonitoringViewController: UITableViewController, UITextFieldDele
                     let SampleParameterId: String = taskTemplateParameter.RowId
                     let SampleRef: String = taskTemplateParameter.ParameterName
                     
-                    let SampleItem: TaskTemplateParameterFormItemSample = taskTemplateParameterFormItems[SampleParameterId] as! TaskTemplateParameterFormItemSample
+                    let SampleItem: TaskTemplateParameterFormItemSampleWithBiocide = taskTemplateParameterFormItems[SampleParameterId] as! TaskTemplateParameterFormItemSampleWithBiocide
                     
                     //SampleRef
                     currentTaskParameter = TaskParameter()
@@ -1891,6 +2229,95 @@ class BiologicalMonitoringViewController: UITableViewController, UITextFieldDele
                     currentTaskParameter.ParameterValue = (SampleItem.cell as! TaskTemplateParameterCellSampleWithBiocide).temperature()!
                     _ = ModelManager.getInstance().addTaskParameter(currentTaskParameter)
  
+                    break;
+                    
+                case "SampleWithMultipleTests":
+                    //build the parameters for a sample
+                    let SampleParameterId: String = taskTemplateParameter.RowId
+                    let SampleRef: String = taskTemplateParameter.ParameterName
+                    
+                    let SampleItem: TaskTemplateParameterFormItemSampleWithMultipleTests = taskTemplateParameterFormItems[SampleParameterId] as! TaskTemplateParameterFormItemSampleWithMultipleTests
+                    
+                    //SampleRef
+                    currentTaskParameter = TaskParameter()
+                    currentTaskParameter.RowId = UUID().uuidString
+                    currentTaskParameter.CreatedBy = Session.OperativeId!
+                    currentTaskParameter.CreatedOn = now
+                    currentTaskParameter.TaskId = Session.TaskId!
+                    currentTaskParameter.TaskTemplateParameterId = nil
+                    currentTaskParameter.ParameterName = "SampleRef"
+                    currentTaskParameter.ParameterType = "FreeText"
+                    currentTaskParameter.ParameterDisplay = "SampleRef"
+                    currentTaskParameter.Collect = true
+                    currentTaskParameter.ParameterValue = SampleRef
+                    _ = ModelManager.getInstance().addTaskParameter(currentTaskParameter)
+                    
+                    //OutletName
+                    currentTaskParameter = TaskParameter()
+                    currentTaskParameter.RowId = UUID().uuidString
+                    currentTaskParameter.CreatedBy = Session.OperativeId!
+                    currentTaskParameter.CreatedOn = now
+                    currentTaskParameter.TaskId = Session.TaskId!
+                    currentTaskParameter.TaskTemplateParameterId = nil
+                    currentTaskParameter.ParameterName = SampleRef + SampleRefDelimiter + "OutletName"
+                    currentTaskParameter.ParameterType = "FreeText"
+                    currentTaskParameter.ParameterDisplay = "Hot or Cold"
+                    currentTaskParameter.Collect = true
+                    currentTaskParameter.ParameterValue = (SampleItem.cell as! TaskTemplateParameterCellSampleWithMultipleTests).outletType()!
+                    _ = ModelManager.getInstance().addTaskParameter(currentTaskParameter)
+                     
+                    //SampleType
+                    currentTaskParameter = TaskParameter()
+                    currentTaskParameter.RowId = UUID().uuidString
+                    currentTaskParameter.CreatedBy = Session.OperativeId!
+                    currentTaskParameter.CreatedOn = now
+                    currentTaskParameter.TaskId = Session.TaskId!
+                    currentTaskParameter.TaskTemplateParameterId = nil
+                    currentTaskParameter.ParameterName = SampleRef + SampleRefDelimiter + "SampleType"
+                    currentTaskParameter.ParameterType = "FreeText"
+                    currentTaskParameter.ParameterDisplay = "Sample Type"
+                    currentTaskParameter.Collect = true
+                    currentTaskParameter.ParameterValue = (SampleItem.cell as! TaskTemplateParameterCellSampleWithMultipleTests).sampleType()!
+                    _ = ModelManager.getInstance().addTaskParameter(currentTaskParameter)
+                    
+                    //NoOfBottles
+                    currentTaskParameter = TaskParameter()
+                    currentTaskParameter.RowId = UUID().uuidString
+                    currentTaskParameter.CreatedBy = Session.OperativeId!
+                    currentTaskParameter.CreatedOn = now
+                    currentTaskParameter.TaskId = Session.TaskId!
+                    currentTaskParameter.TaskTemplateParameterId = nil
+                    currentTaskParameter.ParameterName = SampleRef + SampleRefDelimiter + "NoOfBottles"
+                    currentTaskParameter.ParameterType = "FreeText"
+                    currentTaskParameter.ParameterDisplay = "No of Bottles"
+                    currentTaskParameter.Collect = true
+                    currentTaskParameter.ParameterValue = (SampleItem.cell as! TaskTemplateParameterCellSampleWithMultipleTests).numberOfBottles()!
+                    _ = ModelManager.getInstance().addTaskParameter(currentTaskParameter)
+                   
+                    //Tests
+                    currentTaskParameter = TaskParameter()
+                    currentTaskParameter.RowId = UUID().uuidString
+                    currentTaskParameter.CreatedBy = Session.OperativeId!
+                    currentTaskParameter.CreatedOn = now
+                    currentTaskParameter.TaskId = Session.TaskId!
+                    currentTaskParameter.TaskTemplateParameterId = nil
+                    currentTaskParameter.ParameterName = SampleRef + SampleRefDelimiter + "Tests"
+                    currentTaskParameter.ParameterType = "FreeText"
+                    currentTaskParameter.ParameterDisplay = "Tests"
+                    currentTaskParameter.Collect = true
+                    
+                    var parameterValue: String = ""
+                
+                    if(SampleItem.TVC) {parameterValue += "[TVC]"}
+                    if(SampleItem.EColi) {parameterValue += "[EColi]"}
+                    if(SampleItem.Coliforms) {parameterValue += "[Coliforms]"}
+                    if(SampleItem.PseudomonasSpp) {parameterValue += "[PseudomonasSpp]"}
+                    if(SampleItem.PseudomonasAeruginosa) {parameterValue += "[PseudomonasAeruginosa]"}
+                    if(SampleItem.Cryptosporidium) {parameterValue += "[Cryptosporidium]"}
+                    
+                    currentTaskParameter.ParameterValue = parameterValue
+                    _ = ModelManager.getInstance().addTaskParameter(currentTaskParameter)
+                    
                     break;
                     
                 default:
