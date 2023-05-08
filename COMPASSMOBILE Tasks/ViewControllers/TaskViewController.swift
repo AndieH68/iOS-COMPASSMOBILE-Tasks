@@ -183,7 +183,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
 
     override func viewWillAppear(_ animated: Bool) {
         if Session.GettingAlternateAssetCode {
-            if (!Session.CancelFromScan) {
+            if (!Session.CancelFromScan && Session.CodeScanned != nil) {
                 AlternateAssetCode.text = Session.CodeScanned!
                 Session.CodeScanned = nil
                 Session.GettingAlternateAssetCode = false
@@ -777,7 +777,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
         case "TemperatureProfileSegue":
 
             if sender is UIButton {
-                let cell: TaskTemplateParameterCellTemperature = (sender as! UIButton).superview!.superview as! TaskTemplateParameterCellTemperature
+                let cell: TaskTemplateParameterCellTemperature = (sender as! UIButton).superview!.superview!.superview!.superview as! TaskTemplateParameterCellTemperature
                 Session.CurrentProfileControl = cell.Answer
             } else {
                 Session.CurrentProfileControl = sender as? UITextField
@@ -790,7 +790,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
         case "ScanUniversalSegue":
 
             if sender is UIButton {
-                let cell: TaskTemplateParameterCellScanUniversal = (sender as! UIButton).superview!.superview as! TaskTemplateParameterCellScanUniversal
+                let cell: TaskTemplateParameterCellScanUniversal = (sender as! UIButton).superview!.superview!.superview!.superview as! TaskTemplateParameterCellScanUniversal
                 Session.CurrentScanUniversalControl = cell.Answer
                 Session.CurrentScanUniversalCell = cell
             } else {
@@ -802,7 +802,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
         case "DataMatrixSegue":
 
             if sender is UIButton {
-                let cell: TaskTemplateParameterCellDataMatrix = (sender as! UIButton).superview!.superview as! TaskTemplateParameterCellDataMatrix
+                let cell: TaskTemplateParameterCellDataMatrix = (sender as! UIButton).superview!.superview!.superview!.superview as! TaskTemplateParameterCellDataMatrix
                 Session.CurrentDataMatrixControl = cell.Answer
                 Session.CurrentDataMatrixCell = cell
             } else {
@@ -814,7 +814,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
         case "ScanCodeSegue":
 
             if sender is UIButton {
-                let cell: TaskTemplateParameterCellScanCode = (sender as! UIButton).superview!.superview as! TaskTemplateParameterCellScanCode
+                let cell: TaskTemplateParameterCellScanCode = (sender as! UIButton).superview!.superview!.superview!.superview as! TaskTemplateParameterCellScanCode
                 Session.CurrentScanCodeControl = cell.Answer
             } else {
                 Session.CurrentScanCodeControl = sender as? UITextField
@@ -860,7 +860,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
         case "TemperatureProfileSegue":
 
             if sender is UIButton {
-                let cell: TaskTemplateParameterCellTemperature = (sender as! UIButton).superview!.superview as! TaskTemplateParameterCellTemperature
+                let cell: TaskTemplateParameterCellTemperature = (sender as! UIButton).superview!.superview!.superview!.superview as! TaskTemplateParameterCellTemperature
                 if cell.Answer.text != String() {
                     let userPrompt: UIAlertController = UIAlertController(title: "Overwrite Profile?", message: "Are you sure you want to overwrite the current profile?", preferredStyle: UIAlertController.Style.alert)
 
@@ -884,7 +884,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
         case "ScanUniversalSegue":
 
             if sender is UIButton {
-                let cell: TaskTemplateParameterCellScanUniversal = (sender as! UIButton).superview!.superview as! TaskTemplateParameterCellScanUniversal
+                let cell: TaskTemplateParameterCellScanUniversal = (sender as! UIButton).superview!.superview!.superview!.superview as! TaskTemplateParameterCellScanUniversal
                 if cell.Answer.text != String() {
                     let userPrompt: UIAlertController = UIAlertController(title: "Overwrite Scan?", message: "Are you sure you want to overwrite the current scan?", preferredStyle: UIAlertController.Style.alert)
 
@@ -908,7 +908,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
         case "DataMatrixSegue":
 
             if sender is UIButton {
-                let cell: TaskTemplateParameterCellDataMatrix = (sender as! UIButton).superview!.superview as! TaskTemplateParameterCellDataMatrix
+                let cell: TaskTemplateParameterCellDataMatrix = (sender as! UIButton).superview!.superview!.superview!.superview as! TaskTemplateParameterCellDataMatrix
                 if cell.Answer.text != String() {
                     let userPrompt: UIAlertController = UIAlertController(title: "Overwrite Data Matrix?", message: "Are you sure you want to overwrite the current data matrix?", preferredStyle: UIAlertController.Style.alert)
 
@@ -932,7 +932,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
         case "ScanCodeSegue":
 
             if sender is UIButton {
-                let cell: TaskTemplateParameterCellScanCode = (sender as! UIButton).superview!.superview as! TaskTemplateParameterCellScanCode
+                let cell: TaskTemplateParameterCellScanCode = (sender as! UIButton).superview!.superview!.superview!.superview as! TaskTemplateParameterCellScanCode
                 if cell.Answer.text != String() {
                     let userPrompt: UIAlertController = UIAlertController(title: "Overwrite ScanCode?", message: "Are you sure you want to overwrite the current scancode?", preferredStyle: UIAlertController.Style.alert)
 

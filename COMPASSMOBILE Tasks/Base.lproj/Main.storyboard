@@ -1135,6 +1135,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="39" sectionHeaderHeight="18" sectionFooterHeight="18" id="bo6-4c-fsV">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
                         <color key="sectionIndexBackgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <sections>
                             <tableViewSection headerTitle="Bluetooth" id="P9s-Hg-xvF" userLabel="Bluetooth">
@@ -1621,17 +1622,17 @@
                                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="sh2" id="gnF-46-a7c" userLabel="Version View Cell">
-                                        <rect key="frame" x="16" y="730.5" width="343" height="39"/>
+                                        <rect key="frame" x="16" y="730.5" width="343" height="38"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gnF-46-a7c" id="xDq-xs-8sf">
-                                            <rect key="frame" x="0.0" y="0.0" width="343" height="39"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="343" height="38"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fk2-b6-sMA" userLabel="Stack View (x)">
-                                                    <rect key="frame" x="0.0" y="0.0" width="343" height="39"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="343" height="38"/>
                                                     <subviews>
                                                         <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vhg-wv-TY5" userLabel="Debug">
-                                                            <rect key="frame" x="0.0" y="0.0" width="0.0" height="39"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="0.0" height="38"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="22" id="gdB-OQ-wSi"/>
                                                             </constraints>
@@ -1640,7 +1641,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="right" verticalHuggingPriority="251" ambiguous="YES" text="Version" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LZ6-bK-HUa" userLabel="Version">
-                                                            <rect key="frame" x="0.0" y="0.0" width="283" height="39"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="283" height="38"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="22" id="Z5U-Zw-abd"/>
                                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="75" id="iVS-zh-n9m"/>
@@ -1650,7 +1651,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Version" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4KE-OE-Eyw" userLabel="VersionNumber">
-                                                            <rect key="frame" x="283" y="0.0" width="60" height="39"/>
+                                                            <rect key="frame" x="283" y="0.0" width="60" height="38"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="22" id="hjT-9r-kK9"/>
                                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="60" id="sd9-uA-1M2"/>
@@ -2138,7 +2139,7 @@
                             </constraints>
                         </view>
                         <view key="tableFooterView" contentMode="scaleToFill" id="8dD-eN-adL" userLabel="Footer View">
-                            <rect key="frame" x="0.0" y="840" width="375" height="282"/>
+                            <rect key="frame" x="0.0" y="906" width="375" height="282"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Geq-3w-kVS" userLabel="Addtional Notes Stack View">
@@ -3468,7 +3469,7 @@
                             </constraints>
                         </view>
                         <view key="tableFooterView" contentMode="scaleToFill" id="RJj-s0-ykT" userLabel="Footer View">
-                            <rect key="frame" x="0.0" y="1626" width="375" height="310"/>
+                            <rect key="frame" x="0.0" y="1042" width="375" height="310"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T2g-2j-C0w" userLabel="Add Button Stack">
@@ -4366,7 +4367,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SampleWithMultipleTests" rowHeight="392" id="u9o-qr-NXC" userLabel="Sample With Multiple Tests" customClass="TaskTemplateParameterCellSampleWithMultipleTests" customModule="COMPASSMOBILE_Tasks" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="970" width="375" height="392"/>
+                                <rect key="frame" x="0.0" y="1206" width="375" height="392"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="u9o-qr-NXC" id="9zU-Cx-tut">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="392"/>
@@ -5184,7 +5185,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="ySw-qe-fUe"/>
+        <segue reference="aSo-7C-k89"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Add" width="30" height="30"/>
