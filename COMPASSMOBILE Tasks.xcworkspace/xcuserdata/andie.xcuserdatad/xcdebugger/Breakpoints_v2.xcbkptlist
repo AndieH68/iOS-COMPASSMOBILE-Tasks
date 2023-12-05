@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "254E1CCE-37B4-44A1-9E61-EC46722F757B"
+   type = "0"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7C5CA023-E736-4DAC-84F6-2E13BCF6EEBD"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "COMPASSMOBILE Tasks/ViewControllers/TaskViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "832"
+            endingLineNumber = "832"
+            landmarkName = "shouldPerformSegue(withIdentifier:sender:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "FF7E1ECC-9D17-4B53-AEFC-B5B4EEA47189"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "COMPASSMOBILE Tasks/KFPopupSelector control/KFPopupSelector.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "173"
+            endingLineNumber = "173"
+            landmarkName = "tableView(_:cellForRowAt:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7F4E317B-AF44-4CF2-92CB-B4DB89D6FF7C"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "COMPASSMOBILE Tasks/KFPopupSelector control/KFPopupSelector.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "201"
+            endingLineNumber = "201"
+            landmarkName = "buttonText"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "7F4E317B-AF44-4CF2-92CB-B4DB89D6FF7C - 1d2deafe1401e344"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "COMPASSMOBILE_Tasks.KFPopupSelector.buttonText.setter : Swift.Optional&lt;Swift.String&gt;"
+                  moduleName = "COMPASSMOBILE Tasks"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/andie/Development/iOS%20Development/iOS-COMPASSMOBILE-Tasks/COMPASSMOBILE%20Tasks/KFPopupSelector%20control/KFPopupSelector.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "201"
+                  endingLineNumber = "201"
+                  offsetFromSymbolStart = "68">
+               </Location>
+               <Location
+                  uuid = "7F4E317B-AF44-4CF2-92CB-B4DB89D6FF7C - 917a101b8ca2336e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.String) -&gt; Swift.String in COMPASSMOBILE_Tasks.KFPopupSelector.buttonText.setter : Swift.Optional&lt;Swift.String&gt;"
+                  moduleName = "COMPASSMOBILE Tasks"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/andie/Development/iOS%20Development/iOS-COMPASSMOBILE-Tasks/COMPASSMOBILE%20Tasks/KFPopupSelector%20control/KFPopupSelector.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "201"
+                  endingLineNumber = "201"
+                  offsetFromSymbolStart = "72">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

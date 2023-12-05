@@ -1177,7 +1177,13 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
 
     //MARK: Parameter Value
     func GetParameterValue(_ taskTemplateParameterId: String) -> String? {
-        return taskTemplateParameterFormItems[taskTemplateParameterId]?.SelectedItem
+        var returnValue: String?
+        if(taskTemplateParameterFormItems[taskTemplateParameterId] != nil && taskTemplateParameterFormItems[taskTemplateParameterId]?.SelectedItem != nil)
+        {
+            returnValue = taskTemplateParameterFormItems[taskTemplateParameterId]?.SelectedItem
+        }
+    
+        return returnValue
     }
 
     func SetParameterValue(_ taskTemplateParameterId: String, value: String?) {
@@ -1487,7 +1493,15 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
                 if taskTemperatureProfiles.keys.contains(taskTemplateParameter.RowId) {
                     currentTaskParameter.ParameterValue = taskTemperatureProfiles[taskTemplateParameter.RowId]!.ToString()
                 } else {
-                    currentTaskParameter.ParameterValue = GetParameterValue(currentTaskParameter.TaskTemplateParameterId!)!
+                    let assignedValue: String? = GetParameterValue(currentTaskParameter.TaskTemplateParameterId!)
+                    if (assignedValue != nil)
+                    {
+                        currentTaskParameter.ParameterValue = assignedValue!
+                    }
+                    else
+                    {
+                        currentTaskParameter.ParameterValue = "-"
+                    }
                 }
                 _ = ModelManager.getInstance().addTaskParameter(currentTaskParameter)
                 if currentTaskParameter.ParameterName == "Accessible" && currentTaskParameter.ParameterValue == "No"

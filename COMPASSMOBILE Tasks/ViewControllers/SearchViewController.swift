@@ -44,7 +44,7 @@ class SearchViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
             captureSession.addOutput(metadataOutput)
 
             metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
-            metadataOutput.metadataObjectTypes = [AVMetadataObject.ObjectType.code39, AVMetadataObject.ObjectType.ean8, AVMetadataObject.ObjectType.ean13, AVMetadataObject.ObjectType.pdf417, AVMetadataObject.ObjectType.code128, AVMetadataObject.ObjectType.upce, AVMetadataObject.ObjectType.code93, AVMetadataObject.ObjectType.dataMatrix]
+            metadataOutput.metadataObjectTypes = [AVMetadataObject.ObjectType.code39, AVMetadataObject.ObjectType.ean8, AVMetadataObject.ObjectType.ean13, AVMetadataObject.ObjectType.pdf417, AVMetadataObject.ObjectType.code128, AVMetadataObject.ObjectType.upce, AVMetadataObject.ObjectType.code93, AVMetadataObject.ObjectType.dataMatrix, AVMetadataObject.ObjectType.aztec, AVMetadataObject.ObjectType.qr, AVMetadataObject.ObjectType.code39Mod43]
         } else {
             failed()
             return
@@ -67,7 +67,7 @@ class SearchViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        Session.CodeScanned = nil
         if captureSession?.isRunning == false {
             captureSession.startRunning()
         }

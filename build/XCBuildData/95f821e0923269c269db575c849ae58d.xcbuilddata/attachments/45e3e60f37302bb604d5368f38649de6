@@ -1,0 +1,5 @@
+ extern const unsigned char Pods_COMPASSMOBILE_TasksVersionString[];
+ extern const double Pods_COMPASSMOBILE_TasksVersionNumber;
+
+ const unsigned char Pods_COMPASSMOBILE_TasksVersionString[] __attribute__ ((used)) = "@(#)PROGRAM:Pods_COMPASSMOBILE_Tasks  PROJECT:Pods-1" "\n";
+ const double Pods_COMPASSMOBILE_TasksVersionNumber __attribute__ ((used)) = (double)1.;

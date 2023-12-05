@@ -1,0 +1,15 @@
+{
+  "" : {
+    "const-values" : "/Users/andie/Development/iOS Development/iOS-COMPASSMOBILE-Tasks/build/Pods.build/Release-iphoneos/BRYXBanner.build/Objects-normal/arm64/BRYXBanner-master.swiftconstvalues",
+    "dependencies" : "/Users/andie/Development/iOS Development/iOS-COMPASSMOBILE-Tasks/build/Pods.build/Release-iphoneos/BRYXBanner.build/Objects-normal/arm64/BRYXBanner-master.d",
+    "diagnostics" : "/Users/andie/Development/iOS Development/iOS-COMPASSMOBILE-Tasks/build/Pods.build/Release-iphoneos/BRYXBanner.build/Objects-normal/arm64/BRYXBanner-master.dia",
+    "emit-module-dependencies" : "/Users/andie/Development/iOS Development/iOS-COMPASSMOBILE-Tasks/build/Pods.build/Release-iphoneos/BRYXBanner.build/Objects-normal/arm64/BRYXBanner-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/andie/Development/iOS Development/iOS-COMPASSMOBILE-Tasks/build/Pods.build/Release-iphoneos/BRYXBanner.build/Objects-normal/arm64/BRYXBanner-master-emit-module.dia",
+    "swift-dependencies" : "/Users/andie/Development/iOS Development/iOS-COMPASSMOBILE-Tasks/build/Pods.build/Release-iphoneos/BRYXBanner.build/Objects-normal/arm64/BRYXBanner-master.swiftdeps"
+  },
+  "/Users/andie/Development/iOS Development/iOS-COMPASSMOBILE-Tasks/Pods/BRYXBanner/Pod/Classes/Banner.swift" : {
+    "index-unit-output-path" : "/Pods.build/Release-iphoneos/BRYXBanner.build/Objects-normal/arm64/Banner.o",
+    "llvm-bc" : "/Users/andie/Development/iOS Development/iOS-COMPASSMOBILE-Tasks/build/Pods.build/Release-iphoneos/BRYXBanner.build/Objects-normal/arm64/Banner.bc",
+    "object" : "/Users/andie/Development/iOS Development/iOS-COMPASSMOBILE-Tasks/build/Pods.build/Release-iphoneos/BRYXBanner.build/Objects-normal/arm64/Banner.o"
+  }
+}

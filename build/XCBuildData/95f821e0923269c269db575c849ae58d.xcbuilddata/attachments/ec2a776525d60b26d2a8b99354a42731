@@ -1,0 +1,23 @@
+{
+  'version': 0,
+  'use-external-names': 'false',
+  'case-sensitive': 'false',
+  'roots': [{
+    'type': 'directory',
+    'name': "/Users/andie/Development/iOS Development/iOS-COMPASSMOBILE-Tasks/build/Release-iphoneos/BRYXBanner/BRYXBanner.framework/Modules"
+    'contents': [{
+      'type': 'file',
+      'name': "module.modulemap",
+      'external-contents': "/Users/andie/Development/iOS Development/iOS-COMPASSMOBILE-Tasks/build/Pods.build/Release-iphoneos/BRYXBanner.build/unextended-module.modulemap",
+    }]
+    },
+    {
+    'type': 'directory',
+    'name': "/Users/andie/Development/iOS Development/iOS-COMPASSMOBILE-Tasks/build/Release-iphoneos/BRYXBanner/BRYXBanner.framework/Headers"
+    'contents': [{
+      'type': 'file',
+      'name': "BRYXBanner-Swift.h",
+      'external-contents': "/Users/andie/Development/iOS Development/iOS-COMPASSMOBILE-Tasks/build/Pods.build/Release-iphoneos/BRYXBanner.build/unextended-interface-header.h",
+    }]
+    }]
+}

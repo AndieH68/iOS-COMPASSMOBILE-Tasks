@@ -2998,6 +2998,7 @@ class ModelManager: NSObject {
         
         sharedModelManager.database!.open()
         let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
+        NSLog("Property inserted - " + property.Name)
         sharedModelManager.database!.close()
         return isInserted
     }
@@ -3039,6 +3040,7 @@ class ModelManager: NSObject {
         
         sharedModelManager.database!.open()
         let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
+        NSLog("Property updated - " + property.Name)
         sharedModelManager.database!.close()
         return isUpdated
     }
@@ -3472,7 +3474,8 @@ class ModelManager: NSObject {
             }
             else
             {
-                whereClause = "WHERE ParentType IS NULL AND" + whereClause
+                //whereClause = "WHERE ParentType IS NULL AND" + whereClause
+                whereClause = "WHERE " + whereClause
             }
                 
         }

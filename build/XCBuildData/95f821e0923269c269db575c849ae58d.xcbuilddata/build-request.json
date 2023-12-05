@@ -1,0 +1,56 @@
+{
+  "buildCommand" : {
+    "command" : "prepareForIndexing",
+    "enableIndexBuildArena" : false,
+    "targets" : null
+  },
+  "configuredTargets" : [
+    {
+      "guid" : "bfdfe7dc352907fc980b868725387e9883bec99342c82692e2ca34f1ff031001"
+    },
+    {
+      "guid" : "bfdfe7dc352907fc980b868725387e980f85d5807cfcac50acd7330f59ebd5ae"
+    },
+    {
+      "guid" : "bfdfe7dc352907fc980b868725387e98e5199a3f70555689be7018ee7f9f878d"
+    },
+    {
+      "guid" : "bfdfe7dc352907fc980b868725387e98e7b390481eed36e82336f0f81154713e"
+    },
+    {
+      "guid" : "bfdfe7dc352907fc980b868725387e9880f5774532fad1966e392faf8cae988d"
+    }
+  ],
+  "containerPath" : "/Users/andie/Development/iOS Development/iOS-COMPASSMOBILE-Tasks/Pods/Pods.xcodeproj",
+  "continueBuildingAfterErrors" : true,
+  "enableIndexBuildArena" : false,
+  "hideShellScriptEnvironment" : false,
+  "parameters" : {
+    "action" : "build",
+    "arenaInfo" : {
+      "buildIntermediatesPath" : "",
+      "buildProductsPath" : "",
+      "derivedDataPath" : "/Users/andie/Library/Developer/Xcode/DerivedData",
+      "indexDataStoreFolderPath" : "/Users/andie/Library/Developer/Xcode/DerivedData/Pods-bkgdsmtjbqpfwxbwzzquoplaomyk/Index.noindex/DataStore",
+      "indexEnableDataStore" : true,
+      "indexPCHPath" : "/Users/andie/Library/Developer/Xcode/DerivedData/Pods-bkgdsmtjbqpfwxbwzzquoplaomyk/Index.noindex/PrecompiledHeaders",
+      "pchPath" : ""
+    },
+    "configurationName" : "Release",
+    "overrides" : {
+      "synthesized" : {
+        "table" : {
+          "ENABLE_PREVIEWS" : "NO",
+          "ENABLE_XOJIT_PREVIEWS" : "NO"
+        }
+      }
+    }
+  },
+  "qos" : "default",
+  "schemeCommand" : "launch",
+  "showNonLoggedProgress" : true,
+  "useDryRun" : true,
+  "useImplicitDependencies" : false,
+  "useLegacyBuildLocations" : false,
+  "useParallelTargets" : false
+}

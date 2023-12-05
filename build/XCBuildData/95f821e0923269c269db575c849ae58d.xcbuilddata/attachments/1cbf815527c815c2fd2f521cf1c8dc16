@@ -1,0 +1,35 @@
+{
+  "" : {
+    "const-values" : "/Users/andie/Development/iOS Development/iOS-COMPASSMOBILE-Tasks/build/Pods.build/Release-iphoneos/AEXML.build/Objects-normal/arm64/AEXML-master.swiftconstvalues",
+    "dependencies" : "/Users/andie/Development/iOS Development/iOS-COMPASSMOBILE-Tasks/build/Pods.build/Release-iphoneos/AEXML.build/Objects-normal/arm64/AEXML-master.d",
+    "diagnostics" : "/Users/andie/Development/iOS Development/iOS-COMPASSMOBILE-Tasks/build/Pods.build/Release-iphoneos/AEXML.build/Objects-normal/arm64/AEXML-master.dia",
+    "emit-module-dependencies" : "/Users/andie/Development/iOS Development/iOS-COMPASSMOBILE-Tasks/build/Pods.build/Release-iphoneos/AEXML.build/Objects-normal/arm64/AEXML-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/andie/Development/iOS Development/iOS-COMPASSMOBILE-Tasks/build/Pods.build/Release-iphoneos/AEXML.build/Objects-normal/arm64/AEXML-master-emit-module.dia",
+    "swift-dependencies" : "/Users/andie/Development/iOS Development/iOS-COMPASSMOBILE-Tasks/build/Pods.build/Release-iphoneos/AEXML.build/Objects-normal/arm64/AEXML-master.swiftdeps"
+  },
+  "/Users/andie/Development/iOS Development/iOS-COMPASSMOBILE-Tasks/Pods/AEXML/Sources/AEXML/Document.swift" : {
+    "index-unit-output-path" : "/Pods.build/Release-iphoneos/AEXML.build/Objects-normal/arm64/Document.o",
+    "llvm-bc" : "/Users/andie/Development/iOS Development/iOS-COMPASSMOBILE-Tasks/build/Pods.build/Release-iphoneos/AEXML.build/Objects-normal/arm64/Document.bc",
+    "object" : "/Users/andie/Development/iOS Development/iOS-COMPASSMOBILE-Tasks/build/Pods.build/Release-iphoneos/AEXML.build/Objects-normal/arm64/Document.o"
+  },
+  "/Users/andie/Development/iOS Development/iOS-COMPASSMOBILE-Tasks/Pods/AEXML/Sources/AEXML/Element.swift" : {
+    "index-unit-output-path" : "/Pods.build/Release-iphoneos/AEXML.build/Objects-normal/arm64/Element.o",
+    "llvm-bc" : "/Users/andie/Development/iOS Development/iOS-COMPASSMOBILE-Tasks/build/Pods.build/Release-iphoneos/AEXML.build/Objects-normal/arm64/Element.bc",
+    "object" : "/Users/andie/Development/iOS Development/iOS-COMPASSMOBILE-Tasks/build/Pods.build/Release-iphoneos/AEXML.build/Objects-normal/arm64/Element.o"
+  },
+  "/Users/andie/Development/iOS Development/iOS-COMPASSMOBILE-Tasks/Pods/AEXML/Sources/AEXML/Error.swift" : {
+    "index-unit-output-path" : "/Pods.build/Release-iphoneos/AEXML.build/Objects-normal/arm64/Error.o",
+    "llvm-bc" : "/Users/andie/Development/iOS Development/iOS-COMPASSMOBILE-Tasks/build/Pods.build/Release-iphoneos/AEXML.build/Objects-normal/arm64/Error.bc",
+    "object" : "/Users/andie/Development/iOS Development/iOS-COMPASSMOBILE-Tasks/build/Pods.build/Release-iphoneos/AEXML.build/Objects-normal/arm64/Error.o"
+  },
+  "/Users/andie/Development/iOS Development/iOS-COMPASSMOBILE-Tasks/Pods/AEXML/Sources/AEXML/Options.swift" : {
+    "index-unit-output-path" : "/Pods.build/Release-iphoneos/AEXML.build/Objects-normal/arm64/Options.o",
+    "llvm-bc" : "/Users/andie/Development/iOS Development/iOS-COMPASSMOBILE-Tasks/build/Pods.build/Release-iphoneos/AEXML.build/Objects-normal/arm64/Options.bc",
+    "object" : "/Users/andie/Development/iOS Development/iOS-COMPASSMOBILE-Tasks/build/Pods.build/Release-iphoneos/AEXML.build/Objects-normal/arm64/Options.o"
+  },
+  "/Users/andie/Development/iOS Development/iOS-COMPASSMOBILE-Tasks/Pods/AEXML/Sources/AEXML/Parser.swift" : {
+    "index-unit-output-path" : "/Pods.build/Release-iphoneos/AEXML.build/Objects-normal/arm64/Parser.o",
+    "llvm-bc" : "/Users/andie/Development/iOS Development/iOS-COMPASSMOBILE-Tasks/build/Pods.build/Release-iphoneos/AEXML.build/Objects-normal/arm64/Parser.bc",
+    "object" : "/Users/andie/Development/iOS Development/iOS-COMPASSMOBILE-Tasks/build/Pods.build/Release-iphoneos/AEXML.build/Objects-normal/arm64/Parser.o"
+  }
+}

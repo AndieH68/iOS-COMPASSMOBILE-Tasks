@@ -13,7 +13,7 @@ DEPENDENCIES:
   - MBProgressHUD
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  trunk:
     - AEXML
     - BRYXBanner
     - FMDB
@@ -27,4 +27,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 4f3099038b1ae93f2765e76eaba1a02c70cce77b
 
-COCOAPODS: 1.6.2
+COCOAPODS: 1.12.1

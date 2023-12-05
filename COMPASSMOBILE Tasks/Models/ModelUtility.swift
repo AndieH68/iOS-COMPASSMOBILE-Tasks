@@ -223,9 +223,13 @@ class ModelUtility: NSObject {
             while resultSet.next()
             {
                 let RowId: String = resultSet.string(forColumn: "rowId")!
-                let Level: String = ModelUtility.getInstance().GetLevelForLocationId(resultSet.string(forColumn: "LocationId")!)!
-                let UpdateQuery: String = "UPDATE [Task] SET [Level] = '" + Level + "' WHERE [RowId] = '" + RowId + "'"
-                sharedModelManager.database!.executeUpdate(UpdateQuery, withArgumentsIn: whereValues)
+                let LocationId: String = resultSet.string(forColumn: "LocationId")!
+                let Level: String? = ModelUtility.getInstance().GetLevelForLocationId(LocationId)
+                if (Level != nil)
+                {
+                    let UpdateQuery: String = "UPDATE [Task] SET [Level] = '" + Level! + "' WHERE [RowId] = '" + RowId + "'"
+                    sharedModelManager.database!.executeUpdate(UpdateQuery, withArgumentsIn: whereValues)
+                }
             }
         }
     }

@@ -1,0 +1,23 @@
+{
+  'version': 0,
+  'use-external-names': 'false',
+  'case-sensitive': 'false',
+  'roots': [{
+    'type': 'directory',
+    'name': "/Users/andie/Development/iOS Development/iOS-COMPASSMOBILE-Tasks/build/Release-iphoneos/AEXML/AEXML.framework/Modules"
+    'contents': [{
+      'type': 'file',
+      'name': "module.modulemap",
+      'external-contents': "/Users/andie/Development/iOS Development/iOS-COMPASSMOBILE-Tasks/build/Pods.build/Release-iphoneos/AEXML.build/unextended-module.modulemap",
+    }]
+    },
+    {
+    'type': 'directory',
+    'name': "/Users/andie/Development/iOS Development/iOS-COMPASSMOBILE-Tasks/build/Release-iphoneos/AEXML/AEXML.framework/Headers"
+    'contents': [{
+      'type': 'file',
+      'name': "AEXML-Swift.h",
+      'external-contents': "/Users/andie/Development/iOS Development/iOS-COMPASSMOBILE-Tasks/build/Pods.build/Release-iphoneos/AEXML.build/unextended-interface-header.h",
+    }]
+    }]
+}

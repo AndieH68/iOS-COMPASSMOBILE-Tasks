@@ -51,8 +51,8 @@ class KFPopupSelector: UIControl, UIPopoverPresentationControllerDelegate {
     /** the horizontal alignment for the button text */
     var buttonContentHorizontalAlignment: UIControl.ContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
     
-    /** the size of font for th etable to use*/
-    fileprivate var tableFont: UIFont = UIFont.systemFont(ofSize: 15.0)
+    /** the size of font for the table to use*/
+    fileprivate var tableFont: UIFont = UIFont.systemFont(ofSize: 14.0)
     
     
     /** How the button title is displayed */
@@ -124,7 +124,7 @@ class KFPopupSelector: UIControl, UIPopoverPresentationControllerDelegate {
         var minWidth: CGFloat = 160.0
         var optionsWidth: CGFloat = 40.0
 
-        var tableViewFont: UIFont = UIFont.systemFont(ofSize: 15.0)
+        var tableViewFont: UIFont = UIFont.systemFont(ofSize: 14.0)
 
         var options: [Option] = [] {
             didSet {
@@ -139,7 +139,7 @@ class KFPopupSelector: UIControl, UIPopoverPresentationControllerDelegate {
         override var preferredContentSize: CGSize { 
             get {
                 tableView.layoutIfNeeded()
-                return CGSize(width:optionsWidth+32, height:tableView.contentSize.height)
+                return CGSize(width: optionsWidth + 32, height: tableView.contentSize.height)
             }
             set {
                 print("Cannot set preferredContentSize of this view controller!")

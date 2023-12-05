@@ -1,0 +1,10 @@
+Target dependency graph (5 targets)
+Target 'Pods-COMPASSMOBILE Tasks' in project 'Pods'
+➜ Explicit dependency on target 'AEXML' in project 'Pods'
+➜ Explicit dependency on target 'BRYXBanner' in project 'Pods'
+➜ Explicit dependency on target 'FMDB' in project 'Pods'
+➜ Explicit dependency on target 'MBProgressHUD' in project 'Pods'
+Target 'MBProgressHUD' in project 'Pods' (no dependencies)
+Target 'FMDB' in project 'Pods' (no dependencies)
+Target 'BRYXBanner' in project 'Pods' (no dependencies)
+Target 'AEXML' in project 'Pods' (no dependencies)

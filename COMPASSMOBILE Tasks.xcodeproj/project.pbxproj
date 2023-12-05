@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 48;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -82,6 +82,44 @@
 		A4D4A2D61D2D2097009287F8 /* COMPASSMOBILE Tasks.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A4D4A2D41D2D2097009287F8 /* COMPASSMOBILE Tasks.xcdatamodeld */; };
 		A4E425431D2D22870088EF64 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4E425411D2D22870088EF64 /* Main.storyboard */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E90E75F52AE9604F006C63E4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E90E75ED2AE9604F006C63E4 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = B7F452C8575CD760062098924FC3A1D2;
+			remoteInfo = AEXML;
+		};
+		E90E75F72AE9604F006C63E4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E90E75ED2AE9604F006C63E4 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 41FD498512AB15F6641709060EFFAFBA;
+			remoteInfo = BRYXBanner;
+		};
+		E90E75F92AE9604F006C63E4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E90E75ED2AE9604F006C63E4 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A3A80BA70CFB7F75C5391BEBBBA8C9DA;
+			remoteInfo = FMDB;
+		};
+		E90E75FB2AE9604F006C63E4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E90E75ED2AE9604F006C63E4 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8B8FAB0D627B17EDE1366984278705D9;
+			remoteInfo = MBProgressHUD;
+		};
+		E90E75FD2AE9604F006C63E4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E90E75ED2AE9604F006C63E4 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A7E377758795CA90192DCAF89763DD0B;
+			remoteInfo = "Pods-COMPASSMOBILE Tasks";
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		45CAD45439E4BE01EC5A8519 /* Pods_COMPASSMOBILE_Tasks.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_COMPASSMOBILE_Tasks.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -170,6 +208,7 @@
 		A4D3976026412B3E001F2ACA /* TaskTemplateParameterCellScanCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TaskTemplateParameterCellScanCode.swift; path = "COMPASSMOBILE Tasks/TaskTemplateParameterCells/TaskTemplateParameterCellScanCode.swift"; sourceTree = SOURCE_ROOT; };
 		A4D4A2D51D2D2097009287F8 /* COMPASSMOBILE Tasks.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "COMPASSMOBILE Tasks.xcdatamodel"; sourceTree = "<group>"; };
 		A4E425421D2D22870088EF64 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "COMPASSMOBILE Tasks/Base.lproj/Main.storyboard"; sourceTree = "<group>"; };
+		E90E75ED2AE9604F006C63E4 /* Pods.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Pods.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -194,6 +233,7 @@
 			children = (
 				7C118C934BA9FD808C074B37 /* Pods-COMPASSMOBILE Tasks.release.xcconfig */,
 				6158E7563050F2630C4756CD /* Pods-COMPASSMOBILE Tasks.debug.xcconfig */,
+				E90E75ED2AE9604F006C63E4 /* Pods.xcodeproj */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -394,6 +434,18 @@
 			name = Bluetooth;
 			sourceTree = "<group>";
 		};
+		E90E75EE2AE9604F006C63E4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E90E75F62AE9604F006C63E4 /* AEXML.framework */,
+				E90E75F82AE9604F006C63E4 /* BRYXBanner.framework */,
+				E90E75FA2AE9604F006C63E4 /* FMDB.framework */,
+				E90E75FC2AE9604F006C63E4 /* MBProgressHUD.framework */,
+				E90E75FE2AE9604F006C63E4 /* Pods_COMPASSMOBILE_Tasks.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -422,8 +474,9 @@
 		A4A522E41C43F4A500D16A9A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 1220;
+				LastUpgradeCheck = 1430;
 				ORGANIZATIONNAME = "HYDOP E.C.S.";
 				TargetAttributes = {
 					A4A522EB1C43F4A500D16A9A = {
@@ -454,12 +507,56 @@
 			mainGroup = A4A522E31C43F4A500D16A9A;
 			productRefGroup = A4A522ED1C43F4A500D16A9A /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = E90E75EE2AE9604F006C63E4 /* Products */;
+					ProjectRef = E90E75ED2AE9604F006C63E4 /* Pods.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				A4A522EB1C43F4A500D16A9A /* COMPASSMOBILE Tasks */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		E90E75F62AE9604F006C63E4 /* AEXML.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AEXML.framework;
+			remoteRef = E90E75F52AE9604F006C63E4 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E90E75F82AE9604F006C63E4 /* BRYXBanner.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = BRYXBanner.framework;
+			remoteRef = E90E75F72AE9604F006C63E4 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E90E75FA2AE9604F006C63E4 /* FMDB.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = FMDB.framework;
+			remoteRef = E90E75F92AE9604F006C63E4 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E90E75FC2AE9604F006C63E4 /* MBProgressHUD.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = MBProgressHUD.framework;
+			remoteRef = E90E75FB2AE9604F006C63E4 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E90E75FE2AE9604F006C63E4 /* Pods_COMPASSMOBILE_Tasks.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Pods_COMPASSMOBILE_Tasks.framework;
+			remoteRef = E90E75FD2AE9604F006C63E4 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		A4A522EA1C43F4A500D16A9A /* Resources */ = {
@@ -504,8 +601,6 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-COMPASSMOBILE Tasks/Pods-COMPASSMOBILE Tasks-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AEXML/AEXML.framework",
@@ -514,8 +609,6 @@
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AEXML.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BRYXBanner.framework",
@@ -668,8 +761,10 @@
 				PRODUCT_BUNDLE_IDENTIFIER = COM.HYDROP.COMPASSMOBILE.TASKS2;
 				PROVISIONING_PROFILE = "bd0ca311-af46-4d09-81eb-6b5b1961d2f4";
 				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -685,7 +780,7 @@
 				CODE_SIGN_ENTITLEMENTS = "COMPASSMOBILE Tasks/COMPASSMOBILE Tasks.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 20101;
+				CURRENT_PROJECT_VERSION = 20204;
 				DEVELOPMENT_TEAM = H889T663QH;
 				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -695,9 +790,12 @@
 				INFOPLIST_KEY_CFBundleDisplayName = Tasks2;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)";
-				MARKETING_VERSION = 2.01.01;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Library";
+				MARKETING_VERSION = 2.02.04;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = COM.HYDROP.COMPASSMOBILE.TASKS2;
@@ -762,8 +860,10 @@
 				PRODUCT_BUNDLE_IDENTIFIER = COM.HYDROP.COMPASSMOBILE.TASKS2;
 				PROVISIONING_PROFILE = "bd0ca311-af46-4d09-81eb-6b5b1961d2f4";
 				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -779,7 +879,7 @@
 				CODE_SIGN_ENTITLEMENTS = "COMPASSMOBILE Tasks/COMPASSMOBILE Tasks.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 20101;
+				CURRENT_PROJECT_VERSION = 20204;
 				DEVELOPMENT_TEAM = H889T663QH;
 				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -789,9 +889,12 @@
 				INFOPLIST_KEY_CFBundleDisplayName = Tasks2;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)";
-				MARKETING_VERSION = 2.01.01;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Library";
+				MARKETING_VERSION = 2.02.04;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = COM.HYDROP.COMPASSMOBILE.TASKS2;

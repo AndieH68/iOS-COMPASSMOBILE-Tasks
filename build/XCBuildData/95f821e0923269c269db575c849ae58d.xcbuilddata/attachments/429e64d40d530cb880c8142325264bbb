@@ -1,0 +1,6 @@
+framework module Pods_COMPASSMOBILE_Tasks {
+  umbrella header "Pods-COMPASSMOBILE Tasks-umbrella.h"
+
+  export *
+  module * { export * }
+}
