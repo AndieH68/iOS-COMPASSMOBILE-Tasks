@@ -424,14 +424,16 @@ class AddViewController: UIViewController {
         var count: Int = 1 //we already have the blank row
         for currentAsset: Asset in AssetData
         {
-            let currentAssetTypeDisplay: String = ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMAssetType", key: currentAsset.AssetType)
+            var currentAssetTypeDisplay: String = ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMAssetType", key: currentAsset.AssetType)
+            if(currentAssetTypeDisplay.isEmpty) { currentAssetTypeDisplay = currentAsset.AssetType}
             if(!AssetTypeDictionary.keys.contains(currentAssetTypeDisplay))
             {
                 AssetTypes.append(currentAssetTypeDisplay)
                 AssetTypeDictionary[currentAssetTypeDisplay] = currentAsset.AssetType
+                if (currentAsset.AssetType == AssetType) { selectedIndex = count  }
+                count += 1
             }
-            if (currentAsset.AssetType == AssetType) { selectedIndex = count}
-            count += 1
+            
         }
         
         AssetTypePopupSelector.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
@@ -545,7 +547,7 @@ class AddViewController: UIViewController {
         // go and get the search/filter criteria from the values selected in the session
         var AssetNumberData: [Asset] = [] //NSMutableArray!
         var selectedIndex: Int = 0
-       AssetNumbers.append("")
+        AssetNumbers.append("")
         
         // go and get the AssetNumber data based on the criteria built
         AssetNumberData = ModelManager.getInstance().findAssetList(criteria)

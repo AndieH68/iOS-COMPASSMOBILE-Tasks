@@ -133,6 +133,9 @@ class Session : NSObject
     
     static var GettingAlternateAssetCode = false
     
+    static var CurrentSampleRestorationIdentifier: String? = nil
+    static var GettingSampleScancode: Bool = false
+    
     static var CurrentProfileControl: UITextField? = nil
     static var Profile: TemperatureProfile? = nil
     static var GettingProfile: Bool = false

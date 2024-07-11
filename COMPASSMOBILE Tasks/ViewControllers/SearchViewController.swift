@@ -17,7 +17,6 @@ class SearchViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
         super.viewDidLoad()
 
         Session.CodeScanned = nil
-        Session.FilterAssetNumber = nil
 
         view.backgroundColor = UIColor.black
         captureSession = AVCaptureSession()
@@ -122,7 +121,6 @@ class SearchViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
 
     func foundCode(_ code: String) {
         Session.CodeScanned = code
-        Session.FilterAssetNumber = "(%" + code + ")%"
         _ = navigationController?.popViewController(animated: true)
     }
 

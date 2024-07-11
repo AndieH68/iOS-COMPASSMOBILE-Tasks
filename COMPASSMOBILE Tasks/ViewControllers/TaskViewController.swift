@@ -16,6 +16,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
 
     var task: Task = Task()
     var asset: Asset = Asset()
+    var assetOutlets: Dictionary<String,String> = Dictionary<String,String>()
 
     var taskTemplateParameterFormItems: Dictionary<String, TaskTemplateParameterFormItem> = Dictionary<String, TaskTemplateParameterFormItem>()
     var formTaskTemplateParameters: [TaskTemplateParameter] = [TaskTemplateParameter]()
@@ -481,7 +482,50 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
             }
         }
 
-        if taskTemplateParameter.ParameterName.hasPrefix("Temperature") && !taskTemplateParameter.ParameterName.hasSuffix("Set")
+        if taskTemplateParameter.ParameterName.startsWith("Outlet"){
+            let cell = tableView.dequeueReusableCell(withIdentifier: "DropdownCell", for: indexPath) as! TaskTemplateParameterCellDropdown
+            cell.restorationIdentifier = taskTemplateParameter.RowId
+            cell.Question.text = taskTemplateParameter.ParameterDisplay
+            cell.Question.textColor = taskTemplateParameterFormItem.LabelColour
+
+            if(assetOutlets.count == 0) {
+                assetOutlets = ModelUtility.getInstance().GetOutletsForAsset(task.AssetId!)
+            }
+            
+            var OutletTypeDropdownData: [String] = []
+            OutletTypeDropdownData.append(PleaseSelect)
+            OutletTypeDropdownData.append(contentsOf: assetOutlets.keys)
+            if OutletTypeDropdownData.count == 1 {
+                OutletTypeDropdownData[0] = "None"
+            }
+            
+            cell.AnswerSelector.restorationIdentifier = taskTemplateParameter.RowId
+            cell.AnswerSelector.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
+            cell.AnswerSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
+            cell.AnswerSelector.setTableFont(UIFont.systemFont(ofSize: 17))
+            cell.AnswerSelector.options = OutletTypeDropdownData.map { KFPopupSelector.Option.text(text: $0) }
+            cell.AnswerSelector.backgroundColor = taskTemplateParameterFormItem.ControlBackgroundColor
+
+            var selectedOutletTypeItem: Int = 0
+            if taskTemplateParameterFormItem.SelectedItem != nil {
+                var count: Int = 0
+                for value in assetOutlets {
+                    if value.value == taskTemplateParameterFormItem.SelectedItem {
+                        selectedOutletTypeItem = count + 1 //add 1 for "Please select" value
+                        break
+                    }
+                    count += 1
+                }
+            }
+            
+            cell.AnswerSelector.selectedIndex = selectedOutletTypeItem
+            cell.AnswerSelector.unselectedLabelText = PleaseSelect
+            cell.AnswerSelector.displaySelectedValueInLabel = true
+            cell.AnswerSelector.isEnabled = taskTemplateParameterFormItem.Enabled
+            
+            return cell
+        }
+        else if taskTemplateParameter.ParameterName.hasPrefix("Temperature") && !taskTemplateParameter.ParameterName.hasSuffix("Set")
         {
             let cell = tableView.dequeueReusableCell(withIdentifier: "TemperatureCell", for: indexPath) as! TaskTemplateParameterCellTemperature
             cell.restorationIdentifier = taskTemplateParameter.RowId
@@ -643,18 +687,12 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
 
                 dropdownData.append(PleaseSelect)
                 
-                if taskTemplateParameter.ParameterName.startsWith("Outlet")  {
-                    dropdownData.append(contentsOf: ModelUtility.getInstance().GetOutletsForAsset(task.AssetId!))
-                }
-                else
-                {
-                    dropdownData.append(contentsOf: ModelUtility.getInstance().GetLookupList(taskTemplateParameter.ReferenceDataType!, extendedReferenceDataType: taskTemplateParameter.ReferenceDataExtendedType))
-                }
+                dropdownData.append(contentsOf: ModelUtility.getInstance().GetLookupList(taskTemplateParameter.ReferenceDataType!, extendedReferenceDataType: taskTemplateParameter.ReferenceDataExtendedType))
+
                 if taskTemplateParameter.ParameterName != "Accessible" {
                     dropdownData.append(NotApplicable)
                 }
-                
-
+    
                 cell.AnswerSelector.restorationIdentifier = taskTemplateParameter.RowId
                 cell.AnswerSelector.buttonContentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
                 cell.AnswerSelector.setLabelFont(UIFont.systemFont(ofSize: 17))
@@ -1451,7 +1489,7 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
             let now = Date()
             var accessbile: Bool = true
 
-            // add the removea asset and alternate asset code parameters
+            // add the remove asset and alternate asset code parameters
             var currentTaskParameter: TaskParameter = TaskParameter()
             currentTaskParameter.RowId = UUID().uuidString
             currentTaskParameter.CreatedBy = Session.OperativeId!
@@ -1480,30 +1518,50 @@ class TaskViewController: UITableViewController, UITextFieldDelegate, UITextView
 
             // commit the values
             for taskTemplateParameter in formTaskTemplateParameters {
-                currentTaskParameter = TaskParameter()
-                currentTaskParameter.RowId = UUID().uuidString
-                currentTaskParameter.CreatedBy = Session.OperativeId!
-                currentTaskParameter.CreatedOn = now
-                currentTaskParameter.TaskId = Session.TaskId!
-                currentTaskParameter.TaskTemplateParameterId = taskTemplateParameter.RowId
-                currentTaskParameter.ParameterName = taskTemplateParameter.ParameterName
-                currentTaskParameter.ParameterType = taskTemplateParameter.ParameterType
-                currentTaskParameter.ParameterDisplay = taskTemplateParameter.ParameterDisplay
-                currentTaskParameter.Collect = taskTemplateParameter.Collect
-                if taskTemperatureProfiles.keys.contains(taskTemplateParameter.RowId) {
-                    currentTaskParameter.ParameterValue = taskTemperatureProfiles[taskTemplateParameter.RowId]!.ToString()
-                } else {
+                if(taskTemplateParameter.ParameterName.startsWith("Outlet")){
+                    currentTaskParameter = TaskParameter()
+                    currentTaskParameter.RowId = UUID().uuidString
+                    currentTaskParameter.CreatedBy = Session.OperativeId!
+                    currentTaskParameter.CreatedOn = now
+                    currentTaskParameter.TaskId = Session.TaskId!
+                    currentTaskParameter.TaskTemplateParameterId = taskTemplateParameter.RowId
+                    currentTaskParameter.ParameterName = taskTemplateParameter.ParameterName
+                    currentTaskParameter.ParameterType = taskTemplateParameter.ParameterType
+                    currentTaskParameter.ParameterDisplay = taskTemplateParameter.ParameterDisplay
+                    currentTaskParameter.Collect = taskTemplateParameter.Collect
                     let assignedValue: String? = GetParameterValue(currentTaskParameter.TaskTemplateParameterId!)
-                    if (assignedValue != nil)
-                    {
-                        currentTaskParameter.ParameterValue = assignedValue!
+                    if (assignedValue != "None") {
+                            currentTaskParameter.ParameterValue = assetOutlets[assignedValue!]!
                     }
-                    else
-                    {
-                        currentTaskParameter.ParameterValue = "-"
-                    }
+                    _ = ModelManager.getInstance().addTaskParameter(currentTaskParameter)
                 }
-                _ = ModelManager.getInstance().addTaskParameter(currentTaskParameter)
+                else
+                {
+                    currentTaskParameter = TaskParameter()
+                    currentTaskParameter.RowId = UUID().uuidString
+                    currentTaskParameter.CreatedBy = Session.OperativeId!
+                    currentTaskParameter.CreatedOn = now
+                    currentTaskParameter.TaskId = Session.TaskId!
+                    currentTaskParameter.TaskTemplateParameterId = taskTemplateParameter.RowId
+                    currentTaskParameter.ParameterName = taskTemplateParameter.ParameterName
+                    currentTaskParameter.ParameterType = taskTemplateParameter.ParameterType
+                    currentTaskParameter.ParameterDisplay = taskTemplateParameter.ParameterDisplay
+                    currentTaskParameter.Collect = taskTemplateParameter.Collect
+                    if taskTemperatureProfiles.keys.contains(taskTemplateParameter.RowId) {
+                        currentTaskParameter.ParameterValue = taskTemperatureProfiles[taskTemplateParameter.RowId]!.ToString()
+                    } else {
+                        let assignedValue: String? = GetParameterValue(currentTaskParameter.TaskTemplateParameterId!)
+                        if (assignedValue != nil)
+                        {
+                            currentTaskParameter.ParameterValue = assignedValue!
+                        }
+                        else
+                        {
+                            currentTaskParameter.ParameterValue = "-"
+                        }
+                    }
+                    _ = ModelManager.getInstance().addTaskParameter(currentTaskParameter)
+                }
                 if currentTaskParameter.ParameterName == "Accessible" && currentTaskParameter.ParameterValue == "No"
                 {
                     accessbile = false

@@ -1323,6 +1323,192 @@ class Utility: NSObject {
                     }
                 }
 
+            case .taskInstruction:
+                
+                //get the data nodes
+                let dataNode: AEXMLElement = packageData["TaskInstruction"]
+                
+                //total = dataNode.children.count
+                
+                for childNode in dataNode.children
+                {
+                    autoreleasepool{
+                    current += 1
+                    
+                    //get the first child
+                    let taskInstruction: TaskInstruction = TaskInstruction(XMLElement: childNode)
+                    
+                    var currentSynchDate: Date
+                    if taskInstruction.LastUpdatedOn == nil {
+                        currentSynchDate = taskInstruction.CreatedOn as Date
+                    }
+                    else {
+                        currentSynchDate = taskInstruction.LastUpdatedOn! as Date
+                    }
+                    
+                    lastDateInPackage = (lastDateInPackage as NSDate).laterDate(currentSynchDate)
+                    lastRowId = taskInstruction.RowId
+                    
+                    //does the record exists
+                    let currentTaskInstruction: TaskInstruction? = ModelManager.getInstance().getTaskInstruction(taskInstruction.RowId)
+                    if currentTaskInstruction == nil
+                    {
+                        //is the current record deleted
+                        if (taskInstruction.Deleted == nil)
+                        {
+                            //no insert it
+                            _ = ModelManager.getInstance().addTaskInstruction(taskInstruction)
+                        }
+                    }
+                    else
+                    {
+                        //yes
+                        
+                        //is the current record deleted
+                        if (taskInstruction.Deleted != nil)
+                        {
+                            //yes  - delete the TaskInstruction
+                            _ = ModelManager.getInstance().deleteTaskInstruction(taskInstruction)
+                        }
+                        else
+                        {
+                            //no  - update the TaskInstruction
+                            _ = ModelManager.getInstance().updateTaskInstruction(taskInstruction)
+                        }
+                        
+                    }
+                    
+                    if (progressBar != nil)
+                    {
+                        DispatchQueue.main.async(execute: {progressBar!.label.text = "Task Instructions"; progressBar!.progress = (Float(current) / Float(total))})
+                    }
+                    }
+                }
+
+                
+            case .testSuite:
+                
+                //get the data nodes
+                let dataNode: AEXMLElement = packageData["TestSuite"]
+                
+                //total = dataNode.children.count
+                
+                for childNode in dataNode.children
+                {
+                    autoreleasepool{
+                    current += 1
+                    
+                    //get the first child
+                    let testSuite: TestSuite = TestSuite(XMLElement: childNode)
+                    
+                    var currentSynchDate: Date
+                    if testSuite.LastUpdatedOn == nil {
+                        currentSynchDate = testSuite.CreatedOn as Date
+                    }
+                    else {
+                        currentSynchDate = testSuite.LastUpdatedOn! as Date
+                    }
+                    
+                    lastDateInPackage = (lastDateInPackage as NSDate).laterDate(currentSynchDate)
+                    lastRowId = testSuite.RowId
+                    
+                    //does the record exists
+                    let currentTestSuite: TestSuite? = ModelManager.getInstance().getTestSuite(testSuite.RowId)
+                    if currentTestSuite == nil
+                    {
+                        //is the current record deleted
+                        if (testSuite.Deleted == nil)
+                        {
+                            //no insert it
+                            _ = ModelManager.getInstance().addTestSuite(testSuite)
+                        }
+                    }
+                    else
+                    {
+                        //yes
+                        
+                        //is the current record deleted
+                        if (testSuite.Deleted != nil)
+                        {
+                            //yes  - delete the TestSuite
+                            _ = ModelManager.getInstance().deleteTestSuite(testSuite)
+                        }
+                        else
+                        {
+                            //no  - update the TestSuite
+                            _ = ModelManager.getInstance().updateTestSuite(testSuite)
+                        }
+                        
+                    }
+                    
+                    if (progressBar != nil)
+                    {
+                        DispatchQueue.main.async(execute: {progressBar!.label.text = "Test Suites"; progressBar!.progress = (Float(current) / Float(total))})
+                    }
+                    }
+                }
+                
+            case .testSuiteItem:
+                
+                //get the data nodes
+                let dataNode: AEXMLElement = packageData["TestSuiteItem"]
+                
+                //total = dataNode.children.count
+                
+                for childNode in dataNode.children
+                {
+                    autoreleasepool{
+                    current += 1
+                    
+                    //get the first child
+                    let testSuiteItem: TestSuiteItem = TestSuiteItem(XMLElement: childNode)
+                    
+                    var currentSynchDate: Date
+                    if testSuiteItem.LastUpdatedOn == nil {
+                        currentSynchDate = testSuiteItem.CreatedOn as Date
+                    }
+                    else {
+                        currentSynchDate = testSuiteItem.LastUpdatedOn! as Date
+                    }
+                    
+                    lastDateInPackage = (lastDateInPackage as NSDate).laterDate(currentSynchDate)
+                    lastRowId = testSuiteItem.RowId
+                    
+                    //does the record exists
+                    let currentTestSuiteItem: TestSuiteItem? = ModelManager.getInstance().getTestSuiteItem(testSuiteItem.RowId)
+                    if currentTestSuiteItem == nil
+                    {
+                        //is the current record deleted
+                        if (testSuiteItem.Deleted == nil)
+                        {
+                            //no insert it
+                            _ = ModelManager.getInstance().addTestSuiteItem(testSuiteItem)
+                        }
+                    }
+                    else
+                    {
+                        //yes
+                        
+                        //is the current record deleted
+                        if (testSuiteItem.Deleted != nil)
+                        {
+                            //yes  - delete the TestSuiteItem
+                            _ = ModelManager.getInstance().deleteTestSuiteItem(testSuiteItem)
+                        }
+                        else
+                        {
+                            //no  - update the TestSuiteItem
+                            _ = ModelManager.getInstance().updateTestSuiteItem(testSuiteItem)
+                        }
+                        
+                    }
+                    
+                    if (progressBar != nil)
+                    {
+                        DispatchQueue.main.async(execute: {progressBar!.label.text = "Test Suite Items"; progressBar!.progress = (Float(current) / Float(total))})
+                    }
+                    }
+                }
             }
         }
         else
@@ -1336,7 +1522,7 @@ class Utility: NSObject {
     
     class func SynchroniseAllData(_ viewController: UIViewController, stage: Int32, progressBar: MBProgressHUD?, reset: Bool) -> Bool
     {
-            var SQLStatement: String
+        var SQLStatement: String
         var SQLParameterValues: [NSObject]
         var synchronisationDateToUse: Date = BaseDate as Date
         var synchronisationType: String = Session.OrganisationId! + ":Receive:"
@@ -1424,7 +1610,18 @@ class Utility: NSObject {
         case 18:
             (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 18, entityType: EntityType.assetOutlet, progressBar: progressBar)
             if (!state){ return false }
-       
+
+        case 19:
+            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 19, entityType: EntityType.taskInstruction, progressBar: progressBar)
+            if (!state){ return false }
+            
+        case 20:
+            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 20, entityType: EntityType.testSuite, progressBar: progressBar)
+            if (!state){ return false }
+            
+        case 21:
+            (state, _) = refactoredGetAndImport(viewController, synchronisationDate: synchronisationDateToUse, stage: 21, entityType: EntityType.testSuiteItem, progressBar: progressBar)
+            if (!state){ return false }
         default:
             //response = nil
             print ("Invalid Stage")
@@ -1749,6 +1946,18 @@ class Utility: NSObject {
         {
             Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Task Template Parameters", message: Session.AlertMessage!)
         }
+
+        success = Utility.SynchroniseAllData(viewController, stage: 20, progressBar: HUD, reset: false)
+        if(!success)
+        {
+            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Test Suites", message: Session.AlertMessage!)
+        }
+        
+        success = Utility.SynchroniseAllData(viewController, stage: 21, progressBar: HUD, reset: false)
+        if(!success)
+        {
+            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Task Suite Items", message: Session.AlertMessage!)
+        }
         
         success = Utility.SynchroniseAllData(viewController, stage: 9, progressBar: HUD, reset: false)
         if(!success)
@@ -1836,6 +2045,12 @@ class Utility: NSObject {
             SQLParameterValues = [NSObject]()
             SQLParameterValues.append(Session.OrganisationId! as NSObject)
             _ = ModelManager.getInstance().executeDirect(SQLStatement, SQLParameterValues: SQLParameterValues)
+        }
+        
+        success = Utility.SynchroniseAllData(viewController, stage: 19, progressBar: HUD, reset: false)
+        if(!success)
+        {
+            Utility.invokeAlertMethodDirect(viewController, title: "Failed to synchronise Task Instructions", message: Session.AlertMessage!)
         }
         
         success = Utility.SynchroniseAllData(viewController, stage: 17, progressBar: HUD, reset: false)

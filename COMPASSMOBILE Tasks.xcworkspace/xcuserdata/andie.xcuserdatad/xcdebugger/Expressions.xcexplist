@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "KFPopupSelector.updateLabel():KFPopupSelector.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "options">
+            </PersistentString>
+            <PersistentString
+               value = "selectedIndex">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "BiologicalMonitoringViewController.tableView(_:cellForRowAt:):BiologicalMonitoringViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.inSetup">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "TaskInstruction.__allocating_init(XMLElement:):TaskInstruction.swift">
+      </ContextState>
+      <ContextState
+         contextName = "BiologicalMonitoringViewController.viewDidLoad():BiologicalMonitoringViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "AddViewController.viewWillAppear(_:):AddViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "BiologicalMonitoringViewController.tableView(_:heightForRowAt:):BiologicalMonitoringViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "formTaskTemplateParameters">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "BiologicalMonitoringViewController.AnswerPopupChanged(_:):BiologicalMonitoringViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "ModelManager.findTaskInstructionList(_:pageSize:pageNumber:):ModelManager.swift">
+      </ContextState>
+      <ContextState
+         contextName = "BiologicalMonitoringViewController.Validate():BiologicalMonitoringViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "taskTemplateParameterFormItemSampleWithMultipleTests.OutletType == nil">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "BiologicalMonitoringViewController.OutletTypePopupChanged(_:):BiologicalMonitoringViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "sender.selectedValue">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "MainViewController.viewDidAppear(_:):MainViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "taskSwitch">
+            </PersistentString>
+            <PersistentString
+               value = "task.TaskName">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "AddViewController.PopulateAssetTypeSelector():AddViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "AssetType">
+            </PersistentString>
+            <PersistentString
+               value = "AssetTypePopupSelector.options">
+            </PersistentString>
+            <PersistentString
+               value = "currentAsset.AssetType">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

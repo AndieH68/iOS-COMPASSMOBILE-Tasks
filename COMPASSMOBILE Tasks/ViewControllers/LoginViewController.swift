@@ -15,6 +15,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     let gradientLayer = CAGradientLayer()
     @IBOutlet var scrollView: UIScrollView!
     @IBOutlet weak var brandStack: UIStackView!
+    @IBOutlet weak var ServerNameStack: UIStackView!
     @IBOutlet var VersionNumber: UILabel!
     @IBOutlet weak var ServerTextField: UITextField!
     @IBOutlet weak var UsernameTextField: UITextField!
@@ -33,12 +34,21 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             VersionNumber.text = version
         }
         
+        
+        let brandTap = UITapGestureRecognizer(target: self, action: #selector(LoginViewController.brandTapFunction))
+        brandStack.addGestureRecognizer(brandTap)
+        
         ServerTextField.delegate = self
         UsernameTextField.delegate = self
         PasswordTextField.delegate = self
 
         // Do any additional setup after loading the view.
         ServerTextField.text = Session.Server
+        if(ServerTextField.text == "")
+        {
+            ServerTextField.text = "compass.hydrop.com"
+        }
+        ServerTextField.isEnabled = false
         
         let defaults = UserDefaults.standard
         UsernameTextField.text = defaults.object(forKey: "Username") as? String
@@ -58,14 +68,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         // 1
         self.view.backgroundColor = UIColor(red:0.00, green:0.60, blue:0.85, alpha:1.0)
         scrollView.backgroundColor = UIColor.white
-//        gradientLayer.frame = self.view.bounds
-//        let color1 = UIColor(red:0.00, green:0.60, blue:0.85, alpha:1.0).cgColor as CGColor
-//        let color3 = UIColor.clear.cgColor as CGColor
-//        gradientLayer.colors = [color1, color3]
-//        gradientLayer.locations = [0.250,0.250]
-//        scrollView.layer.insertSublayer(gradientLayer, at: 0)
         
         brandStack.addBackground(color: UIColor(red:0.00, green:0.60, blue:0.85, alpha:1.0))
+        
+        ServerNameStack.isHidden = true
+    
         
     }
     override func viewWillDisappear(_ animated: Bool) {
@@ -301,6 +308,15 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         UIColor.red.set()
         guard let context = UIGraphicsGetCurrentContext() else { return }
         context.fill(bottomRect)
+    }
+    
+    var showServer: Int = 0
+    @objc func brandTapFunction(){
+        showServer += 1
+        if(showServer>4) {
+            ServerNameStack.isHidden = false
+            ServerTextField.isEnabled = true
+        }
     }
     
 }

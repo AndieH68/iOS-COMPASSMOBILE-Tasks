@@ -6,7 +6,7 @@
 //  Copyright © 2023 HYDOP E.C.S. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 class TaskTemplateParameterFormItemSampleWithBiocide: TaskTemplateParameterFormItemSample
 {

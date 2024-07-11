@@ -48,6 +48,15 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
             self.performSegue(withIdentifier: "loginView", sender: self)
         }
         
+        if Session.GettingScanCode {
+            if (!Session.CancelFromScan && Session.CodeScanned != nil) {
+                Session.FilterAssetNumber = "(%" + Session.CodeScanned! + ")%"
+                Session.CodeScanned = nil
+                Session.GettingScanCode = false
+            }
+            Session.CancelFromScan = false;
+        }
+        
         // Get the filtered list of tasks to populate the table
         if(Session.FilterSiteName == nil) { SelectedSite.text = "All" } else { SelectedSite.text = Session.FilterSiteName }
         if(Session.FilterPropertyName == nil) { SelectedProperty.text = "All" } else { SelectedProperty.text = Session.FilterPropertyName }
@@ -71,7 +80,21 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         if Session.TaskId != nil
         {
-            self.performSegue(withIdentifier: "TaskSegue", sender: self)
+            let task: Task = ModelManager.getInstance().getTask(Session.TaskId!)!
+            var taskSwitch: String = task.TaskName
+            if taskSwitch.startsWith(BiologicalMonitoringValue) {taskSwitch = BiologicalMonitoringValue}
+            
+            switch (taskSwitch)
+            {
+            case BiologicalMonitoringValue:
+                self.performSegue(withIdentifier: "BiologicalMonitoringSegue", sender: self)
+                
+            case RemedialTaskValue:
+                self.performSegue(withIdentifier: "RemedialTaskSegue", sender: self)
+            
+            default:
+                self.performSegue(withIdentifier: "TaskSegue", sender: self)
+            }
         }
         
         if Session.CheckDatabase == true
@@ -167,12 +190,33 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let cell: TaskCell = tableView.dequeueReusableCell(withIdentifier: "TaskCell") as! TaskCell
         
         let task: Task = taskData[indexPath.row]
+        
+        var taskNameInstructionExtension: String? = nil
+
+        var criteria: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
+        criteria["TaskId"] = task.RowId as AnyObject?
+        let taskInstructions: [TaskInstruction] = ModelManager.getInstance().findTaskInstructionList(criteria)
+        if(taskInstructions.count >= 1)
+        {
+            let taskInstruction: TaskInstruction = taskInstructions[0]
+            
+            let testSuite: TestSuite = ModelManager.getInstance().getTestSuite(taskInstruction.EntityId)!
+            taskNameInstructionExtension = testSuite.Name
+        }
        
         cell.taskRef.text = task.TaskRef
         var TaskName: String = task.TaskName
-        if (TaskName != RemedialTask && TaskName != BiologicalMonitoring)
+        if (TaskName != RemedialTask && TaskName != "BiologicalMonitoring")
         {
             TaskName = ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMTaskType", key: task.TaskName, parentType: "PPMAssetGroup", parentValue: task.PPMGroup!)
+        }
+        else if (TaskName == "BiologicalMonitoring")
+        {
+            TaskName = ModelUtility.getInstance().ReferenceDataDisplayFromValue("PPMTaskType", key: task.TaskName, parentType: "PPMAssetGroup", parentValue: task.PPMGroup!)
+            if(taskNameInstructionExtension != nil)
+            {
+                TaskName += " - " + taskNameInstructionExtension!
+            }
         }
         cell.taskName.text = TaskName
         let PropertyName: String = (Session.FilterPropertyName != nil ? String() : ModelUtility.getInstance().GetPropertyName(task.PropertyId) + ", ")
@@ -212,16 +256,19 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let cell: TaskCell = tableView.cellForRow(at: indexPath) as! TaskCell
-        switch (cell.taskName.text!)
+        var taskSwitch: String = cell.taskName.text!
+        if taskSwitch.startsWith(BiologicalMonitoring) {taskSwitch = BiologicalMonitoring}
+        
+        switch (taskSwitch)
         {
-            case BiologicalMonitoring:
-                self.performSegue(withIdentifier: "BiologicalMonitoringSegue", sender: cell)
+        case BiologicalMonitoring:
+            self.performSegue(withIdentifier: "BiologicalMonitoringSegue", sender: cell)
             
-            case RemedialTask:
-                self.performSegue(withIdentifier: "RemedialTaskSegue", sender: cell)
-            
-            default:
-                self.performSegue(withIdentifier: "TaskSegue", sender: cell)
+        case RemedialTask:
+            self.performSegue(withIdentifier: "RemedialTaskSegue", sender: cell)
+        
+        default:
+            self.performSegue(withIdentifier: "TaskSegue", sender: cell)
         }
         
     }
@@ -232,26 +279,29 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         {
             switch segue.identifier!
             {
-                case "TaskSegue":
-                    if (sender is TaskCell)
-                    {
-                        Session.TaskId = (sender as! TaskCell).taskId
-                    }
+            case "TaskSegue":
+                if (sender is TaskCell)
+                {
+                    Session.TaskId = (sender as! TaskCell).taskId
+                }
                 
-                case "RemedialTaskSegue":
-                    if (sender is TaskCell)
-                    {
-                        Session.TaskId = (sender as! TaskCell).taskId
-                    }
-
-                case "BiologicalMonitoringSegue":
-                    if (sender is TaskCell)
-                    {
-                        Session.TaskId = (sender as! TaskCell).taskId
-                    }
+            case "RemedialTaskSegue":
+                if (sender is TaskCell)
+                {
+                    Session.TaskId = (sender as! TaskCell).taskId
+                }
                 
-                default:
-                    print("Default")
+            case "BiologicalMonitoringSegue":
+                if (sender is TaskCell)
+                {
+                    Session.TaskId = (sender as! TaskCell).taskId
+                }
+                
+            case "Search":
+                Session.GettingScanCode = true;
+                
+            default:
+                print("Default")
             }
         }
     }

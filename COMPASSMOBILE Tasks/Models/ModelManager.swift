@@ -32,6 +32,42 @@ class ModelManager: NSObject {
         var SQLStatement: String = String()
         
         let SQLParameterValues: [NSObject] = [NSObject]()
+
+        //check for the TaskInstruction Table
+        if (returnValue){
+            SQLStatement = " SELECT name FROM sqlite_master WHERE type = 'table' and name='TaskInstruction'"
+            let resultSet = sharedModelManager.database!.executeQuery(SQLStatement, withArgumentsIn: SQLParameterValues)
+            if !resultSet!.next()
+            {
+                //create the table
+                SQLStatement = "CREATE TABLE TaskInstruction (RowId VARCHAR (36) NOT NULL CONSTRAINT PK_TaskInstructionId PRIMARY KEY COLLATE NOCASE, CreatedBy VARCHAR (36) NOT NULL COLLATE NOCASE, CreatedOn DATETIME NOT NULL, LastUpdatedBy VARCHAR (36) COLLATE NOCASE, LastUpdatedOn DATETIME, Deleted DATETIME, TaskId VARCHAR (36) NOT NULL COLLATE NOCASE, EntityType VARCHAR (50) NOT NULL COLLATE NOCASE, EntityId VARCHAR (36) NOT NULL COLLATE NOCASE, OutletId VARCHAR (36) COLLATE NOCASE, FlushType VARCHAR (50) COLLATE NOCASE);"
+                returnValue = sharedModelManager.database!.executeStatements(SQLStatement)
+            }
+        }
+        
+        //check for the TestSuite Table
+        if (returnValue){
+            SQLStatement = " SELECT name FROM sqlite_master WHERE type = 'table' and name='TestSuite'"
+            let resultSet = sharedModelManager.database!.executeQuery(SQLStatement, withArgumentsIn: SQLParameterValues)
+            if !resultSet!.next()
+            {
+                //create the table
+                SQLStatement = "CREATE TABLE TestSuite (RowId VARCHAR (36) NOT NULL CONSTRAINT PK_TestSuiteId PRIMARY KEY COLLATE NOCASE, CreatedBy VARCHAR (36) NOT NULL COLLATE NOCASE, CreatedOn DATETIME NOT NULL, LastUpdatedBy VARCHAR (36) COLLATE NOCASE, LastUpdatedOn DATETIME, Deleted DATETIME, OrganisationId VARCHAR (36) NOT NULL COLLATE NOCASE, Name VARCHAR (100) NOT NULL COLLATE NOCASE, Description VARCHAR (250) NOT NULL COLLATE NOCASE, TestSuiteType VARCHAR (100) NOT NULL COLLATE NOCASE, FlushType VARCHAR (50) COLLATE NOCASE);"
+                returnValue = sharedModelManager.database!.executeStatements(SQLStatement)
+            }
+        }
+        
+        //check for the TestSuiteItem Table
+        if (returnValue){
+            SQLStatement = " SELECT name FROM sqlite_master WHERE type = 'table' and name='TestSuiteItem'"
+            let resultSet = sharedModelManager.database!.executeQuery(SQLStatement, withArgumentsIn: SQLParameterValues)
+            if !resultSet!.next()
+            {
+                //create the table
+                SQLStatement = "CREATE TABLE TestSuiteItem (RowId VARCHAR (36) NOT NULL CONSTRAINT PK_TestSuiteItemId PRIMARY KEY COLLATE NOCASE, CreatedBy VARCHAR (36) NOT NULL COLLATE NOCASE, CreatedOn DATETIME NOT NULL, LastUpdatedBy VARCHAR (36) COLLATE NOCASE, LastUpdatedOn DATETIME, Deleted DATETIME, TestSuiteId VARCHAR (36) NOT NULL COLLATE NOCASE, Ordinal INTEGER NOT NULL, BacteriumType VARCHAR (100) NOT NULL COLLATE NOCASE);"
+                returnValue = sharedModelManager.database!.executeStatements(SQLStatement)
+            }
+        }
         
         //check for the AssetOutlet Table
         if (returnValue){
@@ -202,6 +238,7 @@ class ModelManager: NSObject {
         }
         return (whereClause, whereValues)
     }
+    
     // MARK: - Asset
     
     func addAsset(_ asset: Asset) -> Bool {
@@ -4436,6 +4473,280 @@ class ModelManager: NSObject {
         return (taskList, count)
     }
     
+    // MARK: - TaskInstruction
+    
+    func addTaskInstruction(_ taskInstruction: TaskInstruction) -> Bool {
+        //build the sql statemnt
+        var SQLStatement: String = String()
+        var SQLParameterNames: String = String()
+        var SQLParameterPlaceholders: String = String()
+        var SQLParameterValues: [NSObject] = [NSObject]()
+        
+        SQLParameterNames = "[RowId], [CreatedBy], [CreatedOn]"
+        SQLParameterPlaceholders = "?, ?, ?"
+        SQLParameterValues.append(taskInstruction.RowId as NSObject)
+        SQLParameterValues.append(taskInstruction.CreatedBy as NSObject)
+        SQLParameterValues.append(taskInstruction.CreatedOn as NSObject)
+        
+        if taskInstruction.LastUpdatedBy != nil {
+            SQLParameterNames += ", [LastUpdatedBy]"
+            SQLParameterPlaceholders += ", ?"
+            SQLParameterValues.append(taskInstruction.LastUpdatedBy! as NSObject)
+        }
+        
+        if taskInstruction.LastUpdatedOn != nil {
+            SQLParameterNames += ", [LastUpdatedOn]"
+            SQLParameterPlaceholders += ", ?"
+            SQLParameterValues.append(taskInstruction.LastUpdatedOn! as NSObject)
+        }
+        
+        if taskInstruction.Deleted != nil {
+            SQLParameterNames += ", [Deleted]"
+            SQLParameterPlaceholders += ", ?"
+            SQLParameterValues.append(taskInstruction.Deleted! as NSObject)
+        }
+        SQLParameterNames += ", [TaskId]"
+        SQLParameterPlaceholders += ", ?"
+        SQLParameterValues.append(taskInstruction.TaskId as NSObject)
+        SQLParameterNames += ", [EntityType]"
+        SQLParameterPlaceholders += ", ?"
+        SQLParameterValues.append(taskInstruction.EntityType as NSObject)
+        SQLParameterNames += ", [EntityId]"
+        SQLParameterPlaceholders += ", ?"
+        SQLParameterValues.append(taskInstruction.EntityId as NSObject)
+        if taskInstruction.OutletId != nil {
+            SQLParameterNames += ", [OutletId]"
+            SQLParameterPlaceholders += ", ?"
+            SQLParameterValues.append(taskInstruction.OutletId! as NSObject)
+        }
+        if taskInstruction.FlushType != nil {
+            SQLParameterNames += ", [FlushType]"
+            SQLParameterPlaceholders += ", ?"
+            SQLParameterValues.append(taskInstruction.FlushType! as NSObject)
+        }
+        
+        SQLStatement = "INSERT INTO [TaskInstruction] (" + SQLParameterNames + ") VALUES (" + SQLParameterPlaceholders + ")"
+        
+        sharedModelManager.database!.open()
+        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
+        sharedModelManager.database!.close()
+        return isInserted
+    }
+    
+    func updateTaskInstruction(_ taskInstruction: TaskInstruction) -> Bool {
+        //build the sql statemnt
+        var SQLStatement: String = String()
+        var SQLParameterNames: String = String()
+        var SQLParameterValues: [NSObject] = [NSObject]()
+        
+        SQLParameterNames = "[CreatedBy]=?, [CreatedOn]=?"
+        SQLParameterValues.append(taskInstruction.CreatedBy as NSObject)
+        SQLParameterValues.append(taskInstruction.CreatedOn as NSObject)
+        
+        if taskInstruction.LastUpdatedBy != nil {
+            SQLParameterNames += ", [LastUpdatedBy]=?"
+            SQLParameterValues.append(taskInstruction.LastUpdatedBy! as NSObject)
+        }
+        
+        if taskInstruction.LastUpdatedOn != nil {
+            SQLParameterNames += ", [LastUpdatedOn]=?"
+            SQLParameterValues.append(taskInstruction.LastUpdatedOn! as NSObject)
+        }
+        
+        if taskInstruction.Deleted != nil {
+            SQLParameterNames += ", [Deleted]=?"
+            SQLParameterValues.append(taskInstruction.Deleted! as NSObject)
+        }
+        
+        SQLParameterNames += ", [TaskId]=?"
+        SQLParameterValues.append(taskInstruction.TaskId as NSObject)
+        SQLParameterNames += ", [EntityType]=?"
+        SQLParameterValues.append(taskInstruction.EntityType as NSObject)
+        SQLParameterNames += ", [EntityId]=?"
+        SQLParameterValues.append(taskInstruction.EntityId as NSObject)
+        if taskInstruction.OutletId != nil {
+            SQLParameterNames += ", [OutletId]=?"
+            SQLParameterValues.append(taskInstruction.OutletId! as NSObject)
+        }
+        if taskInstruction.FlushType != nil {
+            SQLParameterNames += ", [FlushType]=?"
+            SQLParameterValues.append(taskInstruction.FlushType! as NSObject)
+        }
+        
+        SQLParameterValues.append(taskInstruction.RowId as NSObject)
+        
+        SQLStatement = "UPDATE [TaskInstruction] SET " + SQLParameterNames + "WHERE [RowId]=?"
+        
+        sharedModelManager.database!.open()
+        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
+        sharedModelManager.database!.close()
+        return isUpdated
+    }
+    
+    func deleteTaskInstruction(_ taskInstruction: TaskInstruction) -> Bool {
+        sharedModelManager.database!.open()
+        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [TaskInstruction] WHERE [RowId]=?", withArgumentsIn: [taskInstruction.RowId])
+        sharedModelManager.database!.close()
+        return isDeleted
+    }
+    
+    func getTaskInstruction(_ taskInstructionId: String) -> TaskInstruction? {
+        sharedModelManager.database!.open()
+        var taskInstruction: TaskInstruction? = nil
+        
+        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TaskId], [EntityType], [EntityId], [OutletId], [FlushType] FROM [TaskInstruction] WHERE [RowId]=?", withArgumentsIn: [taskInstructionId])
+        if (resultSet != nil) {
+            while (resultSet?.next())! {
+                var resultTaskInstruction: TaskInstruction = TaskInstruction()
+                resultTaskInstruction = TaskInstruction()
+                resultTaskInstruction.RowId = (resultSet?.string(forColumn: "RowId"))!
+                resultTaskInstruction.CreatedBy = (resultSet?.string(forColumn: "CreatedBy"))!
+                resultTaskInstruction.CreatedOn = resultSet!.date(forColumn: "CreatedOn")!
+                if !(resultSet?.columnIsNull("LastUpdatedBy"))!
+                {
+                    resultTaskInstruction.LastUpdatedBy = resultSet?.string(forColumn: "LastUpdatedBy")
+                }
+                if !(resultSet?.columnIsNull("LastUpdatedOn"))!
+                {
+                    resultTaskInstruction.LastUpdatedOn = resultSet?.date(forColumn: "LastUpdatedOn")
+                }
+                if !(resultSet?.columnIsNull("Deleted"))!
+                {
+                    resultTaskInstruction.Deleted = resultSet?.date(forColumn: "Deleted")
+                }
+                resultTaskInstruction.TaskId = (resultSet?.string(forColumn: "TaskId"))!
+                resultTaskInstruction.EntityType = (resultSet?.string(forColumn: "EntityType"))!
+                resultTaskInstruction.EntityId = (resultSet?.string(forColumn: "EntityId"))!
+                if !(resultSet?.columnIsNull("OutletId"))! {
+                    resultTaskInstruction.OutletId = resultSet?.string(forColumn: "OutletId")
+                }
+                if !(resultSet?.columnIsNull("FlushType"))! {
+                    resultTaskInstruction.FlushType = resultSet?.string(forColumn: "FlushType")
+                }
+                taskInstruction = resultTaskInstruction
+            }
+        }
+        sharedModelManager.database!.close()
+        return taskInstruction
+    }
+    
+    func getAllTaskInstruction() -> [TaskInstruction] {
+        sharedModelManager.database!.open()
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TaskId], [EntityType], [EntityId], [OutletId], [FlushType] FROM [TaskInstruction]", withArgumentsIn: [])
+        var taskInstructionList: [TaskInstruction] = [TaskInstruction]()
+        if (resultSet != nil) {
+            while resultSet.next() {
+                let taskInstruction : TaskInstruction = TaskInstruction()
+                taskInstruction.RowId = resultSet.string(forColumn: "RowId")!
+                taskInstruction.CreatedBy = resultSet.string(forColumn: "CreatedBy")!
+                taskInstruction.CreatedOn = resultSet.date(forColumn: "CreatedOn")!
+                if !resultSet.columnIsNull("LastUpdatedBy")
+                {
+                    taskInstruction.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
+                }
+                if !resultSet.columnIsNull("LastUpdatedOn")
+                {
+                    taskInstruction.LastUpdatedOn = resultSet.date(forColumn: "LastUpdatedOn")
+                }
+                if !resultSet.columnIsNull("Deleted")
+                {
+                    taskInstruction.Deleted = resultSet.date(forColumn: "Deleted")
+                }
+                taskInstruction.TaskId = resultSet.string(forColumn: "TaskId")!
+                taskInstruction.EntityType = resultSet.string(forColumn: "EntityType")!
+                taskInstruction.EntityId = resultSet.string(forColumn: "EntityId")!
+                if !resultSet.columnIsNull("OutletId") {
+                    taskInstruction.OutletId = resultSet.string(forColumn: "OutletId")
+                }
+                if !resultSet.columnIsNull("FlushType") {
+                    taskInstruction.FlushType = resultSet.string(forColumn: "FlushType")
+                }
+               taskInstructionList.append(taskInstruction)
+            }
+        }
+        sharedModelManager.database!.close()
+        return taskInstructionList
+    }
+    
+    func findTaskInstructionList(_ criteria: Dictionary<String, AnyObject>) -> [TaskInstruction] {
+        var list: [TaskInstruction] = [TaskInstruction]()
+        //var count: Int32 = 0
+        (list, _) = findTaskInstructionList(criteria, pageSize: nil, pageNumber: nil)
+        return list
+    }
+    
+    func findTaskInstructionList(_ criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [TaskInstruction], Count: Int32) {
+        
+        //return variables
+        var count: Int32 = 0
+        var taskInstructionList: [TaskInstruction] = [TaskInstruction]()
+        
+        //build the where clause
+        var whereClause: String = String()
+        var whereValues: [AnyObject] = [AnyObject]()
+        
+        (whereClause, whereValues) = buildWhereClause(criteria)
+        
+        if (whereClause != "")
+        {
+            whereClause = "WHERE " + whereClause
+        }
+        
+        sharedModelManager.database!.open()
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [TaskInstruction] " + whereClause, withArgumentsIn: whereValues)
+        if (countSet != nil) {
+            while countSet.next() {
+                count = countSet.int(forColumnIndex: 0)
+            }
+        }
+        
+        if (count > 0)
+        {
+            var pageClause: String = String()
+            if (pageSize != nil && pageNumber != nil)
+            {
+                pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
+            }
+            
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TaskId], [EntityType], [EntityId], [OutletId], [FlushType] FROM [TaskInstruction] " + whereClause + pageClause, withArgumentsIn: whereValues)
+            if (resultSet != nil) {
+                while resultSet.next() {
+                    let taskInstruction : TaskInstruction = TaskInstruction()
+                    taskInstruction.RowId = resultSet.string(forColumn: "RowId")!
+                    taskInstruction.CreatedBy = resultSet.string(forColumn: "CreatedBy")!
+                    taskInstruction.CreatedOn = resultSet.date(forColumn: "CreatedOn")!
+                    if !resultSet.columnIsNull("LastUpdatedBy")
+                    {
+                        taskInstruction.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
+                    }
+                    if !resultSet.columnIsNull("LastUpdatedOn")
+                    {
+                        taskInstruction.LastUpdatedOn = resultSet.date(forColumn: "LastUpdatedOn")
+                    }
+                    if !resultSet.columnIsNull("Deleted")
+                    {
+                        taskInstruction.Deleted = resultSet.date(forColumn: "Deleted")
+                    }
+                    taskInstruction.TaskId = resultSet.string(forColumn: "TaskId")!
+                    taskInstruction.EntityType = resultSet.string(forColumn: "EntityType")!
+                    taskInstruction.EntityId = resultSet.string(forColumn: "EntityId")!
+                    if !resultSet.columnIsNull("OutletId") {
+                        taskInstruction.OutletId = resultSet.string(forColumn: "OutletId")
+                    }
+                    if !resultSet.columnIsNull("FlushType") {
+                        taskInstruction.FlushType = resultSet.string(forColumn: "FlushType")
+                    }
+                    
+                    taskInstructionList.append(taskInstruction)
+                }
+            }
+        }
+        
+        sharedModelManager.database!.close()
+        
+        return (taskInstructionList, count)
+    }
+    
     // MARK: - TaskParameter
     
     func addTaskParameter(_ taskParameter: TaskParameter) -> Bool {
@@ -5332,6 +5643,508 @@ class ModelManager: NSObject {
         
         sharedModelManager.database!.close()
         return (taskTemplateParameterList, count)
+    }
+    
+    // MARK: - Test Suite
+    
+    func addTestSuite(_ testSuite: TestSuite) -> Bool {
+        //build the sql statemnt
+        var SQLStatement: String = String()
+        var SQLParameterNames: String = String()
+        var SQLParameterPlaceholders: String = String()
+        var SQLParameterValues: [NSObject] = [NSObject]()
+        
+        SQLParameterNames = "[RowId], [CreatedBy], [CreatedOn]"
+        SQLParameterPlaceholders = "?, ?, ?"
+        SQLParameterValues.append(testSuite.RowId as NSObject)
+        SQLParameterValues.append(testSuite.CreatedBy as NSObject)
+        SQLParameterValues.append(testSuite.CreatedOn as NSObject)
+        
+        if testSuite.LastUpdatedBy != nil {
+            SQLParameterNames += ", [LastUpdatedBy]"
+            SQLParameterPlaceholders += ", ?"
+            SQLParameterValues.append(testSuite.LastUpdatedBy! as NSObject)
+        }
+        
+        if testSuite.LastUpdatedOn != nil {
+            SQLParameterNames += ", [LastUpdatedOn]"
+            SQLParameterPlaceholders += ", ?"
+            SQLParameterValues.append(testSuite.LastUpdatedOn! as NSObject)
+        }
+        
+        if testSuite.Deleted != nil {
+            SQLParameterNames += ", [Deleted]"
+            SQLParameterPlaceholders += ", ?"
+            SQLParameterValues.append(testSuite.Deleted! as NSObject)
+        }
+        SQLParameterNames += ", [OrganisationId]"
+        SQLParameterPlaceholders += ", ?"
+        SQLParameterValues.append(testSuite.OrganisationId as NSObject)
+        SQLParameterNames += ", [Name]"
+        SQLParameterPlaceholders += ", ?"
+        SQLParameterValues.append(testSuite.Name as NSObject)
+        SQLParameterNames += ", [Description]"
+        SQLParameterPlaceholders += ", ?"
+        SQLParameterValues.append(testSuite.Description as NSObject)
+        SQLParameterNames += ", [TestSuiteType]"
+        SQLParameterPlaceholders += ", ?"
+        SQLParameterValues.append(testSuite.TestSuiteType as NSObject)
+        if testSuite.FlushType != nil {
+            SQLParameterNames += ", [FlushType]"
+            SQLParameterPlaceholders += ", ?"
+            SQLParameterValues.append(testSuite.FlushType! as NSObject)
+        }
+        
+        SQLStatement = "INSERT INTO [TestSuite] (" + SQLParameterNames + ") VALUES (" + SQLParameterPlaceholders + ")"
+        
+        sharedModelManager.database!.open()
+        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
+        sharedModelManager.database!.close()
+        return isInserted
+    }
+    
+    func updateTestSuite(_ testSuite: TestSuite) -> Bool {
+        //build the sql statemnt
+        var SQLStatement: String = String()
+        var SQLParameterNames: String = String()
+        var SQLParameterValues: [NSObject] = [NSObject]()
+        
+        SQLParameterNames = "[CreatedBy]=?, [CreatedOn]=?"
+        SQLParameterValues.append(testSuite.CreatedBy as NSObject)
+        SQLParameterValues.append(testSuite.CreatedOn as NSObject)
+        
+        if testSuite.LastUpdatedBy != nil {
+            SQLParameterNames += ", [LastUpdatedBy]=?"
+            SQLParameterValues.append(testSuite.LastUpdatedBy! as NSObject)
+        }
+        
+        if testSuite.LastUpdatedOn != nil {
+            SQLParameterNames += ", [LastUpdatedOn]=?"
+            SQLParameterValues.append(testSuite.LastUpdatedOn! as NSObject)
+        }
+        
+        if testSuite.Deleted != nil {
+            SQLParameterNames += ", [Deleted]=?"
+            SQLParameterValues.append(testSuite.Deleted! as NSObject)
+        }
+        
+        SQLParameterNames += ", [OrganisationId]=?"
+        SQLParameterValues.append(testSuite.OrganisationId as NSObject)
+        SQLParameterNames += ", [Name]=?"
+        SQLParameterValues.append(testSuite.Name as NSObject)
+        SQLParameterNames += ", [Description]=?"
+        SQLParameterValues.append(testSuite.Description as NSObject)
+        SQLParameterNames += ", [TestSuiteType]=?"
+        SQLParameterValues.append(testSuite.TestSuiteType as NSObject)
+        if testSuite.FlushType != nil {
+            SQLParameterNames += ", [FlushType]=?"
+            SQLParameterValues.append(testSuite.FlushType! as NSObject)
+        }
+        
+        SQLParameterValues.append(testSuite.RowId as NSObject)
+        
+        SQLStatement = "UPDATE [TestSuite] SET " + SQLParameterNames + "WHERE [RowId]=?"
+        
+        sharedModelManager.database!.open()
+        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
+        sharedModelManager.database!.close()
+        return isUpdated
+    }
+    
+    func deleteTestSuite(_ testSuite: TestSuite) -> Bool {
+        sharedModelManager.database!.open()
+        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [TestSuite] WHERE [RowId]=?", withArgumentsIn: [testSuite.RowId])
+        sharedModelManager.database!.close()
+        return isDeleted
+    }
+    
+    func getTestSuite(_ testSuiteId: String) -> TestSuite? {
+        sharedModelManager.database!.open()
+        var testSuite: TestSuite? = nil
+        
+        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [Name], [Description], [TestSuiteType], [FlushType] FROM [TestSuite] WHERE [RowId]=?", withArgumentsIn: [testSuiteId])
+        if (resultSet != nil) {
+            while (resultSet?.next())! {
+                var resultTestSuite: TestSuite = TestSuite()
+                resultTestSuite = TestSuite()
+                resultTestSuite.RowId = (resultSet?.string(forColumn: "RowId"))!
+                resultTestSuite.CreatedBy = (resultSet?.string(forColumn: "CreatedBy"))!
+                resultTestSuite.CreatedOn = resultSet!.date(forColumn: "CreatedOn")!
+                if !(resultSet?.columnIsNull("LastUpdatedBy"))!
+                {
+                    resultTestSuite.LastUpdatedBy = resultSet?.string(forColumn: "LastUpdatedBy")
+                }
+                if !(resultSet?.columnIsNull("LastUpdatedOn"))!
+                {
+                    resultTestSuite.LastUpdatedOn = resultSet?.date(forColumn: "LastUpdatedOn")
+                }
+                if !(resultSet?.columnIsNull("Deleted"))!
+                {
+                    resultTestSuite.Deleted = resultSet?.date(forColumn: "Deleted")
+                }
+                resultTestSuite.OrganisationId = (resultSet?.string(forColumn: "OrganisationId"))!
+                resultTestSuite.Name = (resultSet?.string(forColumn: "Name"))!
+                resultTestSuite.Description = (resultSet?.string(forColumn: "Description"))!
+                resultTestSuite.TestSuiteType = (resultSet?.string(forColumn: "TestSuiteType"))!
+                if !(resultSet?.columnIsNull("FlushType"))! {
+                    resultTestSuite.FlushType = resultSet?.string(forColumn: "FlushType")
+                }
+                testSuite = resultTestSuite
+            }
+        }
+        sharedModelManager.database!.close()
+        return testSuite
+    }
+    
+    func getAllTestSuite() -> [TestSuite] {
+        sharedModelManager.database!.open()
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [Name], [Description], [TestSuiteType], [FlushType] FROM [TestSuite]", withArgumentsIn: [])
+        var testSuiteList: [TestSuite] = [TestSuite]()
+        if (resultSet != nil) {
+            while resultSet.next() {
+                let testSuite : TestSuite = TestSuite()
+                testSuite.RowId = resultSet.string(forColumn: "RowId")!
+                testSuite.CreatedBy = resultSet.string(forColumn: "CreatedBy")!
+                testSuite.CreatedOn = resultSet.date(forColumn: "CreatedOn")!
+                if !resultSet.columnIsNull("LastUpdatedBy")
+                {
+                    testSuite.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
+                }
+                if !resultSet.columnIsNull("LastUpdatedOn")
+                {
+                    testSuite.LastUpdatedOn = resultSet.date(forColumn: "LastUpdatedOn")
+                }
+                if !resultSet.columnIsNull("Deleted")
+                {
+                    testSuite.Deleted = resultSet.date(forColumn: "Deleted")
+                }
+                testSuite.OrganisationId = (resultSet?.string(forColumn: "OrganisationId"))!
+                testSuite.Name = (resultSet?.string(forColumn: "Name"))!
+                testSuite.Description = (resultSet?.string(forColumn: "Description"))!
+                testSuite.TestSuiteType = (resultSet?.string(forColumn: "TestSuiteType"))!
+                if !(resultSet?.columnIsNull("FlushType"))! {
+                    testSuite.FlushType = resultSet?.string(forColumn: "FlushType")
+                }
+               testSuiteList.append(testSuite)
+            }
+        }
+        sharedModelManager.database!.close()
+        return testSuiteList
+    }
+    
+    func findTestSuiteList(_ criteria: Dictionary<String, AnyObject>) -> [TestSuite] {
+        var list: [TestSuite] = [TestSuite]()
+        //var count: Int32 = 0
+        (list, _) = findTestSuiteList(criteria, pageSize: nil, pageNumber: nil)
+        return list
+    }
+    
+    func findTestSuiteList(_ criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [TestSuite], Count: Int32) {
+        
+        //return variables
+        var count: Int32 = 0
+        var testSuiteList: [TestSuite] = [TestSuite]()
+        
+        //build the where clause
+        var whereClause: String = String()
+        var whereValues: [AnyObject] = [AnyObject]()
+        
+        (whereClause, whereValues) = buildWhereClause(criteria)
+        
+        if (whereClause != "")
+        {
+            whereClause = "WHERE " + whereClause
+        }
+        
+        sharedModelManager.database!.open()
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [TestSuite] " + whereClause, withArgumentsIn: whereValues)
+        if (countSet != nil) {
+            while countSet.next() {
+                count = countSet.int(forColumnIndex: 0)
+            }
+        }
+        
+        if (count > 0)
+        {
+            var pageClause: String = String()
+            if (pageSize != nil && pageNumber != nil)
+            {
+                pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
+            }
+            
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [OrganisationId], [Name], [Description], [TestSuiteType], [FlushType] FROM [TestSuite] " + whereClause + pageClause, withArgumentsIn: whereValues)
+            if (resultSet != nil) {
+                while resultSet.next() {
+                    let testSuite : TestSuite = TestSuite()
+                    testSuite.RowId = resultSet.string(forColumn: "RowId")!
+                    testSuite.CreatedBy = resultSet.string(forColumn: "CreatedBy")!
+                    testSuite.CreatedOn = resultSet.date(forColumn: "CreatedOn")!
+                    if !resultSet.columnIsNull("LastUpdatedBy")
+                    {
+                        testSuite.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
+                    }
+                    if !resultSet.columnIsNull("LastUpdatedOn")
+                    {
+                        testSuite.LastUpdatedOn = resultSet.date(forColumn: "LastUpdatedOn")
+                    }
+                    if !resultSet.columnIsNull("Deleted")
+                    {
+                        testSuite.Deleted = resultSet.date(forColumn: "Deleted")
+                    }
+                    testSuite.OrganisationId = (resultSet?.string(forColumn: "OrganisationId"))!
+                    testSuite.Name = (resultSet?.string(forColumn: "Name"))!
+                    testSuite.Description = (resultSet?.string(forColumn: "Description"))!
+                    testSuite.TestSuiteType = (resultSet?.string(forColumn: "TestSuiteType"))!
+                    if !(resultSet?.columnIsNull("FlushType"))! {
+                        testSuite.FlushType = resultSet?.string(forColumn: "FlushType")
+                    }
+                    
+                    testSuiteList.append(testSuite)
+                }
+            }
+        }
+        
+        sharedModelManager.database!.close()
+        
+        return (testSuiteList, count)
+    }
+    
+    // MARK: - Test Suite Item
+    
+    func addTestSuiteItem(_ testSuiteItem: TestSuiteItem) -> Bool {
+        //build the sql statemnt
+        var SQLStatement: String = String()
+        var SQLParameterNames: String = String()
+        var SQLParameterPlaceholders: String = String()
+        var SQLParameterValues: [NSObject] = [NSObject]()
+        
+        SQLParameterNames = "[RowId], [CreatedBy], [CreatedOn]"
+        SQLParameterPlaceholders = "?, ?, ?"
+        SQLParameterValues.append(testSuiteItem.RowId as NSObject)
+        SQLParameterValues.append(testSuiteItem.CreatedBy as NSObject)
+        SQLParameterValues.append(testSuiteItem.CreatedOn as NSObject)
+        
+        if testSuiteItem.LastUpdatedBy != nil {
+            SQLParameterNames += ", [LastUpdatedBy]"
+            SQLParameterPlaceholders += ", ?"
+            SQLParameterValues.append(testSuiteItem.LastUpdatedBy! as NSObject)
+        }
+        
+        if testSuiteItem.LastUpdatedOn != nil {
+            SQLParameterNames += ", [LastUpdatedOn]"
+            SQLParameterPlaceholders += ", ?"
+            SQLParameterValues.append(testSuiteItem.LastUpdatedOn! as NSObject)
+        }
+        
+        if testSuiteItem.Deleted != nil {
+            SQLParameterNames += ", [Deleted]"
+            SQLParameterPlaceholders += ", ?"
+            SQLParameterValues.append(testSuiteItem.Deleted! as NSObject)
+        }
+        SQLParameterNames += ", [TestSuiteId]"
+        SQLParameterPlaceholders += ", ?"
+        SQLParameterValues.append(testSuiteItem.TestSuiteId as NSObject)
+        SQLParameterNames += ", [Ordinal]"
+        SQLParameterPlaceholders += ", ?"
+        SQLParameterValues.append(testSuiteItem.Ordinal as NSObject)
+        SQLParameterNames += ", [BacteriumType]"
+        SQLParameterPlaceholders += ", ?"
+        SQLParameterValues.append(testSuiteItem.BacteriumType as NSObject)
+       
+        SQLStatement = "INSERT INTO [TestSuiteItem] (" + SQLParameterNames + ") VALUES (" + SQLParameterPlaceholders + ")"
+        
+        sharedModelManager.database!.open()
+        let isInserted = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
+        sharedModelManager.database!.close()
+        return isInserted
+    }
+    
+    func updateTestSuiteItem(_ testSuiteItem: TestSuiteItem) -> Bool {
+        //build the sql statemnt
+        var SQLStatement: String = String()
+        var SQLParameterNames: String = String()
+        var SQLParameterValues: [NSObject] = [NSObject]()
+        
+        SQLParameterNames = "[CreatedBy]=?, [CreatedOn]=?"
+        SQLParameterValues.append(testSuiteItem.CreatedBy as NSObject)
+        SQLParameterValues.append(testSuiteItem.CreatedOn as NSObject)
+        
+        if testSuiteItem.LastUpdatedBy != nil {
+            SQLParameterNames += ", [LastUpdatedBy]=?"
+            SQLParameterValues.append(testSuiteItem.LastUpdatedBy! as NSObject)
+        }
+        
+        if testSuiteItem.LastUpdatedOn != nil {
+            SQLParameterNames += ", [LastUpdatedOn]=?"
+            SQLParameterValues.append(testSuiteItem.LastUpdatedOn! as NSObject)
+        }
+        
+        if testSuiteItem.Deleted != nil {
+            SQLParameterNames += ", [Deleted]=?"
+            SQLParameterValues.append(testSuiteItem.Deleted! as NSObject)
+        }
+        
+        SQLParameterNames += ", [TestSuiteId]=?"
+        SQLParameterValues.append(testSuiteItem.TestSuiteId as NSObject)
+        SQLParameterNames += ", [Ordinal]=?"
+        SQLParameterValues.append(testSuiteItem.Ordinal as NSObject)
+        SQLParameterNames += ", [BacteriumType]=?"
+        SQLParameterValues.append(testSuiteItem.BacteriumType as NSObject)
+        
+        SQLParameterValues.append(testSuiteItem.RowId as NSObject)
+        
+        SQLStatement = "UPDATE [TestSuiteItem] SET " + SQLParameterNames + "WHERE [RowId]=?"
+        
+        sharedModelManager.database!.open()
+        let isUpdated = sharedModelManager.database!.executeUpdate(SQLStatement, withArgumentsIn: SQLParameterValues)
+        sharedModelManager.database!.close()
+        return isUpdated
+    }
+    
+    func deleteTestSuiteItem(_ testSuiteItem: TestSuiteItem) -> Bool {
+        sharedModelManager.database!.open()
+        let isDeleted = sharedModelManager.database!.executeUpdate("DELETE FROM [TestSuiteItem] WHERE [RowId]=?", withArgumentsIn: [testSuiteItem.RowId])
+        sharedModelManager.database!.close()
+        return isDeleted
+    }
+    
+    func getTestSuiteItem(_ testSuiteItemId: String) -> TestSuiteItem? {
+        sharedModelManager.database!.open()
+        var testSuiteItem: TestSuiteItem? = nil
+        
+        let resultSet = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TestSuiteId], [Ordinal], [BacteriumType]  FROM [TestSuiteItem] WHERE [RowId]=?", withArgumentsIn: [testSuiteItemId])
+        if (resultSet != nil) {
+            while (resultSet?.next())! {
+                var resultTestSuiteItem: TestSuiteItem = TestSuiteItem()
+                resultTestSuiteItem = TestSuiteItem()
+                resultTestSuiteItem.RowId = (resultSet?.string(forColumn: "RowId"))!
+                resultTestSuiteItem.CreatedBy = (resultSet?.string(forColumn: "CreatedBy"))!
+                resultTestSuiteItem.CreatedOn = resultSet!.date(forColumn: "CreatedOn")!
+                if !(resultSet?.columnIsNull("LastUpdatedBy"))!
+                {
+                    resultTestSuiteItem.LastUpdatedBy = resultSet?.string(forColumn: "LastUpdatedBy")
+                }
+                if !(resultSet?.columnIsNull("LastUpdatedOn"))!
+                {
+                    resultTestSuiteItem.LastUpdatedOn = resultSet?.date(forColumn: "LastUpdatedOn")
+                }
+                if !(resultSet?.columnIsNull("Deleted"))!
+                {
+                    resultTestSuiteItem.Deleted = resultSet?.date(forColumn: "Deleted")
+                }
+                resultTestSuiteItem.TestSuiteId = (resultSet?.string(forColumn: "TestSuiteId"))!
+                resultTestSuiteItem.Ordinal = Int((resultSet?.int(forColumn: "Ordinal"))!)
+                resultTestSuiteItem.BacteriumType = (resultSet?.string(forColumn: "BacteriumType"))!
+                testSuiteItem = resultTestSuiteItem
+            }
+        }
+        sharedModelManager.database!.close()
+        return testSuiteItem
+    }
+    
+    func getAllTestSuiteItem() -> [TestSuiteItem] {
+        sharedModelManager.database!.open()
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TestSuiteId], [Ordinal], [BacteriumType] FROM [TestSuiteItem]", withArgumentsIn: [])
+        var testSuiteItemList: [TestSuiteItem] = [TestSuiteItem]()
+        if (resultSet != nil) {
+            while resultSet.next() {
+                let testSuiteItem : TestSuiteItem = TestSuiteItem()
+                testSuiteItem.RowId = resultSet.string(forColumn: "RowId")!
+                testSuiteItem.CreatedBy = resultSet.string(forColumn: "CreatedBy")!
+                testSuiteItem.CreatedOn = resultSet.date(forColumn: "CreatedOn")!
+                if !resultSet.columnIsNull("LastUpdatedBy")
+                {
+                    testSuiteItem.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
+                }
+                if !resultSet.columnIsNull("LastUpdatedOn")
+                {
+                    testSuiteItem.LastUpdatedOn = resultSet.date(forColumn: "LastUpdatedOn")
+                }
+                if !resultSet.columnIsNull("Deleted")
+                {
+                    testSuiteItem.Deleted = resultSet.date(forColumn: "Deleted")
+                }
+                testSuiteItem.TestSuiteId = (resultSet?.string(forColumn: "TestSuiteId"))!
+                testSuiteItem.Ordinal = Int((resultSet?.int(forColumn: "Ordinal"))!)
+                testSuiteItem.BacteriumType = (resultSet?.string(forColumn: "BacteriumType"))!
+               testSuiteItemList.append(testSuiteItem)
+            }
+        }
+        sharedModelManager.database!.close()
+        return testSuiteItemList
+    }
+    
+    func findTestSuiteItemList(_ criteria: Dictionary<String, AnyObject>) -> [TestSuiteItem] {
+        var list: [TestSuiteItem] = [TestSuiteItem]()
+        //var count: Int32 = 0
+        (list, _) = findTestSuiteItemList(criteria, pageSize: nil, pageNumber: nil)
+        return list
+    }
+    
+    func findTestSuiteItemList(_ criteria: Dictionary<String, AnyObject>, pageSize: Int32?, pageNumber: Int32?) -> (List: [TestSuiteItem], Count: Int32) {
+        
+        //return variables
+        var count: Int32 = 0
+        var testSuiteItemList: [TestSuiteItem] = [TestSuiteItem]()
+        
+        //build the where clause
+        var whereClause: String = String()
+        var whereValues: [AnyObject] = [AnyObject]()
+        
+        (whereClause, whereValues) = buildWhereClause(criteria)
+        
+        if (whereClause != "")
+        {
+            whereClause = "WHERE " + whereClause
+        }
+        
+        sharedModelManager.database!.open()
+        let countSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT COUNT([RowId]) FROM [TestSuiteItem] " + whereClause, withArgumentsIn: whereValues)
+        if (countSet != nil) {
+            while countSet.next() {
+                count = countSet.int(forColumnIndex: 0)
+            }
+        }
+        
+        if (count > 0)
+        {
+            var pageClause: String = String()
+            if (pageSize != nil && pageNumber != nil)
+            {
+                pageClause = " LIMIT " + String(pageSize!) + " OFFSET " + String((pageNumber! - 1) * pageSize!)
+            }
+            
+            let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery("SELECT [RowId], [CreatedBy], [CreatedOn], [LastUpdatedBy], [LastUpdatedOn], [Deleted], [TestSuiteId], [Ordinal], [BacteriumType] FROM [TestSuiteItem] " + whereClause + pageClause, withArgumentsIn: whereValues)
+            if (resultSet != nil) {
+                while resultSet.next() {
+                    let testSuiteItem : TestSuiteItem = TestSuiteItem()
+                    testSuiteItem.RowId = resultSet.string(forColumn: "RowId")!
+                    testSuiteItem.CreatedBy = resultSet.string(forColumn: "CreatedBy")!
+                    testSuiteItem.CreatedOn = resultSet.date(forColumn: "CreatedOn")!
+                    if !resultSet.columnIsNull("LastUpdatedBy")
+                    {
+                        testSuiteItem.LastUpdatedBy = resultSet.string(forColumn: "LastUpdatedBy")
+                    }
+                    if !resultSet.columnIsNull("LastUpdatedOn")
+                    {
+                        testSuiteItem.LastUpdatedOn = resultSet.date(forColumn: "LastUpdatedOn")
+                    }
+                    if !resultSet.columnIsNull("Deleted")
+                    {
+                        testSuiteItem.Deleted = resultSet.date(forColumn: "Deleted")
+                    }
+                    testSuiteItem.TestSuiteId = (resultSet?.string(forColumn: "TestSuiteId"))!
+                    testSuiteItem.Ordinal = Int((resultSet?.int(forColumn: "Ordinal"))!)
+                    testSuiteItem.BacteriumType = (resultSet?.string(forColumn: "BacteriumType"))!
+                    
+                    testSuiteItemList.append(testSuiteItem)
+                }
+            }
+        }
+        
+        sharedModelManager.database!.close()
+        
+        return (testSuiteItemList, count)
     }
     
 }

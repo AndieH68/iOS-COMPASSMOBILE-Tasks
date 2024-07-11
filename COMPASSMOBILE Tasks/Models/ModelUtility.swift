@@ -251,24 +251,58 @@ class ModelUtility: NSObject {
         return Level
     }
     
-    
-    func GetOutletsForAsset(_ FacilityId: String) -> [String]
-    {
-        var OutletTypes: [String] = [String]()
-        let Query: String = "SELECT DISTINCT [AssetOutlet].[OutletType] FROM [AssetOutlet] WHERE [AssetOutlet].[Deleted] IS NULL AND [AssetOutlet].[FacilityId] = '" + FacilityId + "'"
+    func GetFlushTypesForSample() -> Dictionary<String, String>{
+        var flushTypes: Dictionary<String,String> = Dictionary<String,String>()
+        
+        let query: String = "SELECT DISTINCT [ReferenceData].[Value],[ReferenceData].[Display] FROM [ReferenceData] WHERE [ReferenceData].[Deleted] IS NULL AND [ReferenceData].[Type] = 'MonitoringFlushType'"
         let whereValues: [AnyObject] = [AnyObject]()
         
         sharedModelManager.database!.open()
-        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(Query, withArgumentsIn: whereValues)
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(query, withArgumentsIn: whereValues)
         if (resultSet != nil) {
             while resultSet.next()
             {
-                OutletTypes.append(ReferenceDataDisplayFromValue("OutletType", key: resultSet.string(forColumn: "OutletType")!))
+                let key: String = resultSet.string(forColumn: "Display")!
+                let value: String = resultSet.string(forColumn: "Value")!
+                flushTypes[key] = value
             }
         }
-        return OutletTypes
+        return flushTypes
     }
     
+    func GetOutletsForAsset(_ FacilityId: String) -> Dictionary<String,String>
+    {
+        var outletTypes: Dictionary<String,String> = Dictionary<String,String>()
+        let query: String = "SELECT DISTINCT [AssetOutlet].[RowId],[AssetOutlet].[OutletType] FROM [AssetOutlet] WHERE [AssetOutlet].[Deleted] IS NULL AND [AssetOutlet].[FacilityId] = '" + FacilityId + "'"
+        let whereValues: [AnyObject] = [AnyObject]()
+        
+        sharedModelManager.database!.open()
+        let resultSet: FMResultSet! = sharedModelManager.database!.executeQuery(query, withArgumentsIn: whereValues)
+        if (resultSet != nil) {
+            while resultSet.next()
+            {
+                var key: String = resultSet.string(forColumn: "OutletType")!
+                
+                switch key{
+                case "Hot", "Cold":
+                    key += " Tap"
+                    break
+                case "HotCold":
+                    key = "Plain Mixer Tap"
+                    break
+                case "Instant":
+                    key = "Instant Outlet"
+                    break
+                default:
+                    break
+                }
+                
+                let value: String = resultSet.string(forColumn: "RowId")!
+                outletTypes[key] = value
+            }
+        }
+        return outletTypes
+    }
     
     //MARK: Filter functions
     func GetFilterSiteList(_ OrganisationId: String) -> [String]

@@ -81,6 +81,9 @@
 		A4D3976126412B3E001F2ACA /* TaskTemplateParameterCellScanCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D3976026412B3E001F2ACA /* TaskTemplateParameterCellScanCode.swift */; };
 		A4D4A2D61D2D2097009287F8 /* COMPASSMOBILE Tasks.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A4D4A2D41D2D2097009287F8 /* COMPASSMOBILE Tasks.xcdatamodeld */; };
 		A4E425431D2D22870088EF64 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4E425411D2D22870088EF64 /* Main.storyboard */; };
+		E96A98142B9F06CD002E7C5D /* TaskInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96A98132B9F06CD002E7C5D /* TaskInstruction.swift */; };
+		E96A98162B9F06DF002E7C5D /* TestSuite.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96A98152B9F06DF002E7C5D /* TestSuite.swift */; };
+		E96A98182B9F06F4002E7C5D /* TestSuiteItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96A98172B9F06F4002E7C5D /* TestSuiteItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -209,6 +212,9 @@
 		A4D4A2D51D2D2097009287F8 /* COMPASSMOBILE Tasks.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "COMPASSMOBILE Tasks.xcdatamodel"; sourceTree = "<group>"; };
 		A4E425421D2D22870088EF64 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "COMPASSMOBILE Tasks/Base.lproj/Main.storyboard"; sourceTree = "<group>"; };
 		E90E75ED2AE9604F006C63E4 /* Pods.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Pods.xcodeproj; sourceTree = "<group>"; };
+		E96A98132B9F06CD002E7C5D /* TaskInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskInstruction.swift; sourceTree = SOURCE_ROOT; };
+		E96A98152B9F06DF002E7C5D /* TestSuite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSuite.swift; sourceTree = SOURCE_ROOT; };
+		E96A98172B9F06F4002E7C5D /* TestSuiteItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSuiteItem.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -274,11 +280,11 @@
 				A439199D1D2D1E7900C31CA0 /* TaskTemplateParameterFormItem.swift */,
 				A40A450D288E919E005F533C /* TaskTemplateParameterFormItemSample.swift */,
 				A45D270F29FC1E370077D9A1 /* TaskTemplateParameterFormItemSampleWithBiocide.swift */,
+				A45D271129FC1E580077D9A1 /* TaskTemplateParameterFormItemSampleWithMultipleTests.swift */,
 				A4AF07651E326A6E00D09CA8 /* TemperatureProfile.swift */,
 				A439199E1D2D1E7900C31CA0 /* Utility.swift */,
 				A439199F1D2D1E7900C31CA0 /* WebService.swift */,
 				A457200629FBD9FB00CD6D40 /* CheckBox.swift */,
-				A45D271129FC1E580077D9A1 /* TaskTemplateParameterFormItemSampleWithMultipleTests.swift */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -287,22 +293,25 @@
 			isa = PBXGroup;
 			children = (
 				A439197D1D2D1DB500C31CA0 /* Asset.swift */,
+				A4B456DF29C3285F00834096 /* AssetOutlet.swift */,
 				A439197E1D2D1DB500C31CA0 /* Location.swift */,
 				A439197F1D2D1DB500C31CA0 /* LocationGroup.swift */,
 				A43919801D2D1DB500C31CA0 /* LocationGroupMembership.swift */,
 				A43919811D2D1DB500C31CA0 /* Operative.swift */,
+				A471892C229E8A6600523FD5 /* OperativeGroup.swift */,
+				A471892E229E8A8900523FD5 /* OperativeGroupMembership.swift */,
+				A471893222A01CC200523FD5 /* OperativeGroupTaskTemplateMembership.swift */,
 				A43919821D2D1DB500C31CA0 /* Organisation.swift */,
 				A43919831D2D1DB500C31CA0 /* Property.swift */,
 				A43919841D2D1DB500C31CA0 /* ReferenceData.swift */,
 				A43919851D2D1DB500C31CA0 /* Site.swift */,
 				A43919861D2D1DB500C31CA0 /* Task.swift */,
+				E96A98132B9F06CD002E7C5D /* TaskInstruction.swift */,
 				A43919871D2D1DB500C31CA0 /* TaskParameter.swift */,
 				A43919881D2D1DB500C31CA0 /* TaskTemplate.swift */,
 				A43919891D2D1DB500C31CA0 /* TaskTemplateParameter.swift */,
-				A471892C229E8A6600523FD5 /* OperativeGroup.swift */,
-				A471892E229E8A8900523FD5 /* OperativeGroupMembership.swift */,
-				A471893222A01CC200523FD5 /* OperativeGroupTaskTemplateMembership.swift */,
-				A4B456DF29C3285F00834096 /* AssetOutlet.swift */,
+				E96A98152B9F06DF002E7C5D /* TestSuite.swift */,
+				E96A98172B9F06F4002E7C5D /* TestSuiteItem.swift */,
 			);
 			name = Entity;
 			sourceTree = "<group>";
@@ -389,11 +398,11 @@
 				A43919711D2D1D8C00C31CA0 /* TaskTemplateParameterCellNumber.swift */,
 				A4583C63286497B5005C8B4E /* TaskTemplateParameterCellSample.swift */,
 				A4583C61286475D2005C8B4E /* TaskTemplateParameterCellSampleWithBiocide.swift */,
+				A457200A29FBEF8C00CD6D40 /* TaskTemplateParameterCellSampleWithMultipleTests.swift */,
 				A4D3976026412B3E001F2ACA /* TaskTemplateParameterCellScanCode.swift */,
 				A4996AA6266EDD8500D8C49D /* TaskTemplateParameterCellScanUniversal.swift */,
 				A43919721D2D1D8C00C31CA0 /* TaskTemplateParameterCellTemperature.swift */,
 				A43919731D2D1D8C00C31CA0 /* TaskTemplateParameterCellTextArea.swift */,
-				A457200A29FBEF8C00CD6D40 /* TaskTemplateParameterCellSampleWithMultipleTests.swift */,
 			);
 			name = TaskTemplateParameterCells;
 			sourceTree = "<group>";
@@ -650,6 +659,7 @@
 				A4D3975E26412AE5001F2ACA /* GS1BarcodeParser.swift in Sources */,
 				A47D1F15264D60B800537097 /* TaskTemplateParameterCellDataMatrix.swift in Sources */,
 				A43919A11D2D1E7900C31CA0 /* Reachability.swift in Sources */,
+				E96A98162B9F06DF002E7C5D /* TestSuite.swift in Sources */,
 				A471893322A01CC200523FD5 /* OperativeGroupTaskTemplateMembership.swift in Sources */,
 				A439197B1D2D1D9D00C31CA0 /* ModelManager.swift in Sources */,
 				A432E92D1D2D1809002FE138 /* AppDelegate.swift in Sources */,
@@ -657,6 +667,7 @@
 				A4D3975C26412AE5001F2ACA /* GS1BarcodeErrors.swift in Sources */,
 				A4583C62286475D2005C8B4E /* TaskTemplateParameterCellSampleWithBiocide.swift in Sources */,
 				A41D1C8F2859E2620006C736 /* BiologicalMonitoringViewController.swift in Sources */,
+				E96A98182B9F06F4002E7C5D /* TestSuiteItem.swift in Sources */,
 				A43919781D2D1D8C00C31CA0 /* TaskTemplateParameterCellTextArea.swift in Sources */,
 				A439198E1D2D1DB500C31CA0 /* Operative.swift in Sources */,
 				A4D3975D26412AE5001F2ACA /* GS1ApplicationIdentifier.swift in Sources */,
@@ -664,6 +675,7 @@
 				A432E9561D2D1A4E002FE138 /* SearchViewController.swift in Sources */,
 				A432E9581D2D1A4E002FE138 /* TaskViewController.swift in Sources */,
 				A471892D229E8A6600523FD5 /* OperativeGroup.swift in Sources */,
+				E96A98142B9F06CD002E7C5D /* TaskInstruction.swift in Sources */,
 				A43919A51D2D1E7900C31CA0 /* WebService.swift in Sources */,
 				A45D271029FC1E370077D9A1 /* TaskTemplateParameterFormItemSampleWithBiocide.swift in Sources */,
 				A43919921D2D1DB500C31CA0 /* Site.swift in Sources */,
@@ -753,7 +765,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = $inherited;
@@ -778,9 +790,9 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "COMPASSMOBILE Tasks/COMPASSMOBILE Tasks.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 20204;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
+				CURRENT_PROJECT_VERSION = 20503;
 				DEVELOPMENT_TEAM = H889T663QH;
 				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -795,8 +807,8 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Library";
-				MARKETING_VERSION = 2.02.04;
-				ONLY_ACTIVE_ARCH = YES;
+				MARKETING_VERSION = 2.05.03;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = COM.HYDROP.COMPASSMOBILE.TASKS2;
 				PRODUCT_NAME = "COMPASSMOBILE Tasks";
@@ -853,8 +865,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = $inherited;
 				"OTHER_LDFLAGS[arch=*]" = $inherited;
 				PRODUCT_BUNDLE_IDENTIFIER = COM.HYDROP.COMPASSMOBILE.TASKS2;
@@ -877,9 +890,10 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "COMPASSMOBILE Tasks/COMPASSMOBILE Tasks.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 20204;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=*]" = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
+				CURRENT_PROJECT_VERSION = 20503;
 				DEVELOPMENT_TEAM = H889T663QH;
 				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -894,7 +908,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Library";
-				MARKETING_VERSION = 2.02.04;
+				MARKETING_VERSION = 2.05.03;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = COM.HYDROP.COMPASSMOBILE.TASKS2;
